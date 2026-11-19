@@ -1,0 +1,1608 @@
+{
+  "header": {
+    "className": "fixed inset-x-0 top-0 z-40 h-18 transition-all duration-300",
+    "style": {
+      "fontFamily": "Outfit, \"Outfit Fallback\"",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "color": "lab(1.5609 0 0)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderRadius": "0px",
+      "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+      "boxShadow": "none",
+      "padding": "0px 0px 0px 0px",
+      "margin": "0px 0px 0px 0px",
+      "display": "block",
+      "gap": "normal"
+    },
+    "html": "<div class=\"relative z-10\"><div class=\"container mx-auto max-w-7xl h-18 px-4 sm:px-6 lg:px-8\"><nav aria-label=\"Main navigation\" class=\"hidden h-full xl:flex xl:items-center xl:justify-between xl:gap-4\"><a aria-label=\"Home\" class=\"flex items-center gap-2 shrink-0\" href=\"/\"><img alt=\"InkStudio.ai logo\" title=\"InkStudio.ai logo\" loading=\"lazy\" width=\"96\" height=\"96\" decoding=\"async\" data-nimg=\"1\" class=\"size-8 rounded-md\" style=\"color:transparent\" src=\"/brand/inkstudioai-logo-primary.svg\"><span class=\"text-lg font-medium\">InkStudio.ai</span></a><nav aria-label=\"Main navigation\" data-orientation=\"horizontal\" dir=\"ltr\" data-slot=\"navigation-menu\" data-viewport=\"true\" class=\"group/navigation-menu relative flex max-w-max items-center flex-1 justify-center\"><div style=\"position:relative\"><ul data-orientation=\"horizontal\" data-slot=\"navigation-menu-list\" class=\"group flex flex-1 list-none items-center justify-center gap-0\" dir=\"ltr\"><li data-slot=\"navigation-menu-item\" class=\"relative\"><a data-slot=\"navigation-menu-link\" class=\"p-2 in-data-[slot=navigation-menu-content]:rounded-md data-active:bg-muted/50 data-active:hover:bg-muted data-active:focus:bg-muted [&amp;_svg:not([class*='size-'])]:size-4 group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted gap-0 bg-muted font-medium text-foreground\" data-radix-collection-item=\"\" href=\"/\">AI Generator</a></li><li data-slot=\"navigation-menu-item\" class=\"relative\"><a data-slot=\"navigation-menu-link\" class=\"p-2 in-data-[slot=navigation-menu-content]:rounded-md data-active:bg-muted/50 data-active:hover:bg-muted data-active:focus:bg-muted [&amp;_svg:not([class*='size-'])]:size-4 group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted gap-0 bg-transparent\" data-radix-collection-item=\"\" href=\"/tattoo-font-generator\">Font Generator</a></li><li data-slot=\"navigation-menu-item\" class=\"relative\"><a data-slot=\"navigation-menu-link\" class=\"p-2 in-data-[slot=navigation-menu-content]:rounded-md data-active:bg-muted/50 data-active:hover:bg-muted data-active:focus:bg-muted [&amp;_svg:not([class*='size-'])]:size-4 group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted gap-0 bg-transparent\" data-radix-collection-item=\"\" href=\"/tattoo-try-on\">Try On<span data-slot=\"badge\" data-variant=\"outline\" class=\"group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden border py-0.5 whitespace-nowrap transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&amp;&gt;svg]:pointer-events-none [&amp;&gt;svg]:size-3! [a]:hover:bg-muted [a]:hover:text-muted-foreground -translate-y-1 ml-px h-3.5 rounded-full border-foreground/10 bg-transparent px-1 text-[8px] font-semibold leading-none tracking-[0.08em] text-muted-foreground/80 shadow-none\">3D</span></a></li><li data-slot=\"navigation-menu-item\" class=\"relative\"><button id=\"radix-_R_2ccniqivb_-trigger-Styles\" data-state=\"closed\" aria-expanded=\"false\" aria-controls=\"radix-_R_2ccniqivb_-content-Styles\" data-slot=\"navigation-menu-trigger\" class=\"group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted group bg-transparent\" data-radix-collection-item=\"\">Styles<!-- --> <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-chevron-down relative top-px ml-1 size-3 transition duration-300 group-data-popup-open/navigation-menu-trigger:rotate-180 group-data-open/navigation-menu-trigger:rotate-180\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></button></li><li data-slot=\"navigation-menu-item\" class=\"relative\"><a data-slot=\"navigation-menu-link\" class=\"p-2 in-data-[slot=navigation-menu-content]:rounded-md data-active:bg-muted/50 data-active:hover:bg-muted data-active:focus:bg-muted [&amp;_svg:not([class*='size-'])]:size-4 group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted gap-0 bg-transparent\" data-radix-collection-item=\"\" href=\"/tattoo-ideas\">Tattoo Ideas</a></li><li data-slot=\"navigation-menu-item\" class=\"relative\"><button id=\"radix-_R_2ccniqivb_-trigger-Tools\" data-state=\"closed\" aria-expanded=\"false\" aria-controls=\"radix-_R_2ccniqivb_-content-Tools\" data-slot=\"navigation-menu-trigger\" class=\"group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted group bg-transparent\" data-radix-collection-item=\"\">Tools<!-- --> <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-chevron-down relative top-px ml-1 size-3 transition duration-300 group-data-popup-open/navigation-menu-trigger:rotate-180 group-data-open/navigation-menu-trigger:rotate-180\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></button></li><li data-slot=\"navigation-menu-item\" class=\"relative\"><a data-slot=\"navigation-menu-link\" class=\"p-2 in-data-[slot=navigation-menu-content]:rounded-md data-active:bg-muted/50 data-active:hover:bg-muted data-active:focus:bg-muted [&amp;_svg:not([class*='size-'])]:size-4 group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted gap-0 bg-transparent\" data-radix-collection-item=\"\" href=\"/pricing\">Pricing</a></li></ul></div><div class=\"absolute top-full left-0 isolate z-50 flex justify-center\"></div></nav><div class=\"flex items-center gap-3 shrink-0\"><button data-slot=\"dropdown-menu-trigger\" data-variant=\"ghost\" data-size=\"sm\" class=\"group/button inline-flex shrink-0 items-center justify-center bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 gap-1 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&amp;_svg:not([class*='size-'])]:size-3.5 size-8 p-0.5 border border-border rounded-full\" type=\"button\" id=\"radix-_R_bccniqivb_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-languages size-3\" aria-hidden=\"true\"><path d=\"m5 8 6 6\"></path><path d=\"m4 14 6-6 2-3\"></path><path d=\"M2 5h12\"></path><path d=\"M7 2h1\"></path><path d=\"m22 22-5-10-5 10\"></path><path d=\"M14 18h6\"></path></svg><span class=\"sr-only\">Switch language</span></button><button type=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&amp;_svg:not([class*='size-'])]:size-3.5 cursor-pointer\" aria-haspopup=\"dialog\" aria-expanded=\"false\" aria-controls=\"radix-_r_3_\" data-state=\"closed\" data-slot=\"dialog-trigger\">Log in</button></div></nav><div class=\"flex items-center justify-between h-14 xl:hidden\"><a class=\"flex items-center gap-2\" href=\"/\"><img alt=\"InkStudio.ai logo\" title=\"InkStudio.ai logo\" loading=\"lazy\" width=\"96\" height=\"96\" decoding=\"async\" data-nimg=\"1\" class=\"size-8 rounded-md\" src=\"/brand/inkstudioai-logo-primary.svg\" style=\"color: transparent;\"><span class=\"text-lg font-medium\">InkStudio.ai</span></a><div class=\"flex items-center gap-4\"><button data-slot=\"button\" data-variant=\"ghost\" data-size=\"icon\" class=\"group/button inline-flex shrink-0 items-center justify-center border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 size-8 rounded-md border\" type=\"button\" aria-expanded=\"false\" aria-label=\"Open or close menu\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-menu size-4\" aria-hidden=\"true\"><path d=\"M4 5h16\"></path><path d=\"M4 12h16\"></path><path d=\"M4 19h16\"></path></svg></button></div></div></div></div>"
+  },
+  "hero": {
+    "className": "relative scroll-mt-20 pt-6 pb-4 md:pb-6",
+    "style": {
+      "fontFamily": "Outfit, \"Outfit Fallback\"",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "color": "lab(1.5609 0 0)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderRadius": "0px",
+      "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+      "boxShadow": "none",
+      "padding": "24px 0px 24px 0px",
+      "margin": "0px 0px 0px 0px",
+      "display": "block",
+      "gap": "normal"
+    },
+    "h1": "AI Tattoo Generator: Preview Before You Ink",
+    "h1Style": {
+      "fontFamily": "Syne, \"Syne Fallback\"",
+      "fontSize": "48px",
+      "fontWeight": "700",
+      "lineHeight": "48px",
+      "letterSpacing": "-1.2px",
+      "color": "lab(1.5609 0 0)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderRadius": "0px",
+      "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+      "boxShadow": "none",
+      "padding": "0px 0px 0px 0px",
+      "margin": "0px 0px 16px 0px",
+      "display": "block",
+      "gap": "normal"
+    },
+    "h1Class": "font-display mb-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl lg:text-5xl"
+  },
+  "generator": {
+    "style": {}
+  },
+  "styles": [],
+  "sections": [
+    {
+      "title": "1\nChoose a tattoo style\nPick for me",
+      "text": "Turn your idea into a tattoo design. See how it looks on the body, then try it on your own photo. Get inked with confidence.",
+      "rawText": "AI Tattoo Generator: Preview Before You Ink Turn your idea into a tattoo design. See how it looks on the body, then try it on your own photo. Get inked with confidence. 1 Choose a tattoo style Pick for me Pick for me Auto Fine Line Minimalist Lettering Realism Black & Grey American Traditional Japanese Blackwork Geometric Neo-Traditional Micro Realism Show all 22 styles 2 Describe your idea Start with a suggestion or enter your own 3 Choose your placement Choose a body area, then outline the s",
+      "className": "overflow-hidden",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "block",
+        "gap": "normal"
+      },
+      "images": [
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fpick-for-me.webp&w=3840&q=75",
+          "alt": "Pick for me"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fpick-for-me.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Ffine-line.webp&w=3840&q=75",
+          "alt": "Fine Line"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fminimalist.webp&w=3840&q=75",
+          "alt": "Minimalist"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Flettering.webp&w=3840&q=75",
+          "alt": "Lettering"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Frealism.webp&w=3840&q=75",
+          "alt": "Realism"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fblack-grey.webp&w=3840&q=75",
+          "alt": "Black & Grey"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fold-school.webp&w=3840&q=75",
+          "alt": "American Traditional"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fjapanese.webp&w=3840&q=75",
+          "alt": "Japanese"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fblackwork.webp&w=3840&q=75",
+          "alt": "Blackwork"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fgeometric.webp&w=3840&q=75",
+          "alt": "Geometric"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fneo-traditional.webp&w=3840&q=75",
+          "alt": "Neo-Traditional"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fmicro-realism.webp&w=3840&q=75",
+          "alt": "Micro Realism"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fwatercolor.webp&w=3840&q=75",
+          "alt": "Watercolor"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=%2Ftattoo-generator%2Fexamples%2Fbody-preview-collage.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Farchangel-warrior-back-tattoo-04.webp&w=3840&q=75",
+          "alt": "AI tattoo example 1"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcherry-blossom-hand-wrist-tattoo-02.webp&w=3840&q=75",
+          "alt": "AI tattoo example 2"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-ornamental-rib-tattoo-24.webp&w=3840&q=75",
+          "alt": "AI tattoo example 3"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fjapanese-koi-sleeve-tattoo-11.webp&w=3840&q=75",
+          "alt": "AI tattoo example 4"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcelestial-moon-neck-tattoo-03.webp&w=3840&q=75",
+          "alt": "AI tattoo example 5"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ftraditional-black-cat-thigh-tattoo-21.webp&w=3840&q=75",
+          "alt": "AI tattoo example 6"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fpolynesian-tribal-shoulder-chest-tattoo-28.webp&w=3840&q=75",
+          "alt": "AI tattoo example 7"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Flotus-jewelry-thigh-tattoo-12.webp&w=3840&q=75",
+          "alt": "AI tattoo example 8"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fgothic-blackwork-hand-tattoo-01.webp&w=3840&q=75",
+          "alt": "AI tattoo example 9"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fornamental-floral-dagger-back-tattoo-22.webp&w=3840&q=75",
+          "alt": "AI tattoo example 10"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fbutterfly-lotus-neck-back-tattoo-13.webp&w=3840&q=75",
+          "alt": "AI tattoo example 11"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fbiomechanical-gear-arm-tattoo-20.webp&w=3840&q=75",
+          "alt": "AI tattoo example 12"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Farchangel-warrior-back-tattoo-04.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcherry-blossom-hand-wrist-tattoo-02.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-ornamental-rib-tattoo-24.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fjapanese-koi-sleeve-tattoo-11.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcelestial-moon-neck-tattoo-03.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ftraditional-black-cat-thigh-tattoo-21.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fpolynesian-tribal-shoulder-chest-tattoo-28.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Flotus-jewelry-thigh-tattoo-12.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fgothic-blackwork-hand-tattoo-01.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fornamental-floral-dagger-back-tattoo-22.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fbutterfly-lotus-neck-back-tattoo-13.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fbiomechanical-gear-arm-tattoo-20.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-botanical-collarbone-tattoo-36.webp&w=3840&q=75",
+          "alt": "AI tattoo example 1"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcyber-sigilism-hand-wrist-tattoo-30.webp&w=3840&q=75",
+          "alt": "AI tattoo example 2"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fneo-traditional-cat-heart-thigh-tattoo-35.webp&w=3840&q=75",
+          "alt": "AI tattoo example 3"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ftarot-eye-celestial-forearm-tattoo-38.webp&w=3840&q=75",
+          "alt": "AI tattoo example 4"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-floral-hip-tattoo-39.webp&w=3840&q=75",
+          "alt": "AI tattoo example 5"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblack-gray-angel-warrior-forearm-tattoo-40.webp&w=3840&q=75",
+          "alt": "AI tattoo example 6"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Floyalty-script-hand-tattoo-31.webp&w=3840&q=75",
+          "alt": "AI tattoo example 7"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fanime-manga-portrait-calf-tattoo-37.webp&w=3840&q=75",
+          "alt": "AI tattoo example 8"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fminimal-black-cat-shoulder-tattoo-42.webp&w=3840&q=75",
+          "alt": "AI tattoo example 9"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblackletter-number-hand-finger-tattoo-32.webp&w=3840&q=75",
+          "alt": "AI tattoo example 10"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcartoon-character-quote-forearm-tattoo-41.webp&w=3840&q=75",
+          "alt": "AI tattoo example 11"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblackwork-scorpion-hand-tattoo-45.webp&w=3840&q=75",
+          "alt": "AI tattoo example 12"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-botanical-collarbone-tattoo-36.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcyber-sigilism-hand-wrist-tattoo-30.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fneo-traditional-cat-heart-thigh-tattoo-35.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ftarot-eye-celestial-forearm-tattoo-38.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-floral-hip-tattoo-39.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblack-gray-angel-warrior-forearm-tattoo-40.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Floyalty-script-hand-tattoo-31.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fanime-manga-portrait-calf-tattoo-37.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fminimal-black-cat-shoulder-tattoo-42.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblackletter-number-hand-finger-tattoo-32.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcartoon-character-quote-forearm-tattoo-41.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblackwork-scorpion-hand-tattoo-45.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "title": "1\nChoose a tattoo style\nPick for me",
+      "text": "Turn your idea into a tattoo design. See how it looks on the body, then try it on your own photo. Get inked with confidence.",
+      "rawText": "AI Tattoo Generator: Preview Before You Ink Turn your idea into a tattoo design. See how it looks on the body, then try it on your own photo. Get inked with confidence. 1 Choose a tattoo style Pick for me Pick for me Auto Fine Line Minimalist Lettering Realism Black & Grey American Traditional Japanese Blackwork Geometric Neo-Traditional Micro Realism Show all 22 styles 2 Describe your idea Start with a suggestion or enter your own 3 Choose your placement Choose a body area, then outline the s",
+      "className": "relative scroll-mt-20 pt-6 pb-4 md:pb-6",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "24px 0px 24px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "block",
+        "gap": "normal"
+      },
+      "images": [
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fpick-for-me.webp&w=3840&q=75",
+          "alt": "Pick for me"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fpick-for-me.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Ffine-line.webp&w=3840&q=75",
+          "alt": "Fine Line"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fminimalist.webp&w=3840&q=75",
+          "alt": "Minimalist"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Flettering.webp&w=3840&q=75",
+          "alt": "Lettering"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Frealism.webp&w=3840&q=75",
+          "alt": "Realism"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fblack-grey.webp&w=3840&q=75",
+          "alt": "Black & Grey"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fold-school.webp&w=3840&q=75",
+          "alt": "American Traditional"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fjapanese.webp&w=3840&q=75",
+          "alt": "Japanese"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fblackwork.webp&w=3840&q=75",
+          "alt": "Blackwork"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fgeometric.webp&w=3840&q=75",
+          "alt": "Geometric"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fneo-traditional.webp&w=3840&q=75",
+          "alt": "Neo-Traditional"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fmicro-realism.webp&w=3840&q=75",
+          "alt": "Micro Realism"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fstyles%2Fwatercolor.webp&w=3840&q=75",
+          "alt": "Watercolor"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=%2Ftattoo-generator%2Fexamples%2Fbody-preview-collage.webp&w=3840&q=75",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "title": "",
+      "text": "",
+      "rawText": "",
+      "className": "scroll-mt-20 overflow-hidden pt-10 pb-12 md:pt-12 md:pb-16",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "48px 0px 64px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "block",
+        "gap": "normal"
+      },
+      "images": [
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Farchangel-warrior-back-tattoo-04.webp&w=3840&q=75",
+          "alt": "AI tattoo example 1"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcherry-blossom-hand-wrist-tattoo-02.webp&w=3840&q=75",
+          "alt": "AI tattoo example 2"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-ornamental-rib-tattoo-24.webp&w=3840&q=75",
+          "alt": "AI tattoo example 3"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fjapanese-koi-sleeve-tattoo-11.webp&w=3840&q=75",
+          "alt": "AI tattoo example 4"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcelestial-moon-neck-tattoo-03.webp&w=3840&q=75",
+          "alt": "AI tattoo example 5"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ftraditional-black-cat-thigh-tattoo-21.webp&w=3840&q=75",
+          "alt": "AI tattoo example 6"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fpolynesian-tribal-shoulder-chest-tattoo-28.webp&w=3840&q=75",
+          "alt": "AI tattoo example 7"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Flotus-jewelry-thigh-tattoo-12.webp&w=3840&q=75",
+          "alt": "AI tattoo example 8"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fgothic-blackwork-hand-tattoo-01.webp&w=3840&q=75",
+          "alt": "AI tattoo example 9"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fornamental-floral-dagger-back-tattoo-22.webp&w=3840&q=75",
+          "alt": "AI tattoo example 10"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fbutterfly-lotus-neck-back-tattoo-13.webp&w=3840&q=75",
+          "alt": "AI tattoo example 11"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fbiomechanical-gear-arm-tattoo-20.webp&w=3840&q=75",
+          "alt": "AI tattoo example 12"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Farchangel-warrior-back-tattoo-04.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcherry-blossom-hand-wrist-tattoo-02.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-ornamental-rib-tattoo-24.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fjapanese-koi-sleeve-tattoo-11.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcelestial-moon-neck-tattoo-03.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ftraditional-black-cat-thigh-tattoo-21.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fpolynesian-tribal-shoulder-chest-tattoo-28.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Flotus-jewelry-thigh-tattoo-12.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fgothic-blackwork-hand-tattoo-01.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fornamental-floral-dagger-back-tattoo-22.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fbutterfly-lotus-neck-back-tattoo-13.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fbiomechanical-gear-arm-tattoo-20.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-botanical-collarbone-tattoo-36.webp&w=3840&q=75",
+          "alt": "AI tattoo example 1"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcyber-sigilism-hand-wrist-tattoo-30.webp&w=3840&q=75",
+          "alt": "AI tattoo example 2"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fneo-traditional-cat-heart-thigh-tattoo-35.webp&w=3840&q=75",
+          "alt": "AI tattoo example 3"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ftarot-eye-celestial-forearm-tattoo-38.webp&w=3840&q=75",
+          "alt": "AI tattoo example 4"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-floral-hip-tattoo-39.webp&w=3840&q=75",
+          "alt": "AI tattoo example 5"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblack-gray-angel-warrior-forearm-tattoo-40.webp&w=3840&q=75",
+          "alt": "AI tattoo example 6"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Floyalty-script-hand-tattoo-31.webp&w=3840&q=75",
+          "alt": "AI tattoo example 7"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fanime-manga-portrait-calf-tattoo-37.webp&w=3840&q=75",
+          "alt": "AI tattoo example 8"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fminimal-black-cat-shoulder-tattoo-42.webp&w=3840&q=75",
+          "alt": "AI tattoo example 9"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblackletter-number-hand-finger-tattoo-32.webp&w=3840&q=75",
+          "alt": "AI tattoo example 10"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcartoon-character-quote-forearm-tattoo-41.webp&w=3840&q=75",
+          "alt": "AI tattoo example 11"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblackwork-scorpion-hand-tattoo-45.webp&w=3840&q=75",
+          "alt": "AI tattoo example 12"
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-botanical-collarbone-tattoo-36.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcyber-sigilism-hand-wrist-tattoo-30.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fneo-traditional-cat-heart-thigh-tattoo-35.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ftarot-eye-celestial-forearm-tattoo-38.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Ffine-line-floral-hip-tattoo-39.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblack-gray-angel-warrior-forearm-tattoo-40.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Floyalty-script-hand-tattoo-31.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fanime-manga-portrait-calf-tattoo-37.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fminimal-black-cat-shoulder-tattoo-42.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblackletter-number-hand-finger-tattoo-32.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fcartoon-character-quote-forearm-tattoo-41.webp&w=3840&q=75",
+          "alt": ""
+        },
+        {
+          "src": "https://www.inkstudio.ai/_next/image?url=https%3A%2F%2Fassets.inkstudio.ai%2Fgallery%2Fblackwork-scorpion-hand-tattoo-45.webp&w=3840&q=75",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "title": "Closer to the tattoo you have in mind",
+      "text": "Choose from 22 styles and customize the placement and size to create a tattoo that feels right for you.",
+      "rawText": "Closer to the tattoo you have in mind Your tattoo, your way Choose from 22 styles and customize the placement and size to create a tattoo that feels right for you. 22 Styles Custom Placement Custom Size Style Placement & size Powerful AI. Tuned for tattoos. Top-tier AI with tattoo-specific prompts and agents—for designs closer to your vision, in less time. Tattoo-Tuned AI Consistent Results Faster Generation Top-Tier AI Models Optimized for Tattoos Tattoo Prompts Agent Optimization Connect b",
+      "className": "scroll-mt-20 py-12 md:py-16",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "64px 0px 64px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "block",
+        "gap": "normal"
+      },
+      "images": [
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "title": "From idea to try-on in four steps",
+      "text": "How it works",
+      "rawText": "How it works From idea to try-on in four steps Style Neo-Traditional Your idea A black and orange phoenix with spread wings and long, flowing tail feathers. Placement Make it your own Choose a style, describe your idea, and mark where you want your tattoo. Preview it on a model See how your design looks on the body, from placement to overall style. Get clean artwork Extract your tattoo from the preview as a clean, flat design. Personal photo try-on · Example Try it on yourself Uplo",
+      "className": "scroll-mt-20 py-12 md:py-16",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "64px 0px 64px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "block",
+        "gap": "normal"
+      },
+      "images": [
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        },
+        {
+          "src": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "title": "Buy Credits. Get Lifetime Pro Included.",
+      "text": "Pricing",
+      "rawText": "Pricing Buy Credits. Get Lifetime Pro Included. One-time payment Free Lifetime Pro Credits never expire 12-credit bundle $6.99 Complete one tattoo direction. 12 credits 6 image generations Credits never expire Lifetime Pro Limited-time gift All features unlocked AI Tattoo Body Preview Clean Artwork Extraction 3D Tattoo Try-On on Your Photo AI Try-On Enhancement AI Tattoo Price Estimator Unlimited use, no credits needed 3D Tattoo Try-On on Body Templates 3D Lettering Preview on Body T",
+      "className": "scroll-mt-20 border-y bg-muted/30 py-12 md:py-16",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "oklab(0.959998 -0.00000950694 0.000022471 / 0.3)",
+        "borderRadius": "0px",
+        "border": "",
+        "boxShadow": "none",
+        "padding": "64px 0px 64px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "block",
+        "gap": "normal"
+      },
+      "images": []
+    },
+    {
+      "title": "Frequently Asked Questions",
+      "text": "",
+      "rawText": "Frequently Asked Questions 1 What is InkStudio.ai? 2 Can InkStudio.ai create a great-looking tattoo that matches my vision? 3 How do I create a tattoo that reflects my taste? 4 Why start with a body preview instead of flat artwork? 5 Why try the design on myself if I’ve already seen it on a model? 6 How can I use my design to communicate with a tattoo artist?",
+      "className": "scroll-mt-20 py-12 md:py-16",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "64px 0px 64px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "block",
+        "gap": "normal"
+      },
+      "images": []
+    },
+    {
+      "title": "Start Your Tattoo Design with the AI Tattoo Generator",
+      "text": "Turn your idea into a body preview and clean artwork before you ink.",
+      "rawText": "Start Your Tattoo Design with the AI Tattoo Generator Turn your idea into a body preview and clean artwork before you ink. Generate Your Tattoo Preview",
+      "className": "py-12 md:py-16",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "64px 0px 64px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "block",
+        "gap": "normal"
+      },
+      "images": []
+    }
+  ],
+  "footer": {
+    "className": "py-8",
+    "style": {
+      "fontFamily": "Outfit, \"Outfit Fallback\"",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "color": "lab(1.5609 0 0)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderRadius": "0px",
+      "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+      "boxShadow": "none",
+      "padding": "32px 0px 32px 0px",
+      "margin": "0px 0px 0px 0px",
+      "display": "block",
+      "gap": "normal"
+    },
+    "html": "<div class=\"container mx-auto max-w-7xl px-4\"><div class=\"grid grid-cols-2 gap-12 md:grid-cols-6\"><div class=\"flex flex-col items-start col-span-full md:col-span-2\"><div class=\"space-y-4\"><div class=\"items-center space-x-2 flex\"><img alt=\"InkStudio.ai logo\" title=\"InkStudio.ai logo\" loading=\"lazy\" width=\"96\" height=\"96\" decoding=\"async\" data-nimg=\"1\" class=\"size-8 rounded-md\" style=\"color:transparent\" src=\"/brand/inkstudioai-logo-primary.svg\"><span class=\"text-lg font-medium\">InkStudio.ai</span></div><p class=\"text-muted-foreground text-base py-2 md:pr-12\">Design, preview, and prepare your tattoo before the appointment.</p></div></div><div class=\"col-span-1 items-start\"><span class=\"text-sm font-medium\">Create</span><ul class=\"mt-4 list-inside space-y-3\"><li><a class=\"text-sm transition-colors duration-150 hover:text-primary font-semibold text-primary\" href=\"/\">Generator</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/tattoo-try-on\">Try On</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/tattoo-font-generator\">Font Generator</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/my-designs\">My Designs</a></li></ul></div><div class=\"col-span-1 items-start\"><span class=\"text-sm font-medium\">Explore</span><ul class=\"mt-4 list-inside space-y-3\"><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/tattoo-styles\">Tattoo Styles</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/tattoo-fonts\">Tattoo Fonts</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/tattoo-ideas\">Tattoo Ideas</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/pricing\">Pricing</a></li></ul></div><div class=\"col-span-1 items-start\"><span class=\"text-sm font-medium\">Resources</span><ul class=\"mt-4 list-inside space-y-3\"><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/tattoo-price-calculator\">Tattoo Price Calculator</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/#faq\">FAQ</a></li><li><a href=\"mailto:support@inkstudio.ai\" class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\">Contact</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/ai-model-disclosure\">AI Model Disclosure</a></li></ul></div><div class=\"col-span-1 items-start\"><span class=\"text-sm font-medium\">Legal</span><ul class=\"mt-4 list-inside space-y-3\"><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/acceptable-use\">Acceptable Use Policy</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/privacy-policy\">Privacy Policy</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/terms-of-service\">Terms of Service</a></li><li><a class=\"text-sm text-muted-foreground transition-colors duration-150 hover:text-primary\" href=\"/cookie\">Cookie Policy</a></li></ul></div></div></div><div class=\"mt-8 border-t border-dashed pt-8\"><div class=\"container mx-auto max-w-7xl px-4 flex items-center justify-between gap-x-4\"><span class=\"text-muted-foreground text-sm\">© 2026 InkStudio.ai. All rights reserved.</span><div class=\"flex items-center gap-x-4\"></div></div></div>"
+  },
+  "buttons": [
+    {
+      "text": "Styles",
+      "className": "group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted group bg-transparent",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "6px 10px 6px 10px",
+        "margin": "0px 0px 0px 0px",
+        "display": "inline-flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Tools",
+      "className": "group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted group bg-transparent",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "6px 10px 6px 10px",
+        "margin": "0px 0px 0px 0px",
+        "display": "inline-flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Switch language",
+      "className": "group/button inline-flex shrink-0 items-center justify-center bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 gap-1 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 size-8 p-0.5 border border-border rounded-full",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "12.8px",
+        "fontWeight": "500",
+        "lineHeight": "19.2px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "3.35544e+07px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "2px 2px 2px 2px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "4px"
+      }
+    },
+    {
+      "text": "Log in",
+      "className": "group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 cursor-pointer",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "12.8px",
+        "fontWeight": "500",
+        "lineHeight": "19.2px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "lab(99.42 -0.0000298023 0)",
+        "borderRadius": "6px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 10px 0px 10px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "4px"
+      }
+    },
+    {
+      "text": "1\nChoose a tattoo style\nPick for me",
+      "className": "group/accordion-trigger relative flex flex-1 justify-between rounded-lg border border-transparent text-left text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground items-center px-5 py-3 hover:bg-muted/50 hover:no-underline",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "12px 20px 12px 20px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Pick for me",
+      "className": "flex w-full grow flex-col rounded-[inherit] text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Fine Line",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Minimalist",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Lettering",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Realism",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col max-sm:hidden hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Black & Grey",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col max-sm:hidden hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "American Traditional",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col max-sm:hidden hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Japanese",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col max-sm:hidden hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Blackwork",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col max-sm:hidden hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Geometric",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col max-sm:hidden hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Neo-Traditional",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col max-sm:hidden hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Micro Realism",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col max-sm:hidden hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Watercolor",
+      "className": "overflow-hidden rounded-lg border text-left transition-all flex min-w-0 flex-col lg:hidden max-sm:hidden hover:border-foreground/40",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "none",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Show all 22 styles",
+      "className": "flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(36.2 0 0.00000596046)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 0px 0px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "4px"
+      }
+    },
+    {
+      "text": "2\nDescribe your idea\nStart with a suggestion or enter your own",
+      "className": "group/accordion-trigger relative flex flex-1 justify-between rounded-lg border border-transparent text-left text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground items-center px-5 py-3 hover:bg-muted/50 hover:no-underline",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "12px 20px 12px 20px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "3\nChoose your placement\nChoose a body area, then outline the spot if you’d like.",
+      "className": "group/accordion-trigger relative flex flex-1 justify-between rounded-lg border border-transparent text-left text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground items-center px-5 py-3 hover:bg-muted/50 hover:no-underline",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "12px 20px 12px 20px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "Create Tattoo Preview",
+      "className": "group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [a]:hover:bg-primary/80 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3 relative mt-4 h-12 w-full overflow-visible rounded-lg bg-foreground text-base font-semibold text-background hover:bg-foreground/90 sm:text-lg",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "lineHeight": "28px",
+        "letterSpacing": "normal",
+        "color": "lab(99.42 -0.0000298023 0)",
+        "backgroundColor": "lab(1.5609 0 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "0px 10px 0px 10px",
+        "margin": "16px 0px 0px 0px",
+        "display": "flex",
+        "gap": "6px"
+      }
+    },
+    {
+      "text": "Body Preview\nSee it on a model",
+      "className": "relative inline-flex flex-1 items-center justify-center border border-transparent font-medium text-foreground/60 transition-all group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground group-data-[variant=default]/tabs-list:data-active:shadow-sm group-data-[variant=line]/tabs-list:data-active:shadow-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent data-active:bg-background data-active:text-foreground dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground after:absolute after:bg-foreground after:opacity-0 after:transition-opacity group-data-horizontal/tabs:after:inset-x-0 group-data-horizontal/tabs:after:bottom-[-5px] group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:inset-y-0 group-data-vertical/tabs:after:-right-1 group-data-vertical/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 h-auto min-w-0 flex-col gap-0 rounded-md px-2 py-2 text-xs whitespace-normal disabled:cursor-wait",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "lineHeight": "16px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "lab(99.42 -0.0000298023 0)",
+        "borderRadius": "6px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, lab(0 0 0 / 0.04) 0px 2px 4px -1px",
+        "padding": "8px 8px 8px 8px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "0px"
+      }
+    },
+    {
+      "text": "Clean Artwork\nSee every detail clearly",
+      "className": "relative inline-flex flex-1 items-center justify-center border border-transparent font-medium text-foreground/60 transition-all group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground group-data-[variant=default]/tabs-list:data-active:shadow-sm group-data-[variant=line]/tabs-list:data-active:shadow-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent data-active:bg-background data-active:text-foreground dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground after:absolute after:bg-foreground after:opacity-0 after:transition-opacity group-data-horizontal/tabs:after:inset-x-0 group-data-horizontal/tabs:after:bottom-[-5px] group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:inset-y-0 group-data-vertical/tabs:after:-right-1 group-data-vertical/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 h-auto min-w-0 flex-col gap-0 rounded-md px-2 py-2 text-xs whitespace-normal disabled:cursor-wait",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "lineHeight": "16px",
+        "letterSpacing": "normal",
+        "color": "oklab(0.12 -0.00000116229 0.00000281632 / 0.6)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "6px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "8px 8px 8px 8px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "0px"
+      }
+    },
+    {
+      "text": "Limited-time gift",
+      "className": "inline-flex min-h-6 shrink-0 items-center gap-1 rounded bg-foreground px-1.5 text-[10px] font-medium text-background outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "10px",
+        "fontWeight": "500",
+        "lineHeight": "15px",
+        "letterSpacing": "normal",
+        "color": "lab(99.42 -0.0000298023 0)",
+        "backgroundColor": "lab(1.5609 0 0)",
+        "borderRadius": "4px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 6px 0px 6px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "4px"
+      }
+    },
+    {
+      "text": "Limited-time gift",
+      "className": "inline-flex min-h-6 shrink-0 items-center gap-1 rounded bg-foreground px-1.5 text-[10px] font-medium text-background outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "10px",
+        "fontWeight": "500",
+        "lineHeight": "15px",
+        "letterSpacing": "normal",
+        "color": "lab(99.42 -0.0000298023 0)",
+        "backgroundColor": "lab(1.5609 0 0)",
+        "borderRadius": "4px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 6px 0px 6px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "4px"
+      }
+    },
+    {
+      "text": "Limited-time gift",
+      "className": "inline-flex min-h-6 shrink-0 items-center gap-1 rounded bg-foreground px-1.5 text-[10px] font-medium text-background outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "10px",
+        "fontWeight": "500",
+        "lineHeight": "15px",
+        "letterSpacing": "normal",
+        "color": "lab(99.42 -0.0000298023 0)",
+        "backgroundColor": "lab(1.5609 0 0)",
+        "borderRadius": "4px",
+        "border": "0px solid lab(90.72 0.0000298023 -0.0000119209)",
+        "boxShadow": "none",
+        "padding": "0px 6px 0px 6px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "4px"
+      }
+    },
+    {
+      "text": "1\nWhat is InkStudio.ai?",
+      "className": "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground group py-5 text-left hover:no-underline",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "20px 0px 20px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "2\nCan InkStudio.ai create a great-looking tattoo that matches my vision?",
+      "className": "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground group py-5 text-left hover:no-underline",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "20px 0px 20px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "3\nHow do I create a tattoo that reflects my taste?",
+      "className": "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground group py-5 text-left hover:no-underline",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "20px 0px 20px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "4\nWhy start with a body preview instead of flat artwork?",
+      "className": "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground group py-5 text-left hover:no-underline",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "20px 0px 20px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "5\nWhy try the design on myself if I’ve already seen it on a model?",
+      "className": "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground group py-5 text-left hover:no-underline",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "20px 0px 20px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "6\nHow can I use my design to communicate with a tattoo artist?",
+      "className": "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground group py-5 text-left hover:no-underline",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "lineHeight": "20px",
+        "letterSpacing": "normal",
+        "color": "lab(1.5609 0 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "8px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "20px 0px 20px 0px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "normal"
+      }
+    },
+    {
+      "text": "切换到中文",
+      "className": "group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-primary text-primary-foreground [a]:hover:bg-primary/80 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full sm:w-auto",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "12.8px",
+        "fontWeight": "500",
+        "lineHeight": "19.2px",
+        "letterSpacing": "normal",
+        "color": "lab(99.42 -0.0000298023 0)",
+        "backgroundColor": "lab(1.5609 0 0)",
+        "borderRadius": "6px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "0px 10px 0px 10px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "4px"
+      }
+    },
+    {
+      "text": "继续使用英文",
+      "className": "group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full text-muted-foreground sm:w-auto",
+      "style": {
+        "fontFamily": "Outfit, \"Outfit Fallback\"",
+        "fontSize": "12.8px",
+        "fontWeight": "500",
+        "lineHeight": "19.2px",
+        "letterSpacing": "normal",
+        "color": "lab(36.2 0 0.00000596046)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "borderRadius": "6px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "none",
+        "padding": "0px 10px 0px 10px",
+        "margin": "0px 0px 0px 0px",
+        "display": "flex",
+        "gap": "4px"
+      }
+    }
+  ]
+}
