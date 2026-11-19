@@ -5,127 +5,80 @@
 - **Interaction model:** FAQ = click-driven accordion; How It Works = static; rest = static
 
 ---
-## Section 1: Value Proposition Cards
+## Section 1: Value Proposition Cards (`#why-inkstudio`)
+
+### Overview
+- **Target file:** `src/components/showcase-values.tsx`
+- **Interaction model:** static
+- **Layout:** No outer card wrapper around each column; 3-column CSS subgrid (`md:grid-cols-3`, each `<article>` uses `md:row-span-4 md:grid md:grid-rows-subgrid`) so H3, description, tag pills, and visual box align horizontally across all 3 columns.
 
 ### Container
-- padding: 64px 0 (py-16)
-- background: rgb(255,255,255)
-- max-width: 1280px, mx-auto, px-16-32
+- `<section id="why-inkstudio" aria-labelledby="home-values-title" className="scroll-mt-20 py-12 md:py-16">`
+- Inner: `mx-auto max-w-7xl px-4 sm:px-6 lg:px-8`
+- Header wrapper: `mx-auto mb-10 max-w-3xl text-center md:mb-12`
+- H2: `font-display text-3xl font-bold tracking-tight text-balance md:text-4xl`
 
-### Section badge (above heading)
-- text: "Closer to the tattoo you have in mind"  [used as H2 too]
+### Grid & Articles
+- Grid: `grid gap-x-4 gap-y-12 md:grid-cols-3 md:gap-y-0 lg:gap-x-5`
+- Article: `flex min-w-0 flex-col md:row-span-4 md:grid md:grid-rows-subgrid`
+- H3: `font-display mb-3 text-xl font-semibold tracking-tight text-balance md:leading-7 lg:text-2xl lg:leading-8`
+- Description `<p>`: `mb-4 text-sm leading-7 text-muted-foreground lg:text-base`
+- Tag list `<ul>`: `mb-6 flex flex-wrap content-start items-start gap-2`
+- Tag `<li>`: `rounded-md bg-muted/60 px-2.5 py-1 text-xs font-medium leading-5 text-foreground`
 
-### H2 heading
-- text: "Closer to the tattoo you have in mind"
-- font-size: 36px (text-4xl on lg), 28px mobile
-- font-weight: 700, text-align: center
-- color: rgb(10,10,10)
-- margin-bottom: 48px
-
-### Cards grid
-- display: grid
-- grid-template-columns: repeat(3,1fr) → 1col mobile
-- gap: 24px
-- max-width: 1280px
-
-### Card styling
-- background: rgb(250,250,249) [neutral-50 #fafaf9]
-- border: 1px solid rgba(0,0,0,0.08) [neutral-200/60]
-- border-radius: 24px (rounded-2xl)
-- padding: 24px
-- box-shadow: 0 1px 2px rgba(0,0,0,0.04)
-
-### Card H3
-- font-size: 18px, font-weight: 600
-- color: rgb(10,10,10)
-- margin-bottom: 8px
-
-### Card description p
-- font-size: 14px, line-height: 22px
-- color: rgb(115,115,115)
-- margin-bottom: 16px
-
-### Feature badge pills on each card
-- display: inline-flex, align-items: center
-- border: 1px solid rgb(229,229,229)
-- border-radius: 9999px
-- padding: 2px 10px
-- font-size: 12px, font-weight: 500
-- color: rgb(10,10,10)
-- margin: 2px
-- background: rgb(255,255,255)
-
-## Card Content (verbatim):
-Card 1:
-  H3: "Your tattoo, your way"
-  p: "Choose from 22 styles and customize the placement and size to create a tattoo that feels right for you."
-  Badges: "22 Styles" | "Custom Placement" | "Custom Size"
-
-Card 2:
-  H3: "Powerful AI. Tuned for tattoos."
-  p: "Top-tier AI with tattoo-specific prompts and agents—for designs closer to your vision, in less time."
-  Badges: "Tattoo-Tuned AI" | "Consistent Results" | "Faster Generation"
-
-Card 3:
-  H3: "Connect better. Ink confidently."
-  p: "Preview your tattoo idea. Review it with your artist. Get inked with confidence."
-  Badges: "Body Preview" | "Clear Details" | "Easier Communication"
+### Visual Box (Row 4 of each `<article>`)
+All 3 share `relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#f7f6f4]`:
+1. **Card 1 ("Your tattoo, your way")**:
+   - `grid size-full grid-cols-[35fr_65fr] gap-2 p-3`
+   - Left (`grid min-h-0 grid-rows-[45fr_55fr] gap-2`):
+     - Top white card (`rounded-lg border border-black/10 bg-white p-1 shadow-sm`): label `Style` (`px-1.5 py-1 text-left text-[10px] leading-3 font-semibold text-black`) + `/home-values/illustrative-options.webp` (`object-contain`)
+     - Bottom white card: label `Placement & size` + `/home-values/back-placement-selection.webp` (`rounded object-contain`)
+   - Right (`min-h-0 overflow-hidden rounded-lg bg-[#f0e9e2]`): `/home-values/phoenix-body-original.webp` (`object-cover object-bottom`)
+2. **Card 2 ("Powerful AI. Tuned for tattoos.")**:
+   - `@container relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#f7f6f4] p-3`
+   - Pink tree connector SVG (`absolute left-1/4 top-[54%] h-[7%] w-1/2 overflow-visible text-[#ed69ae]`, `viewBox="0 0 100 100"`, `path d="M0 100V65Q0 40 8 40H92Q100 40 100 65V100M50 40V0"`)
+   - Grid `relative grid size-full grid-rows-[58fr_42fr] gap-[6%]`:
+     - Top centered card (`w-[82%]`): 3 fanned rotated mini cards (`-rotate-12` `/home-values/fine-line-style.webp`, `rotate-12` `/tattoo-how-it-works/clean-artwork.webp`, center `/home-values/phoenix-clean-artwork.webp`), title `Top-Tier AI Models` (`text-[clamp(11px,4.7cqw,26px)]`), subtitle `Optimized for Tattoos` (`text-[clamp(8px,2.8cqw,15px)] text-black/60`)
+     - Bottom 2-col grid (`grid-cols-2 gap-2`):
+       - Left card: inline prompt SVG (`#242424`, `#f8cee3`, `#ed69ae`) + `Tattoo Prompts`
+       - Right card: inline agent sliders SVG (`#242424`, `#f8cee3`, `#ed69ae`) + `Agent Optimization`
+3. **Card 3 ("Connect better. Ink confidently.")**:
+   - `grid size-full grid-cols-[65fr_35fr] gap-2 p-3`
+   - Left (`min-h-0 overflow-hidden rounded-lg bg-[#f0e9e2]`): `/home-values/phoenix-consultation-standalone.webp` (`object-cover`)
+   - Right (`grid min-h-0 grid-rows-[45fr_55fr] gap-2`):
+     - Top white card: `Body Preview` + `/home-values/phoenix-body-preview.webp` (`rounded object-contain`)
+     - Bottom white card: `Clean Artwork` + `/home-values/phoenix-clean-artwork.webp` (`object-contain`)
 
 ---
-## Section 2: How It Works (4 steps)
+## Section 2: How It Works (`#how-it-works`)
 
-### Section header
-- eyebrow label: "How it works" — text-sm font-semibold tracking-wider uppercase text-muted-foreground (#737373)
-- H2: "From idea to try-on in four steps"
-- font-size: 36px mobile: 28px, font-weight: 700, text-align: center
-- margin-bottom: 48px
-- padding: 64px 0 (py-16)
-- background: rgb(250,250,249)
+### Overview
+- **Target file:** `src/components/workflow-and-faq.tsx`
+- **Interaction model:** static + Step 4 heading link to `/tattoo-try-on` + bottom CTA link/scroll to `#hero`
+- **Layout:** No outer card wrapper around each step; `<ol className="grid gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-4">` directly on white background with `ArrowRight` / `ArrowDown` connectors between step visual boxes.
 
-### Steps layout
-- display: grid
-- grid-template-columns: repeat(4,1fr) → 1col mobile, 2col tablet
-- gap: 24px
+### Section Header
+- `<section id="how-it-works" className="scroll-mt-20 py-12 md:py-16">`
+- Header wrapper: `mx-auto mb-10 max-w-3xl text-center md:mb-12`
+- Eyebrow `<p>`: `mb-3 text-sm font-medium text-muted-foreground` ("How it works")
+- H2: `font-display text-3xl font-bold tracking-tight text-balance md:text-4xl` ("From idea to try-on in four steps")
 
-### Step card
-- background: rgb(255,255,255)
-- border: 1px solid rgb(229,229,229)
-- border-radius: 16px
-- padding: 24px
-
-### Step number
-- width: 32px, height: 32px
-- border-radius: 9999px
-- background: rgb(10,10,10)
-- color: rgb(255,255,255)
-- font-size: 14px, font-weight: 700
-- display: flex align-items justify-content center
-- margin-bottom: 12px
-
-### Step title H3
-- font-size: 16px, font-weight: 600
-- margin-bottom: 6px
-
-### Step description
-- font-size: 14px, color: rgb(115,115,115), line-height: 22px
+### Steps & Visual Boxes
+Each `<li className="min-w-0">` has:
+- Visual wrapper `<div className="relative">` containing `@container relative isolate aspect-[4/3] overflow-hidden rounded-xl bg-[#f7f6f4] text-[#151515]`
+- Connectors:
+  - `ArrowRight` (`pointer-events-none absolute top-1/2 -right-[19px] hidden size-3.5 -translate-y-1/2 text-muted-foreground`): Step 1 (`md:block lg:block`), Step 2 (`lg:block`), Step 3 (`md:block lg:block`)
+  - `ArrowDown` (`pointer-events-none absolute -top-7 left-1/2 size-3.5 -translate-x-1/2 text-muted-foreground md:hidden`): Steps 2, 3, 4
+- Step 1 visual: `grid size-full grid-cols-[54fr_46fr] gap-[3cqw] p-[4cqw]` — left column (`Style` 3-card carousel with blurred side cards `style-geometric.webp` & `style-micro-realism.webp` and bordered active `style-neo-traditional.webp` + `Your idea` 2-line prompt box), right column (`Placement` + `back-placement-selection-full-back.webp`).
+- Step 2 visual: `/home-workflow/phoenix-model-preview.webp` (`size-full object-contain`)
+- Step 3 visual: `/home-workflow/phoenix-artwork.webp` (`size-full bg-white object-contain p-2`)
+- Step 4 visual: `/home-workflow/phoenix-personal-try-on.webp` (`size-full object-contain`) + top-left badge `absolute top-2 left-2 max-w-[calc(100%-1rem)] rounded-md bg-white/95 px-2 py-1 text-[3.2cqw] font-medium`
+- Step H3: `font-display mt-4 text-lg font-semibold leading-snug tracking-tight` (Step 4 wraps an underlined link to `/tattoo-try-on`)
+- Step `<p>`: `mt-2 text-sm leading-6 text-muted-foreground`
 
 ### Bottom CTA
-- button: "Preview my tattoo idea"
-- style: same as Generate button — rounded-full h-12 bg-black text-white px-8 font-semibold
-- display: block, mx-auto, mt-12
-
-## Steps Content (verbatim):
-Step 1 — Make it your own
-  "Choose a style, describe your idea, and mark where you want your tattoo."
-
-Step 2 — Preview it on a model
-  "See how your design looks on the body, from placement to overall style."
-
-Step 3 — Get clean artwork
-  "Extract your tattoo from the preview as a clean, flat design."
-
-Step 4 — Try it on yourself
-  "Upload your photo, add your design, and adjust its placement and size."
+- Wrapper: `mt-10 text-center`
+- Button/Link: `inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/80` with `ArrowRight` (`ml-2 size-4`).
 
 ---
 ## Section 3: FAQ Accordion

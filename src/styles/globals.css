@@ -51,6 +51,8 @@
   --font-sans:
     var(--font-sans), -apple-system, 'system-ui', 'Segoe UI', Helvetica, Arial,
     sans-serif;
+  --font-display:
+    var(--font-serif-display), 'Syne', ui-sans-serif, system-ui, sans-serif;
   /* CJK serif glyphs use locally-installed fonts — a Chinese serif webfont
      ships 300+ @font-face subsets (~100KB render-blocking CSS on every page)
      and is not worth it for headings. */
@@ -343,10 +345,38 @@
       transform: translate3d(4%, 6%, 0) scale(1.08);
     }
   }
+  @keyframes marquee-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes marquee-right {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  .animate-marquee-left {
+    animation: marquee-left 45s linear infinite;
+  }
+  .animate-marquee-right {
+    animation: marquee-right 48s linear infinite;
+  }
+  .animate-marquee-left:hover,
+  .animate-marquee-right:hover {
+    animation-play-state: paused;
+  }
   @media (prefers-reduced-motion: reduce) {
     .animate-drift-a,
     .animate-drift-b,
-    .animate-drift-c {
+    .animate-drift-c,
+    .animate-marquee-left,
+    .animate-marquee-right {
       animation: none !important;
     }
   }

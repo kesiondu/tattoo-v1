@@ -1,21 +1,28 @@
 import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { InkStudioHeader } from '@/components/inkstudio-header';
+import { AuthModal } from '@/components/auth-modal';
 import { HeroGenerator } from '@/components/hero-generator';
+import { InkStudioFooter } from '@/components/inkstudio-footer';
+import { InkStudioHeader } from '@/components/inkstudio-header';
 import { ShowcaseValues } from '@/components/showcase-values';
 import { WorkflowAndFaq } from '@/components/workflow-and-faq';
-import { InkStudioFooter } from '@/components/inkstudio-footer';
-import { AuthModal } from '@/components/auth-modal';
 
 function HomePage() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const search = Route.useSearch();
 
   return (
-    <div className="bg-background text-foreground flex min-h-screen flex-col font-sans selection:bg-primary/20 selection:text-primary">
+    <div className="flex min-h-screen flex-col bg-white font-sans text-foreground selection:bg-foreground/15 selection:text-foreground">
       <InkStudioHeader onOpenAuth={() => setAuthModalOpen(true)} />
       <main className="flex-1">
-        <HeroGenerator />
+        <HeroGenerator
+          onOpenAuth={() => setAuthModalOpen(true)}
+          initialStyle={search.style}
+          initialPrompt={search.prompt}
+        />
         <ShowcaseValues onOpenAuth={() => setAuthModalOpen(true)} />
         <WorkflowAndFaq onOpenAuth={() => setAuthModalOpen(true)} />
       </main>
@@ -26,28 +33,24 @@ function HomePage() {
 }
 
 export const Route = createFileRoute('/')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    style: typeof search.style === 'string' ? search.style : undefined,
+    prompt: typeof search.prompt === 'string' ? search.prompt : undefined,
+  }),
   loader: () => {
     const locale = getLocale();
     return {
-      title:
-        locale === 'zh'
-          ? 'AI 纹身设计生成器 - 专业定制与 3D 试戴 | InkStudio.ai'
-          : 'AI Tattoo Generator for Professional Designs | InkStudio.ai',
-      description:
-        locale === 'zh'
-          ? '在真正纹身之前预览并定制。体验逼真的 3D 身体定位试戴与清晰的线稿图，与您的纹身师轻松沟通。'
-          : 'Create and preview your tattoo before you ink. Explore realistic body placement and clean artwork to review and discuss with your tattoo artist.',
+      title: m['home.meta.title']({}, { locale }),
+      description: m['home.meta.description']({}, { locale }),
     };
   },
   head: ({ loaderData }) => ({
-    meta: [
-      { title: loaderData?.title },
-      { name: 'description', content: loaderData?.description },
-      { property: 'og:title', content: loaderData?.title },
-      { property: 'og:description', content: loaderData?.description },
-      { property: 'og:image', content: '/brand/inkstudioai-og.png' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-    ],
+    meta: loaderData
+      ? [
+          { title: loaderData.title },
+          { name: 'description', content: loaderData.description },
+        ]
+      : [],
   }),
   component: HomePage,
 });

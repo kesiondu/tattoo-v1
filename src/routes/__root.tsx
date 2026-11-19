@@ -167,11 +167,11 @@ function RootComponent() {
     <QueryClientProvider client={getQueryClient()}>
       <ThemeProvider
         attribute="class"
-        defaultTheme={analytics?.colorMode ?? DEFAULT_COLOR_MODE}
+        defaultTheme="light"
         forcedTheme={
-          analytics?.colorModeForced ? analytics.colorMode : undefined
+          analytics?.colorModeForced ? analytics.colorMode : 'light'
         }
-        enableSystem
+        enableSystem={false}
         disableTransitionOnChange
       >
         <Outlet />
