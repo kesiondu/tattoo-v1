@@ -477,26 +477,28 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
               const isOpen = openFaq === idx;
               return (
                 <div key={item.q}>
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaq(isOpen ? null : idx)}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-muted/40"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
-                        {idx + 1}
-                      </span>
-                      <span className="text-sm font-medium text-foreground sm:text-[15px]">
-                        {item.q}
-                      </span>
-                    </div>
-                    <ChevronDown
-                      className={cn(
-                        'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
-                        isOpen && 'rotate-180'
-                      )}
-                    />
-                  </button>
+                  <h3 className="flex">
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaq(isOpen ? null : idx)}
+                      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-muted/40"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
+                          {idx + 1}
+                        </span>
+                        <span className="text-sm font-medium text-foreground sm:text-[15px]">
+                          {item.q}
+                        </span>
+                      </div>
+                      <ChevronDown
+                        className={cn(
+                          'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                          isOpen && 'rotate-180'
+                        )}
+                      />
+                    </button>
+                  </h3>
                   {isOpen && (
                     <div className="px-5 pt-0 pb-4 pl-14 text-sm leading-relaxed text-muted-foreground">
                       {item.a}

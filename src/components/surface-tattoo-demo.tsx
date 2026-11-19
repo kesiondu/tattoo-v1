@@ -258,7 +258,7 @@ export function FontSurfaceDemo({
   label: string;
 }) {
   const pose = useLoopingPath(FONT_WAYPOINTS, 2100);
-  const displayText = text?.trim() || 'InkStudio';
+  const displayText = text?.trim() || 'Stay True';
 
   return (
     <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-[#e5e5e5] select-none">

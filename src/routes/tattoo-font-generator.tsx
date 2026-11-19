@@ -75,7 +75,7 @@ const FONT_STYLES: FontStyleDef[] = [
     zh: '经典',
     badgeEn: 'Clean',
     badgeZh: '简洁',
-    example: 'And if you die I wanna die with you',
+    example: 'Only time will tell',
     img: '/tattoo-font-generator/styles/classic.webp',
     isPhoto: true,
     variants: [
@@ -84,10 +84,10 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 },
     ],
     cats: ['names', 'phrases'],
-    feelEn: 'Familiar, timeless, and lightly formal.',
-    feelZh: '熟悉、耐看、略带正式感。',
-    chosenForEn: 'Names, initials, short words, and simple memorial text.',
-    chosenForZh: '名字、缩写、短词和简约纪念文字。',
+    feelEn: 'Timeless, balanced, and subtly formal.',
+    feelZh: '经典耐看、比例均衡、略带正式感。',
+    chosenForEn: 'Names, initials, short quotes, and minimalist keepsakes.',
+    chosenForZh: '名字、缩写、简短格言与极简纪念文字。',
   },
   {
     id: 'minimalist',
@@ -113,9 +113,9 @@ const FONT_STYLES: FontStyleDef[] = [
     id: 'cursive',
     name: 'Cursive',
     zh: '连笔手写',
-    badgeEn: 'Script',
+    badgeEn: 'Handwritten',
     badgeZh: '手写',
-    example: 'Till Death Do Us Part',
+    example: 'Always & Forever',
     img: '/tattoo-font-generator/styles/cursive.webp',
     isPhoto: true,
     variants: [
@@ -123,10 +123,10 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Source Serif 4 Variable', Georgia, serif", fontStyle: 'italic', fontWeight: 400 },
     ],
     cats: ['names'],
-    feelEn: 'Soft, connected, and personal.',
-    feelZh: '柔和、连贯、富有个人情感。',
-    chosenForEn: 'Names, sentimental words, and loved-one text.',
-    chosenForZh: '名字、抒情词汇与挚爱寄语。',
+    feelEn: 'Soft, flowing, and deeply personal.',
+    feelZh: '柔和自然、连贯流畅、富有私人情感。',
+    chosenForEn: "Loved ones' names, lyrical words, and intimate dedications.",
+    chosenForZh: '挚爱名字、抒情词汇与专属寄语。',
   },
   {
     id: 'handwritten',
@@ -153,7 +153,7 @@ const FONT_STYLES: FontStyleDef[] = [
     zh: '花体书法',
     badgeEn: 'Script',
     badgeZh: '手写',
-    example: 'Bittersweet',
+    example: 'Grace & Grit',
     img: '/tattoo-font-generator/styles/calligraphy.webp',
     isPhoto: true,
     variants: [
@@ -161,10 +161,10 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontStyle: 'italic', fontWeight: 700 },
     ],
     cats: ['names', 'phrases', 'decorative'],
-    feelEn: 'Elegant, formal, and graceful.',
-    feelZh: '优雅、正式、有书法感。',
-    chosenForEn: 'Vows, names, and refined short phrases.',
-    chosenForZh: '誓言、名字和精致短句。',
+    feelEn: 'Refined, formal, and fluid with classic pen strokes.',
+    feelZh: '优雅流畅、正式且带有经典钢笔书法韵味。',
+    chosenForEn: 'Vows, names, and elegant short phrases.',
+    chosenForZh: '誓言、人名与精致短句。',
   },
   {
     id: 'block',
@@ -172,7 +172,7 @@ const FONT_STYLES: FontStyleDef[] = [
     zh: '方块',
     badgeEn: 'Bold',
     badgeZh: '粗体',
-    example: 'NEVER DOWN BAD',
+    example: 'FEARLESS',
     img: '/tattoo-font-generator/styles/block.webp',
     isPhoto: true,
     variants: [
@@ -180,10 +180,10 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Outfit Variable', sans-serif", fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' },
     ],
     cats: ['bold'],
-    feelEn: 'Bold, direct, and clear.',
-    feelZh: '粗重、直接、清楚。',
-    chosenForEn: 'Initials, one-word tattoos, and strong statements.',
-    chosenForZh: '缩写、单词纹身和强声明文字。',
+    feelEn: 'Heavy, direct, and unmistakably legible.',
+    feelZh: '粗犷硬朗、直接醒目、辨识度极高。',
+    chosenForEn: 'Acronyms, one-word statements, and high-impact lettering.',
+    chosenForZh: '缩写字母、单词纹身与强态度宣言。',
   },
   {
     id: 'stencil',
@@ -229,7 +229,7 @@ const FONT_STYLES: FontStyleDef[] = [
     zh: '奇卡诺',
     badgeEn: 'Street',
     badgeZh: '街头',
-    example: 'Ambition',
+    example: 'Loyalty Above All',
     img: '/tattoo-font-generator/styles/chicano.webp',
     isPhoto: true,
     variants: [
@@ -237,10 +237,10 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontStyle: 'italic', fontWeight: 700 },
     ],
     cats: ['names', 'decorative'],
-    feelEn: 'Ornate, emotional, and black-and-gray tattoo influenced.',
-    feelZh: '华丽、富有情感、深受黑灰纹身风格影响。',
-    chosenForEn: 'Family words, names, memorial phrases, faith words, and loyalty words.',
-    chosenForZh: '家族词汇、名字、纪念短语、信仰与忠诚词。',
+    feelEn: 'Ornate, expressive, and rooted in classic black-and-grey ink culture.',
+    feelZh: '华丽张扬、富有情感，源自经典黑灰纹身文化。',
+    chosenForEn: 'Family names, memorial dates, and words of faith or loyalty.',
+    chosenForZh: '家族词汇、纪念短语、信仰与忠诚词。',
   },
   {
     id: 'gangster',
@@ -304,17 +304,17 @@ const FONT_STYLES: FontStyleDef[] = [
     zh: '黑书体',
     badgeEn: 'Gothic',
     badgeZh: '哥特',
-    example: 'No weapon formed against me, shall prosper',
+    example: 'Born to be free',
     img: '/tattoo-font-generator/styles/blackletter.webp',
     isPhoto: true,
     variants: [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 },
     ],
     cats: ['decorative'],
-    feelEn: 'Medieval, formal, dense, and dramatic.',
-    feelZh: '中世纪感、正式、密集、戏剧感。',
-    chosenForEn: 'Initials, surnames, family names, and short words.',
-    chosenForZh: '缩写、姓氏、家族文字和短词。',
+    feelEn: 'Medieval, bold, dense, and dramatic.',
+    feelZh: '中世纪感、厚重正式、极具戏剧张力。',
+    chosenForEn: 'Initials, surnames, family mottos, and short single words.',
+    chosenForZh: '字母缩写、姓氏、家族格言与简短单词。',
   },
   {
     id: 'old-english',
@@ -477,58 +477,58 @@ const SKIN_TONES = [
 
 const FAQS = [
   {
-    qEn: 'Is the Tattoo Font Generator really free to use?',
+    qEn: 'Is the tattoo font generator really free?',
     qZh: '纹身字体生成器真的免费吗？',
-    aEn: 'Yes. You can type your text, switch between all 20 lettering styles, preview on 8 body placements and 6 skin tones, and export clean PNG/SVG references without signing up.',
-    aZh: '是的。您可以免费输入文字、切换全部 20 种字体风格、在 8 个身体部位与 6 种肤色上预览，并无需注册即可下载 PNG/SVG 参考图。',
+    aEn: 'Yes. You can test all 20 tattoo fonts, preview them across body areas and skin tones, and download PNG or SVG references completely free with no login required.',
+    aZh: '是的。您可以免费试戴全部 20 种纹身字体、切换不同肤色和身体部位预览，并免费导出 PNG 或 SVG 参考图，全程无需登录。',
   },
   {
-    qEn: 'How many characters work best for a tattoo lettering preview?',
+    qEn: 'How many characters work best for a tattoo text preview?',
     qZh: '纹身文字预览最适合输入多少个字符？',
-    aEn: 'Short names, dates, initials, and 1–4 word quotes (up to 30 characters) keep letter spacing open and readable as the tattoo heals over time.',
-    aZh: '名字、纪念日期、缩写或 1–4 个词的短句（30 字符以内）最能保证字距通透，恢复多年后依旧清晰。',
+    aEn: 'Short inputs of 1 to 20 characters—such as a single word, name, date, or 2–4 word phrase—deliver the cleanest and most realistic preview.',
+    aZh: '建议控制在 1 到 20 个字符以内（如单个单词、人名、纪念日期或 2–4 个词的短句），这样在皮肤和 3D 模型上的排版最清晰自然。',
   },
   {
     qEn: 'What is the difference between skin preview and 3D preview?',
     qZh: '皮肤预览和 3D 预览有什么区别？',
-    aEn: 'Skin preview shows how your lettering reads across 8 real placements and 6 skin tones immediately, while 3D preview wraps the lettering around natural skin contours so you can check curvature and proportions.',
-    aZh: '皮肤预览可即时对比 8 个真实部位与 6 种肤色上的可读性；3D 预览则会贴合肌肉与皮肤曲面，帮助判断弯曲后的实际比例。',
+    aEn: 'The skin preview lets you quickly compare font styles against different skin tones and body zones, while the 3D preview wraps your chosen lettering over natural body contours to show realistic curvature.',
+    aZh: '皮肤预览适合快速切换对比不同字体、肤色和部位的平面视觉；3D 预览则会将字稿贴合在立体的身体曲面上，帮您判断实际弧度下的观感。',
   },
   {
-    qEn: 'Which tattoo font style ages the best?',
+    qEn: 'Which tattoo font ages the best over time?',
     qZh: '哪种纹身字体恢复后最耐看？',
-    aEn: 'Classic serif, bold block, typewriter, and well-spaced script styles age best because they leave clear negative space between strokes.',
-    aZh: '经典衬线、粗体方块、打字机和间距舒展的花体最耐看，因为笔画之间留有充足留白，不易随时间糊成一团。',
+    aEn: 'Fonts with clear spacing and moderate stroke weight—like Classic, Block, Typewriter, and clean Traditional lettering—hold their sharpness best as ink settles over the years.',
+    aZh: '笔画粗细适中、字母间距清晰的字体最抗晕色，例如经典体（Classic）、方块粗体（Block）和打字机字体（Typewriter），多年后依然利落。',
   },
   {
-    qEn: 'Should I download PNG or SVG for my tattoo artist?',
+    qEn: 'Should I download PNG or SVG to show my tattoo artist?',
     qZh: '给纹身师看参考图，应该下载 PNG 还是 SVG？',
-    aEn: 'Use PNG to compare placements and share screenshots quickly; use SVG when your artist needs to scale the stencil cleanly to exact inches or centimeters.',
-    aZh: 'PNG 适合快速对比与发图沟通；SVG 是矢量格式，方便纹身师无损缩放到精确厘米尺寸制作转印稿。',
+    aEn: 'Use PNG to quickly compare ideas on your phone or share on social media. Download SVG when you are ready for your appointment, as artists can scale vector outlines to any size without losing quality.',
+    aZh: '日常发朋友圈或手机里对比选款，保存 PNG 即可；正式预约纹身时建议导出 SVG，无损矢量格式方便纹身师任意缩放并直接出转印稿。',
   },
   {
     qEn: 'Can I preview dates and Roman numerals?',
     qZh: '可以预览日期和罗马数字吗？',
-    aEn: 'Yes. Roman, Typewriter, Minimalist, and Stencil styles are specifically popular for birth years, anniversaries, and coordinates.',
-    aZh: '可以。罗马体、打字机、极简细线和模板体都非常适合生日年份、纪念日与经纬度坐标。',
+    aEn: 'Yes. Simply type standard numbers (e.g., 1998, 05.12.2024) or Roman numerals (e.g., MCMXCVIII) into the text box to test them across Classic, Typewriter, and Blackletter styles.',
+    aZh: '可以。直接在输入框输入数字日期（如 1998、2024.05.12）或罗马数字（如 MCMXCVIII），即可一键对比经典体、打字机和哥特黑书体效果。',
   },
   {
-    qEn: 'Why do decorative styles need more space on skin?',
+    qEn: 'Why do decorative script or gothic fonts need a larger tattoo area?',
     qZh: '为什么装饰性强的花体/哥特体需要更大的纹身面积？',
-    aEn: 'Ornate flourishes in Blackletter, Old English, and Chicano scripts contain tight loops and fine serifs that require slightly larger sizing so ink stays crisp for years.',
-    aZh: '哥特黑体、古英语和奇卡诺花体包含密集勾勒与细小转折，需要稍大的面积才能保证多年后线条不粘连。',
+    aEn: 'Intricate flourishes and tight negative spaces tend to blur together as skin ages. Giving ornate styles more surface area preserves every loop and sharp edge.',
+    aZh: '复杂花体和哥特体的笔画转折多、留白窄，如果纹得太小，几年后墨水自然微扩散容易糊成一团。留出足够面积才能保住精致细节。',
   },
   {
-    qEn: 'Will my tattoo artist copy the generated font verbatim?',
+    qEn: 'Will a tattoo artist copy the generated font exactly?',
     qZh: '纹身师会完全照搬生成的字体吗？',
-    aEn: 'Most artists use your exported lettering as a clear visual direction and refine kerning, stroke weight, and flow to match your exact anatomy.',
-    aZh: '大多数专业纹身师会以您的导出图为明确方向，并结合您的肌肉线条与肤质微调字距和笔画粗细。',
+    aEn: 'Most artists use your exported font as a direct blueprint, then subtly tweak line thickness and letter spacing so the tattoo heals cleanly on your specific body part.',
+    aZh: '大多数纹身师会以您导出的字稿为蓝本，再结合您的皮肤张力和肌肉走向，对笔画粗细与字距做微调，确保最终成品既还原又耐看。',
   },
   {
-    qEn: 'Can I combine lettering with a custom AI tattoo illustration?',
+    qEn: 'Can I combine tattoo lettering with AI-generated tattoo artwork?',
     qZh: '可以把字体和 AI 生成的纹身图案结合起来吗？',
-    aEn: 'Yes — open the AI Tattoo Generator on the homepage and choose the Lettering style (or mention your phrase in the prompt) to integrate typography with botanical, geometric, or traditional artwork.',
-    aZh: '可以——回到首页 AI 纹身生成器，选择“花体文字”风格或在描述中加入您的文字，即可将文字与花卉、几何或传统图案融合设计。',
+    aEn: 'Yes. You can generate your custom lettering here and pair it with our main AI Tattoo Generator to design surrounding elements like florals, banners, or fine-line frames.',
+    aZh: '可以。您可以先在这里定好文字风格，再搭配我们的 AI 纹身生成器，为文字加上花卉、丝带、几何边框等定制图案元素。',
   },
 ];
 
@@ -537,7 +537,7 @@ function TattooFontGeneratorPage() {
   const t = (en: string, zh: string) => (isZh ? zh : en);
   const { data: session } = useSession();
 
-  const [text, setText] = useState('InkStudio');
+  const [text, setText] = useState('Stay True');
   const [selectedStyleId, setSelectedStyleId] = useState('generic');
   const [variantIdx, setVariantIdx] = useState(0);
   const [showAllLeftStyles, setShowAllLeftStyles] = useState(false);
@@ -664,7 +664,7 @@ function TattooFontGeneratorPage() {
   }
 
   function getRenderedText() {
-    const content = text.trim() || 'InkStudio';
+    const content = text.trim() || 'Stay True';
     return activeVariant.textTransform === 'uppercase'
       ? content.toUpperCase()
       : content;
@@ -784,19 +784,14 @@ function TattooFontGeneratorPage() {
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
               <h1 className="font-sans text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 {t(
-                  'Tattoo Font Generator with Skin Preview',
-                  '纹身字体生成器：皮肤效果预览'
+                  'Tattoo Font Generator: Realistic Skin & 3D Preview',
+                  '在线纹身字体生成器：真实皮肤与 3D 试戴预览'
                 )}
               </h1>
               <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
                 {t(
-                  'Find the right tattoo lettering for names, dates, initials, and short quotes.',
-                  '为名字、日期、缩写和短句找到合适的纹身字体。'
-                )}
-                <br className="hidden sm:inline" />{' '}
-                {t(
-                  'Compare fonts across body placements and skin tones, then use 3D to see how your choice fits the skin’s natural contours.',
-                  '在不同身体部位和肤色上比较字体，再通过 3D 查看选定字稿与皮肤自然起伏的贴合效果。'
+                  'Type a name, date, initials, or short quote to compare 20 tattoo fonts across skin tones and body placements—then inspect how the lettering wraps on skin in 3D.',
+                  '输入名字、纪念日、缩写或短句，一键对比 20 种热门纹身字体在不同肤色与身体部位的真实贴合效果，并通过 3D 查看皮肤自然起伏。'
                 )}
               </p>
             </div>
@@ -843,7 +838,7 @@ function TattooFontGeneratorPage() {
                       maxLength={30}
                       value={text}
                       onChange={(e) => setText(e.target.value)}
-                      placeholder="InkStudio, Luna, Amor Fati"
+                      placeholder="Stay True, Luna, Amor Fati"
                       className="h-11 w-full rounded-lg border border-input bg-white px-3.5 text-sm text-foreground transition-all outline-none placeholder:text-muted-foreground focus:border-foreground focus:ring-2 focus:ring-foreground/10"
                     />
                   </div>
@@ -915,7 +910,7 @@ function TattooFontGeneratorPage() {
                   >
                     <Type className="size-4" />
                     <span>
-                      {t('Generate font previews', '生成字体预览')}
+                      {t('Generate Font Preview', '生成字体预览')}
                     </span>
                   </button>
                 </div>
@@ -1065,7 +1060,7 @@ function TattooFontGeneratorPage() {
                                   activeVariant.textTransform ?? 'none',
                               }}
                             >
-                              {text.trim() || 'InkStudio'}
+                              {text.trim() || 'Stay True'}
                             </span>
                           </div>
                         </div>
@@ -1080,8 +1075,8 @@ function TattooFontGeneratorPage() {
                       <div className="absolute right-3 bottom-3 left-3 flex justify-center">
                         <span className="rounded-full bg-white/90 px-3.5 py-1.5 text-center text-xs font-medium text-foreground shadow-xs backdrop-blur-xs">
                           {t(
-                            'Generate lettering to preview it on this skin.',
-                            '点击生成字稿，即可在此肤色与部位上预览。'
+                            'Click Generate Font Preview to see your lettering on this skin tone and placement.',
+                            '点击“生成字体预览”，即可在此肤色与身体部位上查看真实效果。'
                           )}
                         </span>
                       </div>
@@ -1407,14 +1402,14 @@ function TattooFontGeneratorPage() {
                   </div>
                   <h2 className="mt-3 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                     {t(
-                      'Find the right style for your tattoo text',
-                      '为您的纹身文字挑选最合适的风格'
+                      'Find the Best Font Style for Your Tattoo Lettering',
+                      '为您的纹身文字挑选最合适的字体风格'
                     )}
                   </h2>
                   <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
                     {t(
-                      'Different lettering families age and flow differently on skin. Filter by what you are tattooing to narrow down the cleanest options.',
-                      '不同字体系在皮肤上的走势与恢复效果各不相同，按文字用途筛选最清晰耐看的方案。'
+                      'Every typeface ages differently on skin. Filter by text type to choose a style that stays crisp and readable.',
+                      '不同字体在皮肤上的线条走势与后期留色各不相同，按文字用途筛选最清晰耐看的方案。'
                     )}
                   </p>
                   <Link
@@ -1500,7 +1495,7 @@ function TattooFontGeneratorPage() {
                 })}
               </div>
 
-              {/* 3-Column Style Example Grid (Matching InkStudio.ai) */}
+              {/* 3-Column Style Example Grid */}
               <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {visibleGuide.map((st) => (
                   <article
@@ -1543,7 +1538,7 @@ function TattooFontGeneratorPage() {
                         <div className="mt-4 grid gap-3 border-t pt-4 text-sm leading-relaxed">
                           <div>
                             <div className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
-                              {t('Style feel', '风格感觉')}
+                              {t('Vibe', '风格感觉')}
                             </div>
                             <p className="mt-1 text-foreground">
                               {isZh ? st.feelZh : st.feelEn}
@@ -1551,7 +1546,7 @@ function TattooFontGeneratorPage() {
                           </div>
                           <div>
                             <div className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
-                              {t('Often chosen for', '常用于')}
+                              {t('Best for', '常用于')}
                             </div>
                             <p className="mt-1 text-foreground">
                               {isZh ? st.chosenForZh : st.chosenForEn}
@@ -1600,8 +1595,8 @@ function TattooFontGeneratorPage() {
                 </div>
                 <h2 className="mt-3 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                   {t(
-                    'Choose text that stays readable as a tattoo',
-                    '选择在皮肤上持久清晰的文字'
+                    'How to Choose Tattoo Lettering That Stays Sharp',
+                    '如何挑选多年后依然清晰的纹身文字？'
                   )}
                 </h2>
               </div>
@@ -1609,28 +1604,28 @@ function TattooFontGeneratorPage() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="rounded-xl border border-border bg-white p-6">
                   <h3 className="text-base font-semibold text-foreground">
-                    {t('Works well', '推荐做法')}
+                    {t("Do's (What Works Best)", '推荐做法')}
                   </h3>
                   <ul className="mt-3 space-y-2.5 text-sm text-muted-foreground">
                     <li>
                       •{' '}
                       {t(
-                        'Short names, birth years, coordinates, and 1–4 word mottos.',
-                        '简短的名字、年份、坐标以及 1–4 个词的格言。'
+                        'Stick to concise names, milestone years, coordinates, or 1–4 word mottos.',
+                        '优先选择简短的英文名、纪念年份、经纬度坐标或 1–4 个词的座右铭。'
                       )}
                     </li>
                     <li>
                       •{' '}
                       {t(
-                        'Open spacing between letters so lines stay crisp after healing.',
-                        '字母间留出适当空隙，恢复多年后依然利落清晰。'
+                        "Leave breathing room between letters so natural ink spread won't blur the text over time.",
+                        '适当拉大字母间距，防止纹身恢复后因墨水轻微晕染导致字迹粘连。'
                       )}
                     </li>
                     <li>
                       •{' '}
                       {t(
-                        'Matching script flow with natural forearm, rib, or collarbone direction.',
-                        '顺应小臂、肋骨或锁骨的自然走向排布文字。'
+                        'Align the text flow with the natural lines of your forearm, collarbone, or ribs.',
+                        '顺着小臂、锁骨或肋骨的肌肉线条排布文字，视觉上更自然流畅。'
                       )}
                     </li>
                   </ul>
@@ -1638,28 +1633,28 @@ function TattooFontGeneratorPage() {
 
                 <div className="rounded-xl border border-border bg-white p-6">
                   <h3 className="text-base font-semibold text-foreground">
-                    {t('Needs extra care', '需要注意')}
+                    {t("Don'ts (What to Avoid)", '避坑提醒')}
                   </h3>
                   <ul className="mt-3 space-y-2.5 text-sm text-muted-foreground">
                     <li>
                       •{' '}
                       {t(
-                        'Very small ornate Blackletter or Chicano fonts on fingers or wrists.',
-                        '在手指或手腕等极小面积使用过于复杂的哥特或奇卡诺花体。'
+                        'Avoid cramming intricate Gothic or Chicano script onto tiny areas like fingers or inner wrists.',
+                        '避免在手指、耳后、内手腕等极小面积使用笔画密集的哥特体或奇卡诺花体。'
                       )}
                     </li>
                     <li>
                       •{' '}
                       {t(
-                        'Long paragraphs packed tightly into narrow areas.',
-                        '将长段落文字密集挤在狭小部位。'
+                        "Don't force long paragraphs into a narrow patch of skin.",
+                        '不要把一整段长句子硬塞进狭小的皮肤区域。'
                       )}
                     </li>
                     <li>
                       •{' '}
                       {t(
-                        'Ultra-thin hairlines without confirming minimum needle gauge with your artist.',
-                        '未与纹身师确认最小针号就盲目选择极细线条。'
+                        'Never commit to ultra-fine lines without checking needle gauge and ink retention with your artist.',
+                        '选极细线条前，先和纹身师确认最小针号与该部位的后期留色率。'
                       )}
                     </li>
                   </ul>
@@ -1678,20 +1673,20 @@ function TattooFontGeneratorPage() {
                   </div>
                   <h2 className="mt-3 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                     {t(
-                      'Bring your tattoo lettering reference to your artist',
-                      '带上清晰的字体参考图与纹身师沟通'
+                      'Bring Clean Font References to Your Tattoo Artist',
+                      '导出高清字稿，直接带给纹身师参考'
                     )}
                   </h2>
                 </div>
 
                 <div className="rounded-xl border border-border bg-white p-5 lg:col-span-5">
                   <h3 className="text-sm font-semibold text-foreground">
-                    {t('Before tattooing', '纹身前确认')}
+                    {t('Double-Check Before Stenciling', '转印前最后核对')}
                   </h3>
                   <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
                     {t(
-                      'Double-check spelling, dates, accents, and placement direction in a mirror before the stencil goes on your skin.',
-                      '转印贴上皮肤前，务必对着镜子再次核对拼写、日期、重音符号与朝向。'
+                      'Once the stencil is on your skin, check spelling, Roman numerals, accents, and orientation in a mirror.',
+                      '贴上转印纸后，务必对着镜子逐字检查拼写、罗马数字、重音符号及正反方向。'
                     )}
                   </p>
                 </div>
@@ -1700,24 +1695,24 @@ function TattooFontGeneratorPage() {
               <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
                 {[
                   {
-                    h: t('Use PNG to compare', '用 PNG 快速对比'),
+                    h: t('Save PNGs for Quick Comparison', '下载 PNG 快速比选'),
                     p: t(
-                      'Save 2–3 favorite fonts side by side to compare readability on your phone before booking.',
-                      '保存 2–3 个备选字体，预约前随时在手机上对比效果。'
+                      'Download 2–3 favorite font options to your phone so you can compare placements before your session.',
+                      '把心仪的 2–3 款字体存到手机里，预约前随时对比不同部位的视觉效果。'
                     ),
                   },
                   {
-                    h: t('Use SVG for resizing', '用 SVG 无损缩放'),
+                    h: t('Export SVG for Crisp Scaling', '导出 SVG 无损缩放'),
                     p: t(
-                      'Share crisp vector outlines so your artist can print clean stencils at the exact millimeter size.',
-                      '将清晰矢量轮廓发给纹身师，方便按精确尺寸打印转印稿。'
+                      'Share a lossless vector file with your artist so they can resize and print an exact stencil.',
+                      '提供无损矢量轮廓给纹身师，方便按实际尺寸精准打印转印稿。'
                     ),
                   },
                   {
-                    h: t('Ask your artist to refine', '请纹身师微调细节'),
+                    h: t('Let Your Artist Refine the Details', '听取纹身师微调建议'),
                     p: t(
-                      'Let your artist adjust stroke thickness and kerning so the lettering ages cleanly on your skin.',
-                      '让纹身师结合您的皮肤状态微调笔画粗细与字距，确保长久耐看。'
+                      'Ask your artist to adjust stroke weight and kerning for your specific skin type and placement.',
+                      '结合您的肤质与部位，让纹身师适当调整笔画粗细与字距，确保长久耐看。'
                     ),
                   },
                 ].map((card) => (
@@ -1741,7 +1736,7 @@ function TattooFontGeneratorPage() {
           <section className="border-t border-border py-12 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 sm:px-6">
               <h2 className="mb-8 text-center font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                {t('Tattoo font generator FAQ', '纹身字体生成器常见问题')}
+                {t('Tattoo Font Generator FAQ', '纹身字体生成器常见问题')}
               </h2>
 
               <div className="divide-y divide-border rounded-2xl border border-border bg-white">
@@ -1786,11 +1781,11 @@ export const Route = createFileRoute('/tattoo-font-generator')({
     const isZh = getLocale() === 'zh';
     return {
       title: isZh
-        ? '纹身字体生成器：皮肤效果预览 | InkStudio.ai'
-        : 'Free Tattoo Font Generator with Skin Preview | InkStudio.ai',
+        ? '免费在线纹身字体生成器：皮肤与 3D 效果预览 | TattooGenerator.online'
+        : 'Free Tattoo Font Generator: Skin & 3D Preview | TattooGenerator.online',
       description: isZh
-        ? '为名字、日期、缩写和短句找到合适的纹身字体，在不同身体部位和肤色上比较效果。'
-        : 'Find the right tattoo lettering for names, dates, initials, and short quotes with skin and 3D preview.',
+        ? '在线生成 20 种热门纹身字体，支持手腕、小臂、锁骨等身体部位与多肤色实时预览，免费导出 PNG/SVG 高清转印字稿，轻松打造专属名字与短句纹身。'
+        : 'Generate 20+ tattoo font styles online. Preview names, dates, and quotes on wrists, forearms, and multiple skin tones in 3D, then export free PNG or SVG stencils.',
     };
   },
   head: ({ loaderData }) => ({

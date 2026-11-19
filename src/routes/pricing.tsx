@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
 import { cn } from '@/lib/utils';
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 
@@ -47,8 +48,8 @@ function PricingPage() {
   const bundles = [
     {
       id: 'b12',
-      name: t('12-credit bundle', '12 积分套餐'),
-      desc: t('Complete one tattoo direction.', '适合完整探索一个纹身构想。'),
+      name: m['home.pricing.b1_name'](),
+      desc: m['home.pricing.b1_desc'](),
       price: '$6.99',
       credits: 12,
       gens: 6,
@@ -57,21 +58,18 @@ function PricingPage() {
     },
     {
       id: 'b40',
-      name: t('40-credit bundle', '40 积分套餐'),
-      desc: t('Best for most tattoo projects.', '最适合大多数纹身设计项目。'),
+      name: m['home.pricing.b2_name'](),
+      desc: m['home.pricing.b2_desc'](),
       price: '$14.99',
       credits: 40,
       gens: 20,
-      badge: t('Most Popular', '最受欢迎'),
+      badge: m['home.pricing.most_popular'](),
       popular: true,
     },
     {
       id: 'b120',
-      name: t('120-credit bundle', '120 积分套餐'),
-      desc: t(
-        'Explore more ideas and refine your favorites.',
-        '自由探索更多灵感并深度打磨细节。'
-      ),
+      name: m['home.pricing.b3_name'](),
+      desc: m['home.pricing.b3_desc'](),
       price: '$29.99',
       credits: 120,
       gens: 60,

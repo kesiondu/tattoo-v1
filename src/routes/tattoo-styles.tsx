@@ -391,67 +391,90 @@ const COMPARISONS = [
   {
     titleEn: 'Fine Line vs. Minimalist',
     titleZh: '细线 vs 极简',
-    descEn: 'Fine Line can hold rich botanical or micro detail with ultra-thin strokes, while Minimalist strips the subject down to its cleanest essential lines.',
-    descZh: '细线风格可以用极细针法刻画丰富花卉或微距细节；极简则更强调极致精炼的轮廓与大面积留白。',
+    descEn:
+      'Fine line uses ultra-thin needles to pack delicate shading and botanical detail into a piece; minimalist strips the artwork down to clean outlines and generous negative space.',
+    descZh:
+      '细线擅长用极细针法刻画丰富的花卉纹理与柔和阴影；极简则追求极致精炼的轮廓线与大面积留白。',
   },
   {
     titleEn: 'American Traditional vs. Neo-Traditional',
     titleZh: '美式传统 vs 新传统',
-    descEn: 'American Traditional sticks to uniform bold outlines and classic primary colors; Neo-Traditional adds varied line weights, richer gradients, and Art Nouveau flair.',
-    descZh: '美式传统坚持统一粗黑线与经典三原色；新传统在此基础上加入线条粗细变化与更丰富的宝石色调。',
+    descEn:
+      'American Traditional sticks to uniform bold outlines and a classic primary color palette; Neo-Traditional expands on that foundation with varied line weights and rich jewel tones.',
+    descZh:
+      '美式传统坚持统一粗黑外框与经典高饱和配色；新传统在此基础上融入线条粗细变化与更丰富的宝石色调。',
   },
   {
-    titleEn: 'Realism vs. Micro Realism',
+    titleEn: 'Full-Scale Realism vs. Micro Realism',
     titleZh: '大面积写实 vs 微写实',
-    descEn: 'Full Realism uses larger canvas areas for deep contrast and longevity; Micro Realism compresses lifelike detail into palm-sized or smaller placements.',
-    descZh: '传统写实适合大面积展现强烈光影与长久稳定度；微写实将照片级细节浓缩在掌心以内的小图面积。',
+    descEn:
+      'Full-scale realism uses large body areas to build dramatic contrast that holds up for decades; micro realism condenses photographic detail into palm-sized or smaller placements.',
+    descZh:
+      '大面积写实借助充足皮肤空间展现强烈光影与长久稳定度；微写实则是把照片级细节浓缩在掌心以内的小图中。',
   },
   {
     titleEn: 'Blackwork vs. Dotwork',
     titleZh: '重黑 vs 点刺',
-    descEn: 'Blackwork relies on saturated solid black shapes and sharp contrast; Dotwork builds airy, velvety gradients one stippled dot at a time.',
-    descZh: '重黑强调饱和纯黑块面与强烈黑白对比；点刺则通过细密点阵营造通透柔和的雾面过渡。',
+    descEn:
+      'Blackwork relies on saturated solid-black fills and stark contrast; dotwork builds airy gradients and organic texture through thousands of individual stippled dots.',
+    descZh:
+      '重黑依靠高饱和纯黑块面打造强烈视觉冲击；点刺则通过密集点阵叠加，呈现通透细腻的颗粒雾面质感。',
   },
   {
     titleEn: 'Geometric vs. Ornamental',
     titleZh: '几何 vs 装饰花纹',
-    descEn: 'Geometric emphasizes mathematical precision and straight or radial grids; Ornamental leans into jewelry-like curves, filigree, and body-contouring flow.',
-    descZh: '几何偏向数学感的精准直线与网格结构；装饰花纹则如同珠宝蕾丝，更注重柔和曲线与贴合身体轮廓。',
+    descEn:
+      'Geometric focuses on mathematical precision, symmetry, and crisp straight lines; ornamental uses softer, jewelry-like filigree curves designed to wrap naturally around body contours.',
+    descZh:
+      '几何强调数学般的精准直线、对称矩阵与结构感；装饰花纹更像贴合肌肤的珠宝蕾丝，注重柔和曲线与身体走势。',
   },
 ];
 
 const STYLE_FAQS = [
   {
-    qEn: 'How do I pick the best tattoo style for my first tattoo?',
-    qZh: '第一次纹身该如何挑选风格？',
-    aEn: 'Start with Fine Line, Minimalist, Floral, or Lettering if you want something subtle and easy to place, or American Traditional if you prefer bold lines that age effortlessly.',
-    aZh: '如果想要精致低调且好驾驭，推荐细线、极简、花卉或文字；如果喜欢经久耐看的粗黑质感，美式传统是经典之选。',
+    qEn: 'What is the best tattoo style for a first tattoo?',
+    qZh: '第一次纹身推荐选什么风格？',
+    aEn: 'Fine Line, Minimalist, and small Floral or Lettering designs are popular first-tattoo choices because they are quick to sit through, subtle to wear, and easy to place on the wrist, forearm, or collarbone.',
+    aZh: '新手通常优先考虑细线（Fine Line）、极简（Minimalist）、小型花卉或定制文字。这类风格痛感时间短、日常百搭，非常适合纹在手腕、小臂内侧或锁骨。',
   },
   {
-    qEn: 'Which styles work best for small tattoos?',
-    qZh: '哪些风格最适合小图纹身？',
-    aEn: 'Minimalist, Single Needle, Fine Line, Micro Realism, and clean Lettering translate cleanly to wrist, ankle, and behind-the-ear sizing.',
-    aZh: '极简、单针、细线、微写实和简约文字在手腕、脚踝和耳后等小尺寸区域表现最为清晰。',
+    qEn: 'Which tattoo styles work best for small tattoos?',
+    qZh: '哪些纹身风格最适合做小图？',
+    aEn: "Minimalist, Single Needle, Fine Line, and Micro Realism are built for small placements. Keep the design uncluttered with enough negative space so tiny details don't blur over time.",
+    aZh: '极简、单针极细、细线和微写实都是小图的热门选择。做小图时注意不要塞入过多细碎元素，留出适当间距才能避免后期晕色。',
   },
   {
-    qEn: 'Can I mix two tattoo styles in one design?',
-    qZh: '可以把两种纹身风格融合在一个图案里吗？',
-    aEn: 'Yes — combinations like Fine Line + Geometric, Blackwork + Dotwork, or Realism + Watercolor are popular. Describe both in the AI Generator prompt to preview how they blend.',
-    aZh: '完全可以，例如细线+几何、重黑+点刺、写实+水彩都非常热门。只需在首页 AI 生成器的描述中同时说明即可预览融合效果。',
+    qEn: 'Can I blend two tattoo styles in one design?',
+    qZh: '可以把两种纹身风格混搭在一个图案里吗？',
+    aEn: 'Yes. Popular combinations include Geometric + Floral, Blackwork + Dotwork, and Realism + Watercolor. Just make sure both styles share a cohesive flow and contrast level.',
+    aZh: '完全可以。常见的混搭组合包括几何+花卉、重黑+点刺、写实+水彩等，只要整体光影对比和构图走势协调，效果会非常出彩。',
   },
   {
-    qEn: 'Does body placement affect which style I should choose?',
-    qZh: '身体部位会影响风格选择吗？',
-    aEn: 'Yes. High-movement areas like hands and ribs favor cleaner contrast and open spacing, while larger flat areas like the back, thigh, or upper arm support intricate Realism or Japanese work.',
-    aZh: '会。手部和肋骨等活动频繁或皮肤较薄的部位更适合线条干净、留白充足的风格；背部、大腿和上臂等大面积平滑区域则最适合写实或日式大图。',
+    qEn: 'Does body placement affect which tattoo style I should choose?',
+    qZh: '身体部位会影响纹身风格的选择吗？',
+    aEn: 'Definitely. High-friction or curved spots like fingers, ribs, and ankles favor simpler, bolder linework, while flat, broader areas like the back, thigh, or upper arm can handle heavy shading and intricate realism.',
+    aZh: '会。手指、脚踝、肋骨等易摩擦或弧度大的部位更适合简洁清晰的线条；而背部、大腿、上臂等平整大面积区域，则非常适合承载大面积写实、日式或重黑作品。',
   },
   {
-    qEn: 'How can I preview a style on my own body before booking?',
-    qZh: '预约前如何提前在自己身上预览某种风格？',
-    aEn: 'Click Generate on any style above to create a body preview on the homepage, then extract clean artwork and test it on your photo in Tattoo Try-On.',
-    aZh: '点击任意风格卡片上的“立即生成”，在首页生成上身预览并提取清晰线稿，随后进入 3D 试戴上传自己的照片即可提前查看效果。',
+    qEn: 'How can I preview a tattoo style on my body before booking an artist?',
+    qZh: '预约纹身师前，怎么提前看某种风格在自己身上的效果？',
+    aEn: 'Pick any style above, click Generate to create a custom design, and use our Virtual Tattoo Try-On tool to test its size and placement directly on your own photo.',
+    aZh: '在上方点击任意风格卡片的“生成”按钮，制作出专属图案后，再通过我们的“虚拟纹身试戴”工具直接贴合到您的身体照片上预览比例与位置。',
   },
 ];
+
+function formatStyleAltEn(styleEn: string) {
+  const keepTitleCase = new Set([
+    'American Traditional',
+    'Japanese',
+    'Tribal / Polynesian',
+    'Chicano',
+  ]);
+  const prefix = keepTitleCase.has(styleEn)
+    ? styleEn
+    : styleEn.charAt(0).toUpperCase() + styleEn.slice(1).toLowerCase();
+  return `${prefix} tattoo style design example`;
+}
 
 function TattooStylesPage() {
   const isZh = getLocale() === 'zh';
@@ -481,16 +504,16 @@ function TattooStylesPage() {
       {/* 1. Centered Hero Header */}
       <section className="pt-10 pb-4 text-center sm:pt-14 sm:pb-6">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="text-xs font-medium text-muted-foreground">
-            {t('Tattoo style decision hub', '纹身风格决策指南')}
+          <div className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+            {t('TATTOO STYLE DIRECTORY', '纹身风格图鉴')}
           </div>
           <h1 className="mt-2.5 font-sans text-4xl font-bold tracking-tight text-balance text-foreground sm:text-5xl">
-            {t('Explore Tattoo Styles', '探索全部纹身风格')}
+            {t('Explore All 23 Tattoo Styles', '探索全部 23 种纹身风格')}
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             {t(
-              'Find the tattoo style that fits your idea, placement, size, and long-term look.',
-              '结合您的想法、身体部位、尺寸与长久耐看度，找到最适合您的纹身风格。'
+              'Match your tattoo concept with the right visual style based on placement, size, skin flow, and how cleanly the ink ages.',
+              '结合您的图案灵感、身体部位、面积大小与长期留色表现，快速锁定最适合自己的纹身风格。'
             )}
           </p>
         </div>
@@ -504,12 +527,12 @@ function TattooStylesPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="border-b border-border pb-6">
             <h2 className="font-sans text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              {t('All tattoo styles', '全部纹身风格')}
+              {t('Browse Every Tattoo Style', '浏览全部纹身风格')}
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
               {t(
-                'Browse popular, technical, cultural, and trend-led tattoo styles in one continuous list. Use the filters when you want to narrow the decision.',
-                '在一个连续列表中浏览热门、技法、传统与潮流纹身风格。需要缩小选择范围时可使用下方筛选标签。'
+                'Scroll through classic, technical, and trending tattoo styles in one place—or filter by vibe, placement, and ink type below.',
+                '在一个页面内完整对比经典、技法、传统与先锋潮流风格，也可通过下方标签按场景快速筛选。'
               )}
             </p>
 
@@ -521,8 +544,8 @@ function TattooStylesPage() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={t(
-                    'Search style, motif, placement, or vibe...',
-                    '搜索风格、元素、部位或氛围…'
+                    'Search by style, motif, body part, or vibe...',
+                    '搜索风格名称、元素、身体部位或氛围…'
                   )}
                   className="h-10 w-full rounded-lg border border-input bg-white pr-4 pl-10 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-foreground"
                 />
@@ -530,7 +553,7 @@ function TattooStylesPage() {
 
               <div className="mt-5">
                 <div className="mb-2.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                  {t('FILTER BY USE CASE', '按需求场景筛选')}
+                  {t('Filter by goal', '按需求快速筛选')}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {FILTER_PILLS.map((pill) => (
@@ -564,7 +587,11 @@ function TattooStylesPage() {
                 <div className="relative aspect-square overflow-hidden rounded-xl border border-border bg-white">
                   <img
                     src={st.img}
-                    alt={st.en}
+                    alt={
+                      isZh
+                        ? `${st.zh}风格纹身设计示例`
+                        : formatStyleAltEn(st.en)
+                    }
                     loading="lazy"
                     className="h-full w-full object-contain p-4"
                   />
@@ -590,9 +617,9 @@ function TattooStylesPage() {
                           <span className="inline-block h-px w-5 bg-border" />
                           <span>{st.badges[0] || 'STYLE'}</span>
                         </div>
-                        <h4 className="mt-1.5 font-sans text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                        <h3 className="mt-1.5 font-sans text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                           {isZh ? `${st.en} · ${st.zh}` : st.en}
-                        </h4>
+                        </h3>
                       </div>
 
                       <div className="flex items-center gap-2">
@@ -663,7 +690,10 @@ function TattooStylesPage() {
       <section className="border-y border-border bg-muted/20 py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-8 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            {t('Compare similar tattoo styles', '对比相近的纹身风格')}
+            {t(
+              'Compare Closely Related Tattoo Styles',
+              '相近纹身风格核心区别对比'
+            )}
           </h2>
 
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -689,7 +719,10 @@ function TattooStylesPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <h2 className="font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              {t('How to choose the right tattoo style', '如何选择最适合自己的风格')}
+              {t(
+                'How to Pick the Right Tattoo Style for You',
+                '四步选出最适合您的纹身风格'
+              )}
             </h2>
             <Link
               href="/tattoo-fonts"
@@ -709,34 +742,34 @@ function TattooStylesPage() {
             {[
               {
                 n: '01',
-                h: t('Match style to size', '按尺寸匹配风格'),
+                h: t('Match Style to Size', '按皮肤面积定风格'),
                 p: t(
-                  'Small areas suit Minimalist, Fine Line, and Single Needle; larger panels unlock Realism and Japanese storytelling.',
-                  '小面积适合极简、细线与单针；大面积则能充分展现写实与日式叙事构图。'
+                  'Compact spots work best with Minimalist, Fine Line, or Single Needle, while larger areas give Realism and Japanese pieces room to breathe.',
+                  '小面积优先选极简、细线或单针；大面积则能充分释放写实与日式传统构图的视觉张力。'
                 ),
               },
               {
                 n: '02',
-                h: t('Consider long-term aging', '考虑长期恢复效果'),
+                h: t('Think About Long-Term Healing', '兼顾十年后的留色效果'),
                 p: t(
-                  'Strong contrast and breathing room between lines keep designs crisp for decades.',
-                  '清晰的黑白对比与充足留白，能让纹身十年后依然利落清晰。'
+                  'Strong contrast and open skin space help your tattoo stay crisp and readable ten years down the road.',
+                  '清晰的明暗对比和合理的留白空间，能让纹身在多年恢复后依然利落不糊。'
                 ),
               },
               {
                 n: '03',
-                h: t('Preview on the body', '先看上身比例'),
+                h: t('Test Proportions on Skin First', '上身对比线条粗细'),
                 p: t(
-                  'Generate 2–3 style variations on the same placement to see which line weight fits your frame.',
-                  '在同一部位生成 2–3 种不同风格，直观对比哪种线条粗细更适合自己。'
+                  'Generate your idea in 2–3 different styles on the same body part to see which line weight flatters your frame.',
+                  '在同一身体部位用 2–3 种不同风格生成预览，直观感受哪种视觉比重最衬自己。'
                 ),
               },
               {
                 n: '04',
-                h: t('Confirm with a specialist', '找对应风格的纹身师'),
+                h: t('Book a Style Specialist', '找擅长该风格的纹身师'),
                 p: t(
-                  'Bring your body preview and clean artwork to an artist whose portfolio specializes in that style.',
-                  '带上您的上身预览与清晰线稿，预约擅长该细分风格的纹身师。'
+                  'Bring your body preview and clean stencil to an artist whose portfolio focuses specifically on that style.',
+                  '带上您的上身预览图与高清线稿，预约作品集主攻该细分风格的纹身师。'
                 ),
               },
             ].map((step) => (
@@ -764,12 +797,15 @@ function TattooStylesPage() {
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 sm:px-6 md:flex-row md:items-center lg:px-8">
           <div>
             <h2 className="font-sans text-2xl font-bold tracking-tight text-background sm:text-3xl">
-              {t('Still not sure which style fits?', '还不确定哪种风格最适合你？')}
+              {t(
+                'Still Not Sure Which Style Fits Your Idea?',
+                '还是拿不准哪种风格最适合？'
+              )}
             </h2>
             <p className="mt-2 text-sm text-background/75 sm:text-base">
               {t(
-                'Describe your idea and let Pick for me match the best tattoo style automatically.',
-                '只需描述你的灵感，选择“智能匹配风格”即可自动推荐最契合的纹身风格。'
+                'Describe what you have in mind and let our AI automatically match your concept with the best tattoo style.',
+                '直接输入您的纹身想法，让 AI 自动为您匹配最契合的风格并生成上身效果。'
               )}
             </p>
           </div>
@@ -777,7 +813,7 @@ function TattooStylesPage() {
             href="/"
             className="inline-flex h-11 shrink-0 items-center gap-2 rounded-full bg-background px-6 text-sm font-semibold text-foreground transition-colors hover:bg-background/90"
           >
-            <span>{t('Start from an idea', '从灵感开始生成')}</span>
+            <span>{t('Generate From My Idea', '从灵感开始生成')}</span>
             <ArrowRight className="size-4" />
           </Link>
         </div>
@@ -787,7 +823,7 @@ function TattooStylesPage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="mb-8 text-center font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            {t('Tattoo style questions', '纹身风格常见问题')}
+            {t('Tattoo Styles FAQ', '纹身风格常见问题')}
           </h2>
 
           <div className="divide-y divide-border rounded-2xl border border-border bg-white">
@@ -830,11 +866,11 @@ export const Route = createFileRoute('/tattoo-styles')({
     const isZh = getLocale() === 'zh';
     return {
       title: isZh
-        ? '23 种纹身风格决策指南与 AI 生成器 | InkStudio.ai'
-        : 'Tattoo Styles Guide and AI Generator | InkStudio.ai',
+        ? '23 种热门纹身风格指南与 AI 生成器 | TattooGenerator.online'
+        : '23 Tattoo Styles Guide & AI Generator | TattooGenerator.online',
       description: isZh
-        ? '探索 23 种经典与现代纹身风格，对比适用题材、部位与尺寸。'
-        : 'Find the tattoo style that fits your idea, placement, size, and long-term look.',
+        ? '一站式浏览细线、极简、美式传统、日式、写实等 23 种主流纹身风格，对比各风格特点、适合部位与后期留色效果，并免费用 AI 生成专属上身预览。'
+        : 'Explore 23 popular tattoo styles from Fine Line and Minimalist to Japanese and Realism. Compare healing, best body placements, and generate custom previews with AI.',
     };
   },
   head: ({ loaderData }) => ({

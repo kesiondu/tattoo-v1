@@ -7,102 +7,102 @@ interface ShowcaseValuesProps {
 const MARQUEE_ROW_1 = [
   {
     src: '/gallery/archangel-warrior-back-tattoo-04.webp',
-    alt: 'AI tattoo example 1',
+    alt: () => m['home.gallery.r1_1'](),
   },
   {
     src: '/gallery/cherry-blossom-hand-wrist-tattoo-02.webp',
-    alt: 'AI tattoo example 2',
+    alt: () => m['home.gallery.r1_2'](),
   },
   {
     src: '/gallery/fine-line-ornamental-rib-tattoo-24.webp',
-    alt: 'AI tattoo example 3',
+    alt: () => m['home.gallery.r1_3'](),
   },
   {
     src: '/gallery/japanese-koi-sleeve-tattoo-11.webp',
-    alt: 'AI tattoo example 4',
+    alt: () => m['home.gallery.r1_4'](),
   },
   {
     src: '/gallery/celestial-moon-neck-tattoo-03.webp',
-    alt: 'AI tattoo example 5',
+    alt: () => m['home.gallery.r1_5'](),
   },
   {
     src: '/gallery/traditional-black-cat-thigh-tattoo-21.webp',
-    alt: 'AI tattoo example 6',
+    alt: () => m['home.gallery.r1_6'](),
   },
   {
     src: '/gallery/polynesian-tribal-shoulder-chest-tattoo-28.webp',
-    alt: 'AI tattoo example 7',
+    alt: () => m['home.gallery.r1_7'](),
   },
   {
     src: '/gallery/lotus-jewelry-thigh-tattoo-12.webp',
-    alt: 'AI tattoo example 8',
+    alt: () => m['home.gallery.r1_8'](),
   },
   {
     src: '/gallery/gothic-blackwork-hand-tattoo-01.webp',
-    alt: 'AI tattoo example 9',
+    alt: () => m['home.gallery.r1_9'](),
   },
   {
     src: '/gallery/ornamental-floral-dagger-back-tattoo-22.webp',
-    alt: 'AI tattoo example 10',
+    alt: () => m['home.gallery.r1_10'](),
   },
   {
     src: '/gallery/butterfly-lotus-neck-back-tattoo-13.webp',
-    alt: 'AI tattoo example 11',
+    alt: () => m['home.gallery.r1_11'](),
   },
   {
     src: '/gallery/biomechanical-gear-arm-tattoo-20.webp',
-    alt: 'AI tattoo example 12',
+    alt: () => m['home.gallery.r1_12'](),
   },
 ];
 
 const MARQUEE_ROW_2 = [
   {
     src: '/gallery/fine-line-botanical-collarbone-tattoo-36.webp',
-    alt: 'AI tattoo example 1',
+    alt: () => m['home.gallery.r2_1'](),
   },
   {
     src: '/gallery/cyber-sigilism-hand-wrist-tattoo-30.webp',
-    alt: 'AI tattoo example 2',
+    alt: () => m['home.gallery.r2_2'](),
   },
   {
     src: '/gallery/neo-traditional-cat-heart-thigh-tattoo-35.webp',
-    alt: 'AI tattoo example 3',
+    alt: () => m['home.gallery.r2_3'](),
   },
   {
     src: '/gallery/tarot-eye-celestial-forearm-tattoo-38.webp',
-    alt: 'AI tattoo example 4',
+    alt: () => m['home.gallery.r2_4'](),
   },
   {
     src: '/gallery/fine-line-floral-hip-tattoo-39.webp',
-    alt: 'AI tattoo example 5',
+    alt: () => m['home.gallery.r2_5'](),
   },
   {
     src: '/gallery/black-gray-angel-warrior-forearm-tattoo-40.webp',
-    alt: 'AI tattoo example 6',
+    alt: () => m['home.gallery.r2_6'](),
   },
   {
     src: '/gallery/loyalty-script-hand-tattoo-31.webp',
-    alt: 'AI tattoo example 7',
+    alt: () => m['home.gallery.r2_7'](),
   },
   {
     src: '/gallery/anime-manga-portrait-calf-tattoo-37.webp',
-    alt: 'AI tattoo example 8',
+    alt: () => m['home.gallery.r2_8'](),
   },
   {
     src: '/gallery/minimal-black-cat-shoulder-tattoo-42.webp',
-    alt: 'AI tattoo example 9',
+    alt: () => m['home.gallery.r2_9'](),
   },
   {
     src: '/gallery/blackletter-number-hand-finger-tattoo-32.webp',
-    alt: 'AI tattoo example 10',
+    alt: () => m['home.gallery.r2_10'](),
   },
   {
     src: '/gallery/cartoon-character-quote-forearm-tattoo-41.webp',
-    alt: 'AI tattoo example 11',
+    alt: () => m['home.gallery.r2_11'](),
   },
   {
     src: '/gallery/blackwork-scorpion-hand-tattoo-45.webp',
-    alt: 'AI tattoo example 12',
+    alt: () => m['home.gallery.r2_12'](),
   },
 ];
 
@@ -128,7 +128,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
               >
                 <img
                   src={item.src}
-                  alt={idx < MARQUEE_ROW_1.length ? item.alt : ''}
+                  alt={idx < MARQUEE_ROW_1.length ? item.alt() : ''}
                   width={300}
                   height={300}
                   loading="lazy"
@@ -148,7 +148,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
               >
                 <img
                   src={item.src}
-                  alt={idx < MARQUEE_ROW_2.length ? item.alt : ''}
+                  alt={idx < MARQUEE_ROW_2.length ? item.alt() : ''}
                   width={300}
                   height={300}
                   loading="lazy"
