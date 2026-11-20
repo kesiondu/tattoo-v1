@@ -152,7 +152,10 @@ export const Route = createRootRoute({
       ],
       links: [
         { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
-        { rel: 'apple-touch-icon', href: '/favicon.svg' },
+        {
+          rel: 'apple-touch-icon',
+          href: '/brand/tattoogenerator-apple-touch-icon-180.png',
+        },
         { rel: 'canonical', href: canonicalHref },
         ...locales.map((loc) => ({
           rel: 'alternate',
