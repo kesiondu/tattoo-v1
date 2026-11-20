@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+import { envConfigs } from '@/config';
 import { buildSeoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
@@ -11,7 +12,7 @@ export const Route = createFileRoute('/guest-post')({
   loader: () => {
     const locale = getLocale();
     return {
-      title: m['guest_posts.landing.title']({}, { locale }),
+      title: `${m['guest_posts.landing.title']({}, { locale })} | ${envConfigs.app_name}`,
       description: m['guest_posts.landing.description']({}, { locale }),
     };
   },

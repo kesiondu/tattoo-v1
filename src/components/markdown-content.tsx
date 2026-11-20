@@ -21,13 +21,18 @@ const md = new MarkdownIt({
 // Headings get stable IDs so in-content anchors work
 md.renderer.rules.heading_open = function (tokens, idx) {
   const token = tokens[idx];
-  const level = token.markup.length;
+  const level = token.markup.length === 1 ? 2 : token.markup.length;
   const nextToken = tokens[idx + 1];
 
   if (nextToken && nextToken.type === 'inline') {
     return `<h${level} id="${generateHeadingId(nextToken.content)}">`;
   }
   return `<h${level}>`;
+};
+
+md.renderer.rules.heading_close = function (tokens, idx) {
+  const level = tokens[idx].markup.length === 1 ? 2 : tokens[idx].markup.length;
+  return `</h${level}>`;
 };
 
 /**
@@ -103,9 +108,8 @@ export function MarkdownContent({
   /** Tag external links with utm_source/utm_medium (unless already tagged). */
   utm?: { source: string; medium: string };
 }) {
-  const safeContent = content.replace(/^#\s+(.+)$/gm, '## $1');
-  const html = safeContent
-    ? md.render(safeContent, {
+  const html = content
+    ? md.render(content, {
         sponsored,
         utmSource: utm?.source,
         utmMedium: utm?.medium,

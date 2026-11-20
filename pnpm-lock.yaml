@@ -4,6 +4,10 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  seroval: 1.6.8
+  seroval-plugins: 1.6.8
+
 importers:
 
   .:
