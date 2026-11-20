@@ -34,8 +34,8 @@ import {
   PREVIEW_FONTS,
 } from '@/components/font-style-preview';
 import { DEFAULT_INK, InkColorPicker } from '@/components/ink-color-picker';
-import { SeoRelatedTools } from '@/components/seo-related-tools';
 import { MarketingPageLayout } from '@/components/marketing-page-layout';
+import { SeoRelatedTools } from '@/components/seo-related-tools';
 import { FontSurfaceDemo } from '@/components/surface-tattoo-demo';
 
 interface FontVariant {

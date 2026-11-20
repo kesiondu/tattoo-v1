@@ -12,9 +12,9 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { AuthModal } from '@/components/auth-modal';
 import { HeroGenerator } from '@/components/hero-generator';
-import { ShowcaseValues } from '@/components/showcase-values';
 import { MarketingFooter } from '@/components/marketing-footer';
 import { MarketingHeader } from '@/components/marketing-header';
+import { ShowcaseValues } from '@/components/showcase-values';
 import { WorkflowAndFaq } from '@/components/workflow-and-faq';
 
 function HomePage() {

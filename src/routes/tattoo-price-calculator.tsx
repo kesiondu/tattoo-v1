@@ -24,8 +24,8 @@ import {
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { SeoRelatedTools } from '@/components/seo-related-tools';
 import { MarketingPageLayout } from '@/components/marketing-page-layout';
+import { SeoRelatedTools } from '@/components/seo-related-tools';
 import {
   Dialog,
   DialogContent,
