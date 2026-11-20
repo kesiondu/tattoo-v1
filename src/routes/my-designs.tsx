@@ -18,16 +18,16 @@ function MyDesignsPage() {
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
               <div>
-                <h1 className="font-sans text-3xl font-bold tracking-[-0.03em] text-foreground">
+                <h1 className="text-foreground font-sans text-3xl font-bold tracking-[-0.03em]">
                   {m['home.footer.my_designs']()}
                 </h1>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-sm">
                   {m['home.auth.signin_desc']()}
                 </p>
               </div>
               <Link
                 href="/"
-                className="inline-flex h-10 items-center gap-2 rounded-lg bg-foreground px-4 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
+                className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-10 items-center gap-2 rounded-lg px-4 text-sm font-semibold transition-colors"
               >
                 <Sparkles className="size-4" />
                 <span>{m['home.hero.cta']()}</span>
@@ -35,39 +35,39 @@ function MyDesignsPage() {
             </div>
 
             {!user ? (
-              <div className="rounded-2xl border border-border bg-[#fafaf9] px-6 py-16 text-center">
-                <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full border border-border bg-white">
-                  <Lock className="size-5 text-foreground" />
+              <div className="border-border rounded-2xl border bg-[#fafaf9] px-6 py-16 text-center">
+                <div className="border-border mx-auto mb-4 flex size-12 items-center justify-center rounded-full border bg-white">
+                  <Lock className="text-foreground size-5" />
                 </div>
-                <h2 className="text-lg font-semibold text-foreground">
+                <h2 className="text-foreground text-lg font-semibold">
                   {m['home.auth.signin_title']()}
                 </h2>
-                <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
+                <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm">
                   {m['home.auth.signin_desc']()}
                 </p>
                 <button
                   type="button"
                   onClick={openAuth}
-                  className="mt-6 inline-flex h-10 items-center gap-2 rounded-lg bg-foreground px-6 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
+                  className="bg-foreground text-background hover:bg-foreground/90 mt-6 inline-flex h-10 items-center gap-2 rounded-lg px-6 text-sm font-semibold transition-colors"
                 >
                   <span>{m['home.nav.log_in']()}</span>
                   <ArrowRight className="size-4" />
                 </button>
               </div>
             ) : (
-              <div className="rounded-2xl border border-border bg-[#fafaf9] px-6 py-16 text-center">
-                <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full border border-border bg-white">
-                  <Sparkles className="size-5 text-foreground" />
+              <div className="border-border rounded-2xl border bg-[#fafaf9] px-6 py-16 text-center">
+                <div className="border-border mx-auto mb-4 flex size-12 items-center justify-center rounded-full border bg-white">
+                  <Sparkles className="text-foreground size-5" />
                 </div>
-                <h2 className="text-lg font-semibold text-foreground">
+                <h2 className="text-foreground text-lg font-semibold">
                   {m['home.cta.title']()}
                 </h2>
-                <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
+                <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm">
                   {m['home.cta.subtitle']()}
                 </p>
                 <Link
                   href="/"
-                  className="mt-6 inline-flex h-10 items-center gap-2 rounded-lg bg-foreground px-6 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
+                  className="bg-foreground text-background hover:bg-foreground/90 mt-6 inline-flex h-10 items-center gap-2 rounded-lg px-6 text-sm font-semibold transition-colors"
                 >
                   <span>{m['home.cta.button']()}</span>
                   <ArrowRight className="size-4" />
@@ -85,7 +85,7 @@ export const Route = createFileRoute('/my-designs')({
   loader: () => {
     const locale = getLocale();
     return {
-      title: `${m['home.footer.my_designs']({}, { locale })} | InkStudio.ai`,
+      title: `${m['home.footer.my_designs']({}, { locale })} | TattooGenerator.online`,
     };
   },
   head: ({ loaderData }) => ({

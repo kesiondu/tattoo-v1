@@ -1,9 +1,8 @@
 import type { ComponentType } from 'react';
 import { notFound, useLoaderData } from '@tanstack/react-router';
 
-import { envConfigs } from '@/config';
 import { m } from '@/paraglide/messages.js';
-import { baseLocale, getLocale, localizeUrl } from '@/paraglide/runtime.js';
+import { baseLocale, getLocale } from '@/paraglide/runtime.js';
 
 type PageMeta = {
   title: string;
@@ -46,16 +45,12 @@ export function staticPageRouteOptions(slug: string) {
     },
     head: ({ loaderData }: { loaderData?: LoaderData }) => {
       if (!loaderData) return {};
-      const { meta, locale } = loaderData;
-      const canonical = localizeUrl(`${envConfigs.app_url}/${slug}`, {
-        locale: locale as ReturnType<typeof getLocale>,
-      }).href;
+      const { meta } = loaderData;
       return {
         meta: [
-          { title: meta.title },
+          { title: `${meta.title} | TattooGenerator.online` },
           { name: 'description', content: meta.description },
         ],
-        links: [{ rel: 'canonical', href: canonical }],
       };
     },
     component: StaticPage,

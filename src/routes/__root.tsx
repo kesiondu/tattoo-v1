@@ -137,6 +137,12 @@ export const Route = createRootRoute({
     ).replace(/\/$/, '');
     const rawPath = matches?.[matches.length - 1]?.pathname || '/';
     const canonicalPath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+    const normalizedPath =
+      canonicalPath.length > 1 ? canonicalPath.replace(/\/+$/, '') : '/';
+    const locale = getLocale();
+    const canonicalHref = localizeUrl(`${appUrl}${normalizedPath}`, {
+      locale,
+    }).href;
     return {
       meta: [
         { charSet: 'utf-8' },
@@ -148,15 +154,17 @@ export const Route = createRootRoute({
       links: [
         { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
         { rel: 'apple-touch-icon', href: '/favicon.svg' },
+        { rel: 'canonical', href: canonicalHref },
         ...locales.map((loc) => ({
           rel: 'alternate',
           hrefLang: loc,
-          href: localizeUrl(`${appUrl}${canonicalPath}`, { locale: loc }).href,
+          href: localizeUrl(`${appUrl}${normalizedPath}`, { locale: loc }).href,
         })),
         {
           rel: 'alternate',
           hrefLang: 'x-default',
-          href: localizeUrl(`${appUrl}${canonicalPath}`, { locale: 'en' }).href,
+          href: localizeUrl(`${appUrl}${normalizedPath}`, { locale: 'en' })
+            .href,
         },
       ],
     };
@@ -179,9 +187,7 @@ function RootComponent() {
       <ThemeProvider
         attribute="class"
         defaultTheme="light"
-        forcedTheme={
-          analytics?.colorModeForced ? analytics.colorMode : 'light'
-        }
+        forcedTheme={analytics?.colorModeForced ? analytics.colorMode : 'light'}
         enableSystem={false}
         disableTransitionOnChange
       >

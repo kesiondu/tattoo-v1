@@ -3,7 +3,7 @@ import { m } from '@/paraglide/messages.js';
 
 export function InkStudioFooter() {
   return (
-    <footer className="border-t border-border bg-white pt-12 pb-8">
+    <footer className="border-border border-t bg-white pt-12 pb-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-6">
           {/* Brand Column (spans 2 on desktop) */}
@@ -14,25 +14,25 @@ export function InkStudioFooter() {
                 alt={m['home.brand_logo_alt']()}
                 className="size-7 rounded"
               />
-              <span className="font-sans text-[18px] font-bold tracking-[-0.02em] text-foreground">
+              <span className="text-foreground font-sans text-[18px] font-bold tracking-[-0.02em]">
                 {m['home.brand']()}
               </span>
             </Link>
-            <p className="max-w-[260px] text-sm leading-relaxed text-muted-foreground">
+            <p className="text-muted-foreground max-w-[260px] text-sm leading-relaxed">
               {m['home.footer.tagline']()}
             </p>
           </div>
 
           {/* Column 1: Create */}
           <div>
-            <h4 className="mb-3 text-xs font-semibold tracking-wider text-foreground uppercase">
+            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
               {m['home.footer.create']()}
             </h4>
-            <ul className="space-y-2.5 text-sm text-muted-foreground">
+            <ul className="text-muted-foreground space-y-2.5 text-sm">
               <li>
                 <Link
                   href="/"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.generator']()}
                 </Link>
@@ -40,7 +40,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/tattoo-try-on"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.try_on']()}
                 </Link>
@@ -48,7 +48,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/tattoo-font-generator"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.font_generator']()}
                 </Link>
@@ -56,7 +56,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/my-designs"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.my_designs']()}
                 </Link>
@@ -66,14 +66,14 @@ export function InkStudioFooter() {
 
           {/* Column 2: Explore */}
           <div>
-            <h4 className="mb-3 text-xs font-semibold tracking-wider text-foreground uppercase">
+            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
               {m['home.footer.explore']()}
             </h4>
-            <ul className="space-y-2.5 text-sm text-muted-foreground">
+            <ul className="text-muted-foreground space-y-2.5 text-sm">
               <li>
                 <Link
                   href="/tattoo-styles"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.tattoo_styles']()}
                 </Link>
@@ -81,7 +81,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/tattoo-fonts"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.tattoo_fonts']()}
                 </Link>
@@ -89,7 +89,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/tattoo-ideas"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.tattoo_ideas']()}
                 </Link>
@@ -97,7 +97,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/pricing"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.pricing']()}
                 </Link>
@@ -107,14 +107,14 @@ export function InkStudioFooter() {
 
           {/* Column 3: Resources */}
           <div>
-            <h4 className="mb-3 text-xs font-semibold tracking-wider text-foreground uppercase">
+            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
               {m['home.footer.resources']()}
             </h4>
-            <ul className="space-y-2.5 text-sm text-muted-foreground">
+            <ul className="text-muted-foreground space-y-2.5 text-sm">
               <li>
                 <Link
                   href="/tattoo-price-calculator"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.price_calculator']()}
                 </Link>
@@ -122,15 +122,15 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/#faq"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.faq']()}
                 </Link>
               </li>
               <li>
                 <a
-                  href="mailto:support@inkstudio.ai"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  href="mailto:support@tattoogenerator.online"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.contact']()}
                 </a>
@@ -138,7 +138,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/ai-model-disclosure"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.ai_disclosure']()}
                 </Link>
@@ -148,14 +148,14 @@ export function InkStudioFooter() {
 
           {/* Column 4: Legal */}
           <div>
-            <h4 className="mb-3 text-xs font-semibold tracking-wider text-foreground uppercase">
+            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
               {m['home.footer.legal']()}
             </h4>
-            <ul className="space-y-2.5 text-sm text-muted-foreground">
+            <ul className="text-muted-foreground space-y-2.5 text-sm">
               <li>
                 <Link
                   href="/acceptable-use"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.acceptable_use']()}
                 </Link>
@@ -163,7 +163,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/privacy-policy"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.privacy']()}
                 </Link>
@@ -171,7 +171,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/terms-of-service"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.terms']()}
                 </Link>
@@ -179,7 +179,7 @@ export function InkStudioFooter() {
               <li>
                 <Link
                   href="/cookie"
-                  className="transition-colors hover:text-foreground hover:underline"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.cookie']()}
                 </Link>
@@ -189,7 +189,7 @@ export function InkStudioFooter() {
         </div>
 
         {/* Bottom Copyright Bar */}
-        <div className="mt-10 border-t border-border pt-6 text-[13px] text-muted-foreground">
+        <div className="border-border text-muted-foreground mt-10 border-t pt-6 text-[13px]">
           {m['home.footer.copyright']()}
         </div>
       </div>
