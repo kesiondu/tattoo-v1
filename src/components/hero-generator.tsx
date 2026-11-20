@@ -758,7 +758,7 @@ export function HeroGenerator({
               ) : previewTab === 'body' ? (
                 <div className="aspect-[16/11] w-full sm:aspect-[4/3]">
                   <img
-                    src="/tattoo-generator/examples/body-preview-collage.webp"
+                    src="/tattoo-generator/examples/body-preview-collage.jpg"
                     alt={m['home.hero.example_label']()}
                     className="h-full w-full object-cover"
                   />
