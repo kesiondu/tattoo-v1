@@ -30,7 +30,7 @@ export const Route = createFileRoute('/acceptable-use')({
     const locale = getLocale();
     return {
       locale,
-      title: `${m['pages.legal.aup_title']({}, { locale })} | TattooGenerator.online`,
+      title: `${m['pages.legal.aup_title']({}, { locale })} | Tattoo Generator`,
       description: m['pages.legal.aup_description']({}, { locale }),
     };
   },

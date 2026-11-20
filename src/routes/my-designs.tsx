@@ -86,7 +86,7 @@ export const Route = createFileRoute('/my-designs')({
   loader: () => {
     const locale = getLocale();
     return {
-      title: `${m['home.footer.my_designs']({}, { locale })} | TattooGenerator.online`,
+      title: `${m['home.footer.my_designs']({}, { locale })} | Tattoo Generator`,
     };
   },
   head: noIndexHead,

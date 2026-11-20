@@ -954,7 +954,7 @@ function TattooFontGeneratorPage() {
     ctx.fillText(rendered, canvas.width / 2, canvas.height / 2);
     const a = document.createElement('a');
     a.href = canvas.toDataURL('image/png');
-    a.download = `tattoogenerator-${activeStyle.id}.png`;
+    a.download = `tattoo-generator-${activeStyle.id}.png`;
     a.click();
     toast.success(m['pages.fontgen.m007']());
   }
@@ -993,7 +993,7 @@ function TattooFontGeneratorPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `tattoogenerator-${activeStyle.id}.svg`;
+    a.download = `tattoo-generator-${activeStyle.id}.svg`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     toast.success(m['pages.fontgen.m008']());
@@ -1033,7 +1033,7 @@ function TattooFontGeneratorPage() {
 
       const a = document.createElement('a');
       a.href = canvas.toDataURL('image/png');
-      a.download = `tattoogenerator-${activeStyle.id}-${placementId}.png`;
+      a.download = `tattoo-generator-${activeStyle.id}-${placementId}.png`;
       a.click();
       toast.success(m['pages.fontgen.m009']());
     };

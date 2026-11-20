@@ -48,7 +48,7 @@ export function staticPageRouteOptions(slug: string) {
       if (!loaderData) return {};
       const { meta } = loaderData;
       return buildSeoHead({
-        title: `${meta.title} | TattooGenerator.online`,
+        title: `${meta.title} | Tattoo Generator`,
         description: meta.description,
         path: `/${loaderData.slug}`,
         locale: loaderData.locale,

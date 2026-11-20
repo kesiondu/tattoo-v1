@@ -235,7 +235,7 @@ export function AuthModal({
             <div className="w-full max-w-sm">
               <div className="mb-6 flex flex-col items-center text-center">
                 <img
-                  src="/brand/tattoogenerator-logo.svg"
+                  src="/brand/tattoo-generator-logo.svg"
                   alt={m['home.brand_logo_alt']()}
                   className="mb-3 size-8 rounded-md"
                 />

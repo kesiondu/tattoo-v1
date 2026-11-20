@@ -16,7 +16,7 @@ const publicEnv = (key: string) => metaEnv[key] ?? procEnv[key];
 export const envConfigs: Record<string, string> = {
   // App (public)
   app_url: publicEnv('VITE_APP_URL') ?? 'http://localhost:3000',
-  app_name: publicEnv('VITE_APP_NAME') ?? 'TattooGenerator.online',
+  app_name: publicEnv('VITE_APP_NAME') ?? 'Tattoo Generator',
   app_description:
     publicEnv('VITE_APP_DESCRIPTION') ??
     'Design custom tattoo artwork with AI, preview realistic placement on your body in 2D and 3D, and export clean stencils.',

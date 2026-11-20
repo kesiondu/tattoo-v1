@@ -30,7 +30,7 @@ export const Route = createFileRoute('/cookie')({
     const locale = getLocale();
     return {
       locale,
-      title: `${m['pages.legal.cookie_title']({}, { locale })} | TattooGenerator.online`,
+      title: `${m['pages.legal.cookie_title']({}, { locale })} | Tattoo Generator`,
       description: m['pages.legal.cookie_description']({}, { locale }),
     };
   },

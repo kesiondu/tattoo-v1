@@ -1,7 +1,7 @@
 import { envConfigs } from '@/config';
 import { localizeUrl } from '@/paraglide/runtime.js';
 
-export const DEFAULT_OG_IMAGE = '/brand/tattoogenerator-og.png';
+export const DEFAULT_OG_IMAGE = '/brand/tattoo-generator-og.png';
 
 export type FaqItem = { q: string; a: string };
 

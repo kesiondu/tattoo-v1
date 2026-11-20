@@ -77,7 +77,7 @@ export const Route = createFileRoute('/blog/$slug')({
           datePublished: post.createdAt,
           author: {
             '@type': 'Person',
-            name: post.authorName || 'TattooGenerator.online Editorial',
+            name: post.authorName || 'Tattoo Generator Editorial',
           },
           publisher: { '@type': 'Organization', name: envConfigs.app_name },
           mainEntityOfPage: url,

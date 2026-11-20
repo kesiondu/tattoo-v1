@@ -6,6 +6,7 @@ import {
   breadcrumbJsonLd,
   buildSeoHead,
   faqJsonLd,
+  siteUrl,
   webAppJsonLd,
 } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
@@ -74,15 +75,15 @@ export const Route = createFileRoute('/')({
         {
           '@context': 'https://schema.org',
           '@type': 'Organization',
-          name: 'TattooGenerator.online',
-          url: 'https://tattoogenerator.online/',
-          logo: 'https://tattoogenerator.online/brand/tattoogenerator-logo.png',
+          name: 'Tattoo Generator',
+          url: `${siteUrl()}/`,
+          logo: `${siteUrl()}/brand/tattoo-generator-logo.png`,
         },
         {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: 'TattooGenerator.online',
-          url: 'https://tattoogenerator.online/',
+          name: 'Tattoo Generator',
+          url: `${siteUrl()}/`,
         },
         breadcrumbJsonLd([{ name: 'Home', path: '/' }], locale),
         faqJsonLd(faqs),
