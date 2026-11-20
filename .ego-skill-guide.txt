@@ -365,3 +365,4 @@ If the final output contains `[ego-browser:notice]`, finish the current browser 
 Before clearing any cookie, cache, or storage, read `references/clearing-state.md` in the ego-browser Skill directory. Some clears reach the whole browser profile.
 
 [ego-browser:skill] end of guide v2.2.1
+ 
