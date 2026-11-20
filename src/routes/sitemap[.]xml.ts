@@ -16,7 +16,11 @@ type Entry = {
 const STATIC_ENTRIES: Entry[] = [
   { path: '', changeFrequency: 'daily', priority: 1.0 },
   { path: '/tattoo-try-on', changeFrequency: 'weekly', priority: 0.9 },
-
+  {
+    path: '/tattoo-stencil-generator',
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
   { path: '/name-tattoo-generator', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/tattoo-font-generator', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/tattoo-styles', changeFrequency: 'weekly', priority: 0.9 },
@@ -39,6 +43,7 @@ const STATIC_ENTRIES: Entry[] = [
 // timestamps. Change these only when the matching page content is reviewed.
 const CONTENT_LAST_MODIFIED: Record<string, string> = {
   '/name-tattoo-generator': '2026-11-20',
+  '/tattoo-stencil-generator': '2026-11-20',
   '/tattoo-fonts': '2026-11-20',
   '/tattoo-price-calculator': '2026-11-20',
 };

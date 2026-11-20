@@ -51,37 +51,37 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
   const styleItems = [
     {
       label: m['home.style.fine_line'](),
-      href: '/tattoo-ideas?style=fine-line',
+      href: '/tattoo-styles/fine-line',
     },
     {
       label: m['home.style.minimalist'](),
-      href: '/tattoo-ideas?style=minimalist',
+      href: '/tattoo-styles/minimalist',
     },
     {
       label: m['home.style.lettering'](),
-      href: '/tattoo-ideas?style=lettering',
+      href: '/tattoo-styles/lettering',
     },
-    { label: m['home.style.realism'](), href: '/tattoo-ideas?style=realism' },
+    { label: m['home.style.realism'](), href: '/tattoo-styles/realism' },
     {
       label: m['home.style.black_grey'](),
-      href: '/tattoo-ideas?style=black-grey',
+      href: '/tattoo-styles/black-grey',
     },
     {
       label: m['home.style.american_traditional'](),
-      href: '/tattoo-ideas?style=american-traditional',
+      href: '/tattoo-styles/american-traditional',
     },
-    { label: m['home.style.japanese'](), href: '/tattoo-ideas?style=japanese' },
+    { label: m['home.style.japanese'](), href: '/tattoo-styles/japanese' },
     {
       label: m['home.style.blackwork'](),
-      href: '/tattoo-ideas?style=blackwork',
+      href: '/tattoo-styles/blackwork',
     },
     {
       label: m['home.style.geometric'](),
-      href: '/tattoo-ideas?style=geometric',
+      href: '/tattoo-styles/geometric',
     },
     {
       label: m['home.style.neo_traditional'](),
-      href: '/tattoo-ideas?style=neo-traditional',
+      href: '/tattoo-styles/neo-traditional',
     },
   ];
 

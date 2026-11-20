@@ -19,9 +19,9 @@ const STATIC_PAGES: { path: string; title: string; description: string }[] = [
   },
   {
     path: '/tattoo-stencil-generator',
-    title: 'AI Tattoo Stencil Generator',
+    title: 'Tattoo Stencil Generator',
     description:
-      'A guide to the text-based tattoo concept workflow; it does not trace photos or export transfer files.',
+      'Generate a tattoo concept from text and export a line-art reference for your tattoo artist to review.',
   },
   {
     path: '/name-tattoo-generator',
@@ -76,6 +76,8 @@ export const Route = createFileRoute('/llms.txt')({
     handlers: {
       GET: async () => {
         const { app_url, app_name, app_description } = envConfigs;
+        const baseUrl = app_url.replace(/\/$/, '');
+        const pageUrl = (path: string) => `${baseUrl}${path}`;
 
         let posts = getLocalPosts(baseLocale);
         try {
@@ -102,15 +104,15 @@ export const Route = createFileRoute('/llms.txt')({
           '## Pages',
           '',
           ...STATIC_PAGES.map(
-            (p) => `- [${p.title}](${app_url}${p.path}): ${p.description}`
+            (p) => `- [${p.title}](${pageUrl(p.path)}): ${p.description}`
           ),
           '',
           '## Tattoo Idea Collections',
           '',
-          '- [Tattoo styles](https://tattoogenerator.online/tattoo-styles): Style pages compare specific visual approaches and link to related examples.',
-          '- [Tattoo ideas](https://tattoogenerator.online/tattoo-ideas): Each detail page includes artwork, placement context, a generation prompt, and related ideas.',
-          '- [Name tattoo generator](https://tattoogenerator.online/name-tattoo-generator): Compare name lettering previews and export a PNG reference.',
-          '- [Tattoo stencil generator](https://tattoogenerator.online/tattoo-stencil-generator): Learn about text-based tattoo concept generation; it does not trace photos or export transfer files.',
+          `- [Tattoo styles](${pageUrl('/tattoo-styles')}): Style pages compare specific visual approaches and link to related examples.`,
+          `- [Tattoo ideas](${pageUrl('/tattoo-ideas')}): Each detail page includes artwork, placement context, a generation prompt, and related ideas.`,
+          `- [Name tattoo generator](${pageUrl('/name-tattoo-generator')}): Compare name lettering previews and export a PNG reference.`,
+          `- [Tattoo stencil generator](${pageUrl('/tattoo-stencil-generator')}): Generate a tattoo concept from text and export a line-art reference for review with a tattoo artist.`,
           '',
           '## Editorial notes',
           '',
@@ -122,7 +124,7 @@ export const Route = createFileRoute('/llms.txt')({
           lines.push('', '## Blog Posts', '');
           for (const post of posts) {
             lines.push(
-              `- [${post.title}](${app_url}/blog/${post.slug}): ${post.description}`
+              `- [${post.title}](${pageUrl(`/blog/${post.slug}`)}): ${post.description}`
             );
           }
         }
