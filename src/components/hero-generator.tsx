@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ArrowRight,
   ChevronDown,
@@ -12,7 +12,6 @@ import { useSession } from '@/core/auth/client';
 import { apiPost } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
-
 import { getLocale } from '@/paraglide/runtime.js';
 import {
   BODY_PARTS,
@@ -34,6 +33,10 @@ interface HeroGeneratorProps {
   onOpenAuth?: () => void;
   initialStyle?: string;
   initialPrompt?: string;
+  heroTitle?: string;
+  heroSubtitle?: string;
+  promptPlaceholder?: string;
+  externalPrompt?: { text: string; key: number } | null;
 }
 
 interface StyleItem {
@@ -184,6 +187,10 @@ export function HeroGenerator({
   onOpenAuth,
   initialStyle,
   initialPrompt,
+  heroTitle,
+  heroSubtitle,
+  promptPlaceholder,
+  externalPrompt,
 }: HeroGeneratorProps) {
   const { data: session } = useSession();
 
@@ -192,13 +199,27 @@ export function HeroGenerator({
       ? initialStyle
       : 'pick-for-me';
   const [openStep, setOpenStep] = useState<1 | 2 | 3 | null>(
-    initialPrompt ? 2 : 1
+    initialPrompt || initialStyle ? 2 : 1
   );
   const [selectedStyle, setSelectedStyle] = useState<string>(validInitialStyle);
   const [showAllStyles, setShowAllStyles] = useState(
     EXTRA_STYLES.some((s) => s.id === validInitialStyle)
   );
   const [prompt, setPrompt] = useState(initialPrompt ?? '');
+
+  useEffect(() => {
+    setSelectedStyle(validInitialStyle);
+    if (EXTRA_STYLES.some((s) => s.id === validInitialStyle)) {
+      setShowAllStyles(true);
+    }
+  }, [validInitialStyle]);
+
+  useEffect(() => {
+    if (externalPrompt?.text) {
+      setPrompt(externalPrompt.text);
+      setOpenStep(2);
+    }
+  }, [externalPrompt]);
   const [placement, setPlacement] = useState<BodyPlacementSelection | null>(
     null
   );
@@ -309,11 +330,11 @@ export function HeroGenerator({
     >
       {/* Centered Heading Block */}
       <div className="mx-auto mb-8 max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-        <h1 className="font-sans text-3xl leading-[1.12] font-bold tracking-[-0.03em] text-foreground sm:text-4xl lg:text-[44px]">
-          {m['home.hero.title']()}
+        <h1 className="text-foreground font-sans text-3xl leading-[1.12] font-bold tracking-[-0.03em] sm:text-4xl lg:text-[44px]">
+          {heroTitle ?? m['home.hero.title']()}
         </h1>
-        <p className="mx-auto mt-3 max-w-4xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          {m['home.hero.subtitle']()}
+        <p className="text-muted-foreground mx-auto mt-3 max-w-4xl text-base leading-relaxed sm:text-lg">
+          {heroSubtitle ?? m['home.hero.subtitle']()}
         </p>
       </div>
 
@@ -321,19 +342,19 @@ export function HeroGenerator({
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-6 px-4 sm:px-6 lg:grid-cols-[520px_minmax(0,1fr)] lg:gap-8 lg:px-8">
         {/* LEFT COLUMN: 3-Step Accordion Builder + CTA */}
         <div className="min-w-0">
-          <div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-white shadow-xs">
+          <div className="divide-border border-border divide-y overflow-hidden rounded-2xl border bg-white shadow-xs">
             {/* STEP 1: Choose a tattoo style */}
             <div>
               <button
                 type="button"
                 onClick={() => setOpenStep(openStep === 1 ? null : 1)}
-                className="flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors hover:bg-muted/50"
+                className="hover:bg-muted/50 flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors"
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">
+                  <span className="bg-foreground text-background flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold">
                     1
                   </span>
-                  <div className="size-9 shrink-0 overflow-hidden rounded-lg border border-border bg-white p-1">
+                  <div className="border-border size-9 shrink-0 overflow-hidden rounded-lg border bg-white p-1">
                     <img
                       src={activeStyleObj.img}
                       alt={activeStyleObj.label()}
@@ -341,17 +362,17 @@ export function HeroGenerator({
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-sm font-semibold text-foreground">
+                    <div className="text-foreground text-sm font-semibold">
                       {m['home.hero.step1_title']()}
                     </div>
-                    <div className="truncate text-xs text-muted-foreground">
+                    <div className="text-muted-foreground truncate text-xs">
                       {activeStyleObj.label()}
                     </div>
                   </div>
                 </div>
                 <ChevronDown
                   className={cn(
-                    'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                    'text-muted-foreground size-4 shrink-0 transition-transform duration-200',
                     openStep === 1 && 'rotate-180'
                   )}
                 />
@@ -373,7 +394,7 @@ export function HeroGenerator({
                           className={cn(
                             'group relative flex min-w-0 flex-col overflow-hidden rounded-lg border bg-white text-left transition-all',
                             active
-                              ? 'border-foreground ring-1 ring-foreground'
+                              ? 'border-foreground ring-foreground ring-1'
                               : 'border-border hover:border-foreground/40'
                           )}
                         >
@@ -387,18 +408,18 @@ export function HeroGenerator({
                               <>
                                 <span
                                   title={m['home.hero.auto_help']()}
-                                  className="absolute top-1 left-1 inline-flex items-center gap-1 text-[9px] leading-none font-semibold text-foreground"
+                                  className="text-foreground absolute top-1 left-1 inline-flex items-center gap-1 text-[9px] leading-none font-semibold"
                                 >
-                                  <span className="flex size-3 items-center justify-center rounded-[3px] bg-foreground text-[8px] text-background">
+                                  <span className="bg-foreground text-background flex size-3 items-center justify-center rounded-[3px] text-[8px]">
                                     ✓
                                   </span>
                                   {m['home.hero.auto']()}
                                 </span>
-                                <HelpCircle className="absolute top-1 right-1 size-3 text-muted-foreground" />
+                                <HelpCircle className="text-muted-foreground absolute top-1 right-1 size-3" />
                               </>
                             )}
                           </div>
-                          <div className="flex min-h-[28px] items-center justify-center px-1 py-1 text-center text-[10px] leading-tight font-medium text-foreground">
+                          <div className="text-foreground flex min-h-[28px] items-center justify-center px-1 py-1 text-center text-[10px] leading-tight font-medium">
                             <span className="line-clamp-2">
                               {style.label()}
                             </span>
@@ -412,7 +433,7 @@ export function HeroGenerator({
                     <button
                       type="button"
                       onClick={() => setShowAllStyles((v) => !v)}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                      className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs font-medium transition-colors"
                     >
                       <ChevronDown
                         className={cn(
@@ -436,24 +457,24 @@ export function HeroGenerator({
               <button
                 type="button"
                 onClick={() => setOpenStep(openStep === 2 ? null : 2)}
-                className="flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors hover:bg-muted/50"
+                className="hover:bg-muted/50 flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors"
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">
+                  <span className="bg-foreground text-background flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold">
                     2
                   </span>
                   <div className="min-w-0">
-                    <div className="text-sm font-semibold text-foreground">
+                    <div className="text-foreground text-sm font-semibold">
                       {m['home.hero.step2_title']()}
                     </div>
-                    <div className="truncate text-xs text-muted-foreground">
+                    <div className="text-muted-foreground truncate text-xs">
                       {prompt.trim() || m['home.hero.step2_hint']()}
                     </div>
                   </div>
                 </div>
                 <ChevronDown
                   className={cn(
-                    'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                    'text-muted-foreground size-4 shrink-0 transition-transform duration-200',
                     openStep === 2 && 'rotate-180'
                   )}
                 />
@@ -464,13 +485,15 @@ export function HeroGenerator({
                   <textarea
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
-                    placeholder={m['home.hero.prompt_placeholder']()}
+                    placeholder={
+                      promptPlaceholder ?? m['home.hero.prompt_placeholder']()
+                    }
                     rows={4}
-                    className="w-full resize-none rounded-xl border border-input bg-white p-3 text-sm text-foreground transition-all outline-none placeholder:text-muted-foreground focus:border-foreground focus:ring-2 focus:ring-foreground/10"
+                    className="border-input text-foreground placeholder:text-muted-foreground focus:border-foreground focus:ring-foreground/10 w-full resize-none rounded-xl border bg-white p-3 text-sm transition-all outline-none focus:ring-2"
                   />
 
                   <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-muted-foreground text-xs">
                       {m['home.hero.try_ideas']()}
                     </span>
                     {ideas.map((idea) => (
@@ -478,7 +501,7 @@ export function HeroGenerator({
                         key={idea}
                         type="button"
                         onClick={() => setPrompt(idea)}
-                        className="rounded-full border border-border bg-white px-2.5 py-1 text-xs text-foreground transition-colors hover:bg-muted"
+                        className="border-border text-foreground hover:bg-muted rounded-full border bg-white px-2.5 py-1 text-xs transition-colors"
                       >
                         {idea}
                       </button>
@@ -489,7 +512,7 @@ export function HeroGenerator({
                     <button
                       type="button"
                       onClick={handleSurprise}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                      className="border-border text-foreground hover:bg-muted inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 text-xs font-medium transition-colors"
                     >
                       <Sparkles className="size-3.5" />
                       <span>{m['home.hero.surprise_me']()}</span>
@@ -504,14 +527,14 @@ export function HeroGenerator({
               <button
                 type="button"
                 onClick={() => setOpenStep(openStep === 3 ? null : 3)}
-                className="flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors hover:bg-muted/50"
+                className="hover:bg-muted/50 flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors"
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">
+                  <span className="bg-foreground text-background flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold">
                     3
                   </span>
                   {openStep !== 3 && placement && activePlacementPart && (
-                    <div className="relative size-8 shrink-0 overflow-hidden rounded-md border border-border bg-[#f4f4f5]">
+                    <div className="border-border relative size-8 shrink-0 overflow-hidden rounded-md border bg-[#f4f4f5]">
                       <img
                         src={getBodyReferenceSrc(
                           placement.partId,
@@ -540,17 +563,17 @@ export function HeroGenerator({
                     </div>
                   )}
                   <div className="min-w-0">
-                    <div className="text-sm font-semibold text-foreground">
+                    <div className="text-foreground text-sm font-semibold">
                       {m['home.hero.step3_title']()}
                     </div>
-                    <div className="truncate text-xs text-muted-foreground">
+                    <div className="text-muted-foreground truncate text-xs">
                       {placementSummary || m['home.hero.step3_hint']()}
                     </div>
                   </div>
                 </div>
                 <ChevronDown
                   className={cn(
-                    'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                    'text-muted-foreground size-4 shrink-0 transition-transform duration-200',
                     openStep === 3 && 'rotate-180'
                   )}
                 />
@@ -583,7 +606,7 @@ export function HeroGenerator({
                           className={cn(
                             'group flex min-w-0 cursor-pointer flex-col rounded-xl border bg-white p-2 text-center transition-all',
                             isSelected
-                              ? 'border-foreground ring-1 ring-foreground'
+                              ? 'border-foreground ring-foreground ring-1'
                               : 'border-border hover:border-foreground/40'
                           )}
                         >
@@ -615,7 +638,7 @@ export function HeroGenerator({
                               </svg>
                             )}
                           </div>
-                          <span className="mt-2 line-clamp-1 text-xs font-medium text-foreground">
+                          <span className="text-foreground mt-2 line-clamp-1 text-xs font-medium">
                             {part.label()}
                           </span>
                         </button>
@@ -632,7 +655,7 @@ export function HeroGenerator({
             type="button"
             disabled={generating}
             onClick={handleGenerate}
-            className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 text-base font-semibold text-background shadow-sm transition-all hover:bg-foreground/90 disabled:opacity-60 sm:text-lg"
+            className="bg-foreground text-background hover:bg-foreground/90 mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-lg px-4 text-base font-semibold shadow-sm transition-all disabled:opacity-60 sm:text-lg"
           >
             {generating ? (
               <Loader2 className="size-4 animate-spin" />
@@ -646,23 +669,23 @@ export function HeroGenerator({
 
         {/* RIGHT COLUMN: Sticky Preview Card with 2 Tabs */}
         <div className="min-w-0 lg:sticky lg:top-20">
-          <div className="rounded-2xl border border-border bg-white p-3 shadow-xs sm:p-4">
+          <div className="border-border rounded-2xl border bg-white p-3 shadow-xs sm:p-4">
             {/* 2-Tab Segmented Switcher */}
-            <div className="mb-3 grid grid-cols-2 gap-1 rounded-lg bg-muted p-1">
+            <div className="bg-muted mb-3 grid grid-cols-2 gap-1 rounded-lg p-1">
               <button
                 type="button"
                 onClick={() => setPreviewTab('body')}
                 className={cn(
                   'flex flex-col items-center justify-center rounded-md px-2 py-2 text-center transition-all',
                   previewTab === 'body'
-                    ? 'bg-white text-foreground shadow-xs'
+                    ? 'text-foreground bg-white shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 <span className="text-xs font-semibold sm:text-sm">
                   {m['home.hero.tab_body']()}
                 </span>
-                <span className="text-[11px] text-muted-foreground">
+                <span className="text-muted-foreground text-[11px]">
                   {m['home.hero.tab_body_hint']()}
                 </span>
               </button>
@@ -673,21 +696,21 @@ export function HeroGenerator({
                 className={cn(
                   'flex flex-col items-center justify-center rounded-md px-2 py-2 text-center transition-all',
                   previewTab === 'artwork'
-                    ? 'bg-white text-foreground shadow-xs'
+                    ? 'text-foreground bg-white shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 <span className="text-xs font-semibold sm:text-sm">
                   {m['home.hero.tab_art']()}
                 </span>
-                <span className="text-[11px] text-muted-foreground">
+                <span className="text-muted-foreground text-[11px]">
                   {m['home.hero.tab_art_hint']()}
                 </span>
               </button>
             </div>
 
             {/* Collage Showcase + Centered Clickable Overlay (or Live Generated Result) */}
-            <div className="relative overflow-hidden rounded-xl bg-muted/40">
+            <div className="bg-muted/40 relative overflow-hidden rounded-xl">
               {previewTab === 'body' && generatedBodyUrl ? (
                 <div className="relative aspect-[16/11] w-full bg-neutral-100 sm:aspect-[4/3]">
                   <img
@@ -696,7 +719,7 @@ export function HeroGenerator({
                     className="h-full w-full object-cover"
                   />
                   {activeModelLabel && (
-                    <span className="absolute top-2.5 left-2.5 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold text-foreground shadow-xs backdrop-blur-xs">
+                    <span className="text-foreground absolute top-2.5 left-2.5 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold shadow-xs backdrop-blur-xs">
                       {activeModelLabel}
                     </span>
                   )}
@@ -705,23 +728,19 @@ export function HeroGenerator({
                       type="button"
                       disabled={generating}
                       onClick={() => void runGeneration('hq_body_preview')}
-                      className="inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm backdrop-blur-xs hover:bg-white disabled:opacity-60"
+                      className="text-foreground inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs hover:bg-white disabled:opacity-60"
                     >
                       <Sparkles className="size-3" />
-                      <span>
-                        {m['pages.home.m001']()}
-                      </span>
+                      <span>{m['pages.home.m001']()}</span>
                     </button>
                     <button
                       type="button"
                       disabled={generating}
                       onClick={() => void runGeneration('clean_artwork')}
-                      className="inline-flex items-center gap-1 rounded-full bg-foreground/90 px-3 py-1.5 text-xs font-semibold text-background shadow-sm backdrop-blur-xs hover:bg-foreground disabled:opacity-60"
+                      className="bg-foreground/90 text-background hover:bg-foreground inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs disabled:opacity-60"
                     >
                       <Sparkles className="size-3" />
-                      <span>
-                        {m['pages.home.m002']()}
-                      </span>
+                      <span>{m['pages.home.m002']()}</span>
                     </button>
                   </div>
                 </div>
@@ -732,7 +751,7 @@ export function HeroGenerator({
                     alt={m['home.hero.tab_art']()}
                     className="h-full w-full object-contain"
                   />
-                  <span className="absolute top-2.5 left-2.5 rounded-full border border-border bg-white/95 px-2.5 py-1 text-[10px] font-semibold text-foreground shadow-xs">
+                  <span className="border-border text-foreground absolute top-2.5 left-2.5 rounded-full border bg-white/95 px-2.5 py-1 text-[10px] font-semibold shadow-xs">
                     Nano Banana Pro
                   </span>
                 </div>
@@ -746,28 +765,28 @@ export function HeroGenerator({
                 </div>
               ) : (
                 <div className="grid aspect-[16/11] w-full grid-cols-2 gap-2 bg-neutral-50 p-2 sm:aspect-[4/3]">
-                  <div className="overflow-hidden rounded-lg border border-border/60 bg-white">
+                  <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
                       src="/home-values/phoenix-clean-artwork.webp"
                       alt={m['home.hero.tab_art']()}
                       className="h-full w-full object-contain p-2"
                     />
                   </div>
-                  <div className="overflow-hidden rounded-lg border border-border/60 bg-white">
+                  <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
                       src="/tattoo-how-it-works/clean-artwork.webp"
                       alt={m['home.hero.tab_art']()}
                       className="h-full w-full object-contain p-2"
                     />
                   </div>
-                  <div className="overflow-hidden rounded-lg border border-border/60 bg-white">
+                  <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
                       src="/dialog-examples/watercolor-paper.webp"
                       alt={m['home.hero.tab_art']()}
                       className="h-full w-full object-contain p-2"
                     />
                   </div>
-                  <div className="overflow-hidden rounded-lg border border-border/60 bg-white">
+                  <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
                       src="/dialog-examples/fox-paper.webp"
                       alt={m['home.hero.tab_art']()}
@@ -784,10 +803,10 @@ export function HeroGenerator({
                   onClick={() => setExamplesOpen(true)}
                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-black/10 bg-white/95 px-5 py-3 text-center shadow-lg backdrop-blur-md transition-transform hover:scale-[1.02]"
                 >
-                  <div className="text-sm font-semibold text-foreground">
+                  <div className="text-foreground text-sm font-semibold">
                     {m['home.hero.example_label']()}
                   </div>
-                  <div className="mt-0.5 text-xs text-muted-foreground">
+                  <div className="text-muted-foreground mt-0.5 text-xs">
                     {m['home.hero.example_text']()}
                   </div>
                 </button>
@@ -815,7 +834,7 @@ export function HeroGenerator({
 
       {/* Example Designs Lightbox Modal */}
       <Dialog open={examplesOpen} onOpenChange={setExamplesOpen}>
-        <DialogContent className="max-w-3xl bg-white text-foreground">
+        <DialogContent className="text-foreground max-w-3xl bg-white">
           <DialogHeader>
             <DialogTitle>{m['home.hero.example_label']()}</DialogTitle>
           </DialogHeader>
@@ -823,7 +842,7 @@ export function HeroGenerator({
             {EXAMPLE_PAIRS.map((pair) => (
               <div
                 key={pair.id}
-                className="space-y-2 rounded-xl border border-border bg-neutral-50 p-2"
+                className="border-border space-y-2 rounded-xl border bg-neutral-50 p-2"
               >
                 <div className="aspect-[2/3] overflow-hidden rounded-lg bg-white">
                   <img
@@ -832,7 +851,7 @@ export function HeroGenerator({
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div className="aspect-square overflow-hidden rounded-lg border border-border/60 bg-white">
+                <div className="border-border/60 aspect-square overflow-hidden rounded-lg border bg-white">
                   <img
                     src={pair.art}
                     alt={m['home.hero.tab_art']()}

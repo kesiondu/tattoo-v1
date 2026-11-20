@@ -1,3 +1,4 @@
+import { Link } from '@/core/i18n/navigation';
 import { m } from '@/paraglide/messages.js';
 
 interface ShowcaseValuesProps {
@@ -8,50 +9,62 @@ const MARQUEE_ROW_1 = [
   {
     src: '/gallery/archangel-warrior-back-tattoo-04.webp',
     alt: () => m['home.gallery.r1_1'](),
+    href: '/tattoo-ideas/phoenix-tattoo-with-flowers',
   },
   {
     src: '/gallery/cherry-blossom-hand-wrist-tattoo-02.webp',
     alt: () => m['home.gallery.r1_2'](),
+    href: '/tattoo-ideas/cherry-blossom-tattoo',
   },
   {
     src: '/gallery/fine-line-ornamental-rib-tattoo-24.webp',
     alt: () => m['home.gallery.r1_3'](),
+    href: '/tattoo-ideas/ornamental-flower-tattoo',
   },
   {
     src: '/gallery/japanese-koi-sleeve-tattoo-11.webp',
     alt: () => m['home.gallery.r1_4'](),
+    href: '/tattoo-ideas/japanese-fox-and-kitsune-mask-tattoo',
   },
   {
     src: '/gallery/celestial-moon-neck-tattoo-03.webp',
     alt: () => m['home.gallery.r1_5'](),
+    href: '/tattoo-ideas/fine-line-decorative-star-tattoo',
   },
   {
     src: '/gallery/traditional-black-cat-thigh-tattoo-21.webp',
     alt: () => m['home.gallery.r1_6'](),
+    href: '/tattoo-ideas/american-traditional-dagger-and-rose-tattoo',
   },
   {
     src: '/gallery/polynesian-tribal-shoulder-chest-tattoo-28.webp',
     alt: () => m['home.gallery.r1_7'](),
+    href: '/tattoo-ideas/cybersigilism-tattoo-36',
   },
   {
     src: '/gallery/lotus-jewelry-thigh-tattoo-12.webp',
     alt: () => m['home.gallery.r1_8'](),
+    href: '/tattoo-ideas/mandala-tattoo-112',
   },
   {
     src: '/gallery/gothic-blackwork-hand-tattoo-01.webp',
     alt: () => m['home.gallery.r1_9'](),
+    href: '/tattoo-ideas/blackwork-leaf-tattoo',
   },
   {
     src: '/gallery/ornamental-floral-dagger-back-tattoo-22.webp',
     alt: () => m['home.gallery.r1_10'](),
+    href: '/tattoo-ideas/ornamental-flower-tattoo',
   },
   {
     src: '/gallery/butterfly-lotus-neck-back-tattoo-13.webp',
     alt: () => m['home.gallery.r1_11'](),
+    href: '/tattoo-ideas/minimalist-human-figure-and-butterfly-tattoo',
   },
   {
     src: '/gallery/biomechanical-gear-arm-tattoo-20.webp',
     alt: () => m['home.gallery.r1_12'](),
+    href: '/tattoo-ideas/geometric-hexagon-tattoo',
   },
 ];
 
@@ -59,50 +72,62 @@ const MARQUEE_ROW_2 = [
   {
     src: '/gallery/fine-line-botanical-collarbone-tattoo-36.webp',
     alt: () => m['home.gallery.r2_1'](),
+    href: '/tattoo-ideas/cherry-blossom-tattoo',
   },
   {
     src: '/gallery/cyber-sigilism-hand-wrist-tattoo-30.webp',
     alt: () => m['home.gallery.r2_2'](),
+    href: '/tattoo-ideas/cybersigilism-tattoo',
   },
   {
     src: '/gallery/neo-traditional-cat-heart-thigh-tattoo-35.webp',
     alt: () => m['home.gallery.r2_3'](),
+    href: '/tattoo-ideas/american-traditional-dagger-and-rose-tattoo',
   },
   {
     src: '/gallery/tarot-eye-celestial-forearm-tattoo-38.webp',
     alt: () => m['home.gallery.r2_4'](),
+    href: '/tattoo-ideas/dotwork-eye-tattoo-with-moth-wings',
   },
   {
     src: '/gallery/fine-line-floral-hip-tattoo-39.webp',
     alt: () => m['home.gallery.r2_5'](),
+    href: '/tattoo-ideas/watercolor-flower-tattoo',
   },
   {
     src: '/gallery/black-gray-angel-warrior-forearm-tattoo-40.webp',
     alt: () => m['home.gallery.r2_6'](),
+    href: '/tattoo-ideas/black-and-grey-hummingbird-and-flower-tattoo',
   },
   {
     src: '/gallery/loyalty-script-hand-tattoo-31.webp',
     alt: () => m['home.gallery.r2_7'](),
+    href: '/tattoo-ideas/hand-calligraphy-tattoo',
   },
   {
     src: '/gallery/anime-manga-portrait-calf-tattoo-37.webp',
     alt: () => m['home.gallery.r2_8'](),
+    href: '/tattoo-ideas/chicano-female-portrait-and-rose-tattoo',
   },
   {
     src: '/gallery/minimal-black-cat-shoulder-tattoo-42.webp',
     alt: () => m['home.gallery.r2_9'](),
+    href: '/tattoo-ideas/minimalist-cat-tattoo',
   },
   {
     src: '/gallery/blackletter-number-hand-finger-tattoo-32.webp',
     alt: () => m['home.gallery.r2_10'](),
+    href: '/tattoo-ideas/chest-blackletter-tattoo',
   },
   {
     src: '/gallery/cartoon-character-quote-forearm-tattoo-41.webp',
     alt: () => m['home.gallery.r2_11'](),
+    href: '/tattoo-ideas/rib-calligraphy-tattoo',
   },
   {
     src: '/gallery/blackwork-scorpion-hand-tattoo-45.webp',
     alt: () => m['home.gallery.r2_12'](),
+    href: '/tattoo-ideas/single-needle-scissors-tattoo',
   },
 ];
 
@@ -116,15 +141,16 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
       >
         <div className="relative min-h-[456px] space-y-4 md:min-h-[616px]">
           {/* Left & Right edge fade */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+          <div className="from-background pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r to-transparent" />
+          <div className="from-background pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l to-transparent" />
 
           {/* Row 1 */}
           <div className="animate-marquee-left flex w-max gap-3 pr-3 md:gap-4 md:pr-4">
             {[...MARQUEE_ROW_1, ...MARQUEE_ROW_1].map((item, idx) => (
-              <div
+              <Link
                 key={`r1-${idx}`}
-                className="size-[220px] shrink-0 overflow-hidden rounded-xl bg-muted md:size-[300px]"
+                href={item.href}
+                className="group bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
               >
                 <img
                   src={item.src}
@@ -133,18 +159,19 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                   height={300}
                   loading="lazy"
                   decoding="async"
-                  className="size-full object-cover"
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-              </div>
+              </Link>
             ))}
           </div>
 
           {/* Row 2 */}
           <div className="animate-marquee-right flex w-max gap-3 pr-3 md:gap-4 md:pr-4">
             {[...MARQUEE_ROW_2, ...MARQUEE_ROW_2].map((item, idx) => (
-              <div
+              <Link
                 key={`r2-${idx}`}
-                className="size-[220px] shrink-0 overflow-hidden rounded-xl bg-muted md:size-[300px]"
+                href={item.href}
+                className="group bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
               >
                 <img
                   src={item.src}
@@ -153,9 +180,9 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                   height={300}
                   loading="lazy"
                   decoding="async"
-                  className="size-full object-cover"
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -183,7 +210,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
               <h3 className="font-display mb-3 text-xl font-semibold tracking-tight text-balance md:leading-7 lg:text-2xl lg:leading-8">
                 {m['home.values.c1_title']()}
               </h3>
-              <p className="mb-4 text-sm leading-7 text-muted-foreground lg:text-base">
+              <p className="text-muted-foreground mb-4 text-sm leading-7 lg:text-base">
                 {m['home.values.c1_desc']()}
               </p>
               <ul className="mb-6 flex flex-wrap content-start items-start gap-2">
@@ -194,7 +221,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                 ].map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-md bg-muted/60 px-2.5 py-1 text-xs leading-5 font-medium text-foreground"
+                    className="bg-muted/60 text-foreground rounded-md px-2.5 py-1 text-xs leading-5 font-medium"
                   >
                     {tag}
                   </li>
@@ -263,7 +290,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
               <h3 className="font-display mb-3 text-xl font-semibold tracking-tight text-balance md:leading-7 lg:text-2xl lg:leading-8">
                 {m['home.values.c2_title']()}
               </h3>
-              <p className="mb-4 text-sm leading-7 text-muted-foreground lg:text-base">
+              <p className="text-muted-foreground mb-4 text-sm leading-7 lg:text-base">
                 {m['home.values.c2_desc']()}
               </p>
               <ul className="mb-6 flex flex-wrap content-start items-start gap-2">
@@ -274,7 +301,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                 ].map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-md bg-muted/60 px-2.5 py-1 text-xs leading-5 font-medium text-foreground"
+                    className="bg-muted/60 text-foreground rounded-md px-2.5 py-1 text-xs leading-5 font-medium"
                   >
                     {tag}
                   </li>
@@ -443,7 +470,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
               <h3 className="font-display mb-3 text-xl font-semibold tracking-tight text-balance md:leading-7 lg:text-2xl lg:leading-8">
                 {m['home.values.c3_title']()}
               </h3>
-              <p className="mb-4 text-sm leading-7 text-muted-foreground lg:text-base">
+              <p className="text-muted-foreground mb-4 text-sm leading-7 lg:text-base">
                 {m['home.values.c3_desc']()}
               </p>
               <ul className="mb-6 flex flex-wrap content-start items-start gap-2">
@@ -454,7 +481,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                 ].map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-md bg-muted/60 px-2.5 py-1 text-xs leading-5 font-medium text-foreground"
+                    className="bg-muted/60 text-foreground rounded-md px-2.5 py-1 text-xs leading-5 font-medium"
                   >
                     {tag}
                   </li>

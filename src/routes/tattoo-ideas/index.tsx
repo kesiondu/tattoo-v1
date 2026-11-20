@@ -10,8 +10,10 @@ import {
 } from 'lucide-react';
 
 import { useSession } from '@/core/auth/client';
+import { tDynamic } from '@/core/i18n/dynamic';
 import { Link } from '@/core/i18n/navigation';
 import { cn } from '@/lib/utils';
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import {
@@ -20,9 +22,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-
-import { m } from '@/paraglide/messages.js';
-import { tDynamic } from '@/core/i18n/dynamic';
 
 interface GalleryItem {
   slug: string;
@@ -366,7 +365,11 @@ const STYLE_OPTIONS = [
   { id: 'lettering', en: 'pages.ideas.d002', zh: 'pages.ideas.d002' },
   { id: 'realism', en: 'pages.ideas.d057', zh: 'pages.ideas.d057' },
   { id: 'black-grey', en: 'pages.ideas.d038', zh: 'pages.ideas.d038' },
-  { id: 'american-traditional', en: 'pages.ideas.d052', zh: 'pages.ideas.d052' },
+  {
+    id: 'american-traditional',
+    en: 'pages.ideas.d052',
+    zh: 'pages.ideas.d052',
+  },
   { id: 'japanese', en: 'pages.ideas.d011', zh: 'pages.ideas.d011' },
   { id: 'blackwork', en: 'pages.ideas.d049', zh: 'pages.ideas.d049' },
   { id: 'geometric', en: 'pages.ideas.d028', zh: 'pages.ideas.d028' },
@@ -428,10 +431,10 @@ function TattooIdeasPage() {
           {/* Header Row */}
           <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h1 className="font-sans text-[clamp(2rem,3.6vw,3rem)] leading-[1.08] font-semibold tracking-[-0.045em] text-balance text-foreground">
+              <h1 className="text-foreground font-sans text-[clamp(2rem,3.6vw,3rem)] leading-[1.08] font-semibold tracking-[-0.045em] text-balance">
                 {m['pages.ideas.m001']()}
               </h1>
-              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-relaxed sm:text-base">
                 {m['pages.ideas.m002']()}
               </p>
             </div>
@@ -456,7 +459,7 @@ function TattooIdeasPage() {
                   aria-label={m['pages.ideas.m004']()}
                   value={styleFilter}
                   onChange={(e) => setStyleFilter(e.target.value)}
-                  className="h-9 min-w-[160px] appearance-none rounded-lg border border-border bg-white pr-8 pl-3 text-xs font-medium text-foreground outline-none focus:border-foreground"
+                  className="border-border text-foreground focus:border-foreground h-9 min-w-[160px] appearance-none rounded-lg border bg-white pr-8 pl-3 text-xs font-medium outline-none"
                 >
                   {STYLE_OPTIONS.map((opt) => (
                     <option key={opt.id} value={opt.id}>
@@ -464,7 +467,7 @@ function TattooIdeasPage() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="pointer-events-none absolute top-1/2 right-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
+                <ChevronDown className="text-muted-foreground pointer-events-none absolute top-1/2 right-2.5 size-3.5 -translate-y-1/2" />
               </div>
 
               <div className="relative">
@@ -472,7 +475,7 @@ function TattooIdeasPage() {
                   aria-label={m['pages.ideas.m005']()}
                   value={placementFilter}
                   onChange={(e) => setPlacementFilter(e.target.value)}
-                  className="h-9 min-w-[160px] appearance-none rounded-lg border border-border bg-white pr-8 pl-3 text-xs font-medium text-foreground outline-none focus:border-foreground"
+                  className="border-border text-foreground focus:border-foreground h-9 min-w-[160px] appearance-none rounded-lg border bg-white pr-8 pl-3 text-xs font-medium outline-none"
                 >
                   {PLACEMENT_OPTIONS.map((opt) => (
                     <option key={opt.id} value={opt.id}>
@@ -480,7 +483,7 @@ function TattooIdeasPage() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="pointer-events-none absolute top-1/2 right-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
+                <ChevronDown className="text-muted-foreground pointer-events-none absolute top-1/2 right-2.5 size-3.5 -translate-y-1/2" />
               </div>
             </div>
 
@@ -488,7 +491,7 @@ function TattooIdeasPage() {
             <div
               role="radiogroup"
               aria-label={m['pages.ideas.m006']()}
-              className="inline-flex rounded-lg border border-border bg-muted/60 p-1"
+              className="border-border bg-muted/60 inline-flex rounded-lg border p-1"
             >
               <button
                 type="button"
@@ -498,7 +501,7 @@ function TattooIdeasPage() {
                 className={cn(
                   'inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium transition-all',
                   viewMode === 'artwork'
-                    ? 'bg-white text-foreground shadow-2xs'
+                    ? 'text-foreground bg-white shadow-2xs'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
@@ -513,7 +516,7 @@ function TattooIdeasPage() {
                 className={cn(
                   'inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium transition-all',
                   viewMode === 'skin'
-                    ? 'bg-white text-foreground shadow-2xs'
+                    ? 'text-foreground bg-white shadow-2xs'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
@@ -525,22 +528,23 @@ function TattooIdeasPage() {
 
           {/* 5-Column Gallery Grid */}
           {filtered.length === 0 ? (
-            <div className="rounded-xl border border-border bg-[#fafaf9] py-20 text-center text-sm text-muted-foreground">
+            <div className="border-border text-muted-foreground rounded-xl border bg-[#fafaf9] py-20 text-center text-sm">
               {m['pages.ideas.m009']()}
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-x-3 gap-y-6 min-[640px]:grid-cols-3 min-[640px]:gap-x-4 min-[880px]:grid-cols-4 min-[1200px]:grid-cols-5">
               {filtered.map((item) => (
-                <button
+                <Link
                   key={item.slug}
-                  type="button"
-                  onClick={() => setActiveItem(item)}
+                  href={`/tattoo-ideas/${item.slug}`}
                   className="group block min-w-0 rounded-lg text-left outline-offset-4"
                 >
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-border/70 bg-white sm:aspect-[9/10] sm:rounded-md">
+                  <div className="border-border/70 relative aspect-[4/5] overflow-hidden rounded-lg border bg-white sm:aspect-[9/10] sm:rounded-md">
                     <img
                       src={viewMode === 'artwork' ? item.artwork : item.body}
-                      alt={isZh ? tDynamic(item.titleZh) : tDynamic(item.titleEn)}
+                      alt={
+                        isZh ? tDynamic(item.titleZh) : tDynamic(item.titleEn)
+                      }
                       loading="lazy"
                       className={cn(
                         'absolute inset-0 size-full transition-transform duration-300 group-hover:scale-105',
@@ -552,17 +556,17 @@ function TattooIdeasPage() {
                   </div>
                   <div className="mt-2.5 flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <h2 className="truncate text-sm leading-snug font-semibold text-foreground sm:text-[15px]">
+                      <h2 className="text-foreground truncate text-sm leading-snug font-semibold group-hover:underline sm:text-[15px]">
                         {isZh ? tDynamic(item.titleZh) : tDynamic(item.titleEn)}
                       </h2>
-                      <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                      <p className="text-muted-foreground mt-0.5 truncate text-xs">
                         {isZh
                           ? `${tDynamic(item.styleZh)} · ${tDynamic(item.placementZh)}`
                           : `${tDynamic(item.styleEn)} · ${tDynamic(item.placementEn)}`}
                       </p>
                     </div>
                   </div>
-                </button>
+                </Link>
               ))}
             </div>
           )}
@@ -572,17 +576,19 @@ function TattooIdeasPage() {
             open={!!activeItem}
             onOpenChange={(open) => !open && setActiveItem(null)}
           >
-            <DialogContent className="max-w-3xl bg-white text-foreground">
+            <DialogContent className="text-foreground max-w-3xl bg-white">
               {activeItem && (
                 <>
                   <DialogHeader>
                     <DialogTitle>
-                      {isZh ? tDynamic(activeItem.titleZh) : tDynamic(activeItem.titleEn)}
+                      {isZh
+                        ? tDynamic(activeItem.titleZh)
+                        : tDynamic(activeItem.titleEn)}
                     </DialogTitle>
                   </DialogHeader>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div className="overflow-hidden rounded-xl border border-border bg-[#fafaf9]">
-                      <div className="border-b border-border bg-white px-3 py-1.5 text-xs font-medium text-muted-foreground">
+                    <div className="border-border overflow-hidden rounded-xl border bg-[#fafaf9]">
+                      <div className="border-border text-muted-foreground border-b bg-white px-3 py-1.5 text-xs font-medium">
                         {m['pages.ideas.m008']()}
                       </div>
                       <div className="aspect-[4/5]">
@@ -593,8 +599,8 @@ function TattooIdeasPage() {
                         />
                       </div>
                     </div>
-                    <div className="overflow-hidden rounded-xl border border-border bg-white">
-                      <div className="border-b border-border bg-white px-3 py-1.5 text-xs font-medium text-muted-foreground">
+                    <div className="border-border overflow-hidden rounded-xl border bg-white">
+                      <div className="border-border text-muted-foreground border-b bg-white px-3 py-1.5 text-xs font-medium">
                         {m['pages.ideas.m007']()}
                       </div>
                       <div className="aspect-[4/5] p-4">
@@ -608,7 +614,7 @@ function TattooIdeasPage() {
                   </div>
 
                   <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-muted-foreground text-xs">
                       {isZh
                         ? `${tDynamic(activeItem.styleZh)} · ${tDynamic(activeItem.placementZh)}`
                         : `${tDynamic(activeItem.styleEn)} · ${tDynamic(activeItem.placementEn)}`}
@@ -616,14 +622,14 @@ function TattooIdeasPage() {
                     <div className="flex items-center gap-2">
                       <Link
                         href="/tattoo-try-on"
-                        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-4 text-xs font-semibold text-foreground hover:bg-muted"
+                        className="border-border text-foreground hover:bg-muted inline-flex h-9 items-center gap-1.5 rounded-lg border bg-white px-4 text-xs font-semibold"
                       >
                         <Sparkles className="size-3.5" />
                         <span>{m['pages.ideas.m010']()}</span>
                       </Link>
                       <Link
                         href={`/?style=${activeItem.styleId}&prompt=${encodeURIComponent(tDynamic(activeItem.titleEn))}`}
-                        className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-4 text-xs font-semibold text-background hover:bg-foreground/90"
+                        className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-9 items-center gap-1.5 rounded-lg px-4 text-xs font-semibold"
                       >
                         <span>{m['pages.ideas.m011']()}</span>
                         <ArrowRight className="size-3.5" />
@@ -640,7 +646,7 @@ function TattooIdeasPage() {
   );
 }
 
-export const Route = createFileRoute('/tattoo-ideas')({
+export const Route = createFileRoute('/tattoo-ideas/')({
   validateSearch: (search: Record<string, unknown>) => ({
     style: typeof search.style === 'string' ? search.style : undefined,
   }),

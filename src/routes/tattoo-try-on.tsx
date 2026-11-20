@@ -15,10 +15,10 @@ import {
 import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
+import { tDynamic } from '@/core/i18n/dynamic';
 import { useRouter } from '@/core/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
-
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import {
@@ -32,10 +32,15 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-import { tDynamic } from '@/core/i18n/dynamic';
-
 const BODY_TEMPLATES = [
-  { id: 'back/back-view', en: 'pages.tryon.d001', zh: 'pages.tryon.d001', x: 50, y: 42, scale: 36 },
+  {
+    id: 'back/back-view',
+    en: 'pages.tryon.d001',
+    zh: 'pages.tryon.d001',
+    x: 50,
+    y: 42,
+    scale: 36,
+  },
   {
     id: 'chest-torso/male-front-torso',
     en: 'pages.tryon.d002',
@@ -100,7 +105,14 @@ const BODY_TEMPLATES = [
     y: 56,
     scale: 24,
   },
-  { id: 'hand/palm', en: 'pages.tryon.d010', zh: 'pages.tryon.d010', x: 50, y: 58, scale: 24 },
+  {
+    id: 'hand/palm',
+    en: 'pages.tryon.d010',
+    zh: 'pages.tryon.d010',
+    x: 50,
+    y: 58,
+    scale: 24,
+  },
   {
     id: 'foot-ankle/top-outer-foot-ankle',
     en: 'pages.tryon.d011',
@@ -148,11 +160,18 @@ function TattooTryOnPage() {
   const isZh = getLocale() === 'zh';
   const { data: session } = useSession();
   const router = useRouter();
+  const search = Route.useSearch();
+  const initialTattoo =
+    search.tattoo && search.tattoo.startsWith('/') ? search.tattoo : null;
 
-  const [designUrl, setDesignUrl] = useState<string | null>(null);
+  const [designUrl, setDesignUrl] = useState<string | null>(initialTattoo);
   const [bodyUrl, setBodyUrl] = useState<string | null>(null);
-  const [activeTemplateId, setActiveTemplateId] = useState<string | null>(null);
-  const [previewMode, setPreviewMode] = useState<'2d' | '3d' | null>(null);
+  const [activeTemplateId, setActiveTemplateId] = useState<string | null>(
+    initialTattoo ? 'arm/outer-arm' : null
+  );
+  const [previewMode, setPreviewMode] = useState<'2d' | '3d' | null>(
+    initialTattoo ? '2d' : null
+  );
   const [templatesOpen, setTemplatesOpen] = useState(false);
   const [skinId, setSkinId] = useState('medium');
 
@@ -294,10 +313,10 @@ function TattooTryOnPage() {
           {/* 1. Hero Header (H1) */}
           <section className="pt-7 pb-4 text-center sm:pt-9 sm:pb-5 lg:pt-10">
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
-              <h1 className="font-sans text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+              <h1 className="text-foreground font-sans text-3xl font-semibold tracking-tight sm:text-4xl">
                 {m['tryon.hero.h1']()}
               </h1>
-              <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              <p className="text-muted-foreground mx-auto mt-3 max-w-3xl text-sm leading-relaxed sm:text-base">
                 {m['tryon.hero.subtitle']()}
               </p>
             </div>
@@ -307,30 +326,30 @@ function TattooTryOnPage() {
           <section id="tryon-workspace" className="scroll-mt-24 py-5 sm:py-6">
             <div className="mx-auto grid max-w-[1216px] grid-cols-1 items-stretch gap-6 px-4 sm:px-6 lg:grid-cols-[430px_minmax(0,1fr)]">
               {/* Left Sidebar (430px) */}
-              <div className="flex flex-col justify-between rounded-xl border border-border bg-white p-5 shadow-2xs lg:min-h-[600px]">
+              <div className="border-border flex flex-col justify-between rounded-xl border bg-white p-5 shadow-2xs lg:min-h-[600px]">
                 <div>
                   {/* Header with scan icon + H3 title + subtitle */}
-                  <div className="flex items-start gap-3 border-b border-border pb-4">
-                    <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-foreground">
+                  <div className="border-border flex items-start gap-3 border-b pb-4">
+                    <div className="border-border text-foreground flex size-9 shrink-0 items-center justify-center rounded-lg border bg-white">
                       <Scan className="size-4" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold text-foreground">
+                      <h3 className="text-foreground text-sm font-semibold">
                         {m['tryon.config.title']()}
                       </h3>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         {m['tryon.config.subtitle']()}
                       </p>
                     </div>
                   </div>
 
                   {/* Section 1: Choose a Tattoo Design */}
-                  <div className="border-b border-border py-4">
-                    <div className="mb-3 text-xs font-semibold text-foreground">
+                  <div className="border-border border-b py-4">
+                    <div className="text-foreground mb-3 text-xs font-semibold">
                       {m['tryon.config.s1_title']()}
                     </div>
                     <div className="grid grid-cols-[1fr_148px] items-center gap-3">
-                      <div className="flex h-36 flex-col items-center justify-center overflow-hidden rounded-xl border border-border bg-[#fafaf9] p-2 text-center">
+                      <div className="border-border flex h-36 flex-col items-center justify-center overflow-hidden rounded-xl border bg-[#fafaf9] p-2 text-center">
                         {designUrl ? (
                           <img
                             src={(transparentDesignUrl ?? designUrl)!}
@@ -339,8 +358,8 @@ function TattooTryOnPage() {
                           />
                         ) : (
                           <>
-                            <ImageIcon className="mb-1.5 size-5 text-muted-foreground/70" />
-                            <span className="text-[11px] text-muted-foreground">
+                            <ImageIcon className="text-muted-foreground/70 mb-1.5 size-5" />
+                            <span className="text-muted-foreground text-[11px]">
                               {m['tryon.config.s1_empty']()}
                             </span>
                           </>
@@ -348,7 +367,7 @@ function TattooTryOnPage() {
                       </div>
 
                       <div className="flex flex-col gap-2">
-                        <label className="flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-border bg-white px-3 text-xs font-medium text-foreground transition-colors hover:bg-muted">
+                        <label className="border-border text-foreground hover:bg-muted flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border bg-white px-3 text-xs font-medium transition-colors">
                           <Upload className="size-3.5 shrink-0" />
                           <span>{m['tryon.config.s1_upload']()}</span>
                           <input
@@ -367,7 +386,7 @@ function TattooTryOnPage() {
                               router.push('/my-designs');
                             }
                           }}
-                          className="flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-border bg-white px-3 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                          className="border-border text-foreground hover:bg-muted flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border bg-white px-3 text-xs font-medium transition-colors"
                         >
                           <FolderHeart className="size-3.5 shrink-0" />
                           <span>{m['tryon.config.s1_my_designs']()}</span>
@@ -378,11 +397,11 @@ function TattooTryOnPage() {
 
                   {/* Section 2: Choose a Body Photo */}
                   <div className="py-4">
-                    <div className="mb-3 text-xs font-semibold text-foreground">
+                    <div className="text-foreground mb-3 text-xs font-semibold">
                       {m['tryon.config.s2_title']()}
                     </div>
                     <div className="grid grid-cols-[1fr_148px] items-center gap-3">
-                      <div className="flex h-36 flex-col items-center justify-center overflow-hidden rounded-xl border border-border bg-[#fafaf9] text-center">
+                      <div className="border-border flex h-36 flex-col items-center justify-center overflow-hidden rounded-xl border bg-[#fafaf9] text-center">
                         {resolvedBodyUrl ? (
                           <img
                             src={resolvedBodyUrl}
@@ -391,8 +410,8 @@ function TattooTryOnPage() {
                           />
                         ) : (
                           <>
-                            <Camera className="mb-1.5 size-5 text-muted-foreground/70" />
-                            <span className="text-[11px] text-muted-foreground">
+                            <Camera className="text-muted-foreground/70 mb-1.5 size-5" />
+                            <span className="text-muted-foreground text-[11px]">
                               {m['tryon.config.s2_empty']()}
                             </span>
                           </>
@@ -400,7 +419,7 @@ function TattooTryOnPage() {
                       </div>
 
                       <div className="flex flex-col gap-2">
-                        <label className="flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-border bg-white px-3 text-xs font-medium text-foreground transition-colors hover:bg-muted">
+                        <label className="border-border text-foreground hover:bg-muted flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border bg-white px-3 text-xs font-medium transition-colors">
                           <Upload className="size-3.5 shrink-0" />
                           <span>{m['tryon.config.s2_upload']()}</span>
                           <input
@@ -416,12 +435,10 @@ function TattooTryOnPage() {
                             if (!session?.user) {
                               openAuth();
                             } else {
-                              toast.info(
-                                m['pages.tryon.m001']()
-                              );
+                              toast.info(m['pages.tryon.m001']());
                             }
                           }}
-                          className="flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-border bg-white px-3 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                          className="border-border text-foreground hover:bg-muted flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border bg-white px-3 text-xs font-medium transition-colors"
                         >
                           <FolderHeart className="size-3.5 shrink-0" />
                           <span>{m['tryon.config.s2_my_photos']()}</span>
@@ -429,7 +446,7 @@ function TattooTryOnPage() {
                         <button
                           type="button"
                           onClick={() => setTemplatesOpen(true)}
-                          className="flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-border bg-white px-3 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                          className="border-border text-foreground hover:bg-muted flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border bg-white px-3 text-xs font-medium transition-colors"
                         >
                           <Scan className="size-3.5 shrink-0" />
                           <span>{m['tryon.config.s2_templates']()}</span>
@@ -452,7 +469,7 @@ function TattooTryOnPage() {
                           : 'bg-[#8e8e93] hover:bg-[#78787d]'
                       )}
                     >
-                      <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-foreground px-2.5 py-0.5 text-[9px] font-semibold tracking-wider whitespace-nowrap text-background uppercase">
+                      <span className="bg-foreground text-background absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-2.5 py-0.5 text-[9px] font-semibold tracking-wider whitespace-nowrap uppercase">
                         {m['tryon.config.mode_2d_badge']()}
                       </span>
                       <span className="text-xs font-semibold">
@@ -492,7 +509,7 @@ function TattooTryOnPage() {
                     </button>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
+                  <div className="text-muted-foreground mt-3 flex items-center justify-center gap-1.5 text-[11px]">
                     <ShieldCheck className="size-3.5 shrink-0" />
                     <span>{m['tryon.config.privacy']()}</span>
                   </div>
@@ -501,7 +518,7 @@ function TattooTryOnPage() {
 
               {/* Right Canvas: Architectural Grid Paper */}
               <div
-                className="relative flex min-h-[560px] flex-col items-center justify-center overflow-hidden rounded-xl border border-border bg-[#f7f7f5] p-6 lg:min-h-[600px]"
+                className="border-border relative flex min-h-[560px] flex-col items-center justify-center overflow-hidden rounded-xl border bg-[#f7f7f5] p-6 lg:min-h-[600px]"
                 style={{
                   backgroundImage:
                     'linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)',
@@ -512,7 +529,7 @@ function TattooTryOnPage() {
                   <div className="flex w-full max-w-[660px] flex-col items-center gap-4">
                     <div
                       ref={canvasBoxRef}
-                      className="relative aspect-[3/4] max-h-[440px] w-full max-w-[360px] overflow-hidden rounded-xl border border-border bg-[#ededed] shadow-sm select-none"
+                      className="border-border relative aspect-[3/4] max-h-[440px] w-full max-w-[360px] overflow-hidden rounded-xl border bg-[#ededed] shadow-sm select-none"
                     >
                       <img
                         src={resolvedBodyUrl!}
@@ -544,10 +561,10 @@ function TattooTryOnPage() {
                           onPointerUp={handleTattooPointerUp}
                           onPointerCancel={handleTattooPointerUp}
                           className={cn(
-                            'absolute touch-none cursor-grab rounded p-0.5 active:cursor-grabbing',
+                            'absolute cursor-grab touch-none rounded p-0.5 active:cursor-grabbing',
                             isDragging
-                              ? 'ring-1 ring-foreground/45 ring-dashed'
-                              : 'hover:ring-1 hover:ring-foreground/30 hover:ring-dashed'
+                              ? 'ring-foreground/45 ring-dashed ring-1'
+                              : 'hover:ring-foreground/30 hover:ring-dashed hover:ring-1'
                           )}
                           style={{
                             left: `${posX}%`,
@@ -565,17 +582,19 @@ function TattooTryOnPage() {
                           />
                         </div>
                       </div>
-                      <span className="pointer-events-none absolute bottom-2.5 left-2.5 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-medium text-foreground/80 shadow-xs backdrop-blur-xs">
+                      <span className="text-foreground/80 pointer-events-none absolute bottom-2.5 left-2.5 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-medium shadow-xs backdrop-blur-xs">
                         {m['pages.tryon.m002']()}
                       </span>
                     </div>
 
                     {/* Compact Live Transform Bar */}
-                    <div className="grid w-full grid-cols-2 gap-3 rounded-xl border border-border bg-white/95 p-3.5 text-xs shadow-xs backdrop-blur-xs sm:grid-cols-5">
+                    <div className="border-border grid w-full grid-cols-2 gap-3 rounded-xl border bg-white/95 p-3.5 text-xs shadow-xs backdrop-blur-xs sm:grid-cols-5">
                       <label className="space-y-1">
                         <span className="flex justify-between font-medium">
                           <span>{m['pages.tryon.m003']()}</span>
-                          <span className="text-muted-foreground">{scale}%</span>
+                          <span className="text-muted-foreground">
+                            {scale}%
+                          </span>
                         </span>
                         <input
                           type="range"
@@ -583,7 +602,7 @@ function TattooTryOnPage() {
                           max={80}
                           value={scale}
                           onChange={(e) => setScale(Number(e.target.value))}
-                          className="w-full accent-foreground"
+                          className="accent-foreground w-full"
                         />
                       </label>
                       <label className="space-y-1">
@@ -599,7 +618,7 @@ function TattooTryOnPage() {
                           max={180}
                           value={rotation}
                           onChange={(e) => setRotation(Number(e.target.value))}
-                          className="w-full accent-foreground"
+                          className="accent-foreground w-full"
                         />
                       </label>
                       <label className="space-y-1">
@@ -615,7 +634,7 @@ function TattooTryOnPage() {
                           max={100}
                           value={opacity}
                           onChange={(e) => setOpacity(Number(e.target.value))}
-                          className="w-full accent-foreground"
+                          className="accent-foreground w-full"
                         />
                       </label>
                       <label className="space-y-1">
@@ -632,7 +651,7 @@ function TattooTryOnPage() {
                             max={85}
                             value={posX}
                             onChange={(e) => setPosX(Number(e.target.value))}
-                            className="w-1/2 accent-foreground"
+                            className="accent-foreground w-1/2"
                           />
                           <input
                             type="range"
@@ -640,7 +659,7 @@ function TattooTryOnPage() {
                             max={85}
                             value={posY}
                             onChange={(e) => setPosY(Number(e.target.value))}
-                            className="w-1/2 accent-foreground"
+                            className="accent-foreground w-1/2"
                           />
                         </div>
                       </label>
@@ -648,7 +667,7 @@ function TattooTryOnPage() {
                         <button
                           type="button"
                           onClick={resetTransform}
-                          className="inline-flex h-8 cursor-pointer items-center gap-1 rounded-lg border border-border bg-white px-2.5 text-xs font-medium text-foreground hover:bg-muted"
+                          className="border-border text-foreground hover:bg-muted inline-flex h-8 cursor-pointer items-center gap-1 rounded-lg border bg-white px-2.5 text-xs font-medium"
                         >
                           <RotateCcw className="size-3" />
                           <span>{m['pages.tryon.m006']()}</span>
@@ -661,7 +680,7 @@ function TattooTryOnPage() {
                   <div className="grid w-full max-w-[700px] grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch">
                     {/* Left column directly on grid canvas: Sample Inputs */}
                     <div className="flex flex-col">
-                      <div className="mb-3 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                      <div className="text-muted-foreground mb-3 text-[11px] font-semibold tracking-wider uppercase">
                         {m['tryon.demo.inputs_label']()}
                       </div>
 
@@ -670,9 +689,9 @@ function TattooTryOnPage() {
                         <button
                           type="button"
                           onClick={() => loadDemoPair('2d')}
-                          className="relative aspect-[16/10] w-full cursor-pointer overflow-hidden rounded-xl border border-border bg-white p-4 shadow-xs transition-transform hover:scale-[1.01]"
+                          className="border-border relative aspect-[16/10] w-full cursor-pointer overflow-hidden rounded-xl border bg-white p-4 shadow-xs transition-transform hover:scale-[1.01]"
                         >
-                          <span className="absolute top-2.5 left-2.5 rounded-full border border-border bg-white/95 px-2.5 py-0.5 text-[10px] font-medium text-foreground shadow-2xs">
+                          <span className="border-border text-foreground absolute top-2.5 left-2.5 rounded-full border bg-white/95 px-2.5 py-0.5 text-[10px] font-medium shadow-2xs">
                             {m['tryon.demo.tattoo_label']()}
                           </span>
                           <img
@@ -686,7 +705,7 @@ function TattooTryOnPage() {
                         <button
                           type="button"
                           onClick={() => loadDemoPair('2d')}
-                          className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-white text-foreground shadow-2xs transition-transform hover:scale-105"
+                          className="border-border text-foreground flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border bg-white shadow-2xs transition-transform hover:scale-105"
                         >
                           <Plus className="size-4" />
                         </button>
@@ -695,9 +714,9 @@ function TattooTryOnPage() {
                         <button
                           type="button"
                           onClick={() => loadDemoPair('2d')}
-                          className="relative aspect-[16/10] w-full cursor-pointer overflow-hidden rounded-xl border border-border bg-[#efeee9] shadow-xs transition-transform hover:scale-[1.01]"
+                          className="border-border relative aspect-[16/10] w-full cursor-pointer overflow-hidden rounded-xl border bg-[#efeee9] shadow-xs transition-transform hover:scale-[1.01]"
                         >
-                          <span className="absolute top-2.5 left-2.5 z-10 rounded-full border border-border bg-white/95 px-2.5 py-0.5 text-[10px] font-medium text-foreground shadow-2xs">
+                          <span className="border-border text-foreground absolute top-2.5 left-2.5 z-10 rounded-full border bg-white/95 px-2.5 py-0.5 text-[10px] font-medium shadow-2xs">
                             {m['tryon.demo.body_label']()}
                           </span>
                           <img
@@ -711,7 +730,7 @@ function TattooTryOnPage() {
 
                     {/* Right column directly on grid canvas: Live 3D Adjustment Demo */}
                     <div className="flex flex-col">
-                      <div className="mb-3 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                      <div className="text-muted-foreground mb-3 text-[11px] font-semibold tracking-wider uppercase">
                         {m['tryon.demo.live_label']()}
                       </div>
 
@@ -724,7 +743,7 @@ function TattooTryOnPage() {
           </section>
 
           {/* 3. How It Works (Dark Band) */}
-          <section className="border-y border-border bg-neutral-950 py-14 text-white sm:py-20">
+          <section className="border-border border-y bg-neutral-950 py-14 text-white sm:py-20">
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:px-8">
               <div>
                 <div className="text-xs font-semibold tracking-wider text-white/60 uppercase">
@@ -790,15 +809,15 @@ function TattooTryOnPage() {
           <section className="py-14 sm:py-20">
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-16 lg:px-8">
               <div>
-                <div className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                <div className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
                   {m['tryon.faq.eyebrow']()}
                 </div>
-                <h2 className="mt-2 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+                <h2 className="text-foreground mt-2 font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
                   {m['tryon.faq.h2']()}
                 </h2>
               </div>
 
-              <div className="divide-y divide-border rounded-2xl border border-border bg-white">
+              <div className="divide-border border-border divide-y rounded-2xl border bg-white">
                 {faqs.map((item, idx) => {
                   const isOpen = openFaq === idx;
                   return (
@@ -807,19 +826,19 @@ function TattooTryOnPage() {
                         <button
                           type="button"
                           onClick={() => setOpenFaq(isOpen ? null : idx)}
-                          className="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted/40"
+                          className="text-foreground hover:bg-muted/40 flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium transition-colors"
                         >
                           <span>{item.q}</span>
                           <ChevronDown
                             className={cn(
-                              'size-4 shrink-0 text-muted-foreground transition-transform',
+                              'text-muted-foreground size-4 shrink-0 transition-transform',
                               isOpen && 'rotate-180'
                             )}
                           />
                         </button>
                       </h3>
                       {isOpen && (
-                        <div className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">
+                        <div className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
                           {item.a}
                         </div>
                       )}
@@ -832,7 +851,7 @@ function TattooTryOnPage() {
 
           {/* Body Templates Modal (6 skin tones + 14 body areas) */}
           <Dialog open={templatesOpen} onOpenChange={setTemplatesOpen}>
-            <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto bg-white text-foreground">
+            <DialogContent className="text-foreground max-h-[85vh] max-w-3xl overflow-y-auto bg-white">
               <DialogHeader>
                 <div className="flex flex-wrap items-center justify-between gap-3 pr-6">
                   <DialogTitle>{m['tryon.config.s2_templates']()}</DialogTitle>
@@ -845,7 +864,7 @@ function TattooTryOnPage() {
                         className={cn(
                           'size-4 cursor-pointer rounded-full border border-black/15',
                           skinId === tone.id &&
-                            'ring-2 ring-foreground ring-offset-2'
+                            'ring-foreground ring-2 ring-offset-2'
                         )}
                         style={{ backgroundColor: tone.hex }}
                       />
@@ -866,9 +885,9 @@ function TattooTryOnPage() {
                         setTemplatesOpen(false);
                       }}
                       className={cn(
-                        'cursor-pointer overflow-hidden rounded-xl border bg-white text-center transition-all hover:border-foreground',
+                        'hover:border-foreground cursor-pointer overflow-hidden rounded-xl border bg-white text-center transition-all',
                         activeTemplateId === tpl.id
-                          ? 'border-foreground ring-1 ring-foreground'
+                          ? 'border-foreground ring-foreground ring-1'
                           : 'border-border'
                       )}
                     >
@@ -880,7 +899,7 @@ function TattooTryOnPage() {
                           className="h-full w-full object-contain"
                         />
                       </div>
-                      <div className="px-1.5 py-2 text-[11px] font-medium text-foreground">
+                      <div className="text-foreground px-1.5 py-2 text-[11px] font-medium">
                         {isZh ? tDynamic(tpl.zh) : tDynamic(tpl.en)}
                       </div>
                     </button>
@@ -896,6 +915,9 @@ function TattooTryOnPage() {
 }
 
 export const Route = createFileRoute('/tattoo-try-on')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    tattoo: typeof search.tattoo === 'string' ? search.tattoo : undefined,
+  }),
   loader: () => {
     const locale = getLocale();
     return {

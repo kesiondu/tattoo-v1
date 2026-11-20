@@ -41,7 +41,7 @@ function ensureDefaultUserAgent() {
   if (fetchPatched) return;
   fetchPatched = true;
   const nativeFetch = globalThis.fetch;
-  const userAgent = `${envConfigs.app_name || 'ShipAny'} (+${envConfigs.app_url})`;
+  const userAgent = `${envConfigs.app_name || 'TattooGenerator.online'} (+${envConfigs.app_url})`;
   globalThis.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
     const headers = new Headers(
       init?.headers ?? (input instanceof Request ? input.headers : undefined)
@@ -71,21 +71,15 @@ function appHost(): string {
   }
 }
 
-// Identifies the stack, like WordPress's generator tag (see also the
-// generator <meta> in __root.tsx). Not a link; adds no SEO value.
-// Response.redirect() and fetched responses have immutable headers: copy
-// those, which also lets the cookie writes below succeed.
+// Response.redirect() and fetched responses have immutable headers: ensure
+// a mutable clone when needed so cookie writes below succeed.
 function withPoweredBy(response: Response): Response {
   try {
-    if (!response.headers.has('X-Powered-By')) {
-      response.headers.set('X-Powered-By', 'ShipAny');
-    }
+    response.headers.delete('X-Powered-By');
     return response;
   } catch {
     const copy = new Response(response.body, response);
-    if (!copy.headers.has('X-Powered-By')) {
-      copy.headers.set('X-Powered-By', 'ShipAny');
-    }
+    copy.headers.delete('X-Powered-By');
     return copy;
   }
 }

@@ -49,18 +49,36 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
   }
 
   const styleItems = [
-    { label: m['home.style.fine_line'](), href: '/tattoo-ideas?style=fine-line' },
-    { label: m['home.style.minimalist'](), href: '/tattoo-ideas?style=minimalist' },
-    { label: m['home.style.lettering'](), href: '/tattoo-ideas?style=lettering' },
+    {
+      label: m['home.style.fine_line'](),
+      href: '/tattoo-ideas?style=fine-line',
+    },
+    {
+      label: m['home.style.minimalist'](),
+      href: '/tattoo-ideas?style=minimalist',
+    },
+    {
+      label: m['home.style.lettering'](),
+      href: '/tattoo-ideas?style=lettering',
+    },
     { label: m['home.style.realism'](), href: '/tattoo-ideas?style=realism' },
-    { label: m['home.style.black_grey'](), href: '/tattoo-ideas?style=black-grey' },
+    {
+      label: m['home.style.black_grey'](),
+      href: '/tattoo-ideas?style=black-grey',
+    },
     {
       label: m['home.style.american_traditional'](),
       href: '/tattoo-ideas?style=american-traditional',
     },
     { label: m['home.style.japanese'](), href: '/tattoo-ideas?style=japanese' },
-    { label: m['home.style.blackwork'](), href: '/tattoo-ideas?style=blackwork' },
-    { label: m['home.style.geometric'](), href: '/tattoo-ideas?style=geometric' },
+    {
+      label: m['home.style.blackwork'](),
+      href: '/tattoo-ideas?style=blackwork',
+    },
+    {
+      label: m['home.style.geometric'](),
+      href: '/tattoo-ideas?style=geometric',
+    },
     {
       label: m['home.style.neo_traditional'](),
       href: '/tattoo-ideas?style=neo-traditional',
@@ -84,11 +102,11 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
           {/* Left: Brand Logo */}
           <Link href="/" className="flex shrink-0 items-center gap-2">
             <img
-              src="/brand/inkstudioai-logo-primary.svg"
+              src="/brand/tattoogenerator-logo.svg"
               alt={m['home.brand_logo_alt']()}
               className="size-7 rounded"
             />
-            <span className="font-sans text-[18px] font-bold tracking-[-0.02em] text-foreground">
+            <span className="text-foreground font-sans text-[18px] font-bold tracking-[-0.02em]">
               {m['home.brand']()}
             </span>
           </Link>
@@ -121,16 +139,13 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
               )}
             >
               <span>{m['home.nav.try_on']()}</span>
-              <span className="-mt-2 rounded bg-muted px-1 py-0.5 text-[9px] leading-none font-semibold text-muted-foreground">
+              <span className="bg-muted text-muted-foreground -mt-2 rounded px-1 py-0.5 text-[9px] leading-none font-semibold">
                 {m['home.nav.badge_3d']()}
               </span>
             </Link>
 
             {/* Styles dropdown */}
-            <div
-              className="relative"
-              onMouseLeave={() => setStylesOpen(false)}
-            >
+            <div className="relative" onMouseLeave={() => setStylesOpen(false)}>
               <button
                 type="button"
                 onClick={() => {
@@ -150,7 +165,7 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
                 <span>{m['home.nav.styles']()}</span>
                 <ChevronDown
                   className={cn(
-                    'size-3.5 text-muted-foreground transition-transform duration-150',
+                    'text-muted-foreground size-3.5 transition-transform duration-150',
                     stylesOpen && 'rotate-180'
                   )}
                 />
@@ -158,24 +173,24 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
 
               {stylesOpen && (
                 <div className="absolute top-full left-0 z-50 w-56 pt-1.5">
-                  <div className="rounded-xl border border-border bg-white p-1.5 shadow-lg">
+                  <div className="border-border rounded-xl border bg-white p-1.5 shadow-lg">
                     <div className="grid grid-cols-1 gap-0.5">
                       {styleItems.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
                           onClick={() => setStylesOpen(false)}
-                          className="block rounded-lg px-3 py-1.5 text-sm text-foreground/85 transition-colors hover:bg-muted hover:text-foreground"
+                          className="text-foreground/85 hover:bg-muted hover:text-foreground block rounded-lg px-3 py-1.5 text-sm transition-colors"
                         >
                           {item.label}
                         </Link>
                       ))}
                     </div>
-                    <div className="mt-1 border-t border-border pt-1">
+                    <div className="border-border mt-1 border-t pt-1">
                       <Link
                         href="/tattoo-styles"
                         onClick={() => setStylesOpen(false)}
-                        className="block rounded-lg px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                        className="text-foreground hover:bg-muted block rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
                       >
                         {m['home.nav.view_all_styles']()} →
                       </Link>
@@ -196,10 +211,7 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
             </Link>
 
             {/* Tools dropdown */}
-            <div
-              className="relative"
-              onMouseLeave={() => setToolsOpen(false)}
-            >
+            <div className="relative" onMouseLeave={() => setToolsOpen(false)}>
               <button
                 type="button"
                 onClick={() => {
@@ -219,7 +231,7 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
                 <span>{m['home.nav.tools']()}</span>
                 <ChevronDown
                   className={cn(
-                    'size-3.5 text-muted-foreground transition-transform duration-150',
+                    'text-muted-foreground size-3.5 transition-transform duration-150',
                     toolsOpen && 'rotate-180'
                   )}
                 />
@@ -227,13 +239,13 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
 
               {toolsOpen && (
                 <div className="absolute top-full left-0 z-50 w-56 pt-1.5">
-                  <div className="rounded-xl border border-border bg-white p-1.5 shadow-lg">
+                  <div className="border-border rounded-xl border bg-white p-1.5 shadow-lg">
                     <Link
                       href="/tattoo-price-calculator"
                       onClick={() => setToolsOpen(false)}
-                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground/85 transition-colors hover:bg-muted hover:text-foreground"
+                      className="text-foreground/85 hover:bg-muted hover:text-foreground flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors"
                     >
-                      <Calculator className="size-4 text-muted-foreground" />
+                      <Calculator className="text-muted-foreground size-4" />
                       <span>{m['home.nav.price_calculator']()}</span>
                     </Link>
                   </div>
@@ -243,10 +255,7 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
 
             <Link
               href="/pricing"
-              className={cn(
-                navLinkCls,
-                pathname === '/pricing' && 'bg-muted'
-              )}
+              className={cn(navLinkCls, pathname === '/pricing' && 'bg-muted')}
             >
               {m['home.nav.pricing']()}
             </Link>
@@ -256,14 +265,14 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
           <div className="flex items-center gap-2">
             <LocaleSelector
               variant="icon"
-              className="size-8 rounded-full border border-border bg-white text-foreground hover:bg-muted"
+              className="border-border text-foreground hover:bg-muted size-8 rounded-full border bg-white"
             />
 
             {user ? (
               <div className="flex items-center gap-2">
                 <Link
                   href="/settings/credits"
-                  className="hidden items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted sm:inline-flex"
+                  className="border-border text-foreground hover:bg-muted hidden items-center gap-1.5 rounded-full border bg-white px-3 py-1 text-xs font-medium transition-colors sm:inline-flex"
                 >
                   <Sparkles className="size-3.5" />
                   <span>
@@ -282,7 +291,7 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
               <button
                 type="button"
                 onClick={handleAuthClick}
-                className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-white px-3 text-[13px] font-medium text-foreground transition-colors hover:bg-muted"
+                className="border-border text-foreground hover:bg-muted inline-flex h-8 items-center justify-center rounded-lg border bg-white px-3 text-[13px] font-medium transition-colors"
               >
                 {m['home.nav.log_in']()}
               </button>
@@ -292,7 +301,7 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
               type="button"
               aria-label={m['home.nav.menu']()}
               onClick={() => setMobileMenuOpen((v) => !v)}
-              className="inline-flex size-8 items-center justify-center rounded-md border border-border bg-white text-foreground hover:bg-muted lg:hidden"
+              className="border-border text-foreground hover:bg-muted inline-flex size-8 items-center justify-center rounded-md border bg-white lg:hidden"
             >
               {mobileMenuOpen ? (
                 <X className="size-4" />
@@ -305,57 +314,57 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
 
         {/* Mobile Drawer */}
         {mobileMenuOpen && (
-          <div className="border-t border-border bg-white px-4 py-3 shadow-sm lg:hidden">
+          <div className="border-border border-t bg-white px-4 py-3 shadow-sm lg:hidden">
             <nav className="flex flex-col gap-1">
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg bg-muted px-3 py-2 text-sm font-medium text-foreground"
+                className="bg-muted text-foreground rounded-lg px-3 py-2 text-sm font-medium"
               >
                 {m['home.nav.ai_generator']()}
               </Link>
               <Link
                 href="/tattoo-font-generator"
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                className="text-foreground hover:bg-muted rounded-lg px-3 py-2 text-sm font-medium"
               >
                 {m['home.nav.font_generator']()}
               </Link>
               <Link
                 href="/tattoo-try-on"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                className="text-foreground hover:bg-muted flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium"
               >
                 <span>{m['home.nav.try_on']()}</span>
-                <span className="rounded bg-foreground px-1 py-0.5 text-[9px] leading-none font-semibold text-background">
+                <span className="bg-foreground text-background rounded px-1 py-0.5 text-[9px] leading-none font-semibold">
                   {m['home.nav.badge_3d']()}
                 </span>
               </Link>
               <Link
                 href="/tattoo-styles"
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                className="text-foreground hover:bg-muted rounded-lg px-3 py-2 text-sm font-medium"
               >
                 {m['home.nav.styles']()}
               </Link>
               <Link
                 href="/tattoo-ideas"
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                className="text-foreground hover:bg-muted rounded-lg px-3 py-2 text-sm font-medium"
               >
                 {m['home.nav.tattoo_ideas']()}
               </Link>
               <Link
                 href="/tattoo-price-calculator"
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                className="text-foreground hover:bg-muted rounded-lg px-3 py-2 text-sm font-medium"
               >
                 {m['home.nav.price_calculator']()}
               </Link>
               <Link
                 href="/pricing"
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                className="text-foreground hover:bg-muted rounded-lg px-3 py-2 text-sm font-medium"
               >
                 {m['home.nav.pricing']()}
               </Link>

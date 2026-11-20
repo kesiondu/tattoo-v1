@@ -1,4 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { TATTOO_IDEAS } from '@/data/tattoo-ideas';
+import { TATTOO_STYLES } from '@/data/tattoo-styles';
 
 import { envConfigs } from '@/config';
 import { baseLocale, locales, localizeUrl } from '@/paraglide/runtime.js';
@@ -75,7 +77,23 @@ export const Route = createFileRoute('/sitemap.xml')({
     handlers: {
       GET: async () => {
         const baseUrl = getBaseUrl();
-        const entries: Entry[] = [...STATIC_ENTRIES];
+        const entries: Entry[] = [
+          ...STATIC_ENTRIES,
+          ...TATTOO_STYLES.map(
+            (style): Entry => ({
+              path: `/tattoo-styles/${style.slug}`,
+              changeFrequency: 'weekly',
+              priority: 0.8,
+            })
+          ),
+          ...TATTOO_IDEAS.map(
+            (idea): Entry => ({
+              path: `/tattoo-ideas/${idea.slug}`,
+              changeFrequency: 'monthly',
+              priority: 0.7,
+            })
+          ),
+        ];
 
         // Blog posts: db posts merged with any local MDX posts.
         // Only include /blog and post URLs when published posts actually exist.

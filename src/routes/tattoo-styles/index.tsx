@@ -2,13 +2,12 @@ import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { ArrowRight, ChevronDown, Search, Sparkles } from 'lucide-react';
 
+import { tDynamic } from '@/core/i18n/dynamic';
 import { Link } from '@/core/i18n/navigation';
 import { cn } from '@/lib/utils';
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
-
-import { m } from '@/paraglide/messages.js';
-import { tDynamic } from '@/core/i18n/dynamic';
 
 interface EditorialStyle {
   id: string;
@@ -394,42 +393,32 @@ const COMPARISONS = [
   {
     titleEn: 'pages.styles2.d106',
     titleZh: 'pages.styles2.d106',
-    descEn:
-      'pages.styles2.d107',
-    descZh:
-      'pages.styles2.d107',
+    descEn: 'pages.styles2.d107',
+    descZh: 'pages.styles2.d107',
   },
   {
     titleEn: 'pages.styles2.d108',
     titleZh: 'pages.styles2.d108',
-    descEn:
-      'pages.styles2.d109',
-    descZh:
-      'pages.styles2.d109',
+    descEn: 'pages.styles2.d109',
+    descZh: 'pages.styles2.d109',
   },
   {
     titleEn: 'pages.styles2.d110',
     titleZh: 'pages.styles2.d110',
-    descEn:
-      'pages.styles2.d111',
-    descZh:
-      'pages.styles2.d111',
+    descEn: 'pages.styles2.d111',
+    descZh: 'pages.styles2.d111',
   },
   {
     titleEn: 'pages.styles2.d112',
     titleZh: 'pages.styles2.d112',
-    descEn:
-      'pages.styles2.d113',
-    descZh:
-      'pages.styles2.d113',
+    descEn: 'pages.styles2.d113',
+    descZh: 'pages.styles2.d113',
   },
   {
     titleEn: 'pages.styles2.d114',
     titleZh: 'pages.styles2.d114',
-    descEn:
-      'pages.styles2.d115',
-    descZh:
-      'pages.styles2.d115',
+    descEn: 'pages.styles2.d115',
+    descZh: 'pages.styles2.d115',
   },
 ];
 
@@ -506,46 +495,43 @@ function TattooStylesPage() {
       {/* 1. Centered Hero Header */}
       <section className="pt-10 pb-4 text-center sm:pt-14 sm:pb-6">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+          <div className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
             {m['pages.styles2.m001']()}
           </div>
-          <h1 className="mt-2.5 font-sans text-4xl font-bold tracking-tight text-balance text-foreground sm:text-5xl">
+          <h1 className="text-foreground mt-2.5 font-sans text-4xl font-bold tracking-tight text-balance sm:text-5xl">
             {m['pages.styles2.m002']()}
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="text-muted-foreground mx-auto mt-3 max-w-2xl text-base leading-relaxed sm:text-lg">
             {m['pages.styles2.m003']()}
           </p>
         </div>
       </section>
 
       {/* 2. Style Catalog (23 Editorial 2-Col Articles) */}
-      <section
-        id="style-catalog"
-        className="scroll-mt-24 pt-8 pb-14 sm:pb-20"
-      >
+      <section id="style-catalog" className="scroll-mt-24 pt-8 pb-14 sm:pb-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="border-b border-border pb-6">
-            <h2 className="font-sans text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <div className="border-border border-b pb-6">
+            <h2 className="text-foreground font-sans text-2xl font-bold tracking-tight sm:text-3xl">
               {m['pages.styles2.m004']()}
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            <p className="text-muted-foreground mt-2 max-w-2xl text-sm leading-relaxed">
               {m['pages.styles2.m005']()}
             </p>
 
-            <div className="mt-6 border-t border-border pt-6">
+            <div className="border-border mt-6 border-t pt-6">
               <div className="relative w-full max-w-[460px]">
-                <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2" />
                 <input
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={m['pages.styles2.m006']()}
-                  className="h-10 w-full rounded-lg border border-input bg-white pr-4 pl-10 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-foreground"
+                  className="border-input text-foreground placeholder:text-muted-foreground focus:border-foreground h-10 w-full rounded-lg border bg-white pr-4 pl-10 text-sm outline-none"
                 />
               </div>
 
               <div className="mt-5">
-                <div className="mb-2.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                <div className="text-muted-foreground mb-2.5 text-[11px] font-semibold tracking-wider uppercase">
                   {m['pages.styles2.m007']()}
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -558,7 +544,7 @@ function TattooStylesPage() {
                         'rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors',
                         activeFilter === pill.id
                           ? 'border-foreground bg-foreground text-background'
-                          : 'border-border bg-white text-foreground hover:bg-muted'
+                          : 'border-border text-foreground hover:bg-muted bg-white'
                       )}
                     >
                       {isZh ? tDynamic(pill.zh) : tDynamic(pill.en)}
@@ -570,14 +556,17 @@ function TattooStylesPage() {
           </div>
 
           {/* 23 Stacked Editorial 2-Col Articles */}
-          <div className="divide-y divide-border">
+          <div className="divide-border divide-y">
             {filtered.map((st, idx) => (
               <article
                 key={st.id}
                 className="grid grid-cols-1 gap-6 py-8 md:grid-cols-[minmax(210px,300px)_minmax(0,1fr)] md:items-start"
               >
                 {/* Left 300x300 Square Preview Card */}
-                <div className="relative aspect-square overflow-hidden rounded-xl border border-border bg-white">
+                <Link
+                  href={`/tattoo-styles/${st.id}`}
+                  className="group border-border hover:border-foreground/30 relative block aspect-square overflow-hidden rounded-xl border bg-white transition-colors"
+                >
                   <img
                     src={st.img}
                     alt={
@@ -586,46 +575,53 @@ function TattooStylesPage() {
                         : formatStyleAltEn(tDynamic(st.en))
                     }
                     loading="lazy"
-                    className="h-full w-full object-contain p-4"
+                    className="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
                     {st.badges.map((b) => (
                       <span
                         key={b}
-                        className="rounded-full border border-border bg-white/95 px-2.5 py-0.5 text-[10px] font-medium text-foreground shadow-2xs"
+                        className="border-border text-foreground rounded-full border bg-white/95 px-2.5 py-0.5 text-[10px] font-medium shadow-2xs"
                       >
                         {b}
                       </span>
                     ))}
                   </div>
-                </div>
+                </Link>
 
                 {/* Right Editorial Content */}
                 <div className="flex flex-col justify-between">
                   <div>
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
-                        <div className="flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase">
+                        <div className="text-muted-foreground flex items-center gap-2 font-mono text-xs tracking-wider uppercase">
                           <span>{String(idx + 1).padStart(2, '0')}</span>
-                          <span className="inline-block h-px w-5 bg-border" />
+                          <span className="bg-border inline-block h-px w-5" />
                           <span>{st.badges[0] || 'STYLE'}</span>
                         </div>
-                        <h3 className="mt-1.5 font-sans text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                          {isZh ? `${tDynamic(st.en)} · ${tDynamic(st.zh)}` : tDynamic(st.en)}
+                        <h3 className="text-foreground mt-1.5 font-sans text-2xl font-bold tracking-tight sm:text-3xl">
+                          <Link
+                            href={`/tattoo-styles/${st.id}`}
+                            className="hover:underline"
+                          >
+                            {isZh
+                              ? `${tDynamic(st.en)} · ${tDynamic(st.zh)}`
+                              : tDynamic(st.en)}
+                          </Link>
                         </h3>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <Link
-                          href={`/?style=${st.id}`}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-3.5 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
+                          href={`/tattoo-styles/${st.id}`}
+                          className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-9 items-center gap-1.5 rounded-lg px-3.5 text-xs font-semibold transition-colors"
                         >
                           <Sparkles className="size-3.5" />
                           <span>{m['pages.styles2.m008']()}</span>
                         </Link>
                         <Link
                           href={`/tattoo-ideas?style=${st.id}`}
-                          className="inline-flex h-9 items-center gap-1 rounded-lg border border-border bg-white px-3.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                          className="border-border text-foreground hover:bg-muted inline-flex h-9 items-center gap-1 rounded-lg border bg-white px-3.5 text-xs font-medium transition-colors"
                         >
                           <span>{m['pages.styles2.m009']()}</span>
                           <ArrowRight className="size-3.5" />
@@ -633,38 +629,40 @@ function TattooStylesPage() {
                       </div>
                     </div>
 
-                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+                    <p className="text-muted-foreground mt-3 max-w-3xl text-sm leading-relaxed">
                       {isZh ? tDynamic(st.descZh) : tDynamic(st.descEn)}
                     </p>
                   </div>
 
                   {/* 3-Column Metadata Strip */}
-                  <div className="mt-6 grid grid-cols-1 gap-4 rounded-xl border border-border bg-[#fafaf9] p-4 sm:grid-cols-3">
+                  <div className="border-border mt-6 grid grid-cols-1 gap-4 rounded-xl border bg-[#fafaf9] p-4 sm:grid-cols-3">
                     <div>
-                      <div className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                      <div className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                         {m['pages.styles2.m010']()}
                       </div>
-                      <div className="mt-1 text-xs leading-relaxed text-foreground">
+                      <div className="text-foreground mt-1 text-xs leading-relaxed">
                         {isZh ? tDynamic(st.bestForZh) : tDynamic(st.bestForEn)}
                       </div>
                     </div>
                     <div>
-                      <div className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                      <div className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                         {m['pages.styles2.m011']()}
                       </div>
-                      <div className="mt-1 text-xs leading-relaxed text-foreground">
-                        {isZh ? tDynamic(st.placementZh) : tDynamic(st.placementEn)}
+                      <div className="text-foreground mt-1 text-xs leading-relaxed">
+                        {isZh
+                          ? tDynamic(st.placementZh)
+                          : tDynamic(st.placementEn)}
                       </div>
                     </div>
                     <div>
-                      <div className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                      <div className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                         {m['pages.styles2.m012']()}
                       </div>
                       <div className="mt-1.5 flex flex-wrap gap-1">
                         {st.tags.map((tg) => (
                           <span
                             key={tg}
-                            className="rounded-full border border-border bg-white px-2 py-0.5 text-[11px] font-medium text-foreground"
+                            className="border-border text-foreground rounded-full border bg-white px-2 py-0.5 text-[11px] font-medium"
                           >
                             {tg}
                           </span>
@@ -680,9 +678,9 @@ function TattooStylesPage() {
       </section>
 
       {/* 3. Compare Similar Tattoo Styles (5 Cards) */}
-      <section className="border-y border-border bg-muted/20 py-16 sm:py-20">
+      <section className="border-border bg-muted/20 border-y py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-8 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-foreground mb-8 font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
             {m['pages.styles2.m013']()}
           </h2>
 
@@ -690,12 +688,12 @@ function TattooStylesPage() {
             {COMPARISONS.map((c) => (
               <div
                 key={tDynamic(c.titleEn)}
-                className="rounded-lg border border-border bg-white p-5 shadow-2xs"
+                className="border-border rounded-lg border bg-white p-5 shadow-2xs"
               >
-                <h3 className="text-base font-semibold text-foreground">
+                <h3 className="text-foreground text-base font-semibold">
                   {isZh ? tDynamic(c.titleZh) : tDynamic(c.titleEn)}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
                   {isZh ? tDynamic(c.descZh) : tDynamic(c.descEn)}
                 </p>
               </div>
@@ -708,16 +706,14 @@ function TattooStylesPage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <h2 className="font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            <h2 className="text-foreground font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
               {m['pages.styles2.m014']()}
             </h2>
             <Link
               href="/tattoo-fonts"
-              className="inline-flex items-center gap-1 text-sm font-semibold text-foreground hover:underline"
+              className="text-foreground inline-flex items-center gap-1 text-sm font-semibold hover:underline"
             >
-              <span>
-                {m['pages.styles2.m015']()}
-              </span>
+              <span>{m['pages.styles2.m015']()}</span>
               <ArrowRight className="size-4" />
             </Link>
           </div>
@@ -747,15 +743,15 @@ function TattooStylesPage() {
             ].map((step) => (
               <div
                 key={step.n}
-                className="rounded-xl border border-border bg-white p-5"
+                className="border-border rounded-xl border bg-white p-5"
               >
-                <div className="font-mono text-xs font-semibold text-muted-foreground">
+                <div className="text-muted-foreground font-mono text-xs font-semibold">
                   {step.n}
                 </div>
-                <h3 className="mt-2.5 text-base font-semibold text-foreground">
+                <h3 className="text-foreground mt-2.5 text-base font-semibold">
                   {step.h}
                 </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed">
                   {step.p}
                 </p>
               </div>
@@ -765,19 +761,19 @@ function TattooStylesPage() {
       </section>
 
       {/* 5. Dark CTA Banner */}
-      <section className="border-y border-border bg-foreground py-12 text-background sm:py-16">
+      <section className="border-border bg-foreground text-background border-y py-12 sm:py-16">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 sm:px-6 md:flex-row md:items-center lg:px-8">
           <div>
-            <h2 className="font-sans text-2xl font-bold tracking-tight text-background sm:text-3xl">
+            <h2 className="text-background font-sans text-2xl font-bold tracking-tight sm:text-3xl">
               {m['pages.styles2.m024']()}
             </h2>
-            <p className="mt-2 text-sm text-background/75 sm:text-base">
+            <p className="text-background/75 mt-2 text-sm sm:text-base">
               {m['pages.styles2.m025']()}
             </p>
           </div>
           <Link
             href="/"
-            className="inline-flex h-11 shrink-0 items-center gap-2 rounded-full bg-background px-6 text-sm font-semibold text-foreground transition-colors hover:bg-background/90"
+            className="bg-background text-foreground hover:bg-background/90 inline-flex h-11 shrink-0 items-center gap-2 rounded-full px-6 text-sm font-semibold transition-colors"
           >
             <span>{m['pages.styles2.m026']()}</span>
             <ArrowRight className="size-4" />
@@ -788,11 +784,11 @@ function TattooStylesPage() {
       {/* 6. Tattoo Style Questions (5 FAQs) */}
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h2 className="mb-8 text-center font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-foreground mb-8 text-center font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
             {m['pages.styles2.m027']()}
           </h2>
 
-          <div className="divide-y divide-border rounded-2xl border border-border bg-white">
+          <div className="divide-border border-border divide-y rounded-2xl border bg-white">
             {STYLE_FAQS.map((item, idx) => {
               const isOpen = openFaq === idx;
               return (
@@ -801,19 +797,21 @@ function TattooStylesPage() {
                     <button
                       type="button"
                       onClick={() => setOpenFaq(isOpen ? null : idx)}
-                      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted/40"
+                      className="text-foreground hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium transition-colors"
                     >
-                      <span>{isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}</span>
+                      <span>
+                        {isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}
+                      </span>
                       <ChevronDown
                         className={cn(
-                          'size-4 shrink-0 text-muted-foreground transition-transform',
+                          'text-muted-foreground size-4 shrink-0 transition-transform',
                           isOpen && 'rotate-180'
                         )}
                       />
                     </button>
                   </h3>
                   {isOpen && (
-                    <div className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">
+                    <div className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
                       {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
                     </div>
                   )}
@@ -827,7 +825,7 @@ function TattooStylesPage() {
   );
 }
 
-export const Route = createFileRoute('/tattoo-styles')({
+export const Route = createFileRoute('/tattoo-styles/')({
   loader: () => {
     const locale = getLocale();
     return {

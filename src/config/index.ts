@@ -17,7 +17,9 @@ export const envConfigs: Record<string, string> = {
   // App (public)
   app_url: publicEnv('VITE_APP_URL') ?? 'http://localhost:3000',
   app_name: publicEnv('VITE_APP_NAME') ?? 'TattooGenerator.online',
-  app_description: publicEnv('VITE_APP_DESCRIPTION') ?? 'Ship your SaaS faster',
+  app_description:
+    publicEnv('VITE_APP_DESCRIPTION') ??
+    'Design custom tattoo artwork with AI, preview realistic placement on your body in 2D and 3D, and export clean stencils.',
   app_logo: publicEnv('VITE_APP_LOGO') ?? '/logo.svg',
 
   // Database
