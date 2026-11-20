@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   ArrowRight,
-  Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -22,6 +21,19 @@ import { cn } from '@/lib/utils';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import { FontSurfaceDemo } from '@/components/surface-tattoo-demo';
+import {
+  DEFAULT_INK,
+  InkColorPicker,
+} from '@/components/ink-color-picker';
+import {
+  FontStylePreview,
+  PREVIEW_FONTS,
+} from '@/components/font-style-preview';
+import { FontLibraryDialog } from '@/components/font-library-dialog';
+import type { TattooFontPreset } from '@/lib/tattoo-font-library';
+
+import { m } from '@/paraglide/messages.js';
+import { tDynamic } from '@/core/i18n/dynamic';
 
 interface FontVariant {
   fontFamily: string;
@@ -51,10 +63,10 @@ interface FontStyleDef {
 const FONT_STYLES: FontStyleDef[] = [
   {
     id: 'generic',
-    name: 'Generic',
-    zh: '通用',
-    badgeEn: 'Clean',
-    badgeZh: '简洁',
+    name: 'pages.fontgen.d004',
+    zh: 'pages.fontgen.d004',
+    badgeEn: 'pages.fontgen.d001',
+    badgeZh: 'pages.fontgen.d001',
     example: 'Luna',
     img: '/tattoo-font-generator/styles/generic.png',
     isPhoto: false,
@@ -64,17 +76,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Inter Variable', sans-serif", fontWeight: 400, letterSpacing: '0.06em' },
     ],
     cats: ['dates', 'phrases'],
-    feelEn: 'Neutral, clean, and flexible.',
-    feelZh: '中性、干净、百搭灵活。',
-    chosenForEn: 'First previews, names, dates, and simple words.',
-    chosenForZh: '初次预览、名字、日期和简洁单词。',
+    feelEn: 'pages.fontgen.d002',
+    feelZh: 'pages.fontgen.d002',
+    chosenForEn: 'pages.fontgen.d003',
+    chosenForZh: 'pages.fontgen.d003',
   },
   {
     id: 'classic',
-    name: 'Classic',
-    zh: '经典',
-    badgeEn: 'Clean',
-    badgeZh: '简洁',
+    name: 'pages.fontgen.d007',
+    zh: 'pages.fontgen.d007',
+    badgeEn: 'pages.fontgen.d001',
+    badgeZh: 'pages.fontgen.d001',
     example: 'Only time will tell',
     img: '/tattoo-font-generator/styles/classic.webp',
     isPhoto: true,
@@ -84,17 +96,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 },
     ],
     cats: ['names', 'phrases'],
-    feelEn: 'Timeless, balanced, and subtly formal.',
-    feelZh: '经典耐看、比例均衡、略带正式感。',
-    chosenForEn: 'Names, initials, short quotes, and minimalist keepsakes.',
-    chosenForZh: '名字、缩写、简短格言与极简纪念文字。',
+    feelEn: 'pages.fontgen.d005',
+    feelZh: 'pages.fontgen.d005',
+    chosenForEn: 'pages.fontgen.d006',
+    chosenForZh: 'pages.fontgen.d006',
   },
   {
     id: 'minimalist',
-    name: 'Minimalist',
-    zh: '极简',
-    badgeEn: 'Clean',
-    badgeZh: '简洁',
+    name: 'pages.fontgen.d010',
+    zh: 'pages.fontgen.d010',
+    badgeEn: 'pages.fontgen.d001',
+    badgeZh: 'pages.fontgen.d001',
     example: 'let god',
     img: '/tattoo-font-generator/styles/minimalist.webp',
     isPhoto: true,
@@ -104,17 +116,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Outfit Variable', sans-serif", fontWeight: 400, letterSpacing: '0.08em' },
     ],
     cats: ['dates'],
-    feelEn: 'Subtle, modern, fine-line, and quiet.',
-    feelZh: '克制、现代、细线、安静。',
-    chosenForEn: 'Dates, initials, coordinates, and tiny words.',
-    chosenForZh: '日期、缩写、坐标和小巧单词。',
+    feelEn: 'pages.fontgen.d008',
+    feelZh: 'pages.fontgen.d008',
+    chosenForEn: 'pages.fontgen.d009',
+    chosenForZh: 'pages.fontgen.d009',
   },
   {
     id: 'cursive',
-    name: 'Cursive',
-    zh: '连笔手写',
-    badgeEn: 'Handwritten',
-    badgeZh: '手写',
+    name: 'pages.fontgen.d014',
+    zh: 'pages.fontgen.d014',
+    badgeEn: 'pages.fontgen.d011',
+    badgeZh: 'pages.fontgen.d011',
     example: 'Always & Forever',
     img: '/tattoo-font-generator/styles/cursive.webp',
     isPhoto: true,
@@ -123,17 +135,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Source Serif 4 Variable', Georgia, serif", fontStyle: 'italic', fontWeight: 400 },
     ],
     cats: ['names'],
-    feelEn: 'Soft, flowing, and deeply personal.',
-    feelZh: '柔和自然、连贯流畅、富有私人情感。',
-    chosenForEn: "Loved ones' names, lyrical words, and intimate dedications.",
-    chosenForZh: '挚爱名字、抒情词汇与专属寄语。',
+    feelEn: 'pages.fontgen.d012',
+    feelZh: 'pages.fontgen.d012',
+    chosenForEn: 'pages.fontgen.d013',
+    chosenForZh: 'pages.fontgen.d013',
   },
   {
     id: 'handwritten',
-    name: 'Handwritten',
-    zh: '手写体',
-    badgeEn: 'Script',
-    badgeZh: '手写',
+    name: 'pages.fontgen.d018',
+    zh: 'pages.fontgen.d018',
+    badgeEn: 'pages.fontgen.d015',
+    badgeZh: 'pages.fontgen.d015',
     example: 'te amando',
     img: '/tattoo-font-generator/styles/handwritten.webp',
     isPhoto: true,
@@ -142,17 +154,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Nunito Variable', sans-serif", fontWeight: 500 },
     ],
     cats: ['names'],
-    feelEn: 'Intimate, natural, and personal.',
-    feelZh: '亲密、自然、真实手写感。',
-    chosenForEn: 'Real handwriting, loved-one phrases, nicknames, and personal reminders.',
-    chosenForZh: '亲笔字迹、挚爱短语、昵称与个人备忘。',
+    feelEn: 'pages.fontgen.d016',
+    feelZh: 'pages.fontgen.d016',
+    chosenForEn: 'pages.fontgen.d017',
+    chosenForZh: 'pages.fontgen.d017',
   },
   {
     id: 'calligraphy',
-    name: 'Calligraphy',
-    zh: '花体书法',
-    badgeEn: 'Script',
-    badgeZh: '手写',
+    name: 'pages.fontgen.d021',
+    zh: 'pages.fontgen.d021',
+    badgeEn: 'pages.fontgen.d015',
+    badgeZh: 'pages.fontgen.d015',
     example: 'Grace & Grit',
     img: '/tattoo-font-generator/styles/calligraphy.webp',
     isPhoto: true,
@@ -161,17 +173,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontStyle: 'italic', fontWeight: 700 },
     ],
     cats: ['names', 'phrases', 'decorative'],
-    feelEn: 'Refined, formal, and fluid with classic pen strokes.',
-    feelZh: '优雅流畅、正式且带有经典钢笔书法韵味。',
-    chosenForEn: 'Vows, names, and elegant short phrases.',
-    chosenForZh: '誓言、人名与精致短句。',
+    feelEn: 'pages.fontgen.d019',
+    feelZh: 'pages.fontgen.d019',
+    chosenForEn: 'pages.fontgen.d020',
+    chosenForZh: 'pages.fontgen.d020',
   },
   {
     id: 'block',
-    name: 'Block',
-    zh: '方块',
-    badgeEn: 'Bold',
-    badgeZh: '粗体',
+    name: 'pages.fontgen.d025',
+    zh: 'pages.fontgen.d025',
+    badgeEn: 'pages.fontgen.d022',
+    badgeZh: 'pages.fontgen.d022',
     example: 'FEARLESS',
     img: '/tattoo-font-generator/styles/block.webp',
     isPhoto: true,
@@ -180,17 +192,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Outfit Variable', sans-serif", fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' },
     ],
     cats: ['bold'],
-    feelEn: 'Heavy, direct, and unmistakably legible.',
-    feelZh: '粗犷硬朗、直接醒目、辨识度极高。',
-    chosenForEn: 'Acronyms, one-word statements, and high-impact lettering.',
-    chosenForZh: '缩写字母、单词纹身与强态度宣言。',
+    feelEn: 'pages.fontgen.d023',
+    feelZh: 'pages.fontgen.d023',
+    chosenForEn: 'pages.fontgen.d024',
+    chosenForZh: 'pages.fontgen.d024',
   },
   {
     id: 'stencil',
-    name: 'Stencil',
-    zh: '镂空模板',
-    badgeEn: 'Bold',
-    badgeZh: '粗体',
+    name: 'pages.fontgen.d028',
+    zh: 'pages.fontgen.d028',
+    badgeEn: 'pages.fontgen.d022',
+    badgeZh: 'pages.fontgen.d022',
     example: '1987',
     img: '/tattoo-font-generator/styles/stencil.png',
     isPhoto: false,
@@ -199,17 +211,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Courier New', ui-monospace, monospace", fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' },
     ],
     cats: ['dates'],
-    feelEn: 'Industrial, cutout, and utility-like.',
-    feelZh: '工业风、镂空切割、实用硬朗。',
-    chosenForEn: 'Dates, labels, initials, and bold short text.',
-    chosenForZh: '日期、标签、缩写与醒目短文字。',
+    feelEn: 'pages.fontgen.d026',
+    feelZh: 'pages.fontgen.d026',
+    chosenForEn: 'pages.fontgen.d027',
+    chosenForZh: 'pages.fontgen.d027',
   },
   {
     id: 'typewriter',
-    name: 'Typewriter',
-    zh: '打字机',
-    badgeEn: 'Vintage',
-    badgeZh: '复古',
+    name: 'pages.fontgen.d032',
+    zh: 'pages.fontgen.d032',
+    badgeEn: 'pages.fontgen.d029',
+    badgeZh: 'pages.fontgen.d029',
     example: 'It is both a blessing and a curse to feel everything so very deeply',
     img: '/tattoo-font-generator/styles/typewriter.webp',
     isPhoto: true,
@@ -218,17 +230,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "ui-monospace, monospace", fontWeight: 500, letterSpacing: '0.04em' },
     ],
     cats: ['dates', 'phrases'],
-    feelEn: 'Literary, archival, and understated.',
-    feelZh: '文艺、档案感、低调内敛。',
-    chosenForEn: 'Quotes, dates, coordinates, and short phrases.',
-    chosenForZh: '引言、日期、坐标和短句。',
+    feelEn: 'pages.fontgen.d030',
+    feelZh: 'pages.fontgen.d030',
+    chosenForEn: 'pages.fontgen.d031',
+    chosenForZh: 'pages.fontgen.d031',
   },
   {
     id: 'chicano',
-    name: 'Chicano',
-    zh: '奇卡诺',
-    badgeEn: 'Street',
-    badgeZh: '街头',
+    name: 'pages.fontgen.d036',
+    zh: 'pages.fontgen.d036',
+    badgeEn: 'pages.fontgen.d033',
+    badgeZh: 'pages.fontgen.d033',
     example: 'Loyalty Above All',
     img: '/tattoo-font-generator/styles/chicano.webp',
     isPhoto: true,
@@ -237,17 +249,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontStyle: 'italic', fontWeight: 700 },
     ],
     cats: ['names', 'decorative'],
-    feelEn: 'Ornate, expressive, and rooted in classic black-and-grey ink culture.',
-    feelZh: '华丽张扬、富有情感，源自经典黑灰纹身文化。',
-    chosenForEn: 'Family names, memorial dates, and words of faith or loyalty.',
-    chosenForZh: '家族词汇、纪念短语、信仰与忠诚词。',
+    feelEn: 'pages.fontgen.d034',
+    feelZh: 'pages.fontgen.d034',
+    chosenForEn: 'pages.fontgen.d035',
+    chosenForZh: 'pages.fontgen.d035',
   },
   {
     id: 'gangster',
-    name: 'Gangster',
-    zh: '街头重体',
-    badgeEn: 'Street',
-    badgeZh: '街头',
+    name: 'pages.fontgen.d039',
+    zh: 'pages.fontgen.d039',
+    badgeEn: 'pages.fontgen.d033',
+    badgeZh: 'pages.fontgen.d033',
     example: 'Not everyone deserve you',
     img: '/tattoo-font-generator/styles/gangster.webp',
     isPhoto: true,
@@ -256,17 +268,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Syne Variable', sans-serif", fontWeight: 700 },
     ],
     cats: ['bold'],
-    feelEn: 'Heavy, street-influenced, bold, and hard-edged.',
-    feelZh: '厚重、街头风格、醒目且棱角分明。',
-    chosenForEn: 'Nicknames, initials, and short statement words.',
-    chosenForZh: '昵称、缩写和简短宣言词。',
+    feelEn: 'pages.fontgen.d037',
+    feelZh: 'pages.fontgen.d037',
+    chosenForEn: 'pages.fontgen.d038',
+    chosenForZh: 'pages.fontgen.d038',
   },
   {
     id: 'graffiti',
-    name: 'Graffiti',
-    zh: '涂鸦',
-    badgeEn: 'Street',
-    badgeZh: '街头',
+    name: 'pages.fontgen.d042',
+    zh: 'pages.fontgen.d042',
+    badgeEn: 'pages.fontgen.d033',
+    badgeZh: 'pages.fontgen.d033',
     example: 'Rebel',
     img: '/tattoo-font-generator/styles/graffiti.png',
     isPhoto: false,
@@ -275,17 +287,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Syne Variable', sans-serif", fontWeight: 800, fontStyle: 'italic' },
     ],
     cats: ['decorative'],
-    feelEn: 'Energetic, urban, and expressive.',
-    feelZh: '充满活力、都市感强、表现力十足。',
-    chosenForEn: 'Nicknames, tags, single words, and street-art expression.',
-    chosenForZh: '昵称、标签、单词与街头艺术表达。',
+    feelEn: 'pages.fontgen.d040',
+    feelZh: 'pages.fontgen.d040',
+    chosenForEn: 'pages.fontgen.d041',
+    chosenForZh: 'pages.fontgen.d041',
   },
   {
     id: 'roman',
-    name: 'Roman',
-    zh: '罗马体',
-    badgeEn: 'Vintage',
-    badgeZh: '复古',
+    name: 'pages.fontgen.d045',
+    zh: 'pages.fontgen.d045',
+    badgeEn: 'pages.fontgen.d029',
+    badgeZh: 'pages.fontgen.d029',
     example: 'LOVE',
     img: '/tattoo-font-generator/styles/roman.webp',
     isPhoto: true,
@@ -293,17 +305,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Libre Baskerville', 'Times New Roman', serif", fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em' },
     ],
     cats: ['dates'],
-    feelEn: 'Classical, inscription-like, and formal.',
-    feelZh: '古典、碑刻感、庄重正式。',
-    chosenForEn: 'Roman numerals, dates, initials, and formal names.',
-    chosenForZh: '罗马数字、日期、缩写与正式名字。',
+    feelEn: 'pages.fontgen.d043',
+    feelZh: 'pages.fontgen.d043',
+    chosenForEn: 'pages.fontgen.d044',
+    chosenForZh: 'pages.fontgen.d044',
   },
   {
     id: 'blackletter',
-    name: 'Blackletter',
-    zh: '黑书体',
-    badgeEn: 'Gothic',
-    badgeZh: '哥特',
+    name: 'pages.fontgen.d049',
+    zh: 'pages.fontgen.d049',
+    badgeEn: 'pages.fontgen.d046',
+    badgeZh: 'pages.fontgen.d046',
     example: 'Born to be free',
     img: '/tattoo-font-generator/styles/blackletter.webp',
     isPhoto: true,
@@ -311,17 +323,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 },
     ],
     cats: ['decorative'],
-    feelEn: 'Medieval, bold, dense, and dramatic.',
-    feelZh: '中世纪感、厚重正式、极具戏剧张力。',
-    chosenForEn: 'Initials, surnames, family mottos, and short single words.',
-    chosenForZh: '字母缩写、姓氏、家族格言与简短单词。',
+    feelEn: 'pages.fontgen.d047',
+    feelZh: 'pages.fontgen.d047',
+    chosenForEn: 'pages.fontgen.d048',
+    chosenForZh: 'pages.fontgen.d048',
   },
   {
     id: 'old-english',
-    name: 'Old English',
-    zh: '古英语体',
-    badgeEn: 'Gothic',
-    badgeZh: '哥特',
+    name: 'pages.fontgen.d052',
+    zh: 'pages.fontgen.d052',
+    badgeEn: 'pages.fontgen.d046',
+    badgeZh: 'pages.fontgen.d046',
     example: 'No Risk No Story',
     img: '/tattoo-font-generator/styles/oldEnglish.webp',
     isPhoto: true,
@@ -329,17 +341,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Source Serif 4 Variable', Georgia, serif", fontWeight: 700 },
     ],
     cats: ['decorative'],
-    feelEn: 'Ornate, ceremonial, and classic blackletter.',
-    feelZh: '华丽、仪式感、经典黑体风格。',
-    chosenForEn: 'Names, surnames, family words, and initials.',
-    chosenForZh: '名字、姓氏、家族词汇和缩写。',
+    feelEn: 'pages.fontgen.d050',
+    feelZh: 'pages.fontgen.d050',
+    chosenForEn: 'pages.fontgen.d051',
+    chosenForZh: 'pages.fontgen.d051',
   },
   {
     id: 'traditional',
-    name: 'Traditional',
-    zh: '美式传统',
-    badgeEn: 'Bold',
-    badgeZh: '粗体',
+    name: 'pages.fontgen.d055',
+    zh: 'pages.fontgen.d055',
+    badgeEn: 'pages.fontgen.d022',
+    badgeZh: 'pages.fontgen.d022',
     example: 'MOM',
     img: '/tattoo-font-generator/styles/traditional.png',
     isPhoto: false,
@@ -347,17 +359,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Syne Variable', sans-serif", fontWeight: 800, textTransform: 'uppercase' },
     ],
     cats: ['bold'],
-    feelEn: 'Old-school, tattoo-native, and sturdy.',
-    feelZh: '复古传统、原生纹身感、结实耐看。',
-    chosenForEn: 'Banners, names, classic words, and memorial text.',
-    chosenForZh: '缎带标语、名字、经典词和纪念文字。',
+    feelEn: 'pages.fontgen.d053',
+    feelZh: 'pages.fontgen.d053',
+    chosenForEn: 'pages.fontgen.d054',
+    chosenForZh: 'pages.fontgen.d054',
   },
   {
     id: 'western',
-    name: 'Western',
-    zh: '西部衬线',
-    badgeEn: 'Vintage',
-    badgeZh: '复古',
+    name: 'pages.fontgen.d058',
+    zh: 'pages.fontgen.d058',
+    badgeEn: 'pages.fontgen.d029',
+    badgeZh: 'pages.fontgen.d029',
     example: 'Ace',
     img: '/tattoo-font-generator/styles/western.png',
     isPhoto: false,
@@ -365,17 +377,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700, textTransform: 'uppercase' },
     ],
     cats: ['bold'],
-    feelEn: 'Vintage, frontier, and saloon-display.',
-    feelZh: '复古、西部荒野感、酒馆招牌风格。',
-    chosenForEn: 'Nicknames, short names, one-word marks, and Americana themes.',
-    chosenForZh: '昵称、短名字、单词印记和美式复古主题。',
+    feelEn: 'pages.fontgen.d056',
+    feelZh: 'pages.fontgen.d056',
+    chosenForEn: 'pages.fontgen.d057',
+    chosenForZh: 'pages.fontgen.d057',
   },
   {
     id: 'script',
-    name: 'Script',
-    zh: '优雅手写',
-    badgeEn: 'Script',
-    badgeZh: '手写',
+    name: 'pages.fontgen.d061',
+    zh: 'pages.fontgen.d061',
+    badgeEn: 'pages.fontgen.d015',
+    badgeZh: 'pages.fontgen.d015',
     example: 'Angel',
     img: '/tattoo-font-generator/styles/script.webp',
     isPhoto: true,
@@ -383,17 +395,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Source Serif 4 Variable', Georgia, serif", fontStyle: 'italic', fontWeight: 400 },
     ],
     cats: ['names', 'phrases', 'decorative'],
-    feelEn: 'Polished, flowing, and romantic.',
-    feelZh: '精致、流畅、富有浪漫气息。',
-    chosenForEn: 'Names, short quotes, love words, and family words.',
-    chosenForZh: '名字、短句、爱意词汇和家族文字。',
+    feelEn: 'pages.fontgen.d059',
+    feelZh: 'pages.fontgen.d059',
+    chosenForEn: 'pages.fontgen.d060',
+    chosenForZh: 'pages.fontgen.d060',
   },
   {
     id: 'gothic',
-    name: 'Gothic',
-    zh: '暗黑哥特',
-    badgeEn: 'Gothic',
-    badgeZh: '哥特',
+    name: 'pages.fontgen.d064',
+    zh: 'pages.fontgen.d064',
+    badgeEn: 'pages.fontgen.d046',
+    badgeZh: 'pages.fontgen.d046',
     example: 'DIVINE',
     img: '/tattoo-font-generator/styles/gothic.webp',
     isPhoto: true,
@@ -401,17 +413,17 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Syne Variable', sans-serif", fontWeight: 800 },
     ],
     cats: ['bold', 'decorative'],
-    feelEn: 'Dark, sharp, and dramatic.',
-    feelZh: '暗黑、锐利、富有戏剧张力。',
-    chosenForEn: 'Dramatic short words, music-inspired lettering, and gothic expression.',
-    chosenForZh: '戏剧感短词、音乐灵感文字与哥特风格表达。',
+    feelEn: 'pages.fontgen.d062',
+    feelZh: 'pages.fontgen.d062',
+    chosenForEn: 'pages.fontgen.d063',
+    chosenForZh: 'pages.fontgen.d063',
   },
   {
     id: 'dark',
-    name: 'Dark',
-    zh: '暗黑重体',
-    badgeEn: 'Bold',
-    badgeZh: '粗体',
+    name: 'pages.fontgen.d067',
+    zh: 'pages.fontgen.d067',
+    badgeEn: 'pages.fontgen.d022',
+    badgeZh: 'pages.fontgen.d022',
     example: 'I am flesh, bones. I am skin, soul.',
     img: '/tattoo-font-generator/styles/dark.webp',
     isPhoto: true,
@@ -419,10 +431,10 @@ const FONT_STYLES: FontStyleDef[] = [
       { fontFamily: "'Syne Variable', sans-serif", fontWeight: 700, letterSpacing: '0.08em' },
     ],
     cats: ['bold'],
-    feelEn: 'Heavy, intense, black, and dramatic.',
-    feelZh: '厚重、强烈、浓郁暗黑与戏剧感。',
-    chosenForEn: 'Single statement words and metal, horror, or gothic moods.',
-    chosenForZh: '强声明单词以及金属、暗黑或哥特氛围。',
+    feelEn: 'pages.fontgen.d065',
+    feelZh: 'pages.fontgen.d065',
+    chosenForEn: 'pages.fontgen.d066',
+    chosenForZh: 'pages.fontgen.d066',
   },
 ];
 
@@ -456,96 +468,97 @@ const GUIDE_FONT_STYLES: FontStyleDef[] = GUIDE_STYLE_ORDER.map(
 
 // Natural skin anchor coordinates, angle & scale per placement so text ALWAYS lands squarely on skin
 const PLACEMENTS = [
-  { id: 'inner-wrist', en: 'Inner wrist', zh: '内手腕', x: 56, y: 52, defaultRotation: 52, defaultSize: 82 },
-  { id: 'outer-wrist', en: 'Outer wrist', zh: '外手腕', x: 49, y: 56, defaultRotation: 0, defaultSize: 66 },
-  { id: 'inner-forearm', en: 'Inner forearm', zh: '小臂内侧', x: 47, y: 47, defaultRotation: 65, defaultSize: 85 },
-  { id: 'inner-upper-arm', en: 'Inner upper arm', zh: '上臂内侧', x: 68, y: 69, defaultRotation: 0, defaultSize: 86 },
-  { id: 'upper-chest', en: 'Upper chest', zh: '上胸', x: 50, y: 40, defaultRotation: 0, defaultSize: 100 },
-  { id: 'upper-back', en: 'Upper back', zh: '上背', x: 50, y: 34, defaultRotation: 0, defaultSize: 100 },
-  { id: 'front-thigh', en: 'Front thigh', zh: '大腿前侧', x: 50, y: 42, defaultRotation: 0, defaultSize: 92 },
-  { id: 'side-ankle', en: 'Side ankle', zh: '脚踝外侧', x: 71, y: 52, defaultRotation: 0, defaultSize: 56 },
+  { id: 'inner-wrist', en: 'pages.fontgen.d068', zh: 'pages.fontgen.d068', x: 56, y: 52, defaultRotation: 52, defaultSize: 82 },
+  { id: 'outer-wrist', en: 'pages.fontgen.d069', zh: 'pages.fontgen.d069', x: 49, y: 56, defaultRotation: 0, defaultSize: 66 },
+  { id: 'inner-forearm', en: 'pages.fontgen.d070', zh: 'pages.fontgen.d070', x: 47, y: 47, defaultRotation: 65, defaultSize: 85 },
+  { id: 'inner-upper-arm', en: 'pages.fontgen.d071', zh: 'pages.fontgen.d071', x: 68, y: 69, defaultRotation: 0, defaultSize: 86 },
+  { id: 'upper-chest', en: 'pages.fontgen.d072', zh: 'pages.fontgen.d072', x: 50, y: 40, defaultRotation: 0, defaultSize: 100 },
+  { id: 'upper-back', en: 'pages.fontgen.d073', zh: 'pages.fontgen.d073', x: 50, y: 34, defaultRotation: 0, defaultSize: 100 },
+  { id: 'front-thigh', en: 'pages.fontgen.d074', zh: 'pages.fontgen.d074', x: 50, y: 42, defaultRotation: 0, defaultSize: 92 },
+  { id: 'side-ankle', en: 'pages.fontgen.d075', zh: 'pages.fontgen.d075', x: 71, y: 52, defaultRotation: 0, defaultSize: 56 },
 ];
 
 const SKIN_TONES = [
-  { id: 'fair', hex: '#EBD1C3', filter: 'brightness(1.12) saturate(0.85)', en: 'Natural fair', zh: '白皙' },
-  { id: 'ivory', hex: '#E5C0A9', filter: 'brightness(1.06) saturate(0.95)', en: 'Warm ivory', zh: '暖象牙' },
-  { id: 'medium-light', hex: '#D7BD96', filter: 'brightness(1.02)', en: 'Medium-light', zh: '自然浅棕' },
-  { id: 'medium', hex: '#9F7D54', filter: 'none', en: 'Medium', zh: '自然小麦' },
-  { id: 'medium-deep', hex: '#815D44', filter: 'brightness(0.84) contrast(1.06)', en: 'Medium-deep', zh: '深棕' },
-  { id: 'deep', hex: '#3A312A', filter: 'brightness(0.62) contrast(1.12)', en: 'Deep', zh: '深古铜' },
+  { id: 'fair', hex: '#EBD1C3', filter: 'brightness(1.12) saturate(0.85)', en: 'pages.fontgen.d076', zh: 'pages.fontgen.d076' },
+  { id: 'ivory', hex: '#E5C0A9', filter: 'brightness(1.06) saturate(0.95)', en: 'pages.fontgen.d077', zh: 'pages.fontgen.d077' },
+  { id: 'medium-light', hex: '#D7BD96', filter: 'brightness(1.02)', en: 'pages.fontgen.d078', zh: 'pages.fontgen.d078' },
+  { id: 'medium', hex: '#9F7D54', filter: 'none', en: 'pages.fontgen.d079', zh: 'pages.fontgen.d079' },
+  { id: 'medium-deep', hex: '#815D44', filter: 'brightness(0.84) contrast(1.06)', en: 'pages.fontgen.d080', zh: 'pages.fontgen.d080' },
+  { id: 'deep', hex: '#3A312A', filter: 'brightness(0.62) contrast(1.12)', en: 'pages.fontgen.d081', zh: 'pages.fontgen.d081' },
 ];
 
 const FAQS = [
   {
-    qEn: 'Is the tattoo font generator really free?',
-    qZh: '纹身字体生成器真的免费吗？',
-    aEn: 'Yes. You can test all 20 tattoo fonts, preview them across body areas and skin tones, and download PNG or SVG references completely free with no login required.',
-    aZh: '是的。您可以免费试戴全部 20 种纹身字体、切换不同肤色和身体部位预览，并免费导出 PNG 或 SVG 参考图，全程无需登录。',
+    qEn: 'pages.fontgen.d082',
+    qZh: 'pages.fontgen.d082',
+    aEn: 'pages.fontgen.d083',
+    aZh: 'pages.fontgen.d083',
   },
   {
-    qEn: 'How many characters work best for a tattoo text preview?',
-    qZh: '纹身文字预览最适合输入多少个字符？',
-    aEn: 'Short inputs of 1 to 20 characters—such as a single word, name, date, or 2–4 word phrase—deliver the cleanest and most realistic preview.',
-    aZh: '建议控制在 1 到 20 个字符以内（如单个单词、人名、纪念日期或 2–4 个词的短句），这样在皮肤和 3D 模型上的排版最清晰自然。',
+    qEn: 'pages.fontgen.d084',
+    qZh: 'pages.fontgen.d084',
+    aEn: 'pages.fontgen.d085',
+    aZh: 'pages.fontgen.d085',
   },
   {
-    qEn: 'What is the difference between skin preview and 3D preview?',
-    qZh: '皮肤预览和 3D 预览有什么区别？',
-    aEn: 'The skin preview lets you quickly compare font styles against different skin tones and body zones, while the 3D preview wraps your chosen lettering over natural body contours to show realistic curvature.',
-    aZh: '皮肤预览适合快速切换对比不同字体、肤色和部位的平面视觉；3D 预览则会将字稿贴合在立体的身体曲面上，帮您判断实际弧度下的观感。',
+    qEn: 'pages.fontgen.d086',
+    qZh: 'pages.fontgen.d086',
+    aEn: 'pages.fontgen.d087',
+    aZh: 'pages.fontgen.d087',
   },
   {
-    qEn: 'Which tattoo font ages the best over time?',
-    qZh: '哪种纹身字体恢复后最耐看？',
-    aEn: 'Fonts with clear spacing and moderate stroke weight—like Classic, Block, Typewriter, and clean Traditional lettering—hold their sharpness best as ink settles over the years.',
-    aZh: '笔画粗细适中、字母间距清晰的字体最抗晕色，例如经典体（Classic）、方块粗体（Block）和打字机字体（Typewriter），多年后依然利落。',
+    qEn: 'pages.fontgen.d088',
+    qZh: 'pages.fontgen.d088',
+    aEn: 'pages.fontgen.d089',
+    aZh: 'pages.fontgen.d089',
   },
   {
-    qEn: 'Should I download PNG or SVG to show my tattoo artist?',
-    qZh: '给纹身师看参考图，应该下载 PNG 还是 SVG？',
-    aEn: 'Use PNG to quickly compare ideas on your phone or share on social media. Download SVG when you are ready for your appointment, as artists can scale vector outlines to any size without losing quality.',
-    aZh: '日常发朋友圈或手机里对比选款，保存 PNG 即可；正式预约纹身时建议导出 SVG，无损矢量格式方便纹身师任意缩放并直接出转印稿。',
+    qEn: 'pages.fontgen.d090',
+    qZh: 'pages.fontgen.d090',
+    aEn: 'pages.fontgen.d091',
+    aZh: 'pages.fontgen.d091',
   },
   {
-    qEn: 'Can I preview dates and Roman numerals?',
-    qZh: '可以预览日期和罗马数字吗？',
-    aEn: 'Yes. Simply type standard numbers (e.g., 1998, 05.12.2024) or Roman numerals (e.g., MCMXCVIII) into the text box to test them across Classic, Typewriter, and Blackletter styles.',
-    aZh: '可以。直接在输入框输入数字日期（如 1998、2024.05.12）或罗马数字（如 MCMXCVIII），即可一键对比经典体、打字机和哥特黑书体效果。',
+    qEn: 'pages.fontgen.d092',
+    qZh: 'pages.fontgen.d092',
+    aEn: 'pages.fontgen.d093',
+    aZh: 'pages.fontgen.d093',
   },
   {
-    qEn: 'Why do decorative script or gothic fonts need a larger tattoo area?',
-    qZh: '为什么装饰性强的花体/哥特体需要更大的纹身面积？',
-    aEn: 'Intricate flourishes and tight negative spaces tend to blur together as skin ages. Giving ornate styles more surface area preserves every loop and sharp edge.',
-    aZh: '复杂花体和哥特体的笔画转折多、留白窄，如果纹得太小，几年后墨水自然微扩散容易糊成一团。留出足够面积才能保住精致细节。',
+    qEn: 'pages.fontgen.d094',
+    qZh: 'pages.fontgen.d094',
+    aEn: 'pages.fontgen.d095',
+    aZh: 'pages.fontgen.d095',
   },
   {
-    qEn: 'Will a tattoo artist copy the generated font exactly?',
-    qZh: '纹身师会完全照搬生成的字体吗？',
-    aEn: 'Most artists use your exported font as a direct blueprint, then subtly tweak line thickness and letter spacing so the tattoo heals cleanly on your specific body part.',
-    aZh: '大多数纹身师会以您导出的字稿为蓝本，再结合您的皮肤张力和肌肉走向，对笔画粗细与字距做微调，确保最终成品既还原又耐看。',
+    qEn: 'pages.fontgen.d096',
+    qZh: 'pages.fontgen.d096',
+    aEn: 'pages.fontgen.d097',
+    aZh: 'pages.fontgen.d097',
   },
   {
-    qEn: 'Can I combine tattoo lettering with AI-generated tattoo artwork?',
-    qZh: '可以把字体和 AI 生成的纹身图案结合起来吗？',
-    aEn: 'Yes. You can generate your custom lettering here and pair it with our main AI Tattoo Generator to design surrounding elements like florals, banners, or fine-line frames.',
-    aZh: '可以。您可以先在这里定好文字风格，再搭配我们的 AI 纹身生成器，为文字加上花卉、丝带、几何边框等定制图案元素。',
+    qEn: 'pages.fontgen.d098',
+    qZh: 'pages.fontgen.d098',
+    aEn: 'pages.fontgen.d099',
+    aZh: 'pages.fontgen.d099',
   },
 ];
 
 function TattooFontGeneratorPage() {
   const isZh = getLocale() === 'zh';
-  const t = (en: string, zh: string) => (isZh ? zh : en);
   const { data: session } = useSession();
 
   const [text, setText] = useState('Stay True');
   const [selectedStyleId, setSelectedStyleId] = useState('generic');
   const [variantIdx, setVariantIdx] = useState(0);
-  const [showAllLeftStyles, setShowAllLeftStyles] = useState(false);
+  const [fontLibraryOpen, setFontLibraryOpen] = useState(false);
+  const [libraryPreset, setLibraryPreset] = useState<TattooFontPreset | null>(null);
   const [generated, setGenerated] = useState(false);
 
   const [placementId, setPlacementId] = useState('inner-wrist');
   const [skinId, setSkinId] = useState('medium');
   const [previewMode, setPreviewMode] = useState<'2d' | '3d' | 'font'>('2d');
+  const [inkColor, setInkColor] = useState<string | null>(null);
   const [sizePct, setSizePct] = useState(PLACEMENTS[0].defaultSize);
   const [rotation, setRotation] = useState(PLACEMENTS[0].defaultRotation);
   const [opacity, setOpacity] = useState(86);
@@ -584,23 +597,40 @@ function TattooFontGeneratorPage() {
 
   const activeStyle =
     FONT_STYLES.find((s) => s.id === selectedStyleId) ?? FONT_STYLES[0];
-  const activeVariant =
+  const baseVariant =
     activeStyle.variants[variantIdx % activeStyle.variants.length] ??
     activeStyle.variants[0];
+  // Keep the canvas / exports in sync with the specimen shown in the picker:
+  // the decorative typeface is the style's identity, while the variant still
+  // supplies weight, italics and letter-spacing.
+  const activeVariant = libraryPreset
+    ? {
+        fontFamily: libraryPreset.family,
+        fontStyle: (libraryPreset.italic ? 'italic' : 'normal') as
+          | 'italic'
+          | 'normal',
+        fontWeight: libraryPreset.weight,
+        letterSpacing: libraryPreset.spacing,
+        textTransform: libraryPreset.transform as 'none' | 'uppercase',
+      }
+    : {
+        ...baseVariant,
+        fontFamily: PREVIEW_FONTS[activeStyle.id] ?? baseVariant.fontFamily,
+      };
   const activePlacement =
     PLACEMENTS.find((p) => p.id === placementId) ?? PLACEMENTS[0];
   const activeSkin =
     SKIN_TONES.find((s) => s.id === skinId) ?? SKIN_TONES[3];
 
-  const leftStyles = showAllLeftStyles ? FONT_STYLES : FONT_STYLES.slice(0, 12);
+  const leftStyles = FONT_STYLES;
 
   const guideCategories = [
-    { id: 'all', label: t('All', '全部'), count: 20 },
-    { id: 'names', label: t('Names', '名字'), count: 6 },
-    { id: 'dates', label: t('Dates / initials', '日期 / 缩写'), count: 5 },
-    { id: 'phrases', label: t('Short phrases', '短句'), count: 5 },
-    { id: 'bold', label: t('Bold words', '醒目单词'), count: 6 },
-    { id: 'decorative', label: t('Decorative styles', '装饰风格'), count: 7 },
+    { id: 'all', label: m['pages.fontgen.m001'](), count: 20 },
+    { id: 'names', label: m['pages.fontgen.m002'](), count: 6 },
+    { id: 'dates', label: m['pages.fontgen.m003'](), count: 5 },
+    { id: 'phrases', label: m['pages.fontgen.m004'](), count: 5 },
+    { id: 'bold', label: m['pages.fontgen.m005'](), count: 6 },
+    { id: 'decorative', label: m['pages.fontgen.m006'](), count: 7 },
   ];
 
   const filteredGuide =
@@ -619,15 +649,28 @@ function TattooFontGeneratorPage() {
   }
 
   function resetAdjustments() {
-    setPosX(activePlacement.x);
-    setPosY(activePlacement.y);
+    // In font-only mode the canvas is a plain checkerboard with no body
+    // anchor, so centre the lettering instead of snapping to a body part.
+    setPosX(previewMode === 'font' ? 50 : activePlacement.x);
+    setPosY(previewMode === 'font' ? 50 : activePlacement.y);
     setSizePct(activePlacement.defaultSize);
     setRotation(activePlacement.defaultRotation);
     setOpacity(86);
   }
 
+  function switchPreviewMode(mode: '2d' | '3d' | 'font') {
+    if (mode === 'font') {
+      setPosX(50);
+      setPosY(50);
+    } else if (previewMode === 'font') {
+      // Coming back from the plain canvas: restore the body-part anchor.
+      setPosX(activePlacement.x);
+      setPosY(activePlacement.y);
+    }
+    setPreviewMode(mode);
+  }
+
   function handleTattooPointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    if (previewMode === 'font') return;
     if (e.button !== 0 && e.pointerType === 'mouse') return;
     e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
@@ -680,7 +723,7 @@ function TattooFontGeneratorPage() {
     if (!ctx) return;
     // Transparent RGBA background (0, 0, 0, 0) matching InkStudio.ai lettering export
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#111111';
+    ctx.fillStyle = inkColor ?? DEFAULT_INK;
     ctx.font = `${activeVariant.fontStyle === 'italic' ? 'italic ' : ''}${activeVariant.fontWeight ?? 600} 84px ${activeVariant.fontFamily}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -690,7 +733,7 @@ function TattooFontGeneratorPage() {
     a.download = `inkstudio-${activeStyle.id}.png`;
     a.click();
     toast.success(
-      t('Transparent lettering PNG downloaded', '已下载透明背景字稿 PNG')
+      m['pages.fontgen.m007']()
     );
   }
 
@@ -713,7 +756,7 @@ function TattooFontGeneratorPage() {
     y="50%"
     dominant-baseline="central"
     text-anchor="middle"
-    fill="#111111"
+    fill="${inkColor ?? DEFAULT_INK}"
     font-family="${fontFamilyAttr}"
     font-style="${fontStyleAttr}"
     font-weight="${fontWeightAttr}"
@@ -731,7 +774,7 @@ function TattooFontGeneratorPage() {
     a.download = `inkstudio-${activeStyle.id}.svg`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    toast.success(t('Vector lettering SVG downloaded', '已下载矢量字稿 SVG'));
+    toast.success(m['pages.fontgen.m008']());
   }
 
   function handleDownloadSkinPng() {
@@ -758,7 +801,7 @@ function TattooFontGeneratorPage() {
       ctx.rotate((rotation * Math.PI) / 180);
       ctx.scale(sizePct / 100, sizePct / 100);
       ctx.globalAlpha = opacity / 100;
-      ctx.fillStyle = '#1c1917';
+      ctx.fillStyle = inkColor ?? DEFAULT_INK;
       const basePx = Math.round(w * 0.072);
       ctx.font = `${activeVariant.fontStyle === 'italic' ? 'italic ' : ''}${activeVariant.fontWeight ?? 600} ${basePx}px ${activeVariant.fontFamily}`;
       ctx.textAlign = 'center';
@@ -770,7 +813,7 @@ function TattooFontGeneratorPage() {
       a.href = canvas.toDataURL('image/png');
       a.download = `inkstudio-${activeStyle.id}-${placementId}.png`;
       a.click();
-      toast.success(t('Skin preview PNG downloaded', '已下载皮肤预览 PNG'));
+      toast.success(m['pages.fontgen.m009']());
     };
     img.src = `/tattoo-font-generator/placements/${placementId}/medium.webp`;
   }
@@ -783,16 +826,10 @@ function TattooFontGeneratorPage() {
           <section className="pt-7 pb-4 text-center sm:pt-9 sm:pb-5 lg:pt-10">
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
               <h1 className="font-sans text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                {t(
-                  'Tattoo Font Generator: Realistic Skin & 3D Preview',
-                  '在线纹身字体生成器：真实皮肤与 3D 试戴预览'
-                )}
+                {m['pages.fontgen.m010']()}
               </h1>
               <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                {t(
-                  'Type a name, date, initials, or short quote to compare 20 tattoo fonts across skin tones and body placements—then inspect how the lettering wraps on skin in 3D.',
-                  '输入名字、纪念日、缩写或短句，一键对比 20 种热门纹身字体在不同肤色与身体部位的真实贴合效果，并通过 3D 查看皮肤自然起伏。'
-                )}
+                {m['pages.fontgen.m011']()}
               </p>
             </div>
           </section>
@@ -812,13 +849,10 @@ function TattooFontGeneratorPage() {
                     </div>
                     <div>
                       <h2 className="text-sm font-semibold text-foreground">
-                        {t('Text & style', '文字与风格')}
+                        {m['pages.fontgen.m012']()}
                       </h2>
                       <p className="text-xs text-muted-foreground">
-                        {t(
-                          'Enter your text and choose a lettering style.',
-                          '输入文字，并选择字稿风格。'
-                        )}
+                        {m['pages.fontgen.m013']()}
                       </p>
                     </div>
                   </div>
@@ -827,7 +861,7 @@ function TattooFontGeneratorPage() {
                   <div className="mt-5">
                     <div className="mb-1.5 flex items-center justify-between text-xs">
                       <label className="font-medium text-foreground">
-                        {t('Your text', '文字内容')}
+                        {m['pages.fontgen.m014']()}
                       </label>
                       <span className="text-muted-foreground">
                         {text.length}/30
@@ -846,51 +880,44 @@ function TattooFontGeneratorPage() {
                   {/* Lettering style 3-col grid — left-aligned with right checkmark */}
                   <div className="mt-5">
                     <div className="mb-2 text-xs font-medium text-foreground">
-                      {t('Lettering style', '字体风格')}
+                      {m['pages.fontgen.m015']()}
                     </div>
-                    <div className="grid max-h-[268px] grid-cols-3 gap-2 overflow-y-auto pr-0.5">
-                      {leftStyles.map((st) => {
-                        const active = selectedStyleId === st.id;
-                        return (
-                          <button
-                            key={st.id}
-                            type="button"
-                            onClick={() => {
-                              setSelectedStyleId(st.id);
-                              setVariantIdx(0);
-                            }}
-                            className={cn(
-                              'flex h-11 items-center justify-between rounded-lg border px-3 text-left text-xs font-medium transition-all',
-                              active
-                                ? 'border-foreground bg-foreground text-background'
-                                : 'border-border bg-white text-foreground hover:bg-muted/60'
-                            )}
-                          >
-                            <span className="truncate">
-                              {isZh ? st.zh : st.name}
-                            </span>
-                            {active && <Check className="size-3.5 shrink-0" />}
-                          </button>
-                        );
-                      })}
+                    <div className="grid max-h-[320px] grid-cols-3 gap-2 overflow-y-auto pr-0.5">
+                      {/* Font picked from the 500-font library is pinned first
+                          and shown as the active selection. */}
+                      {libraryPreset && (
+                        <FontStylePreview
+                          key={libraryPreset.id}
+                          styleId={libraryPreset.id}
+                          label={libraryPreset.name}
+                          fontFamily={libraryPreset.family}
+                          word={(text.trim() || 'Stay').slice(0, 5)}
+                          active
+                          onClick={() => setFontLibraryOpen(true)}
+                        />
+                      )}
+                      {leftStyles.map((st) => (
+                        <FontStylePreview
+                          key={st.id}
+                          styleId={st.id}
+                          label={isZh ? tDynamic(st.zh) : tDynamic(st.name)}
+                          active={!libraryPreset && selectedStyleId === st.id}
+                          onClick={() => {
+                            setSelectedStyleId(st.id);
+                            setLibraryPreset(null);
+                            setVariantIdx(0);
+                          }}
+                        />
+                      ))}
                     </div>
 
                     <button
                       type="button"
-                      onClick={() => setShowAllLeftStyles((v) => !v)}
+                      onClick={() => setFontLibraryOpen(true)}
                       className="mt-3 flex w-full items-center justify-center gap-1.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
                     >
-                      <ChevronDown
-                        className={cn(
-                          'size-3.5 transition-transform',
-                          showAllLeftStyles && 'rotate-180'
-                        )}
-                      />
-                      <span>
-                        {showAllLeftStyles
-                          ? t('Show fewer styles', '收起部分字体')
-                          : t('Show all 20 styles', '显示全部 20 种字体')}
-                      </span>
+                      <ChevronDown className="size-3.5" />
+                      <span>{m['pages.fontgen.m017']()}</span>
                     </button>
                   </div>
                 </div>
@@ -898,7 +925,7 @@ function TattooFontGeneratorPage() {
                 {/* Footer CTA */}
                 <div className="mt-5 border-t border-border pt-4">
                   <div className="mb-2.5 text-center text-[11px] text-muted-foreground">
-                    {t('Free · No sign-up required', '免费 · 无需登录')}
+                    {m['pages.fontgen.m018']()}
                   </div>
                   <button
                     type="button"
@@ -910,7 +937,7 @@ function TattooFontGeneratorPage() {
                   >
                     <Type className="size-4" />
                     <span>
-                      {t('Generate Font Preview', '生成字体预览')}
+                      {m['pages.fontgen.m019']()}
                     </span>
                   </button>
                 </div>
@@ -918,57 +945,73 @@ function TattooFontGeneratorPage() {
 
               {/* Right Card: Skin Preview + Dynamic Right Pane */}
               <div className="rounded-xl border border-border bg-white p-4 shadow-2xs">
-                {/* Toolbar: 8 Placement Thumbs + "肤色" label + 6 Skin Tone Swatches */}
+                {/* Toolbar: placement thumbs + skin tones (skin modes),
+                    or ink colour swatches (font-only mode has no body part) */}
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    {PLACEMENTS.map((p) => {
-                      const active = placementId === p.id;
-                      return (
-                        <button
-                          key={p.id}
-                          type="button"
-                          title={isZh ? p.zh : p.en}
-                          onClick={() => selectPlacement(p.id)}
-                          className={cn(
-                            'relative aspect-[2/3] w-8 overflow-hidden rounded-md border transition-all',
-                            active
-                              ? 'border-foreground ring-1 ring-foreground'
-                              : 'border-transparent opacity-80 hover:opacity-100'
-                          )}
-                        >
-                          <img
-                            src={`/tattoo-font-generator/placements/${p.id}/medium.webp`}
-                            alt={isZh ? p.zh : p.en}
-                            className="h-full w-full object-cover"
-                          />
-                        </button>
-                      );
-                    })}
-                  </div>
+                  {previewMode === 'font' ? (
+                    <InkColorPicker
+                      value={inkColor}
+                      onChange={setInkColor}
+                      labels={{
+                        title: m['pages.fontgen.ink_color'](),
+                        defaultColor: m['pages.fontgen.ink_default'](),
+                        customColor: m['pages.fontgen.ink_custom'](),
+                        eyedropper: m['pages.fontgen.ink_eyedropper'](),
+                      }}
+                    />
+                  ) : (
+                    <>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {PLACEMENTS.map((p) => {
+                          const active = placementId === p.id;
+                          return (
+                            <button
+                              key={p.id}
+                              type="button"
+                              title={isZh ? tDynamic(p.zh) : tDynamic(p.en)}
+                              onClick={() => selectPlacement(p.id)}
+                              className={cn(
+                                'relative aspect-[2/3] w-8 overflow-hidden rounded-md border transition-all',
+                                active
+                                  ? 'border-foreground ring-1 ring-foreground'
+                                  : 'border-transparent opacity-80 hover:opacity-100'
+                              )}
+                            >
+                              <img
+                                src={`/tattoo-font-generator/placements/${p.id}/medium.webp`}
+                                alt={isZh ? tDynamic(p.zh) : tDynamic(p.en)}
+                                className="h-full w-full object-cover"
+                              />
+                            </button>
+                          );
+                        })}
+                      </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">
-                      {t('Skin tone', '肤色')}
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      {SKIN_TONES.map((tone) => {
-                        const active = skinId === tone.id;
-                        return (
-                          <button
-                            key={tone.id}
-                            type="button"
-                            title={isZh ? tone.zh : tone.en}
-                            onClick={() => setSkinId(tone.id)}
-                            className={cn(
-                              'size-4 rounded-full border border-black/15 transition-all',
-                              active && 'ring-2 ring-foreground ring-offset-2'
-                            )}
-                            style={{ backgroundColor: tone.hex }}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">
+                          {m['pages.fontgen.m020']()}
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          {SKIN_TONES.map((tone) => {
+                            const active = skinId === tone.id;
+                            return (
+                              <button
+                                key={tone.id}
+                                type="button"
+                                title={isZh ? tDynamic(tone.zh) : tDynamic(tone.en)}
+                                onClick={() => setSkinId(tone.id)}
+                                className={cn(
+                                  'size-4 rounded-full border border-black/15 transition-all',
+                                  active && 'ring-2 ring-foreground ring-offset-2'
+                                )}
+                                style={{ backgroundColor: tone.hex }}
+                              />
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* 2-Column Body: Left Preview Canvas + Right Controls (when generated) or 3D Example (before generate) */}
@@ -987,7 +1030,7 @@ function TattooFontGeneratorPage() {
                       <>
                         <img
                           src={`/tattoo-font-generator/placements/${placementId}/medium.webp`}
-                          alt={activePlacement.en}
+                          alt={tDynamic(activePlacement.en)}
                           draggable={false}
                           className="pointer-events-none h-full w-full object-cover transition-all duration-300"
                           style={{ filter: activeSkin.filter }}
@@ -1022,35 +1065,30 @@ function TattooFontGeneratorPage() {
                             onPointerUp={handleTattooPointerUp}
                             onPointerCancel={handleTattooPointerUp}
                             className={cn(
-                              'absolute rounded px-2 py-1 select-none',
-                              previewMode !== 'font' &&
-                                'touch-none cursor-grab active:cursor-grabbing',
-                              previewMode !== 'font' &&
-                                (isDragging
-                                  ? 'ring-1 ring-foreground/45 ring-dashed bg-black/5'
-                                  : 'hover:ring-1 hover:ring-foreground/30 hover:ring-dashed')
+                              'absolute rounded px-2 py-1 select-none touch-none cursor-grab active:cursor-grabbing',
+                              isDragging
+                                ? 'ring-1 ring-foreground/45 ring-dashed bg-black/5'
+                                : 'hover:ring-1 hover:ring-foreground/30 hover:ring-dashed'
                             )}
                             style={{
-                              left:
-                                previewMode === 'font' ? '50%' : `${posX}%`,
-                              top:
-                                previewMode === 'font' ? '50%' : `${posY}%`,
+                              left: `${posX}%`,
+                              top: `${posY}%`,
                               transform:
                                 previewMode === 'font'
-                                  ? 'translate(-50%, -50%)'
+                                  ? `translate(-50%, -50%) scale(${sizePct / 100}) rotateZ(${rotation}deg)`
                                   : `translate(-50%, -50%) perspective(480px) rotateY(${((posX - activePlacement.x) * 0.6).toFixed(1)}deg) rotateX(${((activePlacement.y - posY) * 0.25).toFixed(1)}deg) scale(${sizePct / 100}) rotateZ(${rotation}deg)`,
-                              opacity:
-                                previewMode === 'font' ? 1 : opacity / 100,
+                              opacity: opacity / 100,
                             }}
                           >
                             <span
                               className={cn(
                                 'block whitespace-nowrap text-center',
                                 previewMode === 'font'
-                                  ? 'text-4xl text-[#111111] sm:text-[42px]'
-                                  : 'text-2xl text-[#1c1917] mix-blend-multiply sm:text-[26px]'
+                                  ? 'text-4xl sm:text-[42px]'
+                                  : 'text-2xl mix-blend-multiply sm:text-[26px]'
                               )}
                               style={{
+                                color: inkColor ?? DEFAULT_INK,
                                 fontFamily: activeVariant.fontFamily,
                                 fontStyle: activeVariant.fontStyle ?? 'normal',
                                 fontWeight: activeVariant.fontWeight ?? 500,
@@ -1065,19 +1103,14 @@ function TattooFontGeneratorPage() {
                           </div>
                         </div>
 
-                        {previewMode !== 'font' && (
-                          <span className="pointer-events-none absolute bottom-2.5 left-2.5 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-medium text-foreground/80 shadow-xs backdrop-blur-xs">
-                            {t('Drag to move', '拖动文字可调整位置')}
-                          </span>
-                        )}
+                        <span className="pointer-events-none absolute bottom-2.5 left-2.5 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-medium text-foreground/80 shadow-xs backdrop-blur-xs">
+                          {m['pages.fontgen.m021']()}
+                        </span>
                       </>
                     ) : (
                       <div className="absolute right-3 bottom-3 left-3 flex justify-center">
                         <span className="rounded-full bg-white/90 px-3.5 py-1.5 text-center text-xs font-medium text-foreground shadow-xs backdrop-blur-xs">
-                          {t(
-                            'Click Generate Font Preview to see your lettering on this skin tone and placement.',
-                            '点击“生成字体预览”，即可在此肤色与身体部位上查看真实效果。'
-                          )}
+                          {m['pages.fontgen.m022']()}
                         </span>
                       </div>
                     )}
@@ -1087,7 +1120,7 @@ function TattooFontGeneratorPage() {
                   {!generated ? (
                     <FontSurfaceDemo
                       text={text}
-                      label={t('3D Example', '3D 示例')}
+                      label={m['pages.fontgen.m023']()}
                     />
                   ) : (
                     <div className="flex flex-col justify-between rounded-xl border border-border bg-white p-5">
@@ -1095,7 +1128,7 @@ function TattooFontGeneratorPage() {
                         {/* Preview mode header + 3 tabs */}
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-semibold text-foreground">
-                            {t('Preview mode', '预览模式')}
+                            {m['pages.fontgen.m024']()}
                           </span>
                           <Info className="size-3.5 text-muted-foreground" />
                         </div>
@@ -1103,7 +1136,7 @@ function TattooFontGeneratorPage() {
                         <div className="relative mt-3 grid grid-cols-3 rounded-lg bg-muted p-1">
                           <button
                             type="button"
-                            onClick={() => setPreviewMode('2d')}
+                            onClick={() => switchPreviewMode('2d')}
                             className={cn(
                               'rounded-md py-1.5 text-xs font-medium transition-all',
                               previewMode === '2d'
@@ -1111,7 +1144,7 @@ function TattooFontGeneratorPage() {
                                 : 'text-muted-foreground hover:text-foreground'
                             )}
                           >
-                            {t('2D Skin', '2D 皮肤')}
+                            {m['pages.fontgen.m025']()}
                           </button>
 
                           <button
@@ -1121,12 +1154,9 @@ function TattooFontGeneratorPage() {
                                 openAuth();
                                 return;
                               }
-                              setPreviewMode('3d');
+                              switchPreviewMode('3d');
                               toast.info(
-                                t(
-                                  '3D Surface preview active',
-                                  '已开启 3D 曲面贴合预览'
-                                )
+                                m['pages.fontgen.m026']()
                               );
                             }}
                             className={cn(
@@ -1140,12 +1170,12 @@ function TattooFontGeneratorPage() {
                               <Sparkles className="size-2" />
                               Pro
                             </span>
-                            {t('3D Surface', '3D 曲面')}
+                            {m['pages.fontgen.m027']()}
                           </button>
 
                           <button
                             type="button"
-                            onClick={() => setPreviewMode('font')}
+                            onClick={() => switchPreviewMode('font')}
                             className={cn(
                               'rounded-md py-1.5 text-xs font-medium transition-all',
                               previewMode === 'font'
@@ -1153,7 +1183,7 @@ function TattooFontGeneratorPage() {
                                 : 'text-muted-foreground hover:text-foreground'
                             )}
                           >
-                            {t('Font only', '单字体')}
+                            {m['pages.fontgen.m028']()}
                           </button>
                         </div>
 
@@ -1171,7 +1201,7 @@ function TattooFontGeneratorPage() {
                             className="inline-flex h-8 items-center justify-center gap-1 rounded-md text-xs font-medium text-foreground transition-colors hover:bg-white"
                           >
                             <ChevronLeft className="size-3.5" />
-                            <span>{t('Previous', '上一个')}</span>
+                            <span>{m['pages.fontgen.m029']()}</span>
                           </button>
                           <button
                             type="button"
@@ -1182,7 +1212,7 @@ function TattooFontGeneratorPage() {
                             }
                             className="inline-flex h-8 items-center justify-center gap-1 rounded-md text-xs font-medium text-foreground transition-colors hover:bg-white"
                           >
-                            <span>{t('Next', '下一个')}</span>
+                            <span>{m['pages.fontgen.m030']()}</span>
                             <ChevronRight className="size-3.5" />
                           </button>
                         </div>
@@ -1190,14 +1220,14 @@ function TattooFontGeneratorPage() {
                         {/* Adjust lettering sliders */}
                         <div className="mt-5 border-t border-border pt-4">
                           <div className="mb-3 text-xs font-semibold text-foreground">
-                            {t('Adjust lettering', '调整字稿')}
+                            {m['pages.fontgen.m031']()}
                           </div>
 
                           <div className="space-y-3.5 text-xs">
                             <div>
                               <div className="mb-1 flex items-center justify-between">
                                 <span className="text-foreground">
-                                  {t('Size', '大小')}
+                                  {m['pages.fontgen.m032']()}
                                 </span>
                                 <span className="text-muted-foreground">
                                   {sizePct}%
@@ -1217,17 +1247,33 @@ function TattooFontGeneratorPage() {
 
                             <div>
                               <div className="mb-1 flex items-center justify-between">
-                                <span className="text-foreground">
-                                  {t('Rotation', '旋转')}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-foreground">
+                                    {m['pages.fontgen.m033']()}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      setRotation(rotation === 90 ? -90 : 90)
+                                    }
+                                    className={cn(
+                                      'rounded border px-1.5 py-0.5 text-[10px] font-medium transition-colors',
+                                      Math.abs(rotation) === 90
+                                        ? 'border-foreground bg-foreground text-background'
+                                        : 'border-border text-muted-foreground hover:text-foreground'
+                                    )}
+                                  >
+                                    {m['pages.fontgen.rotation_vertical']()}
+                                  </button>
+                                </div>
                                 <span className="text-muted-foreground">
                                   {rotation}°
                                 </span>
                               </div>
                               <input
                                 type="range"
-                                min={-45}
-                                max={45}
+                                min={-90}
+                                max={90}
                                 value={rotation}
                                 onChange={(e) =>
                                   setRotation(Number(e.target.value))
@@ -1239,7 +1285,7 @@ function TattooFontGeneratorPage() {
                             <div>
                               <div className="mb-1 flex items-center justify-between">
                                 <span className="text-foreground">
-                                  {t('Opacity', '透明度')}
+                                  {m['pages.fontgen.m034']()}
                                 </span>
                                 <span className="text-muted-foreground">
                                   {opacity}%
@@ -1265,7 +1311,7 @@ function TattooFontGeneratorPage() {
                               className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-foreground"
                             >
                               <RotateCcw className="size-3" />
-                              <span>{t('Reset adjustments', '重置调整')}</span>
+                              <span>{m['pages.fontgen.m035']()}</span>
                             </button>
                           </div>
                         </div>
@@ -1274,13 +1320,10 @@ function TattooFontGeneratorPage() {
                       {/* Bottom Actions: Try on your own body + Download + Save */}
                       <div className="mt-5 border-t border-border pt-4">
                         <div className="text-xs font-semibold text-foreground">
-                          {t('Try on your own body', '在你自己的身体上试戴')}
+                          {m['pages.fontgen.m036']()}
                         </div>
                         <p className="mt-0.5 text-[11px] text-muted-foreground">
-                          {t(
-                            'Upload your photo in Tattoo Try-On for a personalized skin preview.',
-                            '前往纹身试戴上传你的照片，查看专属于你的皮肤预览效果。'
-                          )}
+                          {m['pages.fontgen.m037']()}
                         </p>
 
                         <Link
@@ -1288,7 +1331,7 @@ function TattooFontGeneratorPage() {
                           className="mt-3 flex h-10 w-full items-center justify-center gap-1.5 rounded-lg bg-foreground text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
                         >
                           <Sparkles className="size-3.5" />
-                          <span>{t('Try on my body', '在我的身体上试戴')}</span>
+                          <span>{m['pages.fontgen.m038']()}</span>
                         </Link>
 
                         <div className="mt-3 grid grid-cols-2 gap-2 border-t border-border pt-3">
@@ -1302,7 +1345,7 @@ function TattooFontGeneratorPage() {
                             >
                               <Download className="size-3.5 shrink-0" />
                               <span className="truncate">
-                                {t('Download', '下载')}
+                                {m['pages.fontgen.m039']()}
                               </span>
                             </button>
 
@@ -1320,10 +1363,7 @@ function TattooFontGeneratorPage() {
                                   >
                                     <Download className="size-3.5 shrink-0 text-muted-foreground" />
                                     <span>
-                                      {t(
-                                        'Download skin preview (PNG)',
-                                        '下载皮肤预览 (PNG)'
-                                      )}
+                                      {m['pages.fontgen.m040']()}
                                     </span>
                                   </button>
                                 )}
@@ -1335,10 +1375,7 @@ function TattooFontGeneratorPage() {
                                 >
                                   <Download className="size-3.5 shrink-0 text-muted-foreground" />
                                   <span>
-                                    {t(
-                                      'Download lettering (PNG)',
-                                      '下载字稿 (PNG)'
-                                    )}
+                                    {m['pages.fontgen.m041']()}
                                   </span>
                                 </button>
                                 <button
@@ -1349,10 +1386,7 @@ function TattooFontGeneratorPage() {
                                 >
                                   <FileCode2 className="size-3.5 shrink-0 text-muted-foreground" />
                                   <span>
-                                    {t(
-                                      'Download lettering (SVG)',
-                                      '下载字稿 (SVG)'
-                                    )}
+                                    {m['pages.fontgen.m042']()}
                                   </span>
                                 </button>
                               </div>
@@ -1369,8 +1403,8 @@ function TattooFontGeneratorPage() {
                               setSaved((v) => !v);
                               toast.success(
                                 saved
-                                  ? t('Removed from favorites', '已取消收藏')
-                                  : t('Saved to your favorites', '已收藏此字体')
+                                  ? m['pages.fontgen.m043']()
+                                  : m['pages.fontgen.m044']()
                               );
                             }}
                             className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-muted/60 text-xs font-medium text-foreground transition-colors hover:bg-muted"
@@ -1381,7 +1415,7 @@ function TattooFontGeneratorPage() {
                                 saved && 'fill-foreground'
                               )}
                             />
-                            <span>{t('Save this font', '收藏此字体')}</span>
+                            <span>{m['pages.fontgen.m045']()}</span>
                           </button>
                         </div>
                       </div>
@@ -1398,26 +1432,20 @@ function TattooFontGeneratorPage() {
               <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
                 <div className="lg:col-span-6">
                   <div className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                    {t('Tattoo Font Generator guide', '纹身字体指南')}
+                    {m['pages.fontgen.m046']()}
                   </div>
                   <h2 className="mt-3 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                    {t(
-                      'Find the Best Font Style for Your Tattoo Lettering',
-                      '为您的纹身文字挑选最合适的字体风格'
-                    )}
+                    {m['pages.fontgen.m047']()}
                   </h2>
                   <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
-                    {t(
-                      'Every typeface ages differently on skin. Filter by text type to choose a style that stays crisp and readable.',
-                      '不同字体在皮肤上的线条走势与后期留色各不相同，按文字用途筛选最清晰耐看的方案。'
-                    )}
+                    {m['pages.fontgen.m048']()}
                   </p>
                   <Link
                     href="/tattoo-fonts"
                     className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-foreground hover:underline"
                   >
                     <span>
-                      {t('Compare all tattoo font styles', '对比全部纹身字体风格')}
+                      {m['pages.fontgen.m049']()}
                     </span>
                     <ArrowRight className="size-4" />
                   </Link>
@@ -1425,28 +1453,28 @@ function TattooFontGeneratorPage() {
 
                 <div className="rounded-xl border border-border bg-white p-5 lg:col-span-6">
                   <div className="text-xs font-semibold text-foreground">
-                    {t('Start with your tattoo text', '从您的文字类型开始')}
+                    {m['pages.fontgen.m050']()}
                   </div>
                   <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                     {[
                       {
-                        t: t('Names', '名字'),
-                        d: t('Cursive, Script, Fine', '连笔、手写、细线'),
+                        t: m['pages.fontgen.m002'](),
+                        d: m['pages.fontgen.m051'](),
                         cat: 'names',
                       },
                       {
-                        t: t('Dates & initials', '日期与缩写'),
-                        d: t('Roman, Typewriter', '罗马、打字机'),
+                        t: m['pages.fontgen.m052'](),
+                        d: m['pages.fontgen.m053'](),
                         cat: 'dates',
                       },
                       {
-                        t: t('Short quotes', '短句'),
-                        d: t('Classic, Handwritten', '经典、手写'),
+                        t: m['pages.fontgen.m054'](),
+                        d: m['pages.fontgen.m055'](),
                         cat: 'phrases',
                       },
                       {
-                        t: t('Bold words', '醒目单词'),
-                        d: t('Block, Blackletter', '粗体、哥特黑体'),
+                        t: m['pages.fontgen.m005'](),
+                        d: m['pages.fontgen.m056'](),
                         cat: 'bold',
                       },
                     ].map((box) => (
@@ -1510,11 +1538,11 @@ function TattooFontGeneratorPage() {
                         )}
                       >
                         <span className="pointer-events-none absolute top-3 left-3 z-10 max-w-[calc(100%-1.5rem)] truncate rounded-full border border-neutral-200 bg-white/90 px-2.5 py-1 text-[11px] font-medium text-neutral-800 shadow-sm backdrop-blur">
-                          {isZh ? `示例：${st.example}` : `Example: ${st.example}`}
+                          {m['pages.fontgen.example_prefix']({ example: st.example })}
                         </span>
                         <img
                           src={st.img}
-                          alt={isZh ? st.zh : st.name}
+                          alt={isZh ? tDynamic(st.zh) : tDynamic(st.name)}
                           loading="lazy"
                           className={cn(
                             'size-full',
@@ -1526,11 +1554,11 @@ function TattooFontGeneratorPage() {
                       <div className="flex flex-1 flex-col p-4">
                         <div className="flex min-w-0 items-start justify-between gap-3">
                           <h3 className="min-w-0 truncate font-semibold text-foreground">
-                            {isZh ? st.zh : st.name}
+                            {isZh ? tDynamic(st.zh) : tDynamic(st.name)}
                           </h3>
                           <div className="flex shrink-0 flex-wrap justify-end gap-1.5">
                             <span className="rounded-full border px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                              {isZh ? st.badgeZh : st.badgeEn}
+                              {isZh ? tDynamic(st.badgeZh) : tDynamic(st.badgeEn)}
                             </span>
                           </div>
                         </div>
@@ -1538,18 +1566,18 @@ function TattooFontGeneratorPage() {
                         <div className="mt-4 grid gap-3 border-t pt-4 text-sm leading-relaxed">
                           <div>
                             <div className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
-                              {t('Vibe', '风格感觉')}
+                              {m['pages.fontgen.m057']()}
                             </div>
                             <p className="mt-1 text-foreground">
-                              {isZh ? st.feelZh : st.feelEn}
+                              {isZh ? tDynamic(st.feelZh) : tDynamic(st.feelEn)}
                             </p>
                           </div>
                           <div>
                             <div className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
-                              {t('Best for', '常用于')}
+                              {m['pages.fontgen.m058']()}
                             </div>
                             <p className="mt-1 text-foreground">
-                              {isZh ? st.chosenForZh : st.chosenForEn}
+                              {isZh ? tDynamic(st.chosenForZh) : tDynamic(st.chosenForEn)}
                             </p>
                           </div>
                         </div>
@@ -1568,11 +1596,8 @@ function TattooFontGeneratorPage() {
                   >
                     <span>
                       {showAllGuide
-                        ? t('Show fewer styles', '收起部分风格')
-                        : t(
-                            `Show all ${filteredGuide.length} styles`,
-                            `显示全部 ${filteredGuide.length} 种风格`
-                          )}
+                        ? m['pages.fontgen.m059']()
+                        : m['pages.fontgen.show_all_styles']({ count: filteredGuide.length })}
                     </span>
                     <ChevronDown
                       className={cn(
@@ -1591,71 +1616,50 @@ function TattooFontGeneratorPage() {
             <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[340px_minmax(0,1fr)] lg:px-8">
               <div>
                 <div className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                  {t('Tattoo lettering tips', '纹身文字建议')}
+                  {m['pages.fontgen.m060']()}
                 </div>
                 <h2 className="mt-3 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                  {t(
-                    'How to Choose Tattoo Lettering That Stays Sharp',
-                    '如何挑选多年后依然清晰的纹身文字？'
-                  )}
+                  {m['pages.fontgen.m061']()}
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="rounded-xl border border-border bg-white p-6">
                   <h3 className="text-base font-semibold text-foreground">
-                    {t("Do's (What Works Best)", '推荐做法')}
+                    {m['pages.fontgen.m062']()}
                   </h3>
                   <ul className="mt-3 space-y-2.5 text-sm text-muted-foreground">
                     <li>
                       •{' '}
-                      {t(
-                        'Stick to concise names, milestone years, coordinates, or 1–4 word mottos.',
-                        '优先选择简短的英文名、纪念年份、经纬度坐标或 1–4 个词的座右铭。'
-                      )}
+                      {m['pages.fontgen.m063']()}
                     </li>
                     <li>
                       •{' '}
-                      {t(
-                        "Leave breathing room between letters so natural ink spread won't blur the text over time.",
-                        '适当拉大字母间距，防止纹身恢复后因墨水轻微晕染导致字迹粘连。'
-                      )}
+                      {m['pages.fontgen.m064']()}
                     </li>
                     <li>
                       •{' '}
-                      {t(
-                        'Align the text flow with the natural lines of your forearm, collarbone, or ribs.',
-                        '顺着小臂、锁骨或肋骨的肌肉线条排布文字，视觉上更自然流畅。'
-                      )}
+                      {m['pages.fontgen.m065']()}
                     </li>
                   </ul>
                 </div>
 
                 <div className="rounded-xl border border-border bg-white p-6">
                   <h3 className="text-base font-semibold text-foreground">
-                    {t("Don'ts (What to Avoid)", '避坑提醒')}
+                    {m['pages.fontgen.m066']()}
                   </h3>
                   <ul className="mt-3 space-y-2.5 text-sm text-muted-foreground">
                     <li>
                       •{' '}
-                      {t(
-                        'Avoid cramming intricate Gothic or Chicano script onto tiny areas like fingers or inner wrists.',
-                        '避免在手指、耳后、内手腕等极小面积使用笔画密集的哥特体或奇卡诺花体。'
-                      )}
+                      {m['pages.fontgen.m067']()}
                     </li>
                     <li>
                       •{' '}
-                      {t(
-                        "Don't force long paragraphs into a narrow patch of skin.",
-                        '不要把一整段长句子硬塞进狭小的皮肤区域。'
-                      )}
+                      {m['pages.fontgen.m068']()}
                     </li>
                     <li>
                       •{' '}
-                      {t(
-                        'Never commit to ultra-fine lines without checking needle gauge and ink retention with your artist.',
-                        '选极细线条前，先和纹身师确认最小针号与该部位的后期留色率。'
-                      )}
+                      {m['pages.fontgen.m069']()}
                     </li>
                   </ul>
                 </div>
@@ -1669,25 +1673,19 @@ function TattooFontGeneratorPage() {
               <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
                 <div className="lg:col-span-7">
                   <div className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                    {t('After you download', '导出参考图之后')}
+                    {m['pages.fontgen.m070']()}
                   </div>
                   <h2 className="mt-3 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                    {t(
-                      'Bring Clean Font References to Your Tattoo Artist',
-                      '导出高清字稿，直接带给纹身师参考'
-                    )}
+                    {m['pages.fontgen.m071']()}
                   </h2>
                 </div>
 
                 <div className="rounded-xl border border-border bg-white p-5 lg:col-span-5">
                   <h3 className="text-sm font-semibold text-foreground">
-                    {t('Double-Check Before Stenciling', '转印前最后核对')}
+                    {m['pages.fontgen.m072']()}
                   </h3>
                   <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
-                    {t(
-                      'Once the stencil is on your skin, check spelling, Roman numerals, accents, and orientation in a mirror.',
-                      '贴上转印纸后，务必对着镜子逐字检查拼写、罗马数字、重音符号及正反方向。'
-                    )}
+                    {m['pages.fontgen.m073']()}
                   </p>
                 </div>
               </div>
@@ -1695,25 +1693,16 @@ function TattooFontGeneratorPage() {
               <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
                 {[
                   {
-                    h: t('Save PNGs for Quick Comparison', '下载 PNG 快速比选'),
-                    p: t(
-                      'Download 2–3 favorite font options to your phone so you can compare placements before your session.',
-                      '把心仪的 2–3 款字体存到手机里，预约前随时对比不同部位的视觉效果。'
-                    ),
+                    h: m['pages.fontgen.m074'](),
+                    p: m['pages.fontgen.m075'](),
                   },
                   {
-                    h: t('Export SVG for Crisp Scaling', '导出 SVG 无损缩放'),
-                    p: t(
-                      'Share a lossless vector file with your artist so they can resize and print an exact stencil.',
-                      '提供无损矢量轮廓给纹身师，方便按实际尺寸精准打印转印稿。'
-                    ),
+                    h: m['pages.fontgen.m076'](),
+                    p: m['pages.fontgen.m077'](),
                   },
                   {
-                    h: t('Let Your Artist Refine the Details', '听取纹身师微调建议'),
-                    p: t(
-                      'Ask your artist to adjust stroke weight and kerning for your specific skin type and placement.',
-                      '结合您的肤质与部位，让纹身师适当调整笔画粗细与字距，确保长久耐看。'
-                    ),
+                    h: m['pages.fontgen.m078'](),
+                    p: m['pages.fontgen.m079'](),
                   },
                 ].map((card) => (
                   <div
@@ -1736,21 +1725,21 @@ function TattooFontGeneratorPage() {
           <section className="border-t border-border py-12 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 sm:px-6">
               <h2 className="mb-8 text-center font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                {t('Tattoo Font Generator FAQ', '纹身字体生成器常见问题')}
+                {m['pages.fontgen.m080']()}
               </h2>
 
               <div className="divide-y divide-border rounded-2xl border border-border bg-white">
                 {FAQS.map((item, idx) => {
                   const isOpen = openFaq === idx;
                   return (
-                    <div key={item.qEn}>
+                    <div key={tDynamic(item.qEn)}>
                       <h3 className="flex">
                         <button
                           type="button"
                           onClick={() => setOpenFaq(isOpen ? null : idx)}
                           className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted/40"
                         >
-                          <span>{isZh ? item.qZh : item.qEn}</span>
+                          <span>{isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}</span>
                           <ChevronDown
                             className={cn(
                               'size-4 shrink-0 text-muted-foreground transition-transform',
@@ -1761,7 +1750,7 @@ function TattooFontGeneratorPage() {
                       </h3>
                       {isOpen && (
                         <div className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">
-                          {isZh ? item.aZh : item.aEn}
+                          {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
                         </div>
                       )}
                     </div>
@@ -1770,6 +1759,33 @@ function TattooFontGeneratorPage() {
               </div>
             </div>
           </section>
+
+          <FontLibraryDialog
+            open={fontLibraryOpen}
+            onOpenChange={setFontLibraryOpen}
+            selectedId={libraryPreset?.id ?? null}
+            specimen={(text.trim() || 'Stay').slice(0, 5)}
+            labels={{
+              title: m['pages.fontgen.font_library_title'](),
+              searchPlaceholder: m['pages.fontgen.font_library_search'](),
+              all: m['pages.fontgen.font_library_all'](),
+              script: m['pages.fontgen.font_library_script'](),
+              gothic: m['pages.fontgen.font_library_gothic'](),
+              display: m['pages.fontgen.font_library_display'](),
+              serif: m['pages.fontgen.font_library_serif'](),
+              handwritten: m['pages.fontgen.font_library_handwritten'](),
+              showing: (count: number) =>
+                m['pages.fontgen.font_library_showing']({ count }),
+              loadMore: (count: number) =>
+                m['pages.fontgen.font_library_load_more']({ count }),
+              empty: m['pages.fontgen.font_library_empty'](),
+              close: m['pages.fontgen.font_library_close'](),
+            }}
+            onSelect={(preset) => {
+              setLibraryPreset(preset);
+              setVariantIdx(0);
+            }}
+          />
         </>
       )}
     </InkStudioPageLayout>
@@ -1778,14 +1794,10 @@ function TattooFontGeneratorPage() {
 
 export const Route = createFileRoute('/tattoo-font-generator')({
   loader: () => {
-    const isZh = getLocale() === 'zh';
+    const locale = getLocale();
     return {
-      title: isZh
-        ? '免费在线纹身字体生成器：皮肤与 3D 效果预览 | TattooGenerator.online'
-        : 'Free Tattoo Font Generator: Skin & 3D Preview | TattooGenerator.online',
-      description: isZh
-        ? '在线生成 20 种热门纹身字体，支持手腕、小臂、锁骨等身体部位与多肤色实时预览，免费导出 PNG/SVG 高清转印字稿，轻松打造专属名字与短句纹身。'
-        : 'Generate 20+ tattoo font styles online. Preview names, dates, and quotes on wrists, forearms, and multiple skin tones in 3D, then export free PNG or SVG stencils.',
+      title: m['pages.fontgen.m081']({}, { locale }),
+      description: m['pages.fontgen.m082']({}, { locale }),
     };
   },
   head: ({ loaderData }) => ({

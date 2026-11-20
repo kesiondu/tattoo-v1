@@ -18,6 +18,7 @@ import { useSession } from '@/core/auth/client';
 import { useRouter } from '@/core/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
+
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import {
@@ -31,101 +32,103 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
+import { tDynamic } from '@/core/i18n/dynamic';
+
 const BODY_TEMPLATES = [
-  { id: 'back/back-view', en: 'Full Back', zh: '满背', x: 50, y: 42, scale: 36 },
+  { id: 'back/back-view', en: 'pages.tryon.d001', zh: 'pages.tryon.d001', x: 50, y: 42, scale: 36 },
   {
     id: 'chest-torso/male-front-torso',
-    en: 'Front Torso',
-    zh: '正面躯干',
+    en: 'pages.tryon.d002',
+    zh: 'pages.tryon.d002',
     x: 50,
     y: 40,
     scale: 34,
   },
   {
     id: 'chest-torso/male-side-ribs',
-    en: 'Side Ribs',
-    zh: '侧肋骨',
+    en: 'pages.tryon.d003',
+    zh: 'pages.tryon.d003',
     x: 52,
     y: 48,
     scale: 30,
   },
   {
     id: 'arm/outer-arm',
-    en: 'Outer Arm',
-    zh: '手臂外侧',
+    en: 'pages.tryon.d004',
+    zh: 'pages.tryon.d004',
     x: 50,
     y: 44,
     scale: 26,
   },
   {
     id: 'arm/inner-arm',
-    en: 'Inner Arm',
-    zh: '手臂内侧',
+    en: 'pages.tryon.d005',
+    zh: 'pages.tryon.d005',
     x: 50,
     y: 46,
     scale: 26,
   },
   {
     id: 'leg/front-leg',
-    en: 'Front Leg',
-    zh: '腿部前侧',
+    en: 'pages.tryon.d006',
+    zh: 'pages.tryon.d006',
     x: 50,
     y: 44,
     scale: 28,
   },
   {
     id: 'leg/back-leg',
-    en: 'Back Leg',
-    zh: '腿部后侧',
+    en: 'pages.tryon.d007',
+    zh: 'pages.tryon.d007',
     x: 50,
     y: 44,
     scale: 28,
   },
   {
     id: 'leg/outer-leg',
-    en: 'Outer Leg',
-    zh: '腿部外侧',
+    en: 'pages.tryon.d008',
+    zh: 'pages.tryon.d008',
     x: 50,
     y: 44,
     scale: 28,
   },
   {
     id: 'hand/back-of-hand',
-    en: 'Back of Hand',
-    zh: '手背',
+    en: 'pages.tryon.d009',
+    zh: 'pages.tryon.d009',
     x: 50,
     y: 56,
     scale: 24,
   },
-  { id: 'hand/palm', en: 'Palm', zh: '手掌', x: 50, y: 58, scale: 24 },
+  { id: 'hand/palm', en: 'pages.tryon.d010', zh: 'pages.tryon.d010', x: 50, y: 58, scale: 24 },
   {
     id: 'foot-ankle/top-outer-foot-ankle',
-    en: 'Foot & Ankle',
-    zh: '脚背与脚踝',
+    en: 'pages.tryon.d011',
+    zh: 'pages.tryon.d011',
     x: 54,
     y: 64,
     scale: 24,
   },
   {
     id: 'neck-ear/front-neck-collarbone',
-    en: 'Collarbone',
-    zh: '颈前与锁骨',
+    en: 'pages.tryon.d012',
+    zh: 'pages.tryon.d012',
     x: 50,
     y: 58,
     scale: 28,
   },
   {
     id: 'neck-ear/side-neck-behind-ear',
-    en: 'Behind Ear',
-    zh: '颈侧与耳后',
+    en: 'pages.tryon.d013',
+    zh: 'pages.tryon.d013',
     x: 52,
     y: 46,
     scale: 24,
   },
   {
     id: 'neck-ear/back-of-neck',
-    en: 'Back of Neck',
-    zh: '后颈',
+    en: 'pages.tryon.d014',
+    zh: 'pages.tryon.d014',
     x: 50,
     y: 48,
     scale: 26,
@@ -143,7 +146,6 @@ const SKIN_TONES = [
 
 function TattooTryOnPage() {
   const isZh = getLocale() === 'zh';
-  const t = (en: string, zh: string) => (isZh ? zh : en);
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -415,10 +417,7 @@ function TattooTryOnPage() {
                               openAuth();
                             } else {
                               toast.info(
-                                t(
-                                  'No saved body photos yet',
-                                  '暂无已保存的身体照片'
-                                )
+                                m['pages.tryon.m001']()
                               );
                             }
                           }}
@@ -567,7 +566,7 @@ function TattooTryOnPage() {
                         </div>
                       </div>
                       <span className="pointer-events-none absolute bottom-2.5 left-2.5 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-medium text-foreground/80 shadow-xs backdrop-blur-xs">
-                        {t('Drag tattoo to move', '拖动纹身可调整位置')}
+                        {m['pages.tryon.m002']()}
                       </span>
                     </div>
 
@@ -575,7 +574,7 @@ function TattooTryOnPage() {
                     <div className="grid w-full grid-cols-2 gap-3 rounded-xl border border-border bg-white/95 p-3.5 text-xs shadow-xs backdrop-blur-xs sm:grid-cols-5">
                       <label className="space-y-1">
                         <span className="flex justify-between font-medium">
-                          <span>{t('Size', '大小')}</span>
+                          <span>{m['pages.tryon.m003']()}</span>
                           <span className="text-muted-foreground">{scale}%</span>
                         </span>
                         <input
@@ -589,7 +588,7 @@ function TattooTryOnPage() {
                       </label>
                       <label className="space-y-1">
                         <span className="flex justify-between font-medium">
-                          <span>{t('Rotate', '旋转')}</span>
+                          <span>{m['pages.tryon.m004']()}</span>
                           <span className="text-muted-foreground">
                             {rotation}°
                           </span>
@@ -605,7 +604,7 @@ function TattooTryOnPage() {
                       </label>
                       <label className="space-y-1">
                         <span className="flex justify-between font-medium">
-                          <span>{t('Blend', '融合')}</span>
+                          <span>{m['pages.tryon.m005']()}</span>
                           <span className="text-muted-foreground">
                             {opacity}%
                           </span>
@@ -652,7 +651,7 @@ function TattooTryOnPage() {
                           className="inline-flex h-8 cursor-pointer items-center gap-1 rounded-lg border border-border bg-white px-2.5 text-xs font-medium text-foreground hover:bg-muted"
                         >
                           <RotateCcw className="size-3" />
-                          <span>{t('Reset', '重置')}</span>
+                          <span>{m['pages.tryon.m006']()}</span>
                         </button>
                       </div>
                     </div>
@@ -876,13 +875,13 @@ function TattooTryOnPage() {
                       <div className="aspect-[2/3] overflow-hidden bg-[#f4f4f5]">
                         <img
                           src={url}
-                          alt={isZh ? tpl.zh : tpl.en}
+                          alt={isZh ? tDynamic(tpl.zh) : tDynamic(tpl.en)}
                           loading="lazy"
                           className="h-full w-full object-contain"
                         />
                       </div>
                       <div className="px-1.5 py-2 text-[11px] font-medium text-foreground">
-                        {isZh ? tpl.zh : tpl.en}
+                        {isZh ? tDynamic(tpl.zh) : tDynamic(tpl.en)}
                       </div>
                     </button>
                   );

@@ -108,6 +108,7 @@ function useLoopingPath(waypoints: Waypoint[], segmentDurationMs: number) {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (waypoints.length === 0) return;
     const reduced = window.matchMedia?.(
       '(prefers-reduced-motion: reduce)'
     ).matches;
@@ -121,14 +122,22 @@ function useLoopingPath(waypoints: Waypoint[], segmentDurationMs: number) {
     const startTime = performance.now();
 
     const tick = (now: number) => {
-      const elapsed = (now - startTime) % totalDuration;
+      // Guard against waypoints changing (e.g. during HMR) while a frame is
+      // in flight, which would otherwise leave `a`/`b` undefined.
+      if (waypoints.length < 2) return;
+      const elapsed = ((now - startTime) % totalDuration + totalDuration) % totalDuration;
       const segFloat = elapsed / segmentDurationMs;
-      const idx = Math.floor(segFloat) % waypoints.length;
+      const rawIdx = Math.floor(segFloat);
+      const idx = rawIdx % waypoints.length;
       const nextIdx = (idx + 1) % waypoints.length;
-      const localT = easeInOutCubic(segFloat - Math.floor(segFloat));
+      const localT = easeInOutCubic(segFloat - rawIdx);
 
       const a = waypoints[idx];
       const b = waypoints[nextIdx];
+      if (!a || !b) {
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
 
       setPose({
         x: lerp(a.x, b.x, localT),

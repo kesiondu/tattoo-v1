@@ -48,6 +48,9 @@ import '@fontsource-variable/syne';
 import '@fontsource/libre-baskerville/400.css';
 import '@fontsource/libre-baskerville/700.css';
 import '@fontsource/libre-baskerville/400-italic.css';
+// Decorative lettering faces used by the tattoo font library (latin subsets,
+// generated in src/styles/tattoo-fonts.css by scripts/gen-font-library.cjs).
+import '@/styles/tattoo-fonts.css';
 import '@/styles/globals.css';
 
 // Analytics IDs live in the DB config (1h-cached service). Fetched via a

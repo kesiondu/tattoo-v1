@@ -12,6 +12,7 @@ import { useSession } from '@/core/auth/client';
 import { apiPost } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
+
 import { getLocale } from '@/paraglide/runtime.js';
 import {
   BODY_PARTS,
@@ -214,7 +215,6 @@ export function HeroGenerator({
   const [generatedBodyUrl, setGeneratedBodyUrl] = useState<string | null>(null);
   const [generatedArtUrl, setGeneratedArtUrl] = useState<string | null>(null);
   const [activeModelLabel, setActiveModelLabel] = useState<string | null>(null);
-  const isZh = getLocale() === 'zh';
 
   const visibleStyles = showAllStyles ? ALL_STYLES : PRIMARY_STYLES;
   const activeStyleObj =
@@ -709,9 +709,7 @@ export function HeroGenerator({
                     >
                       <Sparkles className="size-3" />
                       <span>
-                        {isZh
-                          ? '高质量身体预览 (Nano Banana Pro)'
-                          : 'HQ Body Preview (Nano Banana Pro)'}
+                        {m['pages.home.m001']()}
                       </span>
                     </button>
                     <button
@@ -722,9 +720,7 @@ export function HeroGenerator({
                     >
                       <Sparkles className="size-3" />
                       <span>
-                        {isZh
-                          ? '生成白底图稿 (Nano Banana Pro)'
-                          : 'Clean Artwork (Nano Banana Pro)'}
+                        {m['pages.home.m002']()}
                       </span>
                     </button>
                   </div>

@@ -24,6 +24,9 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
+import { m } from '@/paraglide/messages.js';
+import { tDynamic } from '@/core/i18n/dynamic';
+
 const CITIES = [
   { name: 'United States Average', mult: 1.0 },
   { name: 'Canada Average', mult: 0.95 },
@@ -131,52 +134,51 @@ const BODY_AREA_MODAL_ITEMS = [
 
 const CALC_FAQS = [
   {
-    qEn: 'How much does a tattoo cost on average?',
-    qZh: '纹身平均一般需要多少钱？',
-    aEn: 'As a typical planning range, tiny or small tattoos are often $90-$300, medium tattoos $250-$700, and large standalone, sleeve, or back work can range from $700 to $7,000+.',
-    aZh: '作为常见参考，迷你或小图通常在 $90-$300，中图在 $250-$700，大面积单图、花臂或满背通常在 $700 至 $7,000+。',
+    qEn: 'pages.price.d001',
+    qZh: 'pages.price.d001',
+    aEn: 'pages.price.d002',
+    aZh: 'pages.price.d002',
   },
   {
-    qEn: 'What affects tattoo pricing most?',
-    qZh: '哪些因素对纹身报价影响最大？',
-    aEn: 'Size, hours of work, style complexity, placement, color, artist experience, location, and studio minimums all affect the quote.',
-    aZh: '图案尺寸、预计工时、风格精细度、部位难度、是否上色、纹身师资历、城市消费水平及门店起步价都会直接影响报价。',
+    qEn: 'pages.price.d003',
+    qZh: 'pages.price.d003',
+    aEn: 'pages.price.d004',
+    aZh: 'pages.price.d004',
   },
   {
-    qEn: 'Do color tattoos cost more?',
-    qZh: '彩色纹身会更贵吗？',
-    aEn: 'Often yes. Color can require more layering, blending, materials, and time than comparable black and grey work.',
-    aZh: '通常会略高。彩色纹身往往需要更多叠色、过渡与耗材，耗时也比同尺寸黑灰略长。',
+    qEn: 'pages.price.d005',
+    qZh: 'pages.price.d005',
+    aEn: 'pages.price.d006',
+    aZh: 'pages.price.d006',
   },
   {
-    qEn: 'Why do artists charge different rates?',
-    qZh: '为什么不同纹身师收费差距很大？',
-    aEn: 'Rates reflect experience, specialization, demand, local costs, reputation, and the amount of custom design work involved.',
-    aZh: '价格体现了纹身师的从业年限、擅长细分领域、排期热度、当地成本以及原创定制手稿的时间投入。',
+    qEn: 'pages.price.d007',
+    qZh: 'pages.price.d007',
+    aEn: 'pages.price.d008',
+    aZh: 'pages.price.d008',
   },
   {
-    qEn: 'Does placement affect cost?',
-    qZh: '身体部位会影响纹身价格吗？',
-    aEn: 'Yes. Sensitive, curved, or difficult-to-reach placements often take more time and precision.',
-    aZh: '会。肋骨、手部、颈部等敏感、曲度大或易变形的部位需要更细致的操作与更多工时。',
+    qEn: 'pages.price.d009',
+    qZh: 'pages.price.d009',
+    aEn: 'pages.price.d010',
+    aZh: 'pages.price.d010',
   },
   {
-    qEn: 'Can this tattoo cost calculator replace a studio quote?',
-    qZh: '这个计算器能替代纹身店正式报价吗？',
-    aEn: 'No. It gives a planning estimate based on size, city, placement, style, artist level, tip, and aftercare. A tattoo artist or studio still needs to confirm the final quote after reviewing your design.',
-    aZh: '不能。它提供的是综合尺寸、城市、部位、风格、小费与护理费用的预算参考，最终价格仍需纹身师看图确认。',
+    qEn: 'pages.price.d011',
+    qZh: 'pages.price.d011',
+    aEn: 'pages.price.d012',
+    aZh: 'pages.price.d012',
   },
   {
-    qEn: 'How accurate is this tattoo price calculator?',
-    qZh: '纹身价格计算器的结果有多准确？',
-    aEn: 'It provides a general planning range, not a final quote. Your artist must assess the exact design and placement.',
-    aZh: '它提供的是合理的市场预算区间，而非最终合同价，具体金额需由纹身师结合实际手稿与部位评估。',
+    qEn: 'pages.price.d013',
+    qZh: 'pages.price.d013',
+    aEn: 'pages.price.d014',
+    aZh: 'pages.price.d014',
   },
 ];
 
 function TattooPriceCalculatorPage() {
   const isZh = getLocale() === 'zh';
-  const t = (en: string, zh: string) => (isZh ? zh : en);
   const { data: session } = useSession();
 
   const [city, setCity] = useState('');
@@ -262,19 +264,13 @@ function TattooPriceCalculatorPage() {
             <div className="mx-auto max-w-[1088px] px-4 sm:px-6">
               <div className="mb-8 max-w-3xl">
                 <div className="text-xs font-medium text-foreground">
-                  {t(
-                    'Plan the budget before the appointment',
-                    '预约纹身之前先规划好预算'
-                  )}
+                  {m['pages.price.m001']()}
                 </div>
                 <h1 className="mt-2 font-sans text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-                  {t('Tattoo Price Calculator', '纹身价格计算器')}
+                  {m['pages.price.m002']()}
                 </h1>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                  {t(
-                    'See what your tattoo may cost before booking. Get an instant price range by size, style, body placement, color, detail, and artist experience, then refine it with city, tip, aftercare, and total planning budget.',
-                    '按尺寸、风格、部位、上色、精细度与纹身师资历即时估算合理价格区间，并可叠加城市系数、小费与护理预算。'
-                  )}
+                  {m['pages.price.m003']()}
                 </p>
               </div>
 
@@ -288,14 +284,11 @@ function TattooPriceCalculatorPage() {
                         <Calculator className="size-4" />
                       </div>
                       <h2 className="text-base font-semibold text-foreground">
-                        {t('Tattoo details', '纹身参数详情')}
+                        {m['pages.price.m004']()}
                       </h2>
                     </div>
                     <p className="mt-2 text-xs text-muted-foreground">
-                      {t(
-                        'Start with the essentials, then open advanced options when you want a tighter budget range.',
-                        '先填写核心参数，如需更精准的预算区间可展开高级选项。'
-                      )}
+                      {m['pages.price.m005']()}
                     </p>
                   </div>
 
@@ -309,7 +302,7 @@ function TattooPriceCalculatorPage() {
                         <div>
                           <div className="flex items-center gap-1.5">
                             <span className="text-xs font-semibold text-foreground">
-                              {t('Autofill from an image', '从图片自动识别参数')}
+                              {m['pages.price.m006']()}
                             </span>
                             <span className="inline-flex items-center gap-0.5 rounded bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-foreground">
                               <Sparkles className="size-2.5" />
@@ -317,10 +310,7 @@ function TattooPriceCalculatorPage() {
                             </span>
                           </div>
                           <p className="mt-0.5 text-[11px] text-muted-foreground">
-                            {t(
-                              'Let AI fill the details it can reliably detect.',
-                              '让 AI 自动填充从图片中识别出的风格与复杂度。'
-                            )}
+                            {m['pages.price.m007']()}
                           </p>
                         </div>
                       </div>
@@ -334,7 +324,7 @@ function TattooPriceCalculatorPage() {
                           className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-xs font-medium text-foreground hover:bg-muted"
                         >
                           <Upload className="size-3.5" />
-                          <span>{t('Upload image', '上传图片')}</span>
+                          <span>{m['pages.price.m008']()}</span>
                         </button>
                         <button
                           type="button"
@@ -344,7 +334,7 @@ function TattooPriceCalculatorPage() {
                           className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-xs font-medium text-foreground hover:bg-muted"
                         >
                           <FolderHeart className="size-3.5" />
-                          <span>{t('My Designs', '我的设计')}</span>
+                          <span>{m['pages.price.m009']()}</span>
                         </button>
                       </div>
                     </div>
@@ -353,7 +343,7 @@ function TattooPriceCalculatorPage() {
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>
                         <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                          {t('CITY OR REGION', '所在城市或地区')}
+                          {m['pages.price.m010']()}
                         </label>
                         <select
                           value={city}
@@ -361,10 +351,7 @@ function TattooPriceCalculatorPage() {
                           className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
                         >
                           <option value="">
-                            {t(
-                              'Choose a city or regional average',
-                              '选择城市或地区均值'
-                            )}
+                            {m['pages.price.m011']()}
                           </option>
                           {CITIES.map((c) => (
                             <option key={c.name} value={c.name}>
@@ -375,17 +362,14 @@ function TattooPriceCalculatorPage() {
                         <p className="mt-1.5 flex items-start gap-1 text-[11px] text-muted-foreground">
                           <MapPin className="mt-0.5 size-3 shrink-0" />
                           <span>
-                            {t(
-                              'If your city is not listed, use the closest regional average.',
-                              '如果未列出您的城市，请选择最接近的地区均值。'
-                            )}
+                            {m['pages.price.m012']()}
                           </span>
                         </p>
                       </div>
 
                       <div>
                         <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                          {t('ARTIST EXPERIENCE', '纹身师资历')}
+                          {m['pages.price.m013']()}
                         </label>
                         <select
                           value={artistId}
@@ -393,7 +377,7 @@ function TattooPriceCalculatorPage() {
                           className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
                         >
                           <option value="">
-                            {t('Select experience', '选择资历等级')}
+                            {m['pages.price.m014']()}
                           </option>
                           {ARTISTS.map((a) => (
                             <option key={a.id} value={a.id}>
@@ -410,17 +394,11 @@ function TattooPriceCalculatorPage() {
                         <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
                           <Scan className="size-3.5" />
                           <span>
-                            {t(
-                              'Mark the intended body area',
-                              '标记计划纹身的身体部位'
-                            )}
+                            {m['pages.price.m015']()}
                           </span>
                         </div>
                         <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                          {t(
-                            'If placement or size is missing, choose a body template and circle the intended area—no measuring required.',
-                            '如果还不确定具体尺寸或部位，可选择人体模板圈出目标区域——无需手动测量。'
-                          )}
+                          {m['pages.price.m016']()}
                         </p>
                       </div>
                       <button
@@ -429,7 +407,7 @@ function TattooPriceCalculatorPage() {
                         className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
                       >
                         <Scan className="size-3.5" />
-                        <span>{t('Choose body area', '选择身体区域')}</span>
+                        <span>{m['pages.price.m017']()}</span>
                       </button>
                     </div>
 
@@ -437,7 +415,7 @@ function TattooPriceCalculatorPage() {
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>
                         <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                          {t('TATTOO SIZE', '纹身尺寸')}
+                          {m['pages.price.m018']()}
                         </label>
                         <select
                           value={sizeId}
@@ -445,7 +423,7 @@ function TattooPriceCalculatorPage() {
                           className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
                         >
                           <option value="">
-                            {t('Select size', '选择尺寸')}
+                            {m['pages.price.m019']()}
                           </option>
                           {SIZES.map((s) => (
                             <option key={s.id} value={s.id}>
@@ -457,7 +435,7 @@ function TattooPriceCalculatorPage() {
 
                       <div>
                         <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                          {t('BODY PLACEMENT', '具体部位')}
+                          {m['pages.price.m020']()}
                         </label>
                         <select
                           value={placement}
@@ -465,7 +443,7 @@ function TattooPriceCalculatorPage() {
                           className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
                         >
                           <option value="">
-                            {t('Select placement', '选择部位')}
+                            {m['pages.price.m021']()}
                           </option>
                           {PLACEMENTS.map((p) => (
                             <option key={p.id} value={p.id}>
@@ -480,7 +458,7 @@ function TattooPriceCalculatorPage() {
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>
                         <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                          {t('STYLE', '纹身风格')}
+                          {m['pages.price.m022']()}
                         </label>
                         <select
                           value={style}
@@ -497,7 +475,7 @@ function TattooPriceCalculatorPage() {
 
                       <div>
                         <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                          {t('COLOR', '上色类型')}
+                          {m['pages.price.m023']()}
                         </label>
                         <select
                           value={color}
@@ -507,13 +485,13 @@ function TattooPriceCalculatorPage() {
                           className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
                         >
                           <option value="bg">
-                            {t('Black and grey', '黑灰单色')}
+                            {m['pages.price.m024']()}
                           </option>
                           <option value="limited">
-                            {t('Limited color', '局部点缀彩色')}
+                            {m['pages.price.m025']()}
                           </option>
                           <option value="full">
-                            {t('Full color', '全彩上色')}
+                            {m['pages.price.m026']()}
                           </option>
                         </select>
                       </div>
@@ -522,7 +500,7 @@ function TattooPriceCalculatorPage() {
                     {/* Complexity 4-button group */}
                     <div>
                       <div className="mb-1.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                        {t('DESIGN COMPLEXITY', '图案精细度')}
+                        {m['pages.price.m027']()}
                       </div>
                       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                         {COMPLEXITIES.map((c) => (
@@ -550,7 +528,7 @@ function TattooPriceCalculatorPage() {
                         onClick={() => setShowAdvanced((v) => !v)}
                         className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground"
                       >
-                        <span>{t('Advanced options', '高级选项')}</span>
+                        <span>{m['pages.price.m028']()}</span>
                         <ChevronDown
                           className={cn(
                             'size-3.5 transition-transform',
@@ -562,7 +540,7 @@ function TattooPriceCalculatorPage() {
                       {showAdvanced && (
                         <div className="mt-3">
                           <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                            {t('DESIGN TYPE', '设计定制程度')}
+                            {m['pages.price.m029']()}
                           </label>
                           <select
                             value={designType}
@@ -574,13 +552,13 @@ function TattooPriceCalculatorPage() {
                             className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
                           >
                             <option value="flash">
-                              {t('Flash design', '现成手稿 (Flash)')}
+                              {m['pages.price.m030']()}
                             </option>
                             <option value="semi">
-                              {t('Semi-custom', '半定制修改')}
+                              {m['pages.price.m031']()}
                             </option>
                             <option value="full">
-                              {t('Fully custom', '完全原创定制')}
+                              {m['pages.price.m032']()}
                             </option>
                           </select>
                         </div>
@@ -593,8 +571,8 @@ function TattooPriceCalculatorPage() {
                       className="flex h-11 w-full items-center justify-center rounded-lg bg-foreground text-sm font-semibold text-background transition-all hover:bg-foreground/90"
                     >
                       {calculated
-                        ? t('Update estimate', '更新估算价格')
-                        : t('Calculate tattoo price', '计算纹身预估价格')}
+                        ? m['pages.price.m033']()
+                        : m['pages.price.m034']()}
                     </button>
                   </div>
                 </div>
@@ -605,7 +583,7 @@ function TattooPriceCalculatorPage() {
                   <div className="flex items-center gap-2 bg-foreground px-5 py-3.5 text-background">
                     <DollarSign className="size-4" />
                     <span className="text-sm font-semibold">
-                      {t('Tattoo price estimate', '纹身价格预估')}
+                      {m['pages.price.m035']()}
                     </span>
                   </div>
 
@@ -617,18 +595,15 @@ function TattooPriceCalculatorPage() {
                         </div>
 
                         <p className="mt-4 max-w-xs text-xs leading-relaxed text-muted-foreground">
-                          {t(
-                            'Complete the required details manually or use an image to fill them, then calculate your tattoo price.',
-                            '手动填写左侧参数或上传图片自动识别，随后点击计算获取您的纹身价格区间。'
-                          )}
+                          {m['pages.price.m036']()}
                         </p>
 
                         <div className="mt-4 flex flex-wrap justify-center gap-1.5">
                           {[
-                            t('Location', '地区'),
-                            t('Artist level', '纹身师资历'),
-                            t('Size and placement', '尺寸与部位'),
-                            t('Design details', '设计细节'),
+                            m['pages.price.m037'](),
+                            m['pages.price.m038'](),
+                            m['pages.price.m039'](),
+                            m['pages.price.m040'](),
                           ].map((pill) => (
                             <span
                               key={pill}
@@ -641,7 +616,7 @@ function TattooPriceCalculatorPage() {
 
                         <div className="mt-6 w-full">
                           <div className="mb-2.5 text-center text-xs text-muted-foreground">
-                            {t('Try an example', '试试常见示例')}
+                            {m['pages.price.m041']()}
                           </div>
                           <div className="space-y-2">
                             <button
@@ -649,21 +624,21 @@ function TattooPriceCalculatorPage() {
                               onClick={() => applyExample('tiny')}
                               className="flex h-10 w-full items-center justify-center rounded-lg border border-border bg-white px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
                             >
-                              {t('Tiny wrist fine line', '手腕迷你细线纹身')}
+                              {m['pages.price.m042']()}
                             </button>
                             <button
                               type="button"
                               onClick={() => applyExample('medium')}
                               className="flex h-10 w-full items-center justify-center rounded-lg border border-border bg-white px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
                             >
-                              {t('Medium forearm realism', '小臂中等写实纹身')}
+                              {m['pages.price.m043']()}
                             </button>
                             <button
                               type="button"
                               onClick={() => applyExample('half')}
                               className="flex h-10 w-full items-center justify-center rounded-lg border border-border bg-white px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
                             >
-                              {t('Half sleeve Japanese', '日式半臂传统纹身')}
+                              {m['pages.price.m044']()}
                             </button>
                           </div>
                         </div>
@@ -676,7 +651,7 @@ function TattooPriceCalculatorPage() {
                         </div>
                         <div className="mt-1.5 flex items-center gap-3 text-xs text-muted-foreground">
                           <span>
-                            {t('Typical', '常见中位价')}{' '}
+                            {m['pages.price.m045']()}{' '}
                             <strong className="text-foreground">
                               ${typical.toLocaleString()}
                             </strong>
@@ -684,7 +659,7 @@ function TattooPriceCalculatorPage() {
                           <span>·</span>
                           <span>
                             {sizeObj.hrs[0]} - {sizeObj.hrs[1]}{' '}
-                            {t('hrs', '小时')}
+                            {m['pages.price.m046']()}
                           </span>
                         </div>
 
@@ -692,7 +667,7 @@ function TattooPriceCalculatorPage() {
                         <div className="mt-5 grid grid-cols-1 gap-3 border-t border-border pt-4">
                           <div>
                             <label className="mb-1 block text-[11px] font-semibold text-foreground">
-                              {t('Tip planning', '小费预算')}
+                              {m['pages.price.m047']()}
                             </label>
                             <select
                               value={tipMode}
@@ -700,26 +675,20 @@ function TattooPriceCalculatorPage() {
                               className="h-9 w-full rounded-lg border border-input bg-white px-2.5 text-xs text-foreground outline-none"
                             >
                               <option value="none">
-                                {t('No tip included', '不含小费')}
+                                {m['pages.price.m048']()}
                               </option>
                               <option value="std">
-                                {t(
-                                  'Standard tip (15-20%)',
-                                  '标准小费 (15-20%)'
-                                )}
+                                {m['pages.price.m049']()}
                               </option>
                               <option value="gen">
-                                {t(
-                                  'Generous tip (20-25%)',
-                                  '慷慨小费 (20-25%)'
-                                )}
+                                {m['pages.price.m050']()}
                               </option>
                             </select>
                           </div>
 
                           <div>
                             <label className="mb-1 block text-[11px] font-semibold text-foreground">
-                              {t('Aftercare budget', '修复护理预算')}
+                              {m['pages.price.m051']()}
                             </label>
                             <select
                               value={aftercare}
@@ -729,16 +698,16 @@ function TattooPriceCalculatorPage() {
                               className="h-9 w-full rounded-lg border border-input bg-white px-2.5 text-xs text-foreground outline-none"
                             >
                               <option value="none">
-                                {t('Not included', '暂不包含')}
+                                {m['pages.price.m052']()}
                               </option>
                               <option value="basic">
-                                {t('Basic ($30-$60)', '基础护理 ($30-$60)')}
+                                {m['pages.price.m053']()}
                               </option>
                               <option value="std">
-                                {t('Standard ($30-$100)', '标准护理 ($30-$100)')}
+                                {m['pages.price.m054']()}
                               </option>
                               <option value="ext">
-                                {t('Extended ($80-$150)', '全套护理 ($80-$150)')}
+                                {m['pages.price.m055']()}
                               </option>
                             </select>
                           </div>
@@ -752,7 +721,7 @@ function TattooPriceCalculatorPage() {
                             className="flex w-full items-center justify-between text-xs font-semibold text-foreground"
                           >
                             <span>
-                              {t('View price breakdown', '查看系数拆解')}
+                              {m['pages.price.m056']()}
                             </span>
                             <ChevronDown
                               className={cn(
@@ -765,35 +734,35 @@ function TattooPriceCalculatorPage() {
                           {showBreakdown && (
                             <dl className="mt-2.5 space-y-1.5 text-xs text-muted-foreground">
                               <div className="flex justify-between">
-                                <dt>{t('Base size', '基础尺寸')}</dt>
+                                <dt>{m['pages.price.m057']()}</dt>
                                 <dd className="font-medium text-foreground">
                                   ${sizeObj.base[0]} - ${sizeObj.base[1]}
                                 </dd>
                               </div>
                               <div className="flex justify-between">
-                                <dt>{t('City', '城市系数')}</dt>
+                                <dt>{m['pages.price.m058']()}</dt>
                                 <dd>{cityObj.mult.toFixed(2)}x</dd>
                               </div>
                               <div className="flex justify-between">
                                 <dt>
-                                  {t('Style', '风格')} ({styleObj.name})
+                                  {m['pages.price.m059']()} ({styleObj.name})
                                 </dt>
                                 <dd>{styleObj.mult.toFixed(2)}x</dd>
                               </div>
                               <div className="flex justify-between">
                                 <dt>
-                                  {t('Placement', '部位')} ({placeObj.id})
+                                  {m['pages.price.m060']()} ({placeObj.id})
                                 </dt>
                                 <dd>{placeObj.mult.toFixed(2)}x</dd>
                               </div>
                               <div className="flex justify-between">
                                 <dt>
-                                  {t('Complexity', '精细度')} ({compObj.id})
+                                  {m['pages.price.m061']()} ({compObj.id})
                                 </dt>
                                 <dd>{compObj.mult.toFixed(2)}x</dd>
                               </div>
                               <div className="flex justify-between">
-                                <dt>{t('Artist level', '资历系数')}</dt>
+                                <dt>{m['pages.price.m062']()}</dt>
                                 <dd>{artistObj.mult.toFixed(2)}x</dd>
                               </div>
                             </dl>
@@ -805,10 +774,7 @@ function TattooPriceCalculatorPage() {
                           className="mt-5 flex h-10 w-full items-center justify-center gap-1.5 rounded-lg bg-foreground text-xs font-semibold text-background hover:bg-foreground/90"
                         >
                           <span>
-                            {t(
-                              'Preview your tattoo design',
-                              '先用 AI 预览我的纹身'
-                            )}
+                            {m['pages.price.m063']()}
                           </span>
                           <ArrowRight className="size-3.5" />
                         </Link>
@@ -824,52 +790,34 @@ function TattooPriceCalculatorPage() {
           <section className="border-y border-border bg-muted/20 py-16 sm:py-20">
             <div className="mx-auto max-w-[1088px] px-4 sm:px-6">
               <h2 className="font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                {t('How tattoo pricing works', '纹身定价原理说明')}
+                {m['pages.price.m064']()}
               </h2>
 
               <div className="mt-8 grid gap-4 md:grid-cols-2">
                 {[
                   {
-                    h: t('How we estimate tattoo cost', '我们如何估算价格'),
-                    p: t(
-                      'We start from a baseline size range, then apply studio multipliers for style detail, placement difficulty, ink color, artist tier, and local market rates.',
-                      '以图案尺寸的基础区间为基准，再叠加风格复杂度、部位操作难度、上色、纹身师资历与城市系数综合计算。'
-                    ),
+                    h: m['pages.price.m065'](),
+                    p: m['pages.price.m066'](),
                   },
                   {
-                    h: t('Tattoo cost by size', '按尺寸看常见价位'),
-                    p: t(
-                      'Tiny/Small (2–3 in): $90–$300 · Medium (4–5 in): $250–$700 · Large standalone: $650–$1,500 · Half/Full Sleeve & Back: $1,200–$7,000+.',
-                      '迷你/小图：$90–$300 · 中图：$250–$700 · 大面积单图：$650–$1,500 · 半臂/整臂/满背：$1,200–$7,000+。'
-                    ),
+                    h: m['pages.price.m067'](),
+                    p: m['pages.price.m068'](),
                   },
                   {
-                    h: t('Cost by placement', '部位对价格的影响'),
-                    p: t(
-                      'Flat, easy-to-stretch areas like outer forearms and thighs stay near 1.0x, while ribs, sternum, hands, and necks often take extra precision and time.',
-                      '小臂外侧与大腿等平整区域接近基准价；肋骨、胸骨、手部与颈部通常需要更高精度与更多耗时。'
-                    ),
+                    h: m['pages.price.m069'](),
+                    p: m['pages.price.m070'](),
                   },
                   {
-                    h: t('Cost by style', '风格对价格的影响'),
-                    p: t(
-                      'Minimalist and simple linework finish fastest; Realism, Japanese, Dotwork, and full-color Neo-Traditional require layered shading and longer sessions.',
-                      '极简与简约线条耗时最短；写实、日式、点刺与全彩新传统需要多层过渡与更长工时。'
-                    ),
+                    h: m['pages.price.m071'](),
+                    p: m['pages.price.m072'](),
                   },
                   {
-                    h: t('Cost by artist level', '纹身师资历差异'),
-                    p: t(
-                      'Apprentices often charge lower studio rates, established pros average $150–$220/hr, and in-demand specialists command $250–$400+/hr or full-day rates.',
-                      '学徒收费亲民，成熟纹身师常见 $150–$220/小时，高人气定制名师通常按 $250–$400+/小时或全天一口价收费。'
-                    ),
+                    h: m['pages.price.m073'](),
+                    p: m['pages.price.m074'](),
                   },
                   {
-                    h: t('Tipping and aftercare', '小费与术后护理'),
-                    p: t(
-                      'In the US and Canada, 15–20% is a customary tip. Budget $30–$100 for gentle cleanser, healing balm, and protective film.',
-                      '欧美门店通常有 15–20% 的小费习惯；另外建议预留 $30–$100 购买温和洁肤液、纹身修复膏与保护贴膜。'
-                    ),
+                    h: m['pages.price.m075'](),
+                    p: m['pages.price.m076'](),
                   },
                 ].map((card) => (
                   <div
@@ -889,26 +837,26 @@ function TattooPriceCalculatorPage() {
               {/* Bottom CTA strip */}
               <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-white p-5">
                 <div className="text-sm font-semibold text-foreground">
-                  {t('Plan the design next', '下一步：先预览您的图案设计')}
+                  {m['pages.price.m077']()}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Link
                     href="/tattoo-styles"
                     className="rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-foreground hover:bg-muted"
                   >
-                    {t('Explore tattoo styles', '探索纹身风格')}
+                    {m['pages.price.m078']()}
                   </Link>
                   <Link
                     href="/tattoo-fonts"
                     className="rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-foreground hover:bg-muted"
                   >
-                    {t('Try tattoo fonts', '查看纹身字体')}
+                    {m['pages.price.m079']()}
                   </Link>
                   <Link
                     href="/"
                     className="rounded-lg bg-foreground px-3.5 py-2 text-xs font-semibold text-background hover:bg-foreground/90"
                   >
-                    {t('Preview your tattoo design', 'AI 预览我的纹身')}
+                    {m['pages.price.m080']()}
                   </Link>
                 </div>
               </div>
@@ -919,20 +867,20 @@ function TattooPriceCalculatorPage() {
           <section className="py-16 sm:py-20">
             <div className="mx-auto max-w-3xl px-4 sm:px-6">
               <h2 className="mb-8 text-center font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                {t('Tattoo pricing questions', '纹身价格常见问题')}
+                {m['pages.price.m081']()}
               </h2>
               <div className="divide-y divide-border rounded-2xl border border-border bg-white">
                 {CALC_FAQS.map((item, idx) => {
                   const isOpen = openFaq === idx;
                   return (
-                    <div key={item.qEn}>
+                    <div key={tDynamic(item.qEn)}>
                       <h3 className="flex">
                         <button
                           type="button"
                           onClick={() => setOpenFaq(isOpen ? null : idx)}
                           className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted/40"
                         >
-                          <span>{isZh ? item.qZh : item.qEn}</span>
+                          <span>{isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}</span>
                           <ChevronDown
                             className={cn(
                               'size-4 shrink-0 text-muted-foreground transition-transform',
@@ -943,7 +891,7 @@ function TattooPriceCalculatorPage() {
                       </h3>
                       {isOpen && (
                         <div className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">
-                          {isZh ? item.aZh : item.aEn}
+                          {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
                         </div>
                       )}
                     </div>
@@ -958,7 +906,7 @@ function TattooPriceCalculatorPage() {
             <DialogContent className="max-w-2xl bg-white text-foreground">
               <DialogHeader>
                 <DialogTitle>
-                  {t('Where will the tattoo go?', '选择纹身部位')}
+                  {m['pages.price.m082']()}
                 </DialogTitle>
               </DialogHeader>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -1001,14 +949,10 @@ function TattooPriceCalculatorPage() {
 
 export const Route = createFileRoute('/tattoo-price-calculator')({
   loader: () => {
-    const isZh = getLocale() === 'zh';
+    const locale = getLocale();
     return {
-      title: isZh
-        ? '免费纹身价格计算器 | InkStudio.ai'
-        : 'Free Tattoo Price Calculator | InkStudio.ai',
-      description: isZh
-        ? '按尺寸、风格、部位、城市与纹身师资历估算纹身价格区间。'
-        : 'See what your tattoo may cost before booking with our free tattoo price calculator.',
+      title: m['pages.price.m083']({}, { locale }),
+      description: m['pages.price.m084']({}, { locale }),
     };
   },
   head: ({ loaderData }) => ({
