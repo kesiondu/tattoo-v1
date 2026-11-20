@@ -321,7 +321,7 @@ export function HeroGenerator({
       </div>
 
       {/* 2-Column Main Workspace */}
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-6 px-4 sm:px-6 lg:grid-cols-[520px_minmax(0,1fr)] lg:gap-8 lg:px-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-6 px-4 sm:px-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-5 lg:grid-cols-[520px_minmax(0,1fr)] lg:gap-8 lg:px-8">
         {/* LEFT COLUMN: 3-Step Accordion Builder + CTA */}
         <div className="min-w-0">
           <div className="divide-border border-border divide-y overflow-hidden rounded-2xl border bg-white shadow-xs">

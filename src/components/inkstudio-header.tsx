@@ -100,13 +100,13 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Left: Brand Logo */}
-          <Link href="/" className="flex shrink-0 items-center gap-2">
+          <Link href="/" className="flex h-10 shrink-0 items-center gap-2">
             <img
               src="/brand/tattoogenerator-logo.svg"
               alt={m['home.brand_logo_alt']()}
               className="size-7 rounded"
             />
-            <span className="text-foreground font-sans text-[18px] font-bold tracking-[-0.02em]">
+            <span className="text-foreground hidden font-sans text-[18px] font-bold tracking-[-0.02em] min-[420px]:inline lg:inline">
               {m['home.brand']()}
             </span>
           </Link>
@@ -262,10 +262,10 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
           </nav>
 
           {/* Right: Language + Auth / Credits + Mobile Menu */}
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <LocaleSelector
               variant="icon"
-              className="border-border text-foreground hover:bg-muted size-8 rounded-full border bg-white"
+              className="border-border text-foreground hover:bg-muted size-10 rounded-full border bg-white"
             />
 
             {user ? (
@@ -291,7 +291,7 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
               <button
                 type="button"
                 onClick={handleAuthClick}
-                className="border-border text-foreground hover:bg-muted inline-flex h-8 items-center justify-center rounded-lg border bg-white px-3 text-[13px] font-medium transition-colors"
+                className="border-border text-foreground hover:bg-muted inline-flex h-10 shrink-0 items-center justify-center rounded-lg border bg-white px-2.5 text-[13px] font-medium whitespace-nowrap transition-colors sm:px-3"
               >
                 {m['home.nav.log_in']()}
               </button>
@@ -301,7 +301,7 @@ export function InkStudioHeader({ onOpenAuth }: InkStudioHeaderProps) {
               type="button"
               aria-label={m['home.nav.menu']()}
               onClick={() => setMobileMenuOpen((v) => !v)}
-              className="border-border text-foreground hover:bg-muted inline-flex size-8 items-center justify-center rounded-md border bg-white lg:hidden"
+              className="border-border text-foreground hover:bg-muted inline-flex size-10 items-center justify-center rounded-md border bg-white lg:hidden"
             >
               {mobileMenuOpen ? (
                 <X className="size-4" />

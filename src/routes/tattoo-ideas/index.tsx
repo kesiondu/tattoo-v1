@@ -458,14 +458,14 @@ function TattooIdeasPage() {
           </div>
 
           {/* Filter Toolbar (Style + Placement + Artwork / On skin Radio) */}
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 py-2">
-            <div className="flex flex-wrap items-center gap-2.5">
+          <div className="mb-6 flex flex-col items-stretch gap-3 py-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+            <div className="grid w-full grid-cols-2 gap-2.5 sm:flex sm:w-auto sm:flex-wrap">
               <div className="relative">
                 <select
                   aria-label={m['pages.ideas.m004']()}
                   value={styleFilter}
                   onChange={(e) => setStyleFilter(e.target.value)}
-                  className="border-border text-foreground focus:border-foreground h-9 min-w-[160px] appearance-none rounded-lg border bg-white pr-8 pl-3 text-xs font-medium outline-none"
+                  className="border-border text-foreground focus:border-foreground h-11 w-full min-w-0 appearance-none rounded-lg border bg-white pr-8 pl-3 text-xs font-medium outline-none sm:h-9 sm:w-auto sm:min-w-[160px]"
                 >
                   {STYLE_OPTIONS.map((opt) => (
                     <option key={opt.id} value={opt.id}>
@@ -481,7 +481,7 @@ function TattooIdeasPage() {
                   aria-label={m['pages.ideas.m005']()}
                   value={placementFilter}
                   onChange={(e) => setPlacementFilter(e.target.value)}
-                  className="border-border text-foreground focus:border-foreground h-9 min-w-[160px] appearance-none rounded-lg border bg-white pr-8 pl-3 text-xs font-medium outline-none"
+                  className="border-border text-foreground focus:border-foreground h-11 w-full min-w-0 appearance-none rounded-lg border bg-white pr-8 pl-3 text-xs font-medium outline-none sm:h-9 sm:w-auto sm:min-w-[160px]"
                 >
                   {PLACEMENT_OPTIONS.map((opt) => (
                     <option key={opt.id} value={opt.id}>
@@ -497,7 +497,7 @@ function TattooIdeasPage() {
             <div
               role="radiogroup"
               aria-label={m['pages.ideas.m006']()}
-              className="border-border bg-muted/60 inline-flex rounded-lg border p-1"
+              className="border-border bg-muted/60 inline-flex h-11 w-full rounded-lg border p-1 sm:h-auto sm:w-auto"
             >
               <button
                 type="button"
@@ -505,7 +505,7 @@ function TattooIdeasPage() {
                 aria-checked={viewMode === 'artwork'}
                 onClick={() => setViewMode('artwork')}
                 className={cn(
-                  'inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium transition-all',
+                  'inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all sm:flex-none sm:px-3',
                   viewMode === 'artwork'
                     ? 'text-foreground bg-white shadow-2xs'
                     : 'text-muted-foreground hover:text-foreground'
@@ -520,7 +520,7 @@ function TattooIdeasPage() {
                 aria-checked={viewMode === 'skin'}
                 onClick={() => setViewMode('skin')}
                 className={cn(
-                  'inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium transition-all',
+                  'inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all sm:flex-none sm:px-3',
                   viewMode === 'skin'
                     ? 'text-foreground bg-white shadow-2xs'
                     : 'text-muted-foreground hover:text-foreground'
@@ -538,7 +538,7 @@ function TattooIdeasPage() {
               {m['pages.ideas.m009']()}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-x-3 gap-y-6 min-[640px]:grid-cols-3 min-[640px]:gap-x-4 min-[880px]:grid-cols-4 min-[1200px]:grid-cols-5">
+            <div className="grid grid-cols-1 gap-x-3 gap-y-6 min-[360px]:grid-cols-2 min-[640px]:grid-cols-3 min-[640px]:gap-x-4 min-[880px]:grid-cols-4 min-[1200px]:grid-cols-5">
               {filtered.map((item) => (
                 <Link
                   key={item.slug}

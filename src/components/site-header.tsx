@@ -84,7 +84,7 @@ export function SiteHeader({ navLinks }: { navLinks?: NavLink[] }) {
 
         {/* Mobile toggle */}
         <button
-          className="p-2 md:hidden"
+          className="hover:bg-accent focus-visible:ring-ring inline-flex size-11 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
@@ -104,7 +104,7 @@ export function SiteHeader({ navLinks }: { navLinks?: NavLink[] }) {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-md px-3 py-2 text-sm transition-colors"
+                  className="text-muted-foreground hover:bg-accent hover:text-foreground flex min-h-11 items-center rounded-md px-3 py-2 text-sm transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
@@ -114,7 +114,7 @@ export function SiteHeader({ navLinks }: { navLinks?: NavLink[] }) {
                   key={link.href}
                   href={link.href}
                   target={link.external ? '_blank' : undefined}
-                  className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-md px-3 py-2 text-sm transition-colors"
+                  className="text-muted-foreground hover:bg-accent hover:text-foreground flex min-h-11 items-center rounded-md px-3 py-2 text-sm transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}

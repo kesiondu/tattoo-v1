@@ -41,8 +41,6 @@ const FONT_CHOICES = [
 ];
 
 function NameTattooGeneratorPage() {
-  const locale = getLocale();
-  const isZh = locale === 'zh';
   const [name, setName] = useState('Luna');
   const [selectedFont, setSelectedFont] = useState(FONT_CHOICES[0].id);
   const [downloadError, setDownloadError] = useState('');

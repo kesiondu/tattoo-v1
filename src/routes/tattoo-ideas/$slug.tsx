@@ -337,15 +337,81 @@ function TattooIdeaDetailPage() {
           </div>
         </section>
 
+        {/* Healing guidance and audience fit */}
+        <section className="border-border/70 border-t py-14 md:py-16">
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+            <article>
+              <h2 className="text-foreground font-sans text-xl font-bold tracking-tight sm:text-2xl">
+                {m['idea_detail.recovery.title']()}
+              </h2>
+              <p className="text-muted-foreground mt-3 text-sm leading-relaxed sm:text-base">
+                {m['idea_detail.recovery.body']()}
+              </p>
+            </article>
+            <article>
+              <h2 className="text-foreground font-sans text-xl font-bold tracking-tight sm:text-2xl">
+                {m['idea_detail.audience.title']()}
+              </h2>
+              <p className="text-muted-foreground mt-3 text-sm leading-relaxed sm:text-base">
+                {m['idea_detail.audience.body']({
+                  style: styleName,
+                  placement: t.placement,
+                  size: t.recommendedSize,
+                })}
+              </p>
+            </article>
+          </div>
+        </section>
+
+        {/* Frequently asked questions */}
+        <section className="border-border/70 bg-muted/30 border-t py-14 md:py-16">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-foreground font-sans text-2xl font-bold tracking-tight sm:text-3xl">
+              {m['idea_detail.faq.title']()}
+            </h2>
+            <div className="divide-border mt-6 divide-y border-y">
+              <details className="group py-4">
+                <summary className="text-foreground cursor-pointer list-none pr-8 text-sm font-semibold marker:hidden sm:text-base">
+                  {m['idea_detail.faq.pain.question']()}
+                </summary>
+                <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                  {m['idea_detail.faq.pain.answer']({ pain: t.painLevel })}
+                </p>
+              </details>
+              <details className="group py-4">
+                <summary className="text-foreground cursor-pointer list-none pr-8 text-sm font-semibold marker:hidden sm:text-base">
+                  {m['idea_detail.faq.healing.question']()}
+                </summary>
+                <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                  {m['idea_detail.faq.healing.answer']()}
+                </p>
+              </details>
+              <details className="group py-4">
+                <summary className="text-foreground cursor-pointer list-none pr-8 text-sm font-semibold marker:hidden sm:text-base">
+                  {m['idea_detail.faq.customize.question']()}
+                </summary>
+                <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                  {m['idea_detail.faq.customize.answer']()}
+                </p>
+              </details>
+              <details className="group py-4">
+                <summary className="text-foreground cursor-pointer list-none pr-8 text-sm font-semibold marker:hidden sm:text-base">
+                  {m['idea_detail.faq.artist.question']()}
+                </summary>
+                <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                  {m['idea_detail.faq.artist.answer']()}
+                </p>
+              </details>
+            </div>
+          </div>
+        </section>
+
         {/* Module 5: Related Ideas Cross-Linking */}
         <section className="border-border/70 bg-muted/30 border-t py-14">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div className="mb-3 flex flex-wrap items-end justify-between gap-4">
               <h2 className="text-foreground font-sans text-2xl font-bold tracking-tight">
-                {m['idea_detail.related.title']({
-                  style: styleName,
-                  placement: t.placement,
-                })}
+                {m['idea_detail.variants.title']({ style: styleName })}
               </h2>
               <Link
                 href="/tattoo-ideas"
@@ -355,35 +421,51 @@ function TattooIdeaDetailPage() {
                 <ArrowRight className="size-4" />
               </Link>
             </div>
+            <p className="text-muted-foreground mb-7 text-sm leading-relaxed">
+              {m['idea_detail.variants.description']()}
+            </p>
 
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {relatedIdeas.map((rel) => {
                 const relT = getLocalizedIdea(rel);
                 return (
-                  <Link
+                  <article
                     key={rel.slug}
-                    href={`/tattoo-ideas/${rel.slug}`}
-                    className="group border-border bg-card hover:border-foreground/30 overflow-hidden rounded-xl border transition-all hover:shadow-xs"
+                    className="border-border bg-card overflow-hidden rounded-xl border"
                   >
-                    <div className="bg-muted relative aspect-[4/5] overflow-hidden">
-                      <img
-                        src={rel.bodyUrl}
-                        alt={relT.imageAlt}
-                        width={rel.imageWidth}
-                        height={rel.imageHeight}
-                        loading="lazy"
-                        className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
+                    <Link
+                      href={`/tattoo-ideas/${rel.slug}`}
+                      className="group block"
+                    >
+                      <div className="bg-muted relative aspect-[4/5] overflow-hidden">
+                        <img
+                          src={rel.bodyUrl}
+                          alt={relT.imageAlt}
+                          width={rel.imageWidth}
+                          height={rel.imageHeight}
+                          loading="lazy"
+                          className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="p-3 pb-1">
+                        <h3 className="text-foreground truncate text-sm font-semibold group-hover:underline">
+                          {relT.title}
+                        </h3>
+                        <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                          {relT.placement}
+                        </p>
+                      </div>
+                    </Link>
+                    <div className="px-3 pb-3">
+                      <Link
+                        href={`/?style=${rel.styleSlug}&prompt=${encodeURIComponent(rel.prompt)}`}
+                        className="text-foreground inline-flex items-center gap-1 text-xs font-semibold underline underline-offset-4"
+                      >
+                        <Sparkles className="size-3" />
+                        <span>{m['idea_detail.variants.use_prompt']()}</span>
+                      </Link>
                     </div>
-                    <div className="p-3">
-                      <h3 className="text-foreground truncate text-sm font-semibold group-hover:underline">
-                        {relT.title}
-                      </h3>
-                      <p className="text-muted-foreground mt-0.5 truncate text-xs">
-                        {relT.placement}
-                      </p>
-                    </div>
-                  </Link>
+                  </article>
                 );
               })}
             </div>

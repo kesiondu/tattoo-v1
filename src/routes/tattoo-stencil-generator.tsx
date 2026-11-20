@@ -8,8 +8,6 @@ import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 
 function TattooStencilGeneratorPage() {
-  const locale = getLocale();
-  const isZh = locale === 'zh';
   const steps = [
     [m['tools.stencil.step1_title'](), m['tools.stencil.step1_body']()],
     [m['tools.stencil.step2_title'](), m['tools.stencil.step2_body']()],
