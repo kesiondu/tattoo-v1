@@ -3,11 +3,11 @@ import { createFileRoute } from '@tanstack/react-router';
 import { buildSeoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
+import { SitePageLayout } from '@/components/site-page-layout';
 
 function CookiePolicyPage() {
   return (
-    <InkStudioPageLayout>
+    <SitePageLayout>
       <article className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
         <h1 className="text-foreground font-sans text-3xl font-bold tracking-tight">
           {m['pages.legal.cookie_title']()}
@@ -21,7 +21,7 @@ function CookiePolicyPage() {
           <p>{m['pages.legal.cookie_p3']()}</p>
         </div>
       </article>
-    </InkStudioPageLayout>
+    </SitePageLayout>
   );
 }
 

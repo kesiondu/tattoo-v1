@@ -21,8 +21,8 @@ import {
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import { SeoRelatedTools } from '@/components/seo-related-tools';
+import { SitePageLayout } from '@/components/site-page-layout';
 import {
   Dialog,
   DialogContent,
@@ -432,7 +432,7 @@ function TattooIdeasPage() {
   });
 
   return (
-    <InkStudioPageLayout>
+    <SitePageLayout>
       {({ openAuth }) => (
         <section className="mx-auto max-w-7xl px-4 pt-8 pb-16 sm:px-6 lg:px-8 lg:pb-24">
           {/* Header Row */}
@@ -665,7 +665,7 @@ function TattooIdeasPage() {
           </Dialog>
         </section>
       )}
-    </InkStudioPageLayout>
+    </SitePageLayout>
   );
 }
 

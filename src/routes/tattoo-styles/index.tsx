@@ -13,8 +13,8 @@ import {
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import { SeoRelatedTools } from '@/components/seo-related-tools';
+import { SitePageLayout } from '@/components/site-page-layout';
 
 interface EditorialStyle {
   id: string;
@@ -498,7 +498,7 @@ function TattooStylesPage() {
   });
 
   return (
-    <InkStudioPageLayout>
+    <SitePageLayout>
       {/* 1. Centered Hero Header */}
       <section className="pt-10 pb-4 text-center sm:pt-14 sm:pb-6">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
@@ -837,7 +837,7 @@ function TattooStylesPage() {
           </div>
         </div>
       </section>
-    </InkStudioPageLayout>
+    </SitePageLayout>
   );
 }
 

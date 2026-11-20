@@ -12,9 +12,9 @@ import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { AuthModal } from '@/components/auth-modal';
 import { HeroGenerator } from '@/components/hero-generator';
-import { InkStudioFooter } from '@/components/inkstudio-footer';
-import { InkStudioHeader } from '@/components/inkstudio-header';
 import { ShowcaseValues } from '@/components/showcase-values';
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
 import { WorkflowAndFaq } from '@/components/workflow-and-faq';
 
 function HomePage() {
@@ -23,7 +23,7 @@ function HomePage() {
 
   return (
     <div className="text-foreground selection:bg-foreground/15 selection:text-foreground flex min-h-screen flex-col bg-white font-sans">
-      <InkStudioHeader onOpenAuth={() => setAuthModalOpen(true)} />
+      <SiteHeader onOpenAuth={() => setAuthModalOpen(true)} />
       <main className="flex-1">
         <HeroGenerator
           onOpenAuth={() => setAuthModalOpen(true)}
@@ -33,7 +33,7 @@ function HomePage() {
         <ShowcaseValues onOpenAuth={() => setAuthModalOpen(true)} />
         <WorkflowAndFaq onOpenAuth={() => setAuthModalOpen(true)} />
       </main>
-      <InkStudioFooter />
+      <SiteFooter />
       <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
     </div>
   );

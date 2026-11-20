@@ -34,8 +34,8 @@ import {
   PREVIEW_FONTS,
 } from '@/components/font-style-preview';
 import { DEFAULT_INK, InkColorPicker } from '@/components/ink-color-picker';
-import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import { SeoRelatedTools } from '@/components/seo-related-tools';
+import { SitePageLayout } from '@/components/site-page-layout';
 import { FontSurfaceDemo } from '@/components/surface-tattoo-demo';
 
 interface FontVariant {
@@ -557,7 +557,7 @@ const FONT_STYLES: FontStyleDef[] = [
   },
 ];
 
-// Exact guide card order matching https://www.inkstudio.ai/tattoo-font-generator
+// Tattoo font guide card order
 const GUIDE_STYLE_ORDER = [
   'blackletter',
   'block',
@@ -945,7 +945,7 @@ function TattooFontGeneratorPage() {
     canvas.height = 512;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    // Transparent RGBA background (0, 0, 0, 0) matching InkStudio.ai lettering export
+    // Transparent RGBA background (0, 0, 0, 0)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = inkColor ?? DEFAULT_INK;
     ctx.font = `${activeVariant.fontStyle === 'italic' ? 'italic ' : ''}${activeVariant.fontWeight ?? 600} 84px ${activeVariant.fontFamily}`;
@@ -954,7 +954,7 @@ function TattooFontGeneratorPage() {
     ctx.fillText(rendered, canvas.width / 2, canvas.height / 2);
     const a = document.createElement('a');
     a.href = canvas.toDataURL('image/png');
-    a.download = `inkstudio-${activeStyle.id}.png`;
+    a.download = `tattoogenerator-${activeStyle.id}.png`;
     a.click();
     toast.success(m['pages.fontgen.m007']());
   }
@@ -993,7 +993,7 @@ function TattooFontGeneratorPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `inkstudio-${activeStyle.id}.svg`;
+    a.download = `tattoogenerator-${activeStyle.id}.svg`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     toast.success(m['pages.fontgen.m008']());
@@ -1033,7 +1033,7 @@ function TattooFontGeneratorPage() {
 
       const a = document.createElement('a');
       a.href = canvas.toDataURL('image/png');
-      a.download = `inkstudio-${activeStyle.id}-${placementId}.png`;
+      a.download = `tattoogenerator-${activeStyle.id}-${placementId}.png`;
       a.click();
       toast.success(m['pages.fontgen.m009']());
     };
@@ -1041,7 +1041,7 @@ function TattooFontGeneratorPage() {
   }
 
   return (
-    <InkStudioPageLayout>
+    <SitePageLayout>
       {({ openAuth }) => (
         <>
           {/* 1. Hero Header */}
@@ -2079,7 +2079,7 @@ function TattooFontGeneratorPage() {
           />
         </>
       )}
-    </InkStudioPageLayout>
+    </SitePageLayout>
   );
 }
 

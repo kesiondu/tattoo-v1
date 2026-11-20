@@ -14,8 +14,8 @@ import {
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import { SeoRelatedTools } from '@/components/seo-related-tools';
+import { SitePageLayout } from '@/components/site-page-layout';
 
 const PRICING_FAQS = [
   {
@@ -126,7 +126,7 @@ function PricingPage() {
   ];
 
   return (
-    <InkStudioPageLayout>
+    <SitePageLayout>
       {({ openAuth }) => (
         <>
           <section className="pt-10 pb-14 sm:pt-14 sm:pb-16">
@@ -484,7 +484,7 @@ function PricingPage() {
           </section>
         </>
       )}
-    </InkStudioPageLayout>
+    </SitePageLayout>
   );
 }
 

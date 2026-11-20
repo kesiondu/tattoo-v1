@@ -13,8 +13,8 @@ import {
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import { SeoRelatedTools } from '@/components/seo-related-tools';
+import { SitePageLayout } from '@/components/site-page-layout';
 
 interface FontGuideEntry {
   id: string;
@@ -546,7 +546,7 @@ function TattooFontsPage() {
       : ALL_20_FONTS.filter((f) => f.filters.includes(filter));
 
   return (
-    <InkStudioPageLayout>
+    <SitePageLayout>
       {/* 1. Hero & 6-Card Preview Strip */}
       <section className="py-10 text-center sm:py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -891,7 +891,7 @@ function TattooFontsPage() {
           </div>
         </div>
       </section>
-    </InkStudioPageLayout>
+    </SitePageLayout>
   );
 }
 

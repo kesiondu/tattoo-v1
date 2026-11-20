@@ -6,7 +6,7 @@ import { breadcrumbJsonLd, buildSeoHead, faqJsonLd } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { HeroGenerator } from '@/components/hero-generator';
-import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
+import { SitePageLayout } from '@/components/site-page-layout';
 
 function TattooStencilGeneratorPage() {
   const steps = [
@@ -26,7 +26,7 @@ function TattooStencilGeneratorPage() {
   ];
 
   return (
-    <InkStudioPageLayout>
+    <SitePageLayout>
       {({ openAuth }) => (
         <>
           <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
@@ -250,7 +250,7 @@ function TattooStencilGeneratorPage() {
           </main>
         </>
       )}
-    </InkStudioPageLayout>
+    </SitePageLayout>
   );
 }
 

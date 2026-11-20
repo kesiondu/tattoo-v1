@@ -188,9 +188,9 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
         </div>
       </section>
 
-      {/* SECTION 3: Value Props — 3-Column Subgrid Matching InkStudio.ai */}
+      {/* SECTION 3: Value Props — 3-Column Subgrid */}
       <section
-        id="why-inkstudio"
+        id="why-tattoo-generator"
         aria-labelledby="home-values-title"
         className="scroll-mt-20 py-12 md:py-16"
       >

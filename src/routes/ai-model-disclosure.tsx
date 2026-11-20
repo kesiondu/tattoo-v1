@@ -4,11 +4,11 @@ import { Mail } from 'lucide-react';
 import { buildSeoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
+import { SitePageLayout } from '@/components/site-page-layout';
 
 function AiModelDisclosurePage() {
   return (
-    <InkStudioPageLayout>
+    <SitePageLayout>
       <section className="border-border border-b py-16 text-center sm:py-24">
         <div className="container mx-auto max-w-4xl px-4">
           <p className="text-primary text-sm font-medium">
@@ -115,7 +115,7 @@ function AiModelDisclosurePage() {
           </a>
         </section>
       </div>
-    </InkStudioPageLayout>
+    </SitePageLayout>
   );
 }
 

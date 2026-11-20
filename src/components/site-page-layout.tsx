@@ -1,24 +1,24 @@
 import { useState, type ReactNode } from 'react';
 
 import { AuthModal } from '@/components/auth-modal';
-import { InkStudioFooter } from '@/components/inkstudio-footer';
-import { InkStudioHeader } from '@/components/inkstudio-header';
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
 
-interface InkStudioPageLayoutProps {
+interface SitePageLayoutProps {
   children: ReactNode | ((props: { openAuth: () => void }) => ReactNode);
 }
 
-export function InkStudioPageLayout({ children }: InkStudioPageLayoutProps) {
+export function SitePageLayout({ children }: SitePageLayoutProps) {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const openAuth = () => setAuthModalOpen(true);
 
   return (
-    <div className="flex min-h-screen flex-col bg-white font-sans text-foreground selection:bg-foreground/15 selection:text-foreground">
-      <InkStudioHeader onOpenAuth={openAuth} />
+    <div className="text-foreground selection:bg-foreground/15 selection:text-foreground flex min-h-screen flex-col bg-white font-sans">
+      <SiteHeader onOpenAuth={openAuth} />
       <main className="flex-1">
         {typeof children === 'function' ? children({ openAuth }) : children}
       </main>
-      <InkStudioFooter />
+      <SiteFooter />
       <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
     </div>
   );

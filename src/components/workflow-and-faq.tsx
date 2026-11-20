@@ -84,7 +84,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
 
   return (
     <>
-      {/* SECTION 4: How It Works (4-Column Flow Matching InkStudio.ai) */}
+      {/* SECTION 4: How It Works (4-Column Flow) */}
       <section id="how-it-works" className="scroll-mt-20 py-12 md:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-10 max-w-3xl text-center md:mb-12">

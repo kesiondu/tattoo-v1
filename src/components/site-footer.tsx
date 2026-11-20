@@ -1,145 +1,212 @@
-import type { ComponentType, SVGProps } from 'react';
-
 import { Link } from '@/core/i18n/navigation';
-import { envConfigs } from '@/config';
-import { cn } from '@/lib/utils';
-import { BuiltWithShipAny } from '@/components/built-with-shipany';
-import { LocaleSelector } from '@/components/locale-selector';
+import { m } from '@/paraglide/messages.js';
 
-export interface FooterColumn {
-  title: string;
-  /**
-   * external: open in a new tab. Off-site (http) hrefs always open in a new tab.
-   * onClick: render a button instead of a link (e.g. "Cookie settings").
-   */
-  links: {
-    label: string;
-    href?: string;
-    external?: boolean;
-    onClick?: () => void;
-  }[];
-}
-
-/** Off-site URLs render as plain <a>; internal paths use the locale-aware Link. */
-const isExternalHref = (href: string) => /^https?:\/\//.test(href);
-
-export interface FooterSocial {
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
-  href: string;
-  label: string;
-}
-
-export function SiteFooter({
-  tagline,
-  columns,
-  socials,
-  copyright,
-  builtWith = 'pill',
-}: {
-  tagline?: string;
-  columns?: FooterColumn[];
-  socials?: FooterSocial[];
-  copyright?: string;
-  /** Style of the "Built with ShipAny" attribution. */
-  builtWith?: 'pill' | 'text';
-}) {
-  const year = new Date().getFullYear();
-
+export function SiteFooter() {
   return (
-    <footer className="bg-neutral-950 text-neutral-100">
-      <div className="mx-auto max-w-7xl px-6 pt-14 pb-6 sm:px-10 sm:pt-16 lg:px-16">
-        {tagline && (
-          <p className="mb-12 w-full font-serif text-3xl leading-[1.15] tracking-tight text-neutral-100 italic sm:text-4xl">
-            {tagline}
-          </p>
-        )}
-
-        {columns && columns.length > 0 && (
-          <div
-            className={cn(
-              'grid gap-x-8 gap-y-10 sm:gap-x-12',
-              columns.length <= 3
-                ? 'grid-cols-2 sm:grid-cols-3'
-                : columns.length === 4
-                  ? 'grid-cols-2 sm:grid-cols-4'
-                  : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5'
-            )}
-          >
-            {columns.map((col) => (
-              <div key={col.title} className="space-y-5">
-                <p className="text-[13px] font-semibold tracking-wide text-neutral-100">
-                  {col.title}
-                </p>
-                <ul className="space-y-2">
-                  {col.links.map((link) => (
-                    <li key={link.label}>
-                      {link.onClick || !link.href ? (
-                        <button
-                          type="button"
-                          onClick={link.onClick}
-                          className="text-sm text-neutral-400 transition-colors hover:text-neutral-100"
-                        >
-                          {link.label}
-                        </button>
-                      ) : isExternalHref(link.href) ? (
-                        <a
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-neutral-400 transition-colors hover:text-neutral-100"
-                        >
-                          {link.label}
-                        </a>
-                      ) : (
-                        <Link
-                          href={link.href}
-                          target={link.external ? '_blank' : undefined}
-                          className="text-sm text-neutral-400 transition-colors hover:text-neutral-100"
-                        >
-                          {link.label}
-                        </Link>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+    <footer className="border-border border-t bg-white pt-12 pb-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-6">
+          {/* Brand Column (spans 2 on desktop) */}
+          <div className="col-span-2 space-y-3">
+            <Link href="/" className="inline-flex items-center gap-2">
+              <img
+                src="/brand/tattoogenerator-logo.svg"
+                alt={m['home.brand_logo_alt']()}
+                className="size-7 rounded"
+              />
+              <span className="text-foreground font-sans text-[18px] font-bold tracking-[-0.02em]">
+                {m['home.brand']()}
+              </span>
+            </Link>
+            <p className="text-muted-foreground max-w-[260px] text-sm leading-relaxed">
+              {m['home.footer.tagline']()}
+            </p>
           </div>
-        )}
 
-        {/* Socials + language row */}
-        <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          {socials && socials.length > 0 ? (
-            <div className="flex items-center gap-5">
-              {socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  aria-label={s.label}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-neutral-300 transition-colors hover:text-neutral-100"
+          {/* Column 1: Create */}
+          <div>
+            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
+              {m['home.footer.create']()}
+            </h4>
+            <ul className="text-muted-foreground space-y-2.5 text-sm">
+              <li>
+                <Link
+                  href="/"
+                  className="hover:text-foreground transition-colors hover:underline"
                 >
-                  <s.icon className="size-[18px]" />
+                  {m['home.footer.generator']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tattoo-try-on"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.try_on']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tattoo-font-generator"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.font_generator']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/name-tattoo-generator"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.name_generator']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tattoo-stencil-generator"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.stencil_generator']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/my-designs"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.my_designs']()}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 2: Explore */}
+          <div>
+            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
+              {m['home.footer.explore']()}
+            </h4>
+            <ul className="text-muted-foreground space-y-2.5 text-sm">
+              <li>
+                <Link
+                  href="/tattoo-styles"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.tattoo_styles']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tattoo-fonts"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.tattoo_fonts']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tattoo-ideas"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.tattoo_ideas']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/pricing"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.pricing']()}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Resources */}
+          <div>
+            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
+              {m['home.footer.resources']()}
+            </h4>
+            <ul className="text-muted-foreground space-y-2.5 text-sm">
+              <li>
+                <Link
+                  href="/tattoo-price-calculator"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.price_calculator']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#faq"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.faq']()}
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="mailto:support@tattoogenerator.online"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.contact']()}
                 </a>
-              ))}
-            </div>
-          ) : (
-            <div />
-          )}
-          <LocaleSelector
-            variant="pill"
-            className="border-neutral-700 text-neutral-200 hover:bg-white/5 hover:text-neutral-50"
-          />
+              </li>
+              <li>
+                <Link
+                  href="/ai-model-disclosure"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.ai_disclosure']()}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Legal */}
+          <div>
+            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
+              {m['home.footer.legal']()}
+            </h4>
+            <ul className="text-muted-foreground space-y-2.5 text-sm">
+              <li>
+                <Link
+                  href="/acceptable-use"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.acceptable_use']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/privacy-policy"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.privacy']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms-of-service"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.terms']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/cookie"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.cookie']()}
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-6 flex flex-col gap-3 border-t border-neutral-800 pt-5 sm:flex-row sm:items-center sm:justify-between">
-          <BuiltWithShipAny variant={builtWith} className="text-neutral-200" />
-          <span className="text-sm text-neutral-400">
-            {copyright ||
-              `© ${year} ${envConfigs.app_name}. All rights reserved.`}
-          </span>
+        {/* Bottom Copyright Bar */}
+        <div className="border-border text-muted-foreground mt-10 border-t pt-6 text-[13px]">
+          {m['home.footer.copyright']()}
         </div>
       </div>
     </footer>

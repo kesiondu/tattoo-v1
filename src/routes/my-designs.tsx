@@ -6,14 +6,14 @@ import { Link } from '@/core/i18n/navigation';
 import { noIndexHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
+import { SitePageLayout } from '@/components/site-page-layout';
 
 function MyDesignsPage() {
   const { data: session } = useSession();
   const user = session?.user;
 
   return (
-    <InkStudioPageLayout>
+    <SitePageLayout>
       {({ openAuth }) => (
         <section className="pt-10 pb-20 md:pt-14 md:pb-28">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
@@ -78,7 +78,7 @@ function MyDesignsPage() {
           </div>
         </section>
       )}
-    </InkStudioPageLayout>
+    </SitePageLayout>
   );
 }
 
