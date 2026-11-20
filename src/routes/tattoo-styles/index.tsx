@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
+import { SeoRelatedTools } from '@/components/seo-related-tools';
 
 interface EditorialStyle {
   id: string;
@@ -786,6 +787,15 @@ function TattooStylesPage() {
           </Link>
         </div>
       </section>
+
+      <SeoRelatedTools
+        items={[
+          { href: '/tattoo-ideas', label: m['pages.ideas.m001']() },
+          { href: '/tattoo-try-on', label: m['tryon.hero.h1']() },
+          { href: '/tattoo-font-generator', label: m['pages.fontgen.m010']() },
+          { href: '/tattoo-price-calculator', label: m['pages.price.m002']() },
+        ]}
+      />
 
       {/* 6. Tattoo Style Questions (5 FAQs) */}
       <section className="py-16 sm:py-20">

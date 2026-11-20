@@ -442,6 +442,10 @@ export function getLocalizedIdea(
   };
 }
 
+export function getTattooIdeaCopy(idea: TattooIdeaPage): TattooIdeaLocalized {
+  return getLocalizedIdea(idea, 'en');
+}
+
 export function getIdeasForStyle(styleSlug: string, limit = 8): TattooIdeaPage[] {
   const direct = TATTOO_IDEAS.filter((i) => i.styleSlug === styleSlug);
   if (direct.length >= 4) return direct.slice(0, limit);

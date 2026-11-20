@@ -117,7 +117,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                         <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden">
                           <div className="absolute top-[8%] -left-[35%] h-[84%] w-[60%] rounded-md border border-black/15 bg-white p-1 opacity-45 blur-[1px]">
                             <img
-                              src="/home-workflow/style-geometric.webp"
+                              src="/assets/styles-v2/geometric.jpg"
                               alt=""
                               width={240}
                               height={240}
@@ -128,7 +128,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                           </div>
                           <div className="absolute top-[8%] -right-[35%] h-[84%] w-[60%] rounded-md border border-black/15 bg-white p-1 opacity-45 blur-[1px]">
                             <img
-                              src="/home-workflow/style-micro-realism.webp"
+                              src="/assets/styles-v2/micro-realism.jpg"
                               alt=""
                               width={240}
                               height={240}
@@ -140,7 +140,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                           <div className="relative z-10 flex h-full w-[66%] min-w-0 flex-col rounded-md border border-[#151515] bg-white p-[1cqw] shadow-sm">
                             <div className="min-h-0 flex-1">
                               <img
-                                src="/home-workflow/style-neo-traditional.webp"
+                                src="/assets/styles-v2/neo-traditional.jpg"
                                 alt=""
                                 width={240}
                                 height={240}

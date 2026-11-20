@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
+import { SeoRelatedTools } from '@/components/seo-related-tools';
 import {
   Dialog,
   DialogContent,
@@ -914,6 +915,15 @@ function TattooPriceCalculatorPage() {
               </div>
             </div>
           </section>
+
+          <SeoRelatedTools
+            items={[
+              { href: '/tattoo-styles', label: m['pages.styles2.m002']() },
+              { href: '/tattoo-fonts', label: m['pages.fonts2.m002']() },
+              { href: '/tattoo-ideas', label: m['pages.ideas.m001']() },
+              { href: '/tattoo-try-on', label: m['tryon.hero.h1']() },
+            ]}
+          />
 
           {/* 3. Tattoo pricing questions (7 FAQs) */}
           <section className="py-16 sm:py-20">

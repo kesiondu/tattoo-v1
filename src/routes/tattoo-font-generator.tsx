@@ -35,6 +35,7 @@ import {
 } from '@/components/font-style-preview';
 import { DEFAULT_INK, InkColorPicker } from '@/components/ink-color-picker';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
+import { SeoRelatedTools } from '@/components/seo-related-tools';
 import { FontSurfaceDemo } from '@/components/surface-tattoo-demo';
 
 interface FontVariant {
@@ -1964,6 +1965,19 @@ function TattooFontGeneratorPage() {
               </div>
             </div>
           </section>
+
+          <SeoRelatedTools
+            items={[
+              { href: '/tattoo-fonts', label: m['pages.fonts2.m002']() },
+              { href: '/tattoo-ideas', label: m['pages.ideas.m001']() },
+              { href: '/tattoo-styles', label: m['pages.styles2.m002']() },
+              { href: '/tattoo-try-on', label: m['tryon.hero.h1']() },
+              {
+                href: '/tattoo-price-calculator',
+                label: m['pages.price.m002'](),
+              },
+            ]}
+          />
 
           <FontLibraryDialog
             open={fontLibraryOpen}

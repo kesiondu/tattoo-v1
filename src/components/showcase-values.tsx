@@ -7,62 +7,62 @@ interface ShowcaseValuesProps {
 
 const MARQUEE_ROW_1 = [
   {
-    src: '/gallery/archangel-warrior-back-tattoo-04.webp',
+    src: '/gallery-v2/r1-01-archangel-back.jpg',
     alt: () => m['home.gallery.r1_1'](),
     href: '/tattoo-ideas/phoenix-tattoo-with-flowers',
   },
   {
-    src: '/gallery/cherry-blossom-hand-wrist-tattoo-02.webp',
+    src: '/gallery-v2/r1-02-cherry-blossom-wrist.jpg',
     alt: () => m['home.gallery.r1_2'](),
     href: '/tattoo-ideas/cherry-blossom-tattoo',
   },
   {
-    src: '/gallery/fine-line-ornamental-rib-tattoo-24.webp',
+    src: '/gallery-v2/r1-03-ornamental-rib.jpg',
     alt: () => m['home.gallery.r1_3'](),
     href: '/tattoo-ideas/ornamental-flower-tattoo',
   },
   {
-    src: '/gallery/japanese-koi-sleeve-tattoo-11.webp',
+    src: '/gallery-v2/r1-04-japanese-koi-sleeve.jpg',
     alt: () => m['home.gallery.r1_4'](),
     href: '/tattoo-ideas/japanese-fox-and-kitsune-mask-tattoo',
   },
   {
-    src: '/gallery/celestial-moon-neck-tattoo-03.webp',
+    src: '/gallery-v2/r1-05-celestial-moon-neck.jpg',
     alt: () => m['home.gallery.r1_5'](),
     href: '/tattoo-ideas/fine-line-decorative-star-tattoo',
   },
   {
-    src: '/gallery/traditional-black-cat-thigh-tattoo-21.webp',
+    src: '/gallery-v2/r1-06-traditional-cat-thigh.jpg',
     alt: () => m['home.gallery.r1_6'](),
     href: '/tattoo-ideas/american-traditional-dagger-and-rose-tattoo',
   },
   {
-    src: '/gallery/polynesian-tribal-shoulder-chest-tattoo-28.webp',
+    src: '/gallery-v2/r1-07-tribal-shoulder-chest.jpg',
     alt: () => m['home.gallery.r1_7'](),
     href: '/tattoo-ideas/cybersigilism-shoulder-arm-tattoo',
   },
   {
-    src: '/gallery/lotus-jewelry-thigh-tattoo-12.webp',
+    src: '/gallery-v2/r1-08-lotus-jewelry-thigh.jpg',
     alt: () => m['home.gallery.r1_8'](),
     href: '/tattoo-ideas/mandala-hip-tattoo',
   },
   {
-    src: '/gallery/gothic-blackwork-hand-tattoo-01.webp',
+    src: '/gallery-v2/r1-09-gothic-blackwork-hand.jpg',
     alt: () => m['home.gallery.r1_9'](),
     href: '/tattoo-ideas/blackwork-leaf-tattoo',
   },
   {
-    src: '/gallery/ornamental-floral-dagger-back-tattoo-22.webp',
+    src: '/gallery-v2/r1-10-floral-dagger-back.jpg',
     alt: () => m['home.gallery.r1_10'](),
     href: '/tattoo-ideas/ornamental-flower-tattoo',
   },
   {
-    src: '/gallery/butterfly-lotus-neck-back-tattoo-13.webp',
+    src: '/gallery-v2/r1-11-butterfly-lotus-neck-back.jpg',
     alt: () => m['home.gallery.r1_11'](),
     href: '/tattoo-ideas/minimalist-human-figure-and-butterfly-tattoo',
   },
   {
-    src: '/gallery/biomechanical-gear-arm-tattoo-20.webp',
+    src: '/gallery-v2/r1-12-biomechanical-gear-arm.jpg',
     alt: () => m['home.gallery.r1_12'](),
     href: '/tattoo-ideas/geometric-hexagon-tattoo',
   },
@@ -70,62 +70,62 @@ const MARQUEE_ROW_1 = [
 
 const MARQUEE_ROW_2 = [
   {
-    src: '/gallery/fine-line-botanical-collarbone-tattoo-36.webp',
+    src: '/gallery-v2/r2-01-botanical-collarbone.jpg',
     alt: () => m['home.gallery.r2_1'](),
     href: '/tattoo-ideas/cherry-blossom-tattoo',
   },
   {
-    src: '/gallery/cyber-sigilism-hand-wrist-tattoo-30.webp',
+    src: '/gallery-v2/r2-02-cybersigilism-hand-wrist.jpg',
     alt: () => m['home.gallery.r2_2'](),
     href: '/tattoo-ideas/cybersigilism-tattoo',
   },
   {
-    src: '/gallery/neo-traditional-cat-heart-thigh-tattoo-35.webp',
+    src: '/gallery-v2/r2-03-neotrad-cat-thigh.jpg',
     alt: () => m['home.gallery.r2_3'](),
     href: '/tattoo-ideas/american-traditional-dagger-and-rose-tattoo',
   },
   {
-    src: '/gallery/tarot-eye-celestial-forearm-tattoo-38.webp',
+    src: '/gallery-v2/r2-04-tarot-eye-forearm.jpg',
     alt: () => m['home.gallery.r2_4'](),
     href: '/tattoo-ideas/dotwork-eye-tattoo-with-moth-wings',
   },
   {
-    src: '/gallery/fine-line-floral-hip-tattoo-39.webp',
+    src: '/gallery-v2/r2-05-fine-line-floral-hip.jpg',
     alt: () => m['home.gallery.r2_5'](),
     href: '/tattoo-ideas/watercolor-flower-tattoo',
   },
   {
-    src: '/gallery/black-gray-angel-warrior-forearm-tattoo-40.webp',
+    src: '/gallery-v2/r2-06-black-grey-angel-forearm.jpg',
     alt: () => m['home.gallery.r2_6'](),
     href: '/tattoo-ideas/black-and-grey-hummingbird-and-flower-tattoo',
   },
   {
-    src: '/gallery/loyalty-script-hand-tattoo-31.webp',
+    src: '/gallery-v2/r2-07-loyalty-script-hand.jpg',
     alt: () => m['home.gallery.r2_7'](),
     href: '/tattoo-ideas/hand-calligraphy-tattoo',
   },
   {
-    src: '/gallery/anime-manga-portrait-calf-tattoo-37.webp',
+    src: '/gallery-v2/r2-08-anime-manga-calf.jpg',
     alt: () => m['home.gallery.r2_8'](),
     href: '/tattoo-ideas/chicano-female-portrait-and-rose-tattoo',
   },
   {
-    src: '/gallery/minimal-black-cat-shoulder-tattoo-42.webp',
+    src: '/gallery-v2/r2-09-minimal-cat-shoulder.jpg',
     alt: () => m['home.gallery.r2_9'](),
     href: '/tattoo-ideas/minimalist-cat-tattoo',
   },
   {
-    src: '/gallery/blackletter-number-hand-finger-tattoo-32.webp',
+    src: '/gallery-v2/r2-10-blackletter-hand-finger.jpg',
     alt: () => m['home.gallery.r2_10'](),
     href: '/tattoo-ideas/chest-blackletter-tattoo',
   },
   {
-    src: '/gallery/cartoon-character-quote-forearm-tattoo-41.webp',
+    src: '/gallery-v2/r2-11-illustrative-quote-forearm.jpg',
     alt: () => m['home.gallery.r2_11'](),
     href: '/tattoo-ideas/rib-calligraphy-tattoo',
   },
   {
-    src: '/gallery/blackwork-scorpion-hand-tattoo-45.webp',
+    src: '/gallery-v2/r2-12-blackwork-scorpion-hand.jpg',
     alt: () => m['home.gallery.r2_12'](),
     href: '/tattoo-ideas/single-needle-scissors-tattoo',
   },
@@ -272,7 +272,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                   </div>
                   <div className="min-h-0 overflow-hidden rounded-lg bg-[#f0e9e2]">
                     <img
-                      src="/home-hero-set/dagger-rose-skin-closeup.jpg"
+                      src="/home-values-set/crane-shoulder-body.jpg"
                       alt=""
                       width={987}
                       height={1594}
@@ -354,7 +354,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                         </div>
                         <div className="absolute top-0 left-[30%] h-[90%] w-[40%] overflow-hidden rounded border border-black/15 bg-white p-0.5 shadow-sm">
                           <img
-                            src="/home-hero-set/dagger-rose-artwork.jpg"
+                            src="/home-values-set/crane-artwork.jpg"
                             alt=""
                             width={160}
                             height={180}
@@ -498,7 +498,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                 >
                   <div className="min-h-0 overflow-hidden rounded-lg bg-[#f0e9e2]">
                     <img
-                      src="/home-hero-set/dagger-rose-personal-tryon.jpg"
+                      src="/home-values-set/crane-consultation.jpg"
                       alt=""
                       width={1173}
                       height={1341}
@@ -514,7 +514,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                       </span>
                       <div className="min-h-0 flex-1">
                         <img
-                          src="/home-hero-set/dagger-rose-model-preview.jpg"
+                          src="/home-values-set/crane-shoulder-body.jpg"
                           alt=""
                           width={433}
                           height={447}
@@ -530,7 +530,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                       </span>
                       <div className="min-h-0 flex-1">
                         <img
-                          src="/home-hero-set/dagger-rose-artwork.jpg"
+                          src="/home-values-set/crane-artwork.jpg"
                           alt=""
                           width={1122}
                           height={1402}

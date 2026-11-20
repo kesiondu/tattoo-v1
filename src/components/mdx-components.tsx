@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 export const mdxComponents: MDXComponents = {
   h1: ({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) => (
-    <h1
+    <h2
       className={cn(
         'text-foreground mt-6 mb-2 text-xl font-semibold tracking-tight md:text-2xl',
         className

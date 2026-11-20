@@ -50,63 +50,63 @@ const PRIMARY_STYLES: StyleItem[] = [
   {
     id: 'pick-for-me',
     label: () => m['home.style.pick_for_me'](),
-    img: '/assets/styles/sm/pick-for-me.webp',
+    img: '/assets/styles-v2/pick-for-me.jpg',
     isAuto: true,
   },
   {
     id: 'fine-line',
     label: () => m['home.style.fine_line'](),
-    img: '/assets/styles/sm/fine-line.webp',
+    img: '/assets/styles-v2/fine-line.jpg',
   },
   {
     id: 'minimalist',
     label: () => m['home.style.minimalist'](),
-    img: '/assets/styles/sm/minimalist.webp',
+    img: '/assets/styles-v2/minimalist.jpg',
   },
   {
     id: 'lettering',
     label: () => m['home.style.lettering'](),
-    img: '/assets/styles/sm/lettering.webp',
+    img: '/assets/styles-v2/lettering.jpg',
   },
   {
     id: 'realism',
     label: () => m['home.style.realism'](),
-    img: '/assets/styles/sm/realism.webp',
+    img: '/assets/styles-v2/realism.jpg',
   },
   {
     id: 'black-grey',
     label: () => m['home.style.black_grey'](),
-    img: '/assets/styles/sm/black-grey.webp',
+    img: '/assets/styles-v2/black-grey.jpg',
   },
   {
     id: 'american-traditional',
     label: () => m['home.style.american_traditional'](),
-    img: '/assets/styles/sm/old-school.webp',
+    img: '/assets/styles-v2/old-school.jpg',
   },
   {
     id: 'japanese',
     label: () => m['home.style.japanese'](),
-    img: '/assets/styles/sm/japanese.webp',
+    img: '/assets/styles-v2/japanese.jpg',
   },
   {
     id: 'blackwork',
     label: () => m['home.style.blackwork'](),
-    img: '/assets/styles/sm/blackwork.webp',
+    img: '/assets/styles-v2/blackwork.jpg',
   },
   {
     id: 'geometric',
     label: () => m['home.style.geometric'](),
-    img: '/assets/styles/sm/geometric.webp',
+    img: '/assets/styles-v2/geometric.jpg',
   },
   {
     id: 'neo-traditional',
     label: () => m['home.style.neo_traditional'](),
-    img: '/assets/styles/sm/neo-traditional.webp',
+    img: '/assets/styles-v2/neo-traditional.jpg',
   },
   {
     id: 'micro-realism',
     label: () => m['home.style.micro_realism'](),
-    img: '/assets/styles/sm/micro-realism.webp',
+    img: '/assets/styles-v2/micro-realism.jpg',
   },
 ];
 
@@ -114,52 +114,52 @@ const EXTRA_STYLES: StyleItem[] = [
   {
     id: 'watercolor',
     label: () => m['home.style.watercolor'](),
-    img: '/assets/styles/sm/watercolor.webp',
+    img: '/assets/styles-v2/watercolor.jpg',
   },
   {
     id: 'tribal',
     label: () => m['home.style.tribal'](),
-    img: '/assets/styles/sm/blackwork.webp',
+    img: '/assets/styles-v2/tribal.jpg',
   },
   {
     id: 'cyberpunk',
     label: () => m['home.style.cyberpunk'](),
-    img: '/assets/styles/sm/geometric.webp',
+    img: '/assets/styles-v2/cyberpunk.jpg',
   },
   {
     id: 'anime',
     label: () => m['home.style.anime'](),
-    img: '/assets/styles/sm/japanese.webp',
+    img: '/assets/styles-v2/anime.jpg',
   },
   {
     id: 'dotwork',
     label: () => m['home.style.dotwork'](),
-    img: '/assets/styles/sm/blackwork.webp',
+    img: '/assets/styles-v2/dotwork.jpg',
   },
   {
     id: 'sketch',
     label: () => m['home.style.sketch'](),
-    img: '/assets/styles/sm/fine-line.webp',
+    img: '/assets/styles-v2/sketch.jpg',
   },
   {
     id: 'celtic',
     label: () => m['home.style.celtic'](),
-    img: '/assets/styles/sm/geometric.webp',
+    img: '/assets/styles-v2/celtic.jpg',
   },
   {
     id: 'trash-polka',
     label: () => m['home.style.trash_polka'](),
-    img: '/assets/styles/sm/black-grey.webp',
+    img: '/assets/styles-v2/trash-polka.jpg',
   },
   {
     id: 'chicano',
     label: () => m['home.style.chicano'](),
-    img: '/assets/styles/sm/realism.webp',
+    img: '/assets/styles-v2/chicano.jpg',
   },
   {
     id: 'illustrative',
     label: () => m['home.style.illustrative'](),
-    img: '/assets/styles/sm/neo-traditional.webp',
+    img: '/assets/styles-v2/illustrative.jpg',
   },
 ];
 

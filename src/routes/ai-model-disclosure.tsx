@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Mail } from 'lucide-react';
 
+import { buildSeoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
@@ -122,11 +123,19 @@ export const Route = createFileRoute('/ai-model-disclosure')({
   loader: () => {
     const locale = getLocale();
     return {
+      locale,
       title: m['pages.aup.m022']({}, { locale }),
+      description: m['pages.aup.m023']({}, { locale }),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData ? [{ title: loaderData.title }] : [],
-  }),
+  head: ({ loaderData }) =>
+    loaderData
+      ? buildSeoHead({
+          title: loaderData.title,
+          description: loaderData.description,
+          path: '/ai-model-disclosure',
+          locale: loaderData.locale,
+        })
+      : {},
   component: AiModelDisclosurePage,
 });

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 
 import { envConfigs } from '@/config';
+import { noIndexHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { useGuestPostInfo } from '@/hooks/use-guest-posts';
 import { useUserFeatures } from '@/hooks/use-user-features';
@@ -20,6 +21,7 @@ import { AppLayout } from '@/components/app-layout';
 import type { NavItem } from '@/components/app-sidebar';
 
 export const Route = createFileRoute('/settings')({
+  head: noIndexHead,
   component: SettingsLayout,
 });
 

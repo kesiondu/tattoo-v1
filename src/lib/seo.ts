@@ -70,6 +70,10 @@ export function webAppJsonLd(opts: {
  * Head for a page: title, description, Open Graph, Twitter card and optional
  * JSON-LD. Canonical/hreflang come from the root route.
  */
+export function noIndexHead() {
+  return { meta: [{ name: 'robots', content: 'noindex, nofollow' }] };
+}
+
 export function buildSeoHead(opts: {
   title: string;
   description: string;

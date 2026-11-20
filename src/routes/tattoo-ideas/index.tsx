@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
+import { SeoRelatedTools } from '@/components/seo-related-tools';
 import {
   Dialog,
   DialogContent,
@@ -576,6 +577,22 @@ function TattooIdeasPage() {
               ))}
             </div>
           )}
+
+          <SeoRelatedTools
+            className="mt-10 px-0"
+            items={[
+              { href: '/tattoo-styles', label: m['pages.styles2.m002']() },
+              { href: '/tattoo-try-on', label: m['tryon.hero.h1']() },
+              {
+                href: '/tattoo-font-generator',
+                label: m['pages.fontgen.m010'](),
+              },
+              {
+                href: '/tattoo-price-calculator',
+                label: m['pages.price.m002'](),
+              },
+            ]}
+          />
 
           {/* Detail Lightbox Modal */}
           <Dialog

@@ -73,6 +73,7 @@ md.renderer.rules.link_open = function (tokens, idx, options, env, renderer) {
 export const markdownStyles = cn(
   'text-[15px] leading-7 text-foreground/90',
   '[&_h1]:mt-6 [&_h1]:mb-2 [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:tracking-tight [&_h1]:text-foreground md:[&_h1]:text-2xl',
+  '[&_h1:first-child]:mt-0',
   '[&_h2]:mt-6 [&_h2]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-foreground md:[&_h2]:text-xl',
   '[&_h3]:mt-4 [&_h3]:mb-1.5 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:tracking-tight [&_h3]:text-foreground',
   '[&_p]:mt-2 [&_p]:leading-7',
@@ -102,8 +103,9 @@ export function MarkdownContent({
   /** Tag external links with utm_source/utm_medium (unless already tagged). */
   utm?: { source: string; medium: string };
 }) {
-  const html = content
-    ? md.render(content, {
+  const safeContent = content.replace(/^#\s+(.+)$/gm, '## $1');
+  const html = safeContent
+    ? md.render(safeContent, {
         sponsored,
         utmSource: utm?.source,
         utmMedium: utm?.medium,

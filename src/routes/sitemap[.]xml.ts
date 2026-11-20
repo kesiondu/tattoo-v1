@@ -32,6 +32,7 @@ const STATIC_ENTRIES: Entry[] = [
     priority: 0.8,
   },
   { path: '/pricing', changeFrequency: 'weekly', priority: 0.7 },
+  { path: '/guest-post', changeFrequency: 'monthly', priority: 0.4 },
   { path: '/ai-model-disclosure', changeFrequency: 'monthly', priority: 0.3 },
   { path: '/acceptable-use', changeFrequency: 'monthly', priority: 0.3 },
   { path: '/cookie', changeFrequency: 'monthly', priority: 0.3 },

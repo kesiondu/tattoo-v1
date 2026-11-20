@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 import { envConfigs } from '@/config';
+import { buildSeoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { Footer } from '@/blocks/footer';
@@ -22,17 +23,14 @@ export const Route = createFileRoute('/blog/')({
   },
   head: ({ loaderData }) => {
     const locale = loaderData?.locale;
-    return {
-      meta: [
-        {
-          title: `${m['blog.title']({}, { locale: locale as any })} | ${envConfigs.app_name}`,
-        },
-        {
-          name: 'description',
-          content: m['blog.description']({}, { locale: locale as any }),
-        },
-      ],
-    };
+    const title = `${m['blog.title']({}, { locale: locale as any })} | ${envConfigs.app_name}`;
+    const description = m['blog.description']({}, { locale: locale as any });
+    return buildSeoHead({
+      title,
+      description,
+      path: '/blog',
+      locale: locale ?? 'en',
+    });
   },
   component: BlogPage,
 });

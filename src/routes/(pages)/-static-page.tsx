@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 import { notFound, useLoaderData } from '@tanstack/react-router';
 
+import { buildSeoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { baseLocale, getLocale } from '@/paraglide/runtime.js';
 
@@ -46,12 +47,12 @@ export function staticPageRouteOptions(slug: string) {
     head: ({ loaderData }: { loaderData?: LoaderData }) => {
       if (!loaderData) return {};
       const { meta } = loaderData;
-      return {
-        meta: [
-          { title: `${meta.title} | TattooGenerator.online` },
-          { name: 'description', content: meta.description },
-        ],
-      };
+      return buildSeoHead({
+        title: `${meta.title} | TattooGenerator.online`,
+        description: meta.description,
+        path: `/${loaderData.slug}`,
+        locale: loaderData.locale,
+      });
     },
     component: StaticPage,
   };

@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+import { buildSeoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
@@ -28,11 +29,19 @@ export const Route = createFileRoute('/acceptable-use')({
   loader: () => {
     const locale = getLocale();
     return {
+      locale,
       title: `${m['pages.legal.aup_title']({}, { locale })} | TattooGenerator.online`,
+      description: m['pages.legal.aup_description']({}, { locale }),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData ? [{ title: loaderData.title }] : [],
-  }),
+  head: ({ loaderData }) =>
+    loaderData
+      ? buildSeoHead({
+          title: loaderData.title,
+          description: loaderData.description,
+          path: '/acceptable-use',
+          locale: loaderData.locale,
+        })
+      : {},
   component: AcceptableUsePage,
 });

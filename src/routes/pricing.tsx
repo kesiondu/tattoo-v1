@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
+import { SeoRelatedTools } from '@/components/seo-related-tools';
 
 const PRICING_FAQS = [
   {
@@ -429,6 +430,18 @@ function PricingPage() {
               </div>
             </div>
           </section>
+
+          <SeoRelatedTools
+            items={[
+              { href: '/', label: m['home.hero.title']() },
+              { href: '/tattoo-try-on', label: m['tryon.hero.h1']() },
+              {
+                href: '/tattoo-font-generator',
+                label: m['pages.fontgen.m010'](),
+              },
+              { href: '/tattoo-styles', label: m['pages.styles2.m002']() },
+            ]}
+          />
 
           {/* Pricing FAQ (4 verbatim items) */}
           <section className="border-border bg-muted/20 border-t py-14 sm:py-16">
