@@ -9,62 +9,62 @@ const MARQUEE_ROW_1 = [
   {
     src: '/gallery-v2/r1-01-archangel-back.jpg',
     alt: () => m['home.gallery.r1_1'](),
-    href: '/tattoo-ideas/phoenix-tattoo-with-flowers',
+    href: '/tattoo-styles/black-grey',
   },
   {
     src: '/gallery-v2/r1-02-cherry-blossom-wrist.jpg',
     alt: () => m['home.gallery.r1_2'](),
-    href: '/tattoo-ideas/cherry-blossom-tattoo',
+    href: '/tattoo-styles/floral',
   },
   {
     src: '/gallery-v2/r1-03-ornamental-rib.jpg',
     alt: () => m['home.gallery.r1_3'](),
-    href: '/tattoo-ideas/ornamental-flower-tattoo',
+    href: '/tattoo-styles/ornamental',
   },
   {
     src: '/gallery-v2/r1-04-japanese-koi-sleeve.jpg',
     alt: () => m['home.gallery.r1_4'](),
-    href: '/tattoo-ideas/japanese-fox-and-kitsune-mask-tattoo',
+    href: '/tattoo-styles/japanese',
   },
   {
     src: '/gallery-v2/r1-05-celestial-moon-neck.jpg',
     alt: () => m['home.gallery.r1_5'](),
-    href: '/tattoo-ideas/fine-line-decorative-star-tattoo',
+    href: '/tattoo-styles/minimalist',
   },
   {
     src: '/gallery-v2/r1-06-traditional-cat-thigh.jpg',
     alt: () => m['home.gallery.r1_6'](),
-    href: '/tattoo-ideas/american-traditional-dagger-and-rose-tattoo',
+    href: '/tattoo-styles/american-traditional',
   },
   {
     src: '/gallery-v2/r1-07-tribal-shoulder-chest.jpg',
     alt: () => m['home.gallery.r1_7'](),
-    href: '/tattoo-ideas/cybersigilism-shoulder-arm-tattoo',
+    href: '/tattoo-styles/tribal',
   },
   {
     src: '/gallery-v2/r1-08-lotus-jewelry-thigh.jpg',
     alt: () => m['home.gallery.r1_8'](),
-    href: '/tattoo-ideas/mandala-hip-tattoo',
+    href: '/tattoo-styles/mandala',
   },
   {
     src: '/gallery-v2/r1-09-gothic-blackwork-hand.jpg',
     alt: () => m['home.gallery.r1_9'](),
-    href: '/tattoo-ideas/blackwork-leaf-tattoo',
+    href: '/tattoo-styles/blackwork',
   },
   {
     src: '/gallery-v2/r1-10-floral-dagger-back.jpg',
     alt: () => m['home.gallery.r1_10'](),
-    href: '/tattoo-ideas/ornamental-flower-tattoo',
+    href: '/tattoo-styles/ornamental',
   },
   {
     src: '/gallery-v2/r1-11-butterfly-lotus-neck-back.jpg',
     alt: () => m['home.gallery.r1_11'](),
-    href: '/tattoo-ideas/minimalist-human-figure-and-butterfly-tattoo',
+    href: '/tattoo-styles/fine-line',
   },
   {
     src: '/gallery-v2/r1-12-biomechanical-gear-arm.jpg',
     alt: () => m['home.gallery.r1_12'](),
-    href: '/tattoo-ideas/geometric-hexagon-tattoo',
+    href: '/tattoo-styles/realism',
   },
 ];
 
@@ -72,62 +72,62 @@ const MARQUEE_ROW_2 = [
   {
     src: '/gallery-v2/r2-01-botanical-collarbone.jpg',
     alt: () => m['home.gallery.r2_1'](),
-    href: '/tattoo-ideas/cherry-blossom-tattoo',
+    href: '/tattoo-styles/floral',
   },
   {
     src: '/gallery-v2/r2-02-cybersigilism-hand-wrist.jpg',
     alt: () => m['home.gallery.r2_2'](),
-    href: '/tattoo-ideas/cybersigilism-tattoo',
+    href: '/tattoo-styles/cybersigilism',
   },
   {
     src: '/gallery-v2/r2-03-neotrad-cat-thigh.jpg',
     alt: () => m['home.gallery.r2_3'](),
-    href: '/tattoo-ideas/american-traditional-dagger-and-rose-tattoo',
+    href: '/tattoo-styles/neo-traditional',
   },
   {
     src: '/gallery-v2/r2-04-tarot-eye-forearm.jpg',
     alt: () => m['home.gallery.r2_4'](),
-    href: '/tattoo-ideas/dotwork-eye-tattoo-with-moth-wings',
+    href: '/tattoo-styles/dotwork',
   },
   {
     src: '/gallery-v2/r2-05-fine-line-floral-hip.jpg',
     alt: () => m['home.gallery.r2_5'](),
-    href: '/tattoo-ideas/watercolor-flower-tattoo',
+    href: '/tattoo-styles/floral',
   },
   {
     src: '/gallery-v2/r2-06-black-grey-angel-forearm.jpg',
     alt: () => m['home.gallery.r2_6'](),
-    href: '/tattoo-ideas/black-and-grey-hummingbird-and-flower-tattoo',
+    href: '/tattoo-styles/black-grey',
   },
   {
     src: '/gallery-v2/r2-07-loyalty-script-hand.jpg',
     alt: () => m['home.gallery.r2_7'](),
-    href: '/tattoo-ideas/hand-calligraphy-tattoo',
+    href: '/tattoo-styles/lettering',
   },
   {
     src: '/gallery-v2/r2-08-anime-manga-calf.jpg',
     alt: () => m['home.gallery.r2_8'](),
-    href: '/tattoo-ideas/chicano-female-portrait-and-rose-tattoo',
+    href: '/tattoo-styles/chicano',
   },
   {
     src: '/gallery-v2/r2-09-minimal-cat-shoulder.jpg',
     alt: () => m['home.gallery.r2_9'](),
-    href: '/tattoo-ideas/minimalist-cat-tattoo',
+    href: '/tattoo-styles/minimalist',
   },
   {
     src: '/gallery-v2/r2-10-blackletter-hand-finger.jpg',
     alt: () => m['home.gallery.r2_10'](),
-    href: '/tattoo-ideas/chest-blackletter-tattoo',
+    href: '/tattoo-styles/lettering',
   },
   {
     src: '/gallery-v2/r2-11-illustrative-quote-forearm.jpg',
     alt: () => m['home.gallery.r2_11'](),
-    href: '/tattoo-ideas/rib-calligraphy-tattoo',
+    href: '/tattoo-styles/illustrative',
   },
   {
     src: '/gallery-v2/r2-12-blackwork-scorpion-hand.jpg',
     alt: () => m['home.gallery.r2_12'](),
-    href: '/tattoo-ideas/single-needle-scissors-tattoo',
+    href: '/tattoo-styles/blackwork',
   },
 ];
 

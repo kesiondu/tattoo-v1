@@ -22,7 +22,7 @@ export function SeoRelatedTools({ className, items }: SeoRelatedToolsProps) {
           <li key={item.href}>
             <Link
               href={item.href}
-              className="border-border text-foreground hover:bg-muted inline-flex min-h-10 items-center gap-2 rounded-lg border bg-white px-3.5 py-2 text-sm font-medium transition-colors"
+              className="border-border text-foreground hover:bg-muted bg-background inline-flex min-h-10 items-center gap-2 rounded-lg border px-3.5 py-2 text-sm font-medium transition-colors"
             >
               {item.label}
               <ArrowRight className="size-3.5" aria-hidden="true" />

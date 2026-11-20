@@ -3,6 +3,7 @@ import { ArrowRight, Lock, Sparkles } from 'lucide-react';
 
 import { useSession } from '@/core/auth/client';
 import { Link } from '@/core/i18n/navigation';
+import { noIndexHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
@@ -88,8 +89,6 @@ export const Route = createFileRoute('/my-designs')({
       title: `${m['home.footer.my_designs']({}, { locale })} | TattooGenerator.online`,
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData ? [{ title: loaderData.title }] : [],
-  }),
+  head: noIndexHead,
   component: MyDesignsPage,
 });

@@ -9,6 +9,7 @@ import {
   isAppProtocolUrl,
   safeInternalPath,
 } from '@/lib/redirect';
+import { noIndexHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { localizeHref } from '@/paraglide/runtime.js';
 import { usePublicConfig } from '@/hooks/use-public-config';
@@ -97,5 +98,6 @@ function AuthCallbackPage() {
 }
 
 export const Route = createFileRoute('/(auth)/auth-callback')({
+  head: noIndexHead,
   component: AuthCallbackPage,
 });
