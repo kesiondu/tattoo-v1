@@ -165,24 +165,6 @@ const EXTRA_STYLES: StyleItem[] = [
 
 const ALL_STYLES = [...PRIMARY_STYLES, ...EXTRA_STYLES];
 
-const EXAMPLE_PAIRS = [
-  {
-    id: 'watercolor',
-    body: '/dialog-examples/watercolor-body.webp',
-    art: '/dialog-examples/watercolor-paper.webp',
-  },
-  {
-    id: 'bird',
-    body: '/dialog-examples/bird-body.webp',
-    art: '/dialog-examples/bird-paper.webp',
-  },
-  {
-    id: 'fox',
-    body: '/dialog-examples/fox-body.webp',
-    art: '/dialog-examples/fox-paper.webp',
-  },
-];
-
 export function HeroGenerator({
   onOpenAuth,
   initialStyle,
@@ -756,11 +738,11 @@ export function HeroGenerator({
                   </span>
                 </div>
               ) : previewTab === 'body' ? (
-                <div className="aspect-[16/11] w-full sm:aspect-[4/3]">
+                <div className="w-full">
                   <img
                     src="/tattoo-generator/examples/body-preview-collage.jpg"
                     alt={m['home.hero.example_label']()}
-                    className="h-full w-full object-cover"
+                    className="block h-auto w-full"
                   />
                 </div>
               ) : (
@@ -834,32 +816,16 @@ export function HeroGenerator({
 
       {/* Example Designs Lightbox Modal */}
       <Dialog open={examplesOpen} onOpenChange={setExamplesOpen}>
-        <DialogContent className="text-foreground max-w-3xl bg-white">
+        <DialogContent className="text-foreground max-w-4xl bg-white">
           <DialogHeader>
             <DialogTitle>{m['home.hero.example_label']()}</DialogTitle>
           </DialogHeader>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {EXAMPLE_PAIRS.map((pair) => (
-              <div
-                key={pair.id}
-                className="border-border space-y-2 rounded-xl border bg-neutral-50 p-2"
-              >
-                <div className="aspect-[2/3] overflow-hidden rounded-lg bg-white">
-                  <img
-                    src={pair.body}
-                    alt={m['home.hero.tab_body']()}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="border-border/60 aspect-square overflow-hidden rounded-lg border bg-white">
-                  <img
-                    src={pair.art}
-                    alt={m['home.hero.tab_art']()}
-                    className="h-full w-full object-contain p-2"
-                  />
-                </div>
-              </div>
-            ))}
+          <div className="overflow-hidden rounded-xl bg-white">
+            <img
+              src="/dialog-examples/example-tattoo-designs.jpg"
+              alt={m['home.hero.example_label']()}
+              className="h-auto w-full object-contain"
+            />
           </div>
         </DialogContent>
       </Dialog>
