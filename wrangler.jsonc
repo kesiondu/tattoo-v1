@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tattoo-generator",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "routes": [
+    {
+      "pattern": "tattoogenerator.online",
+      "custom_domain": true
+    }
+  ],
+  "vars": {
+    "DATABASE_PROVIDER": "d1",
+    "AUTH_URL": "https://tattoogenerator.online",
+    "VITE_APP_URL": "https://tattoogenerator.online",
+    "VITE_APP_NAME": "Tattoo Generator"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tattoo-generator-db",
+      "database_id": "102f6ef8-2459-452a-9582-0d117e36a1dd",
+      "migrations_dir": "drizzle"
+    }
+  ]
+}
