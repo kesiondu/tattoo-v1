@@ -5,9 +5,70 @@ import { baseLocale } from '@/paraglide/runtime.js';
 import { getLocalPosts, mergePosts } from '@/content/posts';
 
 const STATIC_PAGES: { path: string; title: string; description: string }[] = [
-  { path: '', title: 'Home', description: 'Landing page' },
-  { path: '/pricing', title: 'Pricing', description: 'Pricing plans' },
-  { path: '/blog', title: 'Blog', description: 'Blog posts and articles' },
+  {
+    path: '',
+    title: 'AI Tattoo Generator',
+    description:
+      'Generate custom tattoo concepts, compare styles, and preview placement on body templates.',
+  },
+  {
+    path: '/tattoo-try-on',
+    title: 'Virtual Tattoo Try-On',
+    description:
+      'Preview a tattoo design on a photo or body template and adjust placement and scale.',
+  },
+  {
+    path: '/tattoo-stencil-generator',
+    title: 'AI Tattoo Stencil Generator',
+    description:
+      'A guide to the text-based tattoo concept workflow; it does not trace photos or export transfer files.',
+  },
+  {
+    path: '/name-tattoo-generator',
+    title: 'Name Tattoo Generator',
+    description:
+      'Compare name lettering styles and download a PNG reference for discussion with a tattoo artist.',
+  },
+  {
+    path: '/tattoo-font-generator',
+    title: 'Tattoo Font Generator',
+    description:
+      'Preview names, dates, and short phrases in tattoo lettering styles and export a design reference.',
+  },
+  {
+    path: '/tattoo-styles',
+    title: 'Tattoo Styles Guide',
+    description:
+      'Compare tattoo styles, visual characteristics, and common placements.',
+  },
+  {
+    path: '/tattoo-fonts',
+    title: 'Tattoo Fonts Guide',
+    description:
+      'Compare lettering styles, readability, and use cases for tattoo text.',
+  },
+  {
+    path: '/tattoo-ideas',
+    title: 'Tattoo Ideas Gallery',
+    description:
+      'Browse illustrated tattoo concepts with style, placement, prompt, and on-skin preview details.',
+  },
+  {
+    path: '/tattoo-price-calculator',
+    title: 'Tattoo Price Calculator',
+    description:
+      'Create a planning estimate from size, style, placement, color, artist experience, and region; not a studio quote.',
+  },
+  {
+    path: '/pricing',
+    title: 'Pricing',
+    description: 'Review available credit bundles and product pricing.',
+  },
+  {
+    path: '/blog',
+    title: 'Tattoo Design Blog',
+    description: 'Editorial tattoo design and planning articles.',
+  },
 ];
 
 export const Route = createFileRoute('/llms.txt')({
@@ -43,6 +104,18 @@ export const Route = createFileRoute('/llms.txt')({
           ...STATIC_PAGES.map(
             (p) => `- [${p.title}](${app_url}${p.path}): ${p.description}`
           ),
+          '',
+          '## Tattoo Idea Collections',
+          '',
+          '- [Tattoo styles](https://tattoogenerator.online/tattoo-styles): Style pages compare specific visual approaches and link to related examples.',
+          '- [Tattoo ideas](https://tattoogenerator.online/tattoo-ideas): Each detail page includes artwork, placement context, a generation prompt, and related ideas.',
+          '- [Name tattoo generator](https://tattoogenerator.online/name-tattoo-generator): Compare name lettering previews and export a PNG reference.',
+          '- [Tattoo stencil generator](https://tattoogenerator.online/tattoo-stencil-generator): Learn about text-based tattoo concept generation; it does not trace photos or export transfer files.',
+          '',
+          '## Editorial notes',
+          '',
+          '- Price calculator results are planning estimates, not quotes from tattoo studios.',
+          '- Digital previews and exported references are concepts; a tattoo artist should adapt final linework and placement.',
         ];
 
         if (posts.length > 0) {

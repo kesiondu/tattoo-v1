@@ -13,8 +13,16 @@ import {
 } from 'lucide-react';
 
 import { useSession } from '@/core/auth/client';
+import { tDynamic } from '@/core/i18n/dynamic';
 import { Link } from '@/core/i18n/navigation';
+import {
+  breadcrumbJsonLd,
+  buildSeoHead,
+  faqJsonLd,
+  webAppJsonLd,
+} from '@/lib/seo';
 import { cn } from '@/lib/utils';
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
 import {
@@ -23,9 +31,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-
-import { m } from '@/paraglide/messages.js';
-import { tDynamic } from '@/core/i18n/dynamic';
 
 const CITIES = [
   { name: 'United States Average', mult: 1.0 },
@@ -66,10 +71,30 @@ const SIZES = [
   { id: 'medium', label: 'Medium / 4 x 4 in', base: [240, 440], hrs: [2.5, 4] },
   { id: 'large', label: 'Large / 5 x 5 in', base: [380, 680], hrs: [3.5, 5.5] },
   { id: 'small-custom', label: 'Small custom', base: [200, 380], hrs: [2, 3] },
-  { id: 'medium-custom', label: 'Medium custom', base: [380, 700], hrs: [3.5, 6] },
-  { id: 'large-standalone', label: 'Large standalone', base: [650, 1300], hrs: [6, 10] },
-  { id: 'half-sleeve', label: 'Half sleeve', base: [1200, 2400], hrs: [10, 18] },
-  { id: 'full-sleeve', label: 'Full sleeve', base: [2400, 4800], hrs: [20, 36] },
+  {
+    id: 'medium-custom',
+    label: 'Medium custom',
+    base: [380, 700],
+    hrs: [3.5, 6],
+  },
+  {
+    id: 'large-standalone',
+    label: 'Large standalone',
+    base: [650, 1300],
+    hrs: [6, 10],
+  },
+  {
+    id: 'half-sleeve',
+    label: 'Half sleeve',
+    base: [1200, 2400],
+    hrs: [10, 18],
+  },
+  {
+    id: 'full-sleeve',
+    label: 'Full sleeve',
+    base: [2400, 4800],
+    hrs: [20, 36],
+  },
   { id: 'full-back', label: 'Full back', base: [3200, 6800], hrs: [25, 50] },
 ];
 
@@ -123,13 +148,34 @@ const COMPLEXITIES = [
 ];
 
 const BODY_AREA_MODAL_ITEMS = [
-  { id: 'Back', img: '/tattoo-generator/body-references/back/back-view/medium.webp' },
-  { id: 'Chest', img: '/tattoo-generator/body-references/chest-torso/male-front-torso/medium.webp' },
-  { id: 'Forearm', img: '/tattoo-generator/body-references/arm/outer-arm/medium.webp' },
-  { id: 'Thigh', img: '/tattoo-generator/body-references/leg/front-leg/medium.webp' },
-  { id: 'Hand', img: '/tattoo-generator/body-references/hand/back-of-hand/medium.webp' },
-  { id: 'Ankle', img: '/tattoo-generator/body-references/foot-ankle/top-outer-foot-ankle/medium.webp' },
-  { id: 'Neck', img: '/tattoo-generator/body-references/neck-ear/front-neck-collarbone/medium.webp' },
+  {
+    id: 'Back',
+    img: '/tattoo-generator/body-references/back/back-view/medium.webp',
+  },
+  {
+    id: 'Chest',
+    img: '/tattoo-generator/body-references/chest-torso/male-front-torso/medium.webp',
+  },
+  {
+    id: 'Forearm',
+    img: '/tattoo-generator/body-references/arm/outer-arm/medium.webp',
+  },
+  {
+    id: 'Thigh',
+    img: '/tattoo-generator/body-references/leg/front-leg/medium.webp',
+  },
+  {
+    id: 'Hand',
+    img: '/tattoo-generator/body-references/hand/back-of-hand/medium.webp',
+  },
+  {
+    id: 'Ankle',
+    img: '/tattoo-generator/body-references/foot-ankle/top-outer-foot-ankle/medium.webp',
+  },
+  {
+    id: 'Neck',
+    img: '/tattoo-generator/body-references/neck-ear/front-neck-collarbone/medium.webp',
+  },
 ];
 
 const CALC_FAQS = [
@@ -188,12 +234,16 @@ function TattooPriceCalculatorPage() {
   const [style, setStyle] = useState('Fine Line');
   const [color, setColor] = useState<'bg' | 'limited' | 'full'>('bg');
   const [complexity, setComplexity] = useState('Simple');
-  const [designType, setDesignType] = useState<'flash' | 'semi' | 'full'>('semi');
+  const [designType, setDesignType] = useState<'flash' | 'semi' | 'full'>(
+    'semi'
+  );
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const [calculated, setCalculated] = useState(false);
   const [tipMode, setTipMode] = useState<'none' | 'std' | 'gen'>('none');
-  const [aftercare, setAftercare] = useState<'none' | 'basic' | 'std' | 'ext'>('none');
+  const [aftercare, setAftercare] = useState<'none' | 'basic' | 'std' | 'ext'>(
+    'none'
+  );
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [bodyAreaOpen, setBodyAreaOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -203,10 +253,12 @@ function TattooPriceCalculatorPage() {
   const sizeObj = SIZES.find((s) => s.id === sizeId) ?? SIZES[0];
   const placeObj = PLACEMENTS.find((p) => p.id === placement) ?? PLACEMENTS[5];
   const styleObj = STYLES.find((s) => s.name === style) ?? STYLES[10];
-  const compObj = COMPLEXITIES.find((c) => c.id === complexity) ?? COMPLEXITIES[0];
+  const compObj =
+    COMPLEXITIES.find((c) => c.id === complexity) ?? COMPLEXITIES[0];
 
   const colorMult = color === 'full' ? 1.15 : color === 'limited' ? 1.07 : 1.0;
-  const designMult = designType === 'full' ? 1.1 : designType === 'flash' ? 0.92 : 1.0;
+  const designMult =
+    designType === 'full' ? 1.1 : designType === 'flash' ? 0.92 : 1.0;
   const totalMult =
     cityObj.mult *
     artistObj.mult *
@@ -216,15 +268,29 @@ function TattooPriceCalculatorPage() {
     colorMult *
     designMult;
 
-  const baseMin = Math.max(80, Math.round((sizeObj.base[0] * totalMult) / 10) * 10);
-  const baseMax = Math.max(baseMin + 50, Math.round((sizeObj.base[1] * totalMult) / 10) * 10);
+  const baseMin = Math.max(
+    80,
+    Math.round((sizeObj.base[0] * totalMult) / 10) * 10
+  );
+  const baseMax = Math.max(
+    baseMin + 50,
+    Math.round((sizeObj.base[1] * totalMult) / 10) * 10
+  );
   const tipPct = tipMode === 'gen' ? 0.22 : tipMode === 'std' ? 0.175 : 0;
   const aftercareAdd =
-    aftercare === 'ext' ? 115 : aftercare === 'std' ? 65 : aftercare === 'basic' ? 45 : 0;
+    aftercare === 'ext'
+      ? 115
+      : aftercare === 'std'
+        ? 65
+        : aftercare === 'basic'
+          ? 45
+          : 0;
 
-  const finalMin = Math.round((baseMin * (1 + tipPct) + aftercareAdd) / 10) * 10;
-  const finalMax = Math.round((baseMax * (1 + tipPct) + aftercareAdd) / 10) * 10;
-  const typical = Math.round(((finalMin + finalMax) / 2) / 10) * 10;
+  const finalMin =
+    Math.round((baseMin * (1 + tipPct) + aftercareAdd) / 10) * 10;
+  const finalMax =
+    Math.round((baseMax * (1 + tipPct) + aftercareAdd) / 10) * 10;
+  const typical = Math.round((finalMin + finalMax) / 2 / 10) * 10;
 
   function applyExample(preset: 'tiny' | 'medium' | 'half') {
     if (preset === 'tiny') {
@@ -263,53 +329,53 @@ function TattooPriceCalculatorPage() {
           <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16">
             <div className="mx-auto max-w-[1088px] px-4 sm:px-6">
               <div className="mb-8 max-w-3xl">
-                <div className="text-xs font-medium text-foreground">
+                <div className="text-foreground text-xs font-medium">
                   {m['pages.price.m001']()}
                 </div>
-                <h1 className="mt-2 font-sans text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+                <h1 className="text-foreground mt-2 font-sans text-4xl font-bold tracking-tight sm:text-5xl">
                   {m['pages.price.m002']()}
                 </h1>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                <p className="text-muted-foreground mt-3 text-sm leading-relaxed sm:text-base">
                   {m['pages.price.m003']()}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_400px]">
                 {/* Left Card: Tattoo details */}
-                <div className="rounded-xl border border-foreground/10 bg-white p-6 shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
+                <div className="border-foreground/10 rounded-xl border bg-white p-6 shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
                   {/* Header with black calculator icon box + subtitle */}
-                  <div className="border-b border-border pb-4">
+                  <div className="border-border border-b pb-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
+                      <div className="bg-foreground text-background flex size-9 shrink-0 items-center justify-center rounded-lg">
                         <Calculator className="size-4" />
                       </div>
-                      <h2 className="text-base font-semibold text-foreground">
+                      <h2 className="text-foreground text-base font-semibold">
                         {m['pages.price.m004']()}
                       </h2>
                     </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
+                    <p className="text-muted-foreground mt-2 text-xs">
                       {m['pages.price.m005']()}
                     </p>
                   </div>
 
                   <div className="mt-5 space-y-5">
                     {/* Dashed Autofill from an image card */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-border bg-[#fafaf9]/60 p-3.5">
+                    <div className="border-border flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed bg-[#fafaf9]/60 p-3.5">
                       <div className="flex items-start gap-3">
-                        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-muted-foreground">
+                        <div className="border-border text-muted-foreground flex size-9 shrink-0 items-center justify-center rounded-lg border bg-white">
                           <Scan className="size-4" />
                         </div>
                         <div>
                           <div className="flex items-center gap-1.5">
-                            <span className="text-xs font-semibold text-foreground">
+                            <span className="text-foreground text-xs font-semibold">
                               {m['pages.price.m006']()}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 rounded bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-foreground">
+                            <span className="bg-muted text-foreground inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] font-semibold">
                               <Sparkles className="size-2.5" />
                               Pro
                             </span>
                           </div>
-                          <p className="mt-0.5 text-[11px] text-muted-foreground">
+                          <p className="text-muted-foreground mt-0.5 text-[11px]">
                             {m['pages.price.m007']()}
                           </p>
                         </div>
@@ -321,7 +387,7 @@ function TattooPriceCalculatorPage() {
                           onClick={() => {
                             if (!session?.user) openAuth();
                           }}
-                          className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-xs font-medium text-foreground hover:bg-muted"
+                          className="border-border text-foreground hover:bg-muted inline-flex h-8 items-center gap-1.5 rounded-lg border bg-white px-3 text-xs font-medium"
                         >
                           <Upload className="size-3.5" />
                           <span>{m['pages.price.m008']()}</span>
@@ -331,7 +397,7 @@ function TattooPriceCalculatorPage() {
                           onClick={() => {
                             if (!session?.user) openAuth();
                           }}
-                          className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-xs font-medium text-foreground hover:bg-muted"
+                          className="border-border text-foreground hover:bg-muted inline-flex h-8 items-center gap-1.5 rounded-lg border bg-white px-3 text-xs font-medium"
                         >
                           <FolderHeart className="size-3.5" />
                           <span>{m['pages.price.m009']()}</span>
@@ -342,43 +408,37 @@ function TattooPriceCalculatorPage() {
                     {/* CITY OR REGION + ARTIST EXPERIENCE */}
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                        <label className="text-muted-foreground mb-1.5 block text-[11px] font-semibold tracking-wider uppercase">
                           {m['pages.price.m010']()}
                         </label>
                         <select
                           value={city}
                           onChange={(e) => setCity(e.target.value)}
-                          className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
+                          className="border-input text-foreground focus:border-foreground h-10 w-full rounded-lg border bg-white px-3 text-xs outline-none"
                         >
-                          <option value="">
-                            {m['pages.price.m011']()}
-                          </option>
+                          <option value="">{m['pages.price.m011']()}</option>
                           {CITIES.map((c) => (
                             <option key={c.name} value={c.name}>
                               {c.name}
                             </option>
                           ))}
                         </select>
-                        <p className="mt-1.5 flex items-start gap-1 text-[11px] text-muted-foreground">
+                        <p className="text-muted-foreground mt-1.5 flex items-start gap-1 text-[11px]">
                           <MapPin className="mt-0.5 size-3 shrink-0" />
-                          <span>
-                            {m['pages.price.m012']()}
-                          </span>
+                          <span>{m['pages.price.m012']()}</span>
                         </p>
                       </div>
 
                       <div>
-                        <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                        <label className="text-muted-foreground mb-1.5 block text-[11px] font-semibold tracking-wider uppercase">
                           {m['pages.price.m013']()}
                         </label>
                         <select
                           value={artistId}
                           onChange={(e) => setArtistId(e.target.value)}
-                          className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
+                          className="border-input text-foreground focus:border-foreground h-10 w-full rounded-lg border bg-white px-3 text-xs outline-none"
                         >
-                          <option value="">
-                            {m['pages.price.m014']()}
-                          </option>
+                          <option value="">{m['pages.price.m014']()}</option>
                           {ARTISTS.map((a) => (
                             <option key={a.id} value={a.id}>
                               {a.label}
@@ -389,22 +449,20 @@ function TattooPriceCalculatorPage() {
                     </div>
 
                     {/* Mark the intended body area card */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-white p-4">
+                    <div className="border-border flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-white p-4">
                       <div className="max-w-md">
-                        <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                        <div className="text-foreground flex items-center gap-1.5 text-xs font-semibold">
                           <Scan className="size-3.5" />
-                          <span>
-                            {m['pages.price.m015']()}
-                          </span>
+                          <span>{m['pages.price.m015']()}</span>
                         </div>
-                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                        <p className="text-muted-foreground mt-1 text-[11px] leading-relaxed">
                           {m['pages.price.m016']()}
                         </p>
                       </div>
                       <button
                         type="button"
                         onClick={() => setBodyAreaOpen(true)}
-                        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
+                        className="border-border text-foreground hover:bg-muted inline-flex h-9 items-center gap-1.5 rounded-lg border bg-white px-3.5 text-xs font-semibold transition-colors"
                       >
                         <Scan className="size-3.5" />
                         <span>{m['pages.price.m017']()}</span>
@@ -414,17 +472,15 @@ function TattooPriceCalculatorPage() {
                     {/* TATTOO SIZE + BODY PLACEMENT */}
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                        <label className="text-muted-foreground mb-1.5 block text-[11px] font-semibold tracking-wider uppercase">
                           {m['pages.price.m018']()}
                         </label>
                         <select
                           value={sizeId}
                           onChange={(e) => setSizeId(e.target.value)}
-                          className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
+                          className="border-input text-foreground focus:border-foreground h-10 w-full rounded-lg border bg-white px-3 text-xs outline-none"
                         >
-                          <option value="">
-                            {m['pages.price.m019']()}
-                          </option>
+                          <option value="">{m['pages.price.m019']()}</option>
                           {SIZES.map((s) => (
                             <option key={s.id} value={s.id}>
                               {s.label}
@@ -434,17 +490,15 @@ function TattooPriceCalculatorPage() {
                       </div>
 
                       <div>
-                        <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                        <label className="text-muted-foreground mb-1.5 block text-[11px] font-semibold tracking-wider uppercase">
                           {m['pages.price.m020']()}
                         </label>
                         <select
                           value={placement}
                           onChange={(e) => setPlacement(e.target.value)}
-                          className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
+                          className="border-input text-foreground focus:border-foreground h-10 w-full rounded-lg border bg-white px-3 text-xs outline-none"
                         >
-                          <option value="">
-                            {m['pages.price.m021']()}
-                          </option>
+                          <option value="">{m['pages.price.m021']()}</option>
                           {PLACEMENTS.map((p) => (
                             <option key={p.id} value={p.id}>
                               {p.id}
@@ -457,13 +511,13 @@ function TattooPriceCalculatorPage() {
                     {/* STYLE + COLOR */}
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                        <label className="text-muted-foreground mb-1.5 block text-[11px] font-semibold tracking-wider uppercase">
                           {m['pages.price.m022']()}
                         </label>
                         <select
                           value={style}
                           onChange={(e) => setStyle(e.target.value)}
-                          className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
+                          className="border-input text-foreground focus:border-foreground h-10 w-full rounded-lg border bg-white px-3 text-xs outline-none"
                         >
                           {STYLES.map((s) => (
                             <option key={s.name} value={s.name}>
@@ -474,19 +528,19 @@ function TattooPriceCalculatorPage() {
                       </div>
 
                       <div>
-                        <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                        <label className="text-muted-foreground mb-1.5 block text-[11px] font-semibold tracking-wider uppercase">
                           {m['pages.price.m023']()}
                         </label>
                         <select
                           value={color}
                           onChange={(e) =>
-                            setColor(e.target.value as 'bg' | 'limited' | 'full')
+                            setColor(
+                              e.target.value as 'bg' | 'limited' | 'full'
+                            )
                           }
-                          className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
+                          className="border-input text-foreground focus:border-foreground h-10 w-full rounded-lg border bg-white px-3 text-xs outline-none"
                         >
-                          <option value="bg">
-                            {m['pages.price.m024']()}
-                          </option>
+                          <option value="bg">{m['pages.price.m024']()}</option>
                           <option value="limited">
                             {m['pages.price.m025']()}
                           </option>
@@ -499,7 +553,7 @@ function TattooPriceCalculatorPage() {
 
                     {/* Complexity 4-button group */}
                     <div>
-                      <div className="mb-1.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                      <div className="text-muted-foreground mb-1.5 text-[11px] font-semibold tracking-wider uppercase">
                         {m['pages.price.m027']()}
                       </div>
                       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -512,7 +566,7 @@ function TattooPriceCalculatorPage() {
                               'h-9 rounded-lg border text-xs font-medium transition-all',
                               complexity === c.id
                                 ? 'border-foreground bg-foreground text-background'
-                                : 'border-border bg-white text-foreground hover:bg-muted'
+                                : 'border-border text-foreground hover:bg-muted bg-white'
                             )}
                           >
                             {c.id}
@@ -522,11 +576,11 @@ function TattooPriceCalculatorPage() {
                     </div>
 
                     {/* Advanced options disclosure */}
-                    <div className="border-t border-border pt-3">
+                    <div className="border-border border-t pt-3">
                       <button
                         type="button"
                         onClick={() => setShowAdvanced((v) => !v)}
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground"
+                        className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-xs font-semibold"
                       >
                         <span>{m['pages.price.m028']()}</span>
                         <ChevronDown
@@ -539,7 +593,7 @@ function TattooPriceCalculatorPage() {
 
                       {showAdvanced && (
                         <div className="mt-3">
-                          <label className="mb-1.5 block text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                          <label className="text-muted-foreground mb-1.5 block text-[11px] font-semibold tracking-wider uppercase">
                             {m['pages.price.m029']()}
                           </label>
                           <select
@@ -549,7 +603,7 @@ function TattooPriceCalculatorPage() {
                                 e.target.value as 'flash' | 'semi' | 'full'
                               )
                             }
-                            className="h-10 w-full rounded-lg border border-input bg-white px-3 text-xs text-foreground outline-none focus:border-foreground"
+                            className="border-input text-foreground focus:border-foreground h-10 w-full rounded-lg border bg-white px-3 text-xs outline-none"
                           >
                             <option value="flash">
                               {m['pages.price.m030']()}
@@ -568,7 +622,7 @@ function TattooPriceCalculatorPage() {
                     <button
                       type="button"
                       onClick={() => setCalculated(true)}
-                      className="flex h-11 w-full items-center justify-center rounded-lg bg-foreground text-sm font-semibold text-background transition-all hover:bg-foreground/90"
+                      className="bg-foreground text-background hover:bg-foreground/90 flex h-11 w-full items-center justify-center rounded-lg text-sm font-semibold transition-all"
                     >
                       {calculated
                         ? m['pages.price.m033']()
@@ -578,9 +632,9 @@ function TattooPriceCalculatorPage() {
                 </div>
 
                 {/* Right Sticky Card (400px): Solid Black Top Header Bar + Estimate Body */}
-                <div className="overflow-hidden rounded-xl border border-foreground/10 bg-white shadow-[0_24px_80px_rgba(15,15,15,0.08)] lg:sticky lg:top-24">
+                <div className="border-foreground/10 overflow-hidden rounded-xl border bg-white shadow-[0_24px_80px_rgba(15,15,15,0.08)] lg:sticky lg:top-24">
                   {/* Solid Black Top Header Bar */}
-                  <div className="flex items-center gap-2 bg-foreground px-5 py-3.5 text-background">
+                  <div className="bg-foreground text-background flex items-center gap-2 px-5 py-3.5">
                     <DollarSign className="size-4" />
                     <span className="text-sm font-semibold">
                       {m['pages.price.m035']()}
@@ -590,11 +644,11 @@ function TattooPriceCalculatorPage() {
                   <div className="p-6">
                     {!calculated ? (
                       <div className="flex flex-col items-center text-center">
-                        <div className="flex size-11 items-center justify-center rounded-xl bg-muted/60 text-muted-foreground">
+                        <div className="bg-muted/60 text-muted-foreground flex size-11 items-center justify-center rounded-xl">
                           <Calculator className="size-5" />
                         </div>
 
-                        <p className="mt-4 max-w-xs text-xs leading-relaxed text-muted-foreground">
+                        <p className="text-muted-foreground mt-4 max-w-xs text-xs leading-relaxed">
                           {m['pages.price.m036']()}
                         </p>
 
@@ -607,7 +661,7 @@ function TattooPriceCalculatorPage() {
                           ].map((pill) => (
                             <span
                               key={pill}
-                              className="rounded-full bg-muted px-2.5 py-1 text-[11px] font-medium text-foreground"
+                              className="bg-muted text-foreground rounded-full px-2.5 py-1 text-[11px] font-medium"
                             >
                               {pill}
                             </span>
@@ -615,28 +669,28 @@ function TattooPriceCalculatorPage() {
                         </div>
 
                         <div className="mt-6 w-full">
-                          <div className="mb-2.5 text-center text-xs text-muted-foreground">
+                          <div className="text-muted-foreground mb-2.5 text-center text-xs">
                             {m['pages.price.m041']()}
                           </div>
                           <div className="space-y-2">
                             <button
                               type="button"
                               onClick={() => applyExample('tiny')}
-                              className="flex h-10 w-full items-center justify-center rounded-lg border border-border bg-white px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
+                              className="border-border text-foreground hover:bg-muted flex h-10 w-full items-center justify-center rounded-lg border bg-white px-3 text-xs font-semibold transition-colors"
                             >
                               {m['pages.price.m042']()}
                             </button>
                             <button
                               type="button"
                               onClick={() => applyExample('medium')}
-                              className="flex h-10 w-full items-center justify-center rounded-lg border border-border bg-white px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
+                              className="border-border text-foreground hover:bg-muted flex h-10 w-full items-center justify-center rounded-lg border bg-white px-3 text-xs font-semibold transition-colors"
                             >
                               {m['pages.price.m043']()}
                             </button>
                             <button
                               type="button"
                               onClick={() => applyExample('half')}
-                              className="flex h-10 w-full items-center justify-center rounded-lg border border-border bg-white px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
+                              className="border-border text-foreground hover:bg-muted flex h-10 w-full items-center justify-center rounded-lg border bg-white px-3 text-xs font-semibold transition-colors"
                             >
                               {m['pages.price.m044']()}
                             </button>
@@ -645,11 +699,11 @@ function TattooPriceCalculatorPage() {
                       </div>
                     ) : (
                       <div>
-                        <div className="font-sans text-4xl font-bold tracking-tight text-foreground">
+                        <div className="text-foreground font-sans text-4xl font-bold tracking-tight">
                           ${finalMin.toLocaleString()} - $
                           {finalMax.toLocaleString()}
                         </div>
-                        <div className="mt-1.5 flex items-center gap-3 text-xs text-muted-foreground">
+                        <div className="text-muted-foreground mt-1.5 flex items-center gap-3 text-xs">
                           <span>
                             {m['pages.price.m045']()}{' '}
                             <strong className="text-foreground">
@@ -664,15 +718,17 @@ function TattooPriceCalculatorPage() {
                         </div>
 
                         {/* Tip & Aftercare */}
-                        <div className="mt-5 grid grid-cols-1 gap-3 border-t border-border pt-4">
+                        <div className="border-border mt-5 grid grid-cols-1 gap-3 border-t pt-4">
                           <div>
-                            <label className="mb-1 block text-[11px] font-semibold text-foreground">
+                            <label className="text-foreground mb-1 block text-[11px] font-semibold">
                               {m['pages.price.m047']()}
                             </label>
                             <select
                               value={tipMode}
-                              onChange={(e) => setTipMode(e.target.value as any)}
-                              className="h-9 w-full rounded-lg border border-input bg-white px-2.5 text-xs text-foreground outline-none"
+                              onChange={(e) =>
+                                setTipMode(e.target.value as any)
+                              }
+                              className="border-input text-foreground h-9 w-full rounded-lg border bg-white px-2.5 text-xs outline-none"
                             >
                               <option value="none">
                                 {m['pages.price.m048']()}
@@ -687,7 +743,7 @@ function TattooPriceCalculatorPage() {
                           </div>
 
                           <div>
-                            <label className="mb-1 block text-[11px] font-semibold text-foreground">
+                            <label className="text-foreground mb-1 block text-[11px] font-semibold">
                               {m['pages.price.m051']()}
                             </label>
                             <select
@@ -695,7 +751,7 @@ function TattooPriceCalculatorPage() {
                               onChange={(e) =>
                                 setAftercare(e.target.value as any)
                               }
-                              className="h-9 w-full rounded-lg border border-input bg-white px-2.5 text-xs text-foreground outline-none"
+                              className="border-input text-foreground h-9 w-full rounded-lg border bg-white px-2.5 text-xs outline-none"
                             >
                               <option value="none">
                                 {m['pages.price.m052']()}
@@ -714,15 +770,13 @@ function TattooPriceCalculatorPage() {
                         </div>
 
                         {/* Breakdown toggle */}
-                        <div className="mt-4 border-t border-border pt-3">
+                        <div className="border-border mt-4 border-t pt-3">
                           <button
                             type="button"
                             onClick={() => setShowBreakdown((v) => !v)}
-                            className="flex w-full items-center justify-between text-xs font-semibold text-foreground"
+                            className="text-foreground flex w-full items-center justify-between text-xs font-semibold"
                           >
-                            <span>
-                              {m['pages.price.m056']()}
-                            </span>
+                            <span>{m['pages.price.m056']()}</span>
                             <ChevronDown
                               className={cn(
                                 'size-3.5 transition-transform',
@@ -732,10 +786,10 @@ function TattooPriceCalculatorPage() {
                           </button>
 
                           {showBreakdown && (
-                            <dl className="mt-2.5 space-y-1.5 text-xs text-muted-foreground">
+                            <dl className="text-muted-foreground mt-2.5 space-y-1.5 text-xs">
                               <div className="flex justify-between">
                                 <dt>{m['pages.price.m057']()}</dt>
-                                <dd className="font-medium text-foreground">
+                                <dd className="text-foreground font-medium">
                                   ${sizeObj.base[0]} - ${sizeObj.base[1]}
                                 </dd>
                               </div>
@@ -771,11 +825,9 @@ function TattooPriceCalculatorPage() {
 
                         <Link
                           href="/"
-                          className="mt-5 flex h-10 w-full items-center justify-center gap-1.5 rounded-lg bg-foreground text-xs font-semibold text-background hover:bg-foreground/90"
+                          className="bg-foreground text-background hover:bg-foreground/90 mt-5 flex h-10 w-full items-center justify-center gap-1.5 rounded-lg text-xs font-semibold"
                         >
-                          <span>
-                            {m['pages.price.m063']()}
-                          </span>
+                          <span>{m['pages.price.m063']()}</span>
                           <ArrowRight className="size-3.5" />
                         </Link>
                       </div>
@@ -787,9 +839,9 @@ function TattooPriceCalculatorPage() {
           </section>
 
           {/* 2. How tattoo pricing works */}
-          <section className="border-y border-border bg-muted/20 py-16 sm:py-20">
+          <section className="border-border bg-muted/20 border-y py-16 sm:py-20">
             <div className="mx-auto max-w-[1088px] px-4 sm:px-6">
-              <h2 className="font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              <h2 className="text-foreground font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
                 {m['pages.price.m064']()}
               </h2>
 
@@ -822,12 +874,12 @@ function TattooPriceCalculatorPage() {
                 ].map((card) => (
                   <div
                     key={card.h}
-                    className="rounded-lg border border-border bg-white/90 p-5 shadow-2xs"
+                    className="border-border rounded-lg border bg-white/90 p-5 shadow-2xs"
                   >
-                    <h3 className="text-base font-semibold text-foreground">
+                    <h3 className="text-foreground text-base font-semibold">
                       {card.h}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
                       {card.p}
                     </p>
                   </div>
@@ -835,26 +887,26 @@ function TattooPriceCalculatorPage() {
               </div>
 
               {/* Bottom CTA strip */}
-              <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-white p-5">
-                <div className="text-sm font-semibold text-foreground">
+              <div className="border-border mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border bg-white p-5">
+                <div className="text-foreground text-sm font-semibold">
                   {m['pages.price.m077']()}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Link
                     href="/tattoo-styles"
-                    className="rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-foreground hover:bg-muted"
+                    className="border-border text-foreground hover:bg-muted rounded-lg border px-3.5 py-2 text-xs font-medium"
                   >
                     {m['pages.price.m078']()}
                   </Link>
                   <Link
                     href="/tattoo-fonts"
-                    className="rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-foreground hover:bg-muted"
+                    className="border-border text-foreground hover:bg-muted rounded-lg border px-3.5 py-2 text-xs font-medium"
                   >
                     {m['pages.price.m079']()}
                   </Link>
                   <Link
                     href="/"
-                    className="rounded-lg bg-foreground px-3.5 py-2 text-xs font-semibold text-background hover:bg-foreground/90"
+                    className="bg-foreground text-background hover:bg-foreground/90 rounded-lg px-3.5 py-2 text-xs font-semibold"
                   >
                     {m['pages.price.m080']()}
                   </Link>
@@ -866,10 +918,10 @@ function TattooPriceCalculatorPage() {
           {/* 3. Tattoo pricing questions (7 FAQs) */}
           <section className="py-16 sm:py-20">
             <div className="mx-auto max-w-3xl px-4 sm:px-6">
-              <h2 className="mb-8 text-center font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              <h2 className="text-foreground mb-8 text-center font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
                 {m['pages.price.m081']()}
               </h2>
-              <div className="divide-y divide-border rounded-2xl border border-border bg-white">
+              <div className="divide-border border-border divide-y rounded-2xl border bg-white">
                 {CALC_FAQS.map((item, idx) => {
                   const isOpen = openFaq === idx;
                   return (
@@ -878,19 +930,21 @@ function TattooPriceCalculatorPage() {
                         <button
                           type="button"
                           onClick={() => setOpenFaq(isOpen ? null : idx)}
-                          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted/40"
+                          className="text-foreground hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium transition-colors"
                         >
-                          <span>{isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}</span>
+                          <span>
+                            {isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}
+                          </span>
                           <ChevronDown
                             className={cn(
-                              'size-4 shrink-0 text-muted-foreground transition-transform',
+                              'text-muted-foreground size-4 shrink-0 transition-transform',
                               isOpen && 'rotate-180'
                             )}
                           />
                         </button>
                       </h3>
                       {isOpen && (
-                        <div className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">
+                        <div className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
                           {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
                         </div>
                       )}
@@ -903,11 +957,9 @@ function TattooPriceCalculatorPage() {
 
           {/* Body Area Picker Modal */}
           <Dialog open={bodyAreaOpen} onOpenChange={setBodyAreaOpen}>
-            <DialogContent className="max-w-2xl bg-white text-foreground">
+            <DialogContent className="text-foreground max-w-2xl bg-white">
               <DialogHeader>
-                <DialogTitle>
-                  {m['pages.price.m082']()}
-                </DialogTitle>
+                <DialogTitle>{m['pages.price.m082']()}</DialogTitle>
               </DialogHeader>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {BODY_AREA_MODAL_ITEMS.map((item) => (
@@ -920,9 +972,9 @@ function TattooPriceCalculatorPage() {
                       setBodyAreaOpen(false);
                     }}
                     className={cn(
-                      'overflow-hidden rounded-xl border bg-white text-center transition-all hover:border-foreground',
+                      'hover:border-foreground overflow-hidden rounded-xl border bg-white text-center transition-all',
                       placement === item.id
-                        ? 'border-foreground ring-1 ring-foreground'
+                        ? 'border-foreground ring-foreground ring-1'
                         : 'border-border'
                     )}
                   >
@@ -933,7 +985,7 @@ function TattooPriceCalculatorPage() {
                         className="h-full w-full object-cover"
                       />
                     </div>
-                    <div className="py-2 text-xs font-medium text-foreground">
+                    <div className="text-foreground py-2 text-xs font-medium">
                       {item.id}
                     </div>
                   </button>
@@ -951,17 +1003,45 @@ export const Route = createFileRoute('/tattoo-price-calculator')({
   loader: () => {
     const locale = getLocale();
     return {
+      locale,
       title: m['pages.price.m083']({}, { locale }),
       description: m['pages.price.m084']({}, { locale }),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: loaderData.title },
-          { name: 'description', content: loaderData.description },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return {};
+    const { locale, title, description } = loaderData;
+    const name = title.split(' | ')[0];
+    return buildSeoHead({
+      title,
+      description,
+      path: '/tattoo-price-calculator',
+      locale,
+      jsonLd: [
+        webAppJsonLd({
+          name,
+          description,
+          path: '/tattoo-price-calculator',
+          locale,
+        }),
+        breadcrumbJsonLd(
+          [
+            {
+              name: tDynamic('style_detail.breadcrumb.home', {}, { locale }),
+              path: '/',
+            },
+            { name, path: '/tattoo-price-calculator' },
+          ],
+          locale
+        ),
+        faqJsonLd(
+          CALC_FAQS.map((f) => ({
+            q: tDynamic(locale === 'zh' ? f.qZh : f.qEn, {}, { locale }),
+            a: tDynamic(locale === 'zh' ? f.aZh : f.aEn, {}, { locale }),
+          }))
+        ),
+      ],
+    });
+  },
   component: TattooPriceCalculatorPage,
 });

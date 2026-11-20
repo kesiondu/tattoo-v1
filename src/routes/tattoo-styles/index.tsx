@@ -4,6 +4,12 @@ import { ArrowRight, ChevronDown, Search, Sparkles } from 'lucide-react';
 
 import { tDynamic } from '@/core/i18n/dynamic';
 import { Link } from '@/core/i18n/navigation';
+import {
+  breadcrumbJsonLd,
+  buildSeoHead,
+  faqJsonLd,
+  webAppJsonLd,
+} from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
@@ -829,17 +835,39 @@ export const Route = createFileRoute('/tattoo-styles/')({
   loader: () => {
     const locale = getLocale();
     return {
+      locale,
       title: m['pages.styles2.m028']({}, { locale }),
       description: m['pages.styles2.m029']({}, { locale }),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: loaderData.title },
-          { name: 'description', content: loaderData.description },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return {};
+    const { locale, title, description } = loaderData;
+    const name = title.split(' | ')[0];
+    return buildSeoHead({
+      title,
+      description,
+      path: '/tattoo-styles',
+      locale,
+      jsonLd: [
+        breadcrumbJsonLd(
+          [
+            {
+              name: tDynamic('style_detail.breadcrumb.home', {}, { locale }),
+              path: '/',
+            },
+            { name, path: '/tattoo-styles' },
+          ],
+          locale
+        ),
+        faqJsonLd(
+          STYLE_FAQS.map((f) => ({
+            q: tDynamic(locale === 'zh' ? f.qZh : f.qEn, {}, { locale }),
+            a: tDynamic(locale === 'zh' ? f.aZh : f.aEn, {}, { locale }),
+          }))
+        ),
+      ],
+    });
+  },
   component: TattooStylesPage,
 });

@@ -39,12 +39,12 @@ const MARQUEE_ROW_1 = [
   {
     src: '/gallery/polynesian-tribal-shoulder-chest-tattoo-28.webp',
     alt: () => m['home.gallery.r1_7'](),
-    href: '/tattoo-ideas/cybersigilism-tattoo-36',
+    href: '/tattoo-ideas/cybersigilism-shoulder-arm-tattoo',
   },
   {
     src: '/gallery/lotus-jewelry-thigh-tattoo-12.webp',
     alt: () => m['home.gallery.r1_8'](),
-    href: '/tattoo-ideas/mandala-tattoo-112',
+    href: '/tattoo-ideas/mandala-hip-tattoo',
   },
   {
     src: '/gallery/gothic-blackwork-hand-tattoo-01.webp',
@@ -272,7 +272,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                   </div>
                   <div className="min-h-0 overflow-hidden rounded-lg bg-[#f0e9e2]">
                     <img
-                      src="/home-values/phoenix-body-original.webp"
+                      src="/home-hero-set/dagger-rose-skin-closeup.jpg"
                       alt=""
                       width={987}
                       height={1594}
@@ -354,7 +354,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                         </div>
                         <div className="absolute top-0 left-[30%] h-[90%] w-[40%] overflow-hidden rounded border border-black/15 bg-white p-0.5 shadow-sm">
                           <img
-                            src="/home-values/phoenix-clean-artwork.webp"
+                            src="/home-hero-set/dagger-rose-artwork.jpg"
                             alt=""
                             width={160}
                             height={180}
@@ -498,7 +498,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                 >
                   <div className="min-h-0 overflow-hidden rounded-lg bg-[#f0e9e2]">
                     <img
-                      src="/home-values/phoenix-consultation-standalone.webp"
+                      src="/home-hero-set/dagger-rose-personal-tryon.jpg"
                       alt=""
                       width={1173}
                       height={1341}
@@ -514,7 +514,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                       </span>
                       <div className="min-h-0 flex-1">
                         <img
-                          src="/home-values/phoenix-body-preview.webp"
+                          src="/home-hero-set/dagger-rose-model-preview.jpg"
                           alt=""
                           width={433}
                           height={447}
@@ -530,7 +530,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                       </span>
                       <div className="min-h-0 flex-1">
                         <img
-                          src="/home-values/phoenix-clean-artwork.webp"
+                          src="/home-hero-set/dagger-rose-artwork.jpg"
                           alt=""
                           width={1122}
                           height={1402}

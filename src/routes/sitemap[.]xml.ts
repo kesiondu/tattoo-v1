@@ -16,6 +16,8 @@ type Entry = {
 const STATIC_ENTRIES: Entry[] = [
   { path: '', changeFrequency: 'daily', priority: 1.0 },
   { path: '/tattoo-try-on', changeFrequency: 'weekly', priority: 0.9 },
+
+  { path: '/name-tattoo-generator', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/tattoo-font-generator', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/tattoo-styles', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/tattoo-fonts', changeFrequency: 'weekly', priority: 0.8 },
@@ -32,6 +34,14 @@ const STATIC_ENTRIES: Entry[] = [
   { path: '/privacy-policy', changeFrequency: 'monthly', priority: 0.3 },
   { path: '/terms-of-service', changeFrequency: 'monthly', priority: 0.3 },
 ];
+
+// Fixed dates are source-controlled editorial update dates, not request-time
+// timestamps. Change these only when the matching page content is reviewed.
+const CONTENT_LAST_MODIFIED: Record<string, string> = {
+  '/name-tattoo-generator': '2026-11-20',
+  '/tattoo-fonts': '2026-11-20',
+  '/tattoo-price-calculator': '2026-11-20',
+};
 
 function getBaseUrl(): string {
   return (envConfigs.app_url || 'https://tattoogenerator.online').replace(
@@ -78,7 +88,10 @@ export const Route = createFileRoute('/sitemap.xml')({
       GET: async () => {
         const baseUrl = getBaseUrl();
         const entries: Entry[] = [
-          ...STATIC_ENTRIES,
+          ...STATIC_ENTRIES.map((entry) => ({
+            ...entry,
+            lastModified: CONTENT_LAST_MODIFIED[entry.path],
+          })),
           ...TATTOO_STYLES.map(
             (style): Entry => ({
               path: `/tattoo-styles/${style.slug}`,
@@ -89,6 +102,12 @@ export const Route = createFileRoute('/sitemap.xml')({
           ...TATTOO_IDEAS.map(
             (idea): Entry => ({
               path: `/tattoo-ideas/${idea.slug}`,
+              lastModified: [
+                'cybersigilism-shoulder-arm-tattoo',
+                'mandala-hip-tattoo',
+              ].includes(idea.slug)
+                ? '2026-11-20'
+                : undefined,
               changeFrequency: 'monthly',
               priority: 0.7,
             })

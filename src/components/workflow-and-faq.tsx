@@ -88,7 +88,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
       <section id="how-it-works" className="scroll-mt-20 py-12 md:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-10 max-w-3xl text-center md:mb-12">
-            <p className="mb-3 text-sm font-medium text-muted-foreground">
+            <p className="text-muted-foreground mb-3 text-sm font-medium">
               {m['home.workflow.eyebrow']()}
             </p>
             <h2 className="font-display text-3xl font-bold tracking-tight text-balance md:text-4xl">
@@ -187,7 +187,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   </div>
                 </div>
                 <ArrowRight
-                  className="pointer-events-none absolute top-1/2 -right-[19px] hidden size-3.5 -translate-y-1/2 text-muted-foreground md:block lg:block"
+                  className="text-muted-foreground pointer-events-none absolute top-1/2 -right-[19px] hidden size-3.5 -translate-y-1/2 md:block lg:block"
                   aria-hidden="true"
                 />
               </div>
@@ -195,7 +195,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
               <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-tight">
                 {m['home.workflow.s1_title']()}
               </h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              <p className="text-muted-foreground mt-2 text-sm leading-6">
                 {m['home.workflow.s1_desc']()}
               </p>
             </li>
@@ -209,7 +209,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   className="@container relative isolate aspect-[4/3] overflow-hidden rounded-xl bg-[#f7f6f4] text-[#151515]"
                 >
                   <img
-                    src="/home-workflow/phoenix-model-preview.webp"
+                    src="/home-hero-set/dagger-rose-model-preview.jpg"
                     alt=""
                     width={900}
                     height={1200}
@@ -219,18 +219,18 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   />
                 </div>
                 <ArrowRight
-                  className="pointer-events-none absolute top-1/2 -right-[19px] hidden size-3.5 -translate-y-1/2 text-muted-foreground lg:block"
+                  className="text-muted-foreground pointer-events-none absolute top-1/2 -right-[19px] hidden size-3.5 -translate-y-1/2 lg:block"
                   aria-hidden="true"
                 />
                 <ArrowDown
-                  className="pointer-events-none absolute -top-7 left-1/2 size-3.5 -translate-x-1/2 text-muted-foreground md:hidden"
+                  className="text-muted-foreground pointer-events-none absolute -top-7 left-1/2 size-3.5 -translate-x-1/2 md:hidden"
                   aria-hidden="true"
                 />
               </div>
               <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-tight">
                 {m['home.workflow.s2_title']()}
               </h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              <p className="text-muted-foreground mt-2 text-sm leading-6">
                 {m['home.workflow.s2_desc']()}
               </p>
             </li>
@@ -244,7 +244,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   className="@container relative isolate aspect-[4/3] overflow-hidden rounded-xl bg-[#f7f6f4] text-[#151515]"
                 >
                   <img
-                    src="/home-workflow/phoenix-artwork.webp"
+                    src="/home-hero-set/dagger-rose-artwork.jpg"
                     alt=""
                     width={900}
                     height={900}
@@ -254,18 +254,18 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   />
                 </div>
                 <ArrowRight
-                  className="pointer-events-none absolute top-1/2 -right-[19px] hidden size-3.5 -translate-y-1/2 text-muted-foreground md:block lg:block"
+                  className="text-muted-foreground pointer-events-none absolute top-1/2 -right-[19px] hidden size-3.5 -translate-y-1/2 md:block lg:block"
                   aria-hidden="true"
                 />
                 <ArrowDown
-                  className="pointer-events-none absolute -top-7 left-1/2 size-3.5 -translate-x-1/2 text-muted-foreground md:hidden"
+                  className="text-muted-foreground pointer-events-none absolute -top-7 left-1/2 size-3.5 -translate-x-1/2 md:hidden"
                   aria-hidden="true"
                 />
               </div>
               <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-tight">
                 {m['home.workflow.s3_title']()}
               </h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              <p className="text-muted-foreground mt-2 text-sm leading-6">
                 {m['home.workflow.s3_desc']()}
               </p>
             </li>
@@ -280,7 +280,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                 >
                   <div aria-hidden="true" className="size-full">
                     <img
-                      src="/home-workflow/phoenix-personal-try-on.webp"
+                      src="/home-hero-set/dagger-rose-personal-tryon.jpg"
                       alt=""
                       width={900}
                       height={1200}
@@ -294,7 +294,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   </div>
                 </div>
                 <ArrowDown
-                  className="pointer-events-none absolute -top-7 left-1/2 size-3.5 -translate-x-1/2 text-muted-foreground md:hidden"
+                  className="text-muted-foreground pointer-events-none absolute -top-7 left-1/2 size-3.5 -translate-x-1/2 md:hidden"
                   aria-hidden="true"
                 />
               </div>
@@ -306,7 +306,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   {m['home.workflow.s4_title']()}
                 </Link>
               </h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              <p className="text-muted-foreground mt-2 text-sm leading-6">
                 {m['home.workflow.s4_desc']()}
               </p>
             </li>
@@ -316,7 +316,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
             <button
               type="button"
               onClick={scrollToHero}
-              className="inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-transparent bg-primary px-3 text-sm font-medium whitespace-nowrap text-primary-foreground transition-all outline-none select-none hover:bg-primary/80 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="bg-primary text-primary-foreground hover:bg-primary/80 focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-transparent px-3 text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-3"
             >
               <span>{m['home.workflow.cta']()}</span>
               <ArrowRight className="ml-2 size-4" aria-hidden="true" />
@@ -328,14 +328,14 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
       {/* SECTION 5: Pricing Section */}
       <section
         id="pricing"
-        className="scroll-mt-20 border-y border-border bg-muted/30 py-12 md:py-16"
+        className="border-border bg-muted/30 scroll-mt-20 border-y py-12 md:py-16"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center">
-            <div className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+            <div className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
               {m['home.pricing.eyebrow']()}
             </div>
-            <h2 className="mt-2 font-sans text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+            <h2 className="text-foreground mt-2 font-sans text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
               {m['home.pricing.title']()}
             </h2>
 
@@ -347,9 +347,9 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
               ].map((pill) => (
                 <span
                   key={pill}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1 text-xs font-medium text-foreground"
+                  className="border-border text-foreground inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1 text-xs font-medium"
                 >
-                  <Check className="size-3.5 text-foreground" />
+                  <Check className="text-foreground size-3.5" />
                   <span>{pill}</span>
                 </span>
               ))}
@@ -363,83 +363,83 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                 className={cn(
                   'relative flex flex-col justify-between rounded-2xl border bg-white p-6 transition-all',
                   bundle.popular
-                    ? 'border-foreground shadow-md ring-1 ring-foreground'
+                    ? 'border-foreground ring-foreground shadow-md ring-1'
                     : 'border-border shadow-2xs'
                 )}
               >
                 <div>
                   <div className="flex items-center justify-between gap-2">
-                    <h3 className="text-base font-semibold text-foreground">
+                    <h3 className="text-foreground text-base font-semibold">
                       {bundle.name}
                     </h3>
                     {bundle.popular && (
-                      <span className="rounded-full bg-foreground px-2.5 py-0.5 text-[11px] font-semibold text-background">
+                      <span className="bg-foreground text-background rounded-full px-2.5 py-0.5 text-[11px] font-semibold">
                         {m['home.pricing.most_popular']()}
                       </span>
                     )}
                   </div>
 
                   <div className="mt-3 flex items-baseline gap-1">
-                    <span className="font-sans text-4xl font-bold tracking-tight text-foreground">
+                    <span className="text-foreground font-sans text-4xl font-bold tracking-tight">
                       {bundle.price}
                     </span>
                   </div>
-                  <p className="mt-1.5 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground mt-1.5 text-sm">
                     {bundle.desc}
                   </p>
 
                   {/* Credits summary */}
-                  <div className="mt-5 space-y-2 border-t border-border pt-4 text-sm">
-                    <div className="flex items-center gap-2 font-medium text-foreground">
+                  <div className="border-border mt-5 space-y-2 border-t pt-4 text-sm">
+                    <div className="text-foreground flex items-center gap-2 font-medium">
                       <Check className="size-4 shrink-0" />
                       <span>
                         {m['home.pricing.credits']({ count: bundle.credits })}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Check className="size-4 shrink-0 text-foreground" />
+                    <div className="text-muted-foreground flex items-center gap-2">
+                      <Check className="text-foreground size-4 shrink-0" />
                       <span>
                         {m['home.pricing.generations']({
                           count: bundle.generations,
                         })}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Check className="size-4 shrink-0 text-foreground" />
+                    <div className="text-muted-foreground flex items-center gap-2">
+                      <Check className="text-foreground size-4 shrink-0" />
                       <span>{m['home.pricing.never_expire']()}</span>
                     </div>
                   </div>
 
                   {/* Lifetime Pro Gift */}
-                  <div className="mt-5 border-t border-border pt-4">
+                  <div className="border-border mt-5 border-t pt-4">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-semibold text-foreground">
+                      <span className="text-foreground text-sm font-semibold">
                         {m['home.pricing.lifetime_pro']()}
                       </span>
-                      <span className="inline-flex min-h-6 shrink-0 items-center gap-1 rounded bg-foreground px-1.5 text-[10px] font-medium text-background">
+                      <span className="bg-foreground text-background inline-flex min-h-6 shrink-0 items-center gap-1 rounded px-1.5 text-[10px] font-medium">
                         <Sparkles className="size-2.5" />
                         {m['home.pricing.gift']()}
                       </span>
                     </div>
-                    <div className="mt-1 text-xs font-medium text-muted-foreground">
+                    <div className="text-muted-foreground mt-1 text-xs font-medium">
                       {m['home.pricing.all_features']()}
                     </div>
-                    <ul className="mt-2.5 space-y-1.5 text-xs text-muted-foreground">
+                    <ul className="text-muted-foreground mt-2.5 space-y-1.5 text-xs">
                       {proFeatures.map((feat) => (
                         <li key={feat} className="flex items-center gap-2">
-                          <Check className="size-3.5 shrink-0 text-foreground" />
+                          <Check className="text-foreground size-3.5 shrink-0" />
                           <span>{feat}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="mt-4 text-xs font-medium text-muted-foreground">
+                    <div className="text-muted-foreground mt-4 text-xs font-medium">
                       {m['home.pricing.unlimited']()}
                     </div>
-                    <ul className="mt-2 space-y-1.5 text-xs text-muted-foreground">
+                    <ul className="text-muted-foreground mt-2 space-y-1.5 text-xs">
                       {unlimitedFeatures.map((feat) => (
                         <li key={feat} className="flex items-center gap-2">
-                          <Check className="size-3.5 shrink-0 text-foreground" />
+                          <Check className="text-foreground size-3.5 shrink-0" />
                           <span>{feat}</span>
                         </li>
                       ))}
@@ -454,7 +454,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                     'mt-6 flex h-10 w-full items-center justify-center rounded-lg text-sm font-semibold transition-all',
                     bundle.popular
                       ? 'bg-foreground text-background hover:bg-foreground/90'
-                      : 'border border-border bg-white text-foreground hover:bg-muted'
+                      : 'border-border text-foreground hover:bg-muted border bg-white'
                   )}
                 >
                   {m['home.pricing.buy']()}
@@ -468,11 +468,11 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
       {/* SECTION 6: FAQ Accordion (6 Numbered Questions, All Collapsed by Default) */}
       <section id="faq" className="scroll-mt-20 py-12 md:py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h2 className="mb-8 text-center font-sans text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-foreground mb-8 text-center font-sans text-2xl font-bold tracking-tight sm:text-3xl">
             {m['home.faq.title']()}
           </h2>
 
-          <div className="divide-y divide-border rounded-2xl border border-border bg-white">
+          <div className="divide-border border-border divide-y rounded-2xl border bg-white">
             {faqs.map((item, idx) => {
               const isOpen = openFaq === idx;
               return (
@@ -481,26 +481,26 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                     <button
                       type="button"
                       onClick={() => setOpenFaq(isOpen ? null : idx)}
-                      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-muted/40"
+                      className="hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
+                        <span className="bg-muted text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold">
                           {idx + 1}
                         </span>
-                        <span className="text-sm font-medium text-foreground sm:text-[15px]">
+                        <span className="text-foreground text-sm font-medium sm:text-[15px]">
                           {item.q}
                         </span>
                       </div>
                       <ChevronDown
                         className={cn(
-                          'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                          'text-muted-foreground size-4 shrink-0 transition-transform duration-200',
                           isOpen && 'rotate-180'
                         )}
                       />
                     </button>
                   </h3>
                   {isOpen && (
-                    <div className="px-5 pt-0 pb-4 pl-14 text-sm leading-relaxed text-muted-foreground">
+                    <div className="text-muted-foreground px-5 pt-0 pb-4 pl-14 text-sm leading-relaxed">
                       {item.a}
                     </div>
                   )}

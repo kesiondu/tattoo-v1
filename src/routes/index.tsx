@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 
+import { tDynamic } from '@/core/i18n/dynamic';
+import {
+  breadcrumbJsonLd,
+  buildSeoHead,
+  faqJsonLd,
+  webAppJsonLd,
+} from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { AuthModal } from '@/components/auth-modal';
@@ -15,7 +22,7 @@ function HomePage() {
   const search = Route.useSearch();
 
   return (
-    <div className="flex min-h-screen flex-col bg-white font-sans text-foreground selection:bg-foreground/15 selection:text-foreground">
+    <div className="text-foreground selection:bg-foreground/15 selection:text-foreground flex min-h-screen flex-col bg-white font-sans">
       <InkStudioHeader onOpenAuth={() => setAuthModalOpen(true)} />
       <main className="flex-1">
         <HeroGenerator
@@ -40,17 +47,47 @@ export const Route = createFileRoute('/')({
   loader: () => {
     const locale = getLocale();
     return {
+      locale,
       title: m['home.meta.title']({}, { locale }),
       description: m['home.meta.description']({}, { locale }),
+      faqs: [1, 2, 3, 4, 5, 6].map((n) => ({
+        q: tDynamic(`home.faq.q${n}`, {}, { locale }),
+        a: tDynamic(`home.faq.a${n}`, {}, { locale }),
+      })),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: loaderData.title },
-          { name: 'description', content: loaderData.description },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return {};
+    const { locale, title, description, faqs } = loaderData;
+    return buildSeoHead({
+      title,
+      description,
+      path: '/',
+      locale,
+      jsonLd: [
+        webAppJsonLd({
+          name: 'AI Tattoo Generator',
+          description,
+          path: '/',
+          locale,
+        }),
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'TattooGenerator.online',
+          url: 'https://tattoogenerator.online/',
+          logo: 'https://tattoogenerator.online/brand/tattoogenerator-logo.png',
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'TattooGenerator.online',
+          url: 'https://tattoogenerator.online/',
+        },
+        breadcrumbJsonLd([{ name: 'Home', path: '/' }], locale),
+        faqJsonLd(faqs),
+      ],
+    });
+  },
   component: HomePage,
 });

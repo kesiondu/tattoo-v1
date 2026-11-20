@@ -2,13 +2,18 @@ import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { ArrowRight, Check, ChevronDown } from 'lucide-react';
 
+import { tDynamic } from '@/core/i18n/dynamic';
 import { Link } from '@/core/i18n/navigation';
+import {
+  breadcrumbJsonLd,
+  buildSeoHead,
+  faqJsonLd,
+  webAppJsonLd,
+} from '@/lib/seo';
 import { cn } from '@/lib/utils';
+import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
-
-import { m } from '@/paraglide/messages.js';
-import { tDynamic } from '@/core/i18n/dynamic';
 
 interface FontGuideEntry {
   id: string;
@@ -525,7 +530,9 @@ function TattooFontsPage() {
   const isZh = getLocale() === 'zh';
 
   const [filter, setFilter] = useState('all');
-  const [expandedNotes, setExpandedNotes] = useState<Record<string, boolean>>({});
+  const [expandedNotes, setExpandedNotes] = useState<Record<string, boolean>>(
+    {}
+  );
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const heroStrip = HERO_STRIP_IDS.map(
@@ -542,16 +549,16 @@ function TattooFontsPage() {
       {/* 1. Hero & 6-Card Preview Strip */}
       <section className="py-10 text-center sm:py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+          <div className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             {m['pages.fonts2.m001']()}
           </div>
-          <h1 className="mt-2 font-sans text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          <h1 className="text-foreground mt-2 font-sans text-4xl font-bold tracking-tight sm:text-5xl">
             {m['pages.fonts2.m002']()}
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+          <p className="text-muted-foreground mx-auto mt-3 max-w-2xl text-sm leading-relaxed sm:text-base">
             {m['pages.fonts2.m003']()}
           </p>
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-2 text-xs">
             {m['pages.fonts2.m004']()}
           </p>
 
@@ -563,7 +570,7 @@ function TattooFontsPage() {
             ].map((b) => (
               <span
                 key={b}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1 text-xs font-medium text-foreground"
+                className="border-border text-foreground inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1 text-xs font-medium"
               >
                 <Check className="size-3" />
                 <span>{b}</span>
@@ -577,7 +584,7 @@ function TattooFontsPage() {
               <a
                 key={f.id}
                 href={`#${f.id}`}
-                className="group overflow-hidden rounded-xl border border-border bg-white p-2.5 text-left transition-all hover:border-foreground/40 hover:shadow-xs"
+                className="group border-border hover:border-foreground/40 overflow-hidden rounded-xl border bg-white p-2.5 text-left transition-all hover:shadow-xs"
               >
                 <div className="aspect-[16/10] overflow-hidden rounded-lg bg-[#fafaf9]">
                   <img
@@ -587,10 +594,10 @@ function TattooFontsPage() {
                   />
                 </div>
                 <div className="mt-2 flex items-center justify-between gap-1">
-                  <span className="truncate text-xs font-semibold text-foreground">
+                  <span className="text-foreground truncate text-xs font-semibold">
                     {isZh ? tDynamic(f.zh) : tDynamic(f.name)}
                   </span>
-                  <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                  <span className="bg-muted text-muted-foreground rounded px-1.5 py-0.5 text-[10px]">
                     {f.badge}
                   </span>
                 </div>
@@ -601,9 +608,9 @@ function TattooFontsPage() {
       </section>
 
       {/* 2. Popular tattoo font families (6 cards) */}
-      <section className="border-y border-border bg-muted/20 py-12 sm:py-16">
+      <section className="border-border bg-muted/20 border-y py-12 sm:py-16">
         <div className="mx-auto max-w-[1216px] px-4 sm:px-6">
-          <h2 className="mb-8 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-foreground mb-8 font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
             {m['pages.fonts2.m008']()}
           </h2>
 
@@ -611,12 +618,12 @@ function TattooFontsPage() {
             {FAMILIES.map((fam) => (
               <div
                 key={tDynamic(fam.en)}
-                className="rounded-xl border border-border bg-white p-5 shadow-2xs"
+                className="border-border rounded-xl border bg-white p-5 shadow-2xs"
               >
-                <h3 className="text-base font-semibold text-foreground">
+                <h3 className="text-foreground text-base font-semibold">
                   {isZh ? tDynamic(fam.zh) : tDynamic(fam.en)}
                 </h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                <p className="text-muted-foreground mt-1.5 text-xs leading-relaxed">
                   {isZh ? tDynamic(fam.descZh) : tDynamic(fam.descEn)}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-1.5">
@@ -627,7 +634,7 @@ function TattooFontsPage() {
                       <a
                         key={id}
                         href={`#${id}`}
-                        className="rounded-full border border-border bg-[#fafaf9] px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:border-foreground"
+                        className="border-border text-foreground hover:border-foreground rounded-full border bg-[#fafaf9] px-2.5 py-1 text-xs font-medium transition-colors"
                       >
                         {isZh ? tDynamic(entry.zh) : tDynamic(entry.name)}
                       </a>
@@ -643,12 +650,12 @@ function TattooFontsPage() {
       {/* 3. Tattoo font styles (9 filters + 20 stacked 2-col cards) */}
       <section className="py-12 sm:py-16">
         <div className="mx-auto max-w-[1216px] px-4 sm:px-6">
-          <h2 className="font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-foreground font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
             {m['pages.fonts2.m009']()}
           </h2>
 
           <div className="mt-5">
-            <div className="mb-2 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+            <div className="text-muted-foreground mb-2 text-[11px] font-semibold tracking-wider uppercase">
               {m['pages.fonts2.m010']()}
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -661,7 +668,7 @@ function TattooFontsPage() {
                     'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors',
                     filter === fl.id
                       ? 'border-foreground bg-foreground text-background'
-                      : 'border-border bg-white text-foreground hover:bg-muted'
+                      : 'border-border text-foreground hover:bg-muted bg-white'
                   )}
                 >
                   <span>{isZh ? tDynamic(fl.zh) : tDynamic(fl.en)}</span>
@@ -678,10 +685,10 @@ function TattooFontsPage() {
                 <article
                   key={f.id}
                   id={f.id}
-                  className="scroll-mt-24 grid grid-cols-1 gap-5 rounded-2xl border border-border bg-white p-5 shadow-2xs lg:grid-cols-[220px_minmax(0,1fr)]"
+                  className="border-border grid scroll-mt-24 grid-cols-1 gap-5 rounded-2xl border bg-white p-5 shadow-2xs lg:grid-cols-[220px_minmax(0,1fr)]"
                 >
                   {/* Left 220px Image */}
-                  <div className="aspect-[16/11] overflow-hidden rounded-xl border border-border/70 bg-[#fafaf9] lg:aspect-square">
+                  <div className="border-border/70 aspect-[16/11] overflow-hidden rounded-xl border bg-[#fafaf9] lg:aspect-square">
                     <img
                       src={f.img}
                       alt={tDynamic(f.name)}
@@ -695,16 +702,18 @@ function TattooFontsPage() {
                     <div>
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-lg font-semibold text-foreground">
-                            {isZh ? `${tDynamic(f.name)} · ${tDynamic(f.zh)}` : tDynamic(f.name)}
+                          <h3 className="text-foreground text-lg font-semibold">
+                            {isZh
+                              ? `${tDynamic(f.name)} · ${tDynamic(f.zh)}`
+                              : tDynamic(f.name)}
                           </h3>
-                          <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                          <span className="bg-muted text-muted-foreground rounded-full px-2.5 py-0.5 text-[11px] font-medium">
                             {f.badge}
                           </span>
                         </div>
                         <Link
                           href="/tattoo-font-generator"
-                          className="inline-flex h-8 items-center gap-1 rounded-lg bg-foreground px-3.5 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
+                          className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-8 items-center gap-1 rounded-lg px-3.5 text-xs font-semibold transition-colors"
                         >
                           <span>{m['pages.fonts2.m011']()}</span>
                           <ArrowRight className="size-3.5" />
@@ -713,41 +722,45 @@ function TattooFontsPage() {
 
                       <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                         <div>
-                          <div className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                          <div className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                             {m['pages.fonts2.m012']()}
                           </div>
-                          <div className="mt-1 text-xs text-foreground">
+                          <div className="text-foreground mt-1 text-xs">
                             {isZh ? tDynamic(f.feelZh) : tDynamic(f.feelEn)}
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                          <div className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                             {m['pages.fonts2.m013']()}
                           </div>
-                          <div className="mt-1 text-xs text-foreground">
+                          <div className="text-foreground mt-1 text-xs">
                             {isZh ? tDynamic(f.chosenZh) : tDynamic(f.chosenEn)}
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                          <div className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                             {m['pages.fonts2.m014']()}
                           </div>
-                          <div className="mt-1 text-xs text-foreground">
-                            {isZh ? tDynamic(f.readabilityZh) : tDynamic(f.readabilityEn)}
+                          <div className="text-foreground mt-1 text-xs">
+                            {isZh
+                              ? tDynamic(f.readabilityZh)
+                              : tDynamic(f.readabilityEn)}
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                          <div className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                             {m['pages.fonts2.m015']()}
                           </div>
-                          <div className="mt-1 text-xs text-foreground">
-                            {isZh ? tDynamic(f.bestWhenZh) : tDynamic(f.bestWhenEn)}
+                          <div className="text-foreground mt-1 text-xs">
+                            {isZh
+                              ? tDynamic(f.bestWhenZh)
+                              : tDynamic(f.bestWhenEn)}
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-4 border-t border-border pt-3">
+                    <div className="border-border mt-4 border-t pt-3">
                       <button
                         type="button"
                         onClick={() =>
@@ -756,7 +769,7 @@ function TattooFontsPage() {
                             [f.id]: !prev[f.id],
                           }))
                         }
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground"
+                        className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs font-semibold"
                       >
                         <span>{m['pages.fonts2.m016']()}</span>
                         <ChevronDown
@@ -768,11 +781,13 @@ function TattooFontsPage() {
                       </button>
 
                       {notesOpen && (
-                        <div className="mt-2.5 rounded-lg bg-[#fafaf9] p-3 text-xs text-muted-foreground">
+                        <div className="text-muted-foreground mt-2.5 rounded-lg bg-[#fafaf9] p-3 text-xs">
                           <strong className="text-foreground">
                             {m['pages.fonts2.m017']()}
                           </strong>
-                          {isZh ? tDynamic(f.watchOutZh) : tDynamic(f.watchOutEn)}
+                          {isZh
+                            ? tDynamic(f.watchOutZh)
+                            : tDynamic(f.watchOutEn)}
                         </div>
                       )}
                     </div>
@@ -785,9 +800,9 @@ function TattooFontsPage() {
       </section>
 
       {/* 4. How to choose readable tattoo fonts (4-col) */}
-      <section className="border-t border-border bg-muted/20 py-12 sm:py-16">
+      <section className="border-border bg-muted/20 border-t py-12 sm:py-16">
         <div className="mx-auto max-w-[1216px] px-4 sm:px-6">
-          <h2 className="mb-8 font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-foreground mb-8 font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
             {m['pages.fonts2.m018']()}
           </h2>
 
@@ -812,12 +827,12 @@ function TattooFontsPage() {
             ].map((rule) => (
               <div
                 key={rule.h}
-                className="rounded-xl border border-border bg-white p-5"
+                className="border-border rounded-xl border bg-white p-5"
               >
-                <h3 className="text-sm font-semibold text-foreground">
+                <h3 className="text-foreground text-sm font-semibold">
                   {rule.h}
                 </h3>
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                <p className="text-muted-foreground mt-2 text-xs leading-relaxed">
                   {rule.p}
                 </p>
               </div>
@@ -829,11 +844,11 @@ function TattooFontsPage() {
       {/* 5. Tattoo fonts questions (9 verbatim FAQs) */}
       <section className="py-12 sm:py-16">
         <div className="mx-auto max-w-[720px] px-4 sm:px-6">
-          <h2 className="mb-8 text-center font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-foreground mb-8 text-center font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
             {m['pages.fonts2.m027']()}
           </h2>
 
-          <div className="divide-y divide-border rounded-2xl border border-border bg-white">
+          <div className="divide-border border-border divide-y rounded-2xl border bg-white">
             {FONTS_FAQS.map((item, idx) => {
               const isOpen = openFaq === idx;
               return (
@@ -842,19 +857,21 @@ function TattooFontsPage() {
                     <button
                       type="button"
                       onClick={() => setOpenFaq(isOpen ? null : idx)}
-                      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted/40"
+                      className="text-foreground hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium transition-colors"
                     >
-                      <span>{isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}</span>
+                      <span>
+                        {isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}
+                      </span>
                       <ChevronDown
                         className={cn(
-                          'size-4 shrink-0 text-muted-foreground transition-transform',
+                          'text-muted-foreground size-4 shrink-0 transition-transform',
                           isOpen && 'rotate-180'
                         )}
                       />
                     </button>
                   </h3>
                   {isOpen && (
-                    <div className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">
+                    <div className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
                       {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
                     </div>
                   )}
@@ -872,17 +889,39 @@ export const Route = createFileRoute('/tattoo-fonts')({
   loader: () => {
     const locale = getLocale();
     return {
+      locale,
       title: m['pages.fonts2.m028']({}, { locale }),
       description: m['pages.fonts2.m029']({}, { locale }),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: loaderData.title },
-          { name: 'description', content: loaderData.description },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return {};
+    const { locale, title, description } = loaderData;
+    const name = title.split(' | ')[0];
+    return buildSeoHead({
+      title,
+      description,
+      path: '/tattoo-fonts',
+      locale,
+      jsonLd: [
+        breadcrumbJsonLd(
+          [
+            {
+              name: tDynamic('style_detail.breadcrumb.home', {}, { locale }),
+              path: '/',
+            },
+            { name, path: '/tattoo-fonts' },
+          ],
+          locale
+        ),
+        faqJsonLd(
+          FONTS_FAQS.map((f) => ({
+            q: tDynamic(locale === 'zh' ? f.qZh : f.qEn, {}, { locale }),
+            a: tDynamic(locale === 'zh' ? f.aZh : f.aEn, {}, { locale }),
+          }))
+        ),
+      ],
+    });
+  },
   component: TattooFontsPage,
 });

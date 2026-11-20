@@ -16,6 +16,7 @@ import {
 
 import { Link } from '@/core/i18n/navigation';
 import { envConfigs } from '@/config';
+import { breadcrumbJsonLd, faqJsonLd } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale, localizeUrl } from '@/paraglide/runtime.js';
@@ -465,6 +466,10 @@ export const Route = createFileRoute('/tattoo-styles/$style')({
         { property: 'og:image', content: ogImage },
         { property: 'og:url', content: pageUrl },
         { property: 'og:type', content: 'website' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: t.seoTitle },
+        { name: 'twitter:description', content: t.seoDescription },
+        { name: 'twitter:image', content: ogImage },
       ],
       scripts: [
         {

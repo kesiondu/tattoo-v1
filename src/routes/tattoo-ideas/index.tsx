@@ -12,6 +12,12 @@ import {
 import { useSession } from '@/core/auth/client';
 import { tDynamic } from '@/core/i18n/dynamic';
 import { Link } from '@/core/i18n/navigation';
+import {
+  breadcrumbJsonLd,
+  buildSeoHead,
+  faqJsonLd,
+  webAppJsonLd,
+} from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
@@ -53,7 +59,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     body: '/gallery/rib-calligraphy-tattoo-body.webp',
   },
   {
-    slug: 'cybersigilism-tattoo-36',
+    slug: 'cybersigilism-shoulder-arm-tattoo',
     titleEn: 'pages.ideas.d004',
     titleZh: 'pages.ideas.d004',
     styleId: 'cybersigilism',
@@ -118,7 +124,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     body: '/gallery/cherry-blossom-tattoo-body.webp',
   },
   {
-    slug: 'mandala-tattoo-112',
+    slug: 'mandala-hip-tattoo',
     titleEn: 'pages.ideas.d019',
     titleZh: 'pages.ideas.d019',
     styleId: 'mandala',
@@ -653,17 +659,33 @@ export const Route = createFileRoute('/tattoo-ideas/')({
   loader: () => {
     const locale = getLocale();
     return {
+      locale,
       title: m['pages.ideas.m012']({}, { locale }),
       description: m['pages.ideas.m013']({}, { locale }),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: loaderData.title },
-          { name: 'description', content: loaderData.description },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return {};
+    const { locale, title, description } = loaderData;
+    const name = title.split(' | ')[0];
+    return buildSeoHead({
+      title,
+      description,
+      path: '/tattoo-ideas',
+      locale,
+      jsonLd: [
+        breadcrumbJsonLd(
+          [
+            {
+              name: tDynamic('style_detail.breadcrumb.home', {}, { locale }),
+              path: '/',
+            },
+            { name, path: '/tattoo-ideas' },
+          ],
+          locale
+        ),
+      ],
+    });
+  },
   component: TattooIdeasPage,
 });

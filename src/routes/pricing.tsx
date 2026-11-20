@@ -4,13 +4,17 @@ import { Check, ChevronDown, Loader2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
+import { tDynamic } from '@/core/i18n/dynamic';
+import {
+  breadcrumbJsonLd,
+  buildSeoHead,
+  faqJsonLd,
+  webAppJsonLd,
+} from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
-
 import { getLocale } from '@/paraglide/runtime.js';
 import { InkStudioPageLayout } from '@/components/inkstudio-page-layout';
-
-import { tDynamic } from '@/core/i18n/dynamic';
 
 const PRICING_FAQS = [
   {
@@ -128,26 +132,29 @@ function PricingPage() {
             <div className="mx-auto max-w-[1120px] px-4 sm:px-6">
               {/* Header */}
               <div className="text-center">
-                <h1 className="font-sans text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+                <h1 className="text-foreground font-sans text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                   {m['pages.pricing.m015']()}
                 </h1>
 
                 {/* 3 borderless inline value checks matching original screenshot */}
-                <div className="mt-4 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+                <div className="text-muted-foreground mt-4 flex flex-wrap items-center justify-center gap-6 text-sm">
                   {[
                     m['pages.pricing.m016'](),
                     m['pages.pricing.m017'](),
                     m['pages.pricing.m018'](),
                   ].map((item) => (
-                    <span key={item} className="inline-flex items-center gap-1.5">
-                      <Check className="size-4 text-foreground" />
+                    <span
+                      key={item}
+                      className="inline-flex items-center gap-1.5"
+                    >
+                      <Check className="text-foreground size-4" />
                       <span>{item}</span>
                     </span>
                   ))}
                 </div>
 
                 {/* 2-Tab Switcher — active tab is solid black with white text */}
-                <div className="mx-auto mt-7 grid max-w-lg grid-cols-2 rounded-xl border border-border bg-muted p-1">
+                <div className="border-border bg-muted mx-auto mt-7 grid max-w-lg grid-cols-2 rounded-xl border p-1">
                   <button
                     type="button"
                     onClick={() => setTab('bundles')}
@@ -177,14 +184,14 @@ function PricingPage() {
 
               {/* Connected 3-Column Pricing Grid */}
               {tab === 'bundles' ? (
-                <div className="mt-8 grid grid-cols-1 items-stretch divide-y divide-border overflow-hidden rounded-2xl border border-border bg-white lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+                <div className="divide-border border-border mt-8 grid grid-cols-1 items-stretch divide-y overflow-hidden rounded-2xl border bg-white lg:grid-cols-3 lg:divide-x lg:divide-y-0">
                   {bundles.map((b) => (
                     <div
                       key={b.id}
                       className={cn(
                         'relative flex flex-col justify-between p-6 sm:p-8',
                         b.popular &&
-                          'bg-muted/35 before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-foreground'
+                          'bg-muted/35 before:bg-foreground before:absolute before:inset-x-0 before:top-0 before:h-1'
                       )}
                     >
                       <div>
@@ -196,7 +203,7 @@ function PricingPage() {
                                 'inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold',
                                 b.popular
                                   ? 'bg-foreground text-background'
-                                  : 'border border-border bg-white text-foreground'
+                                  : 'border-border text-foreground border bg-white'
                               )}
                             >
                               {b.badge}
@@ -205,26 +212,26 @@ function PricingPage() {
                         </div>
 
                         {/* Title -> Description -> Price */}
-                        <h2 className="mt-1 text-lg font-bold text-foreground">
+                        <h2 className="text-foreground mt-1 text-lg font-bold">
                           {b.name}
                         </h2>
-                        <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                        <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
                           {b.desc}
                         </p>
 
-                        <div className="mt-5 font-sans text-4xl font-bold tracking-tight text-foreground">
+                        <div className="text-foreground mt-5 font-sans text-4xl font-bold tracking-tight">
                           {b.price}
                         </div>
 
                         {/* Sparkles + Credits + indented generations & never expire */}
                         <div className="mt-5">
-                          <div className="flex items-center gap-2 text-sm font-bold text-foreground">
+                          <div className="text-foreground flex items-center gap-2 text-sm font-bold">
                             <Sparkles className="size-4 shrink-0" />
                             <span>
                               {b.credits} {m['pages.pricing.m021']()}
                             </span>
                           </div>
-                          <div className="mt-1 space-y-0.5 pl-6 text-xs text-muted-foreground">
+                          <div className="text-muted-foreground mt-1 space-y-0.5 pl-6 text-xs">
                             <div>
                               {b.gens} {m['pages.pricing.m022']()}
                             </div>
@@ -234,33 +241,31 @@ function PricingPage() {
 
                         {/* Lifetime Pro included + bullet lists */}
                         <div className="mt-6">
-                          <div className="flex items-center gap-2 text-sm font-bold text-foreground">
+                          <div className="text-foreground flex items-center gap-2 text-sm font-bold">
                             <Check className="size-4 shrink-0" />
-                            <span>
-                              {m['pages.pricing.m023']()}
-                            </span>
+                            <span>{m['pages.pricing.m023']()}</span>
                           </div>
 
                           <div className="mt-3 pl-6">
-                            <div className="text-xs font-semibold text-foreground">
+                            <div className="text-foreground text-xs font-semibold">
                               {m['pages.pricing.m024']()}
                             </div>
-                            <ul className="mt-2 space-y-1.5 text-xs text-foreground/85">
+                            <ul className="text-foreground/85 mt-2 space-y-1.5 text-xs">
                               {unlockedFeatures.map((f) => (
                                 <li key={f} className="flex items-center gap-2">
-                                  <span className="size-1 shrink-0 rounded-full bg-foreground" />
+                                  <span className="bg-foreground size-1 shrink-0 rounded-full" />
                                   <span>{f}</span>
                                 </li>
                               ))}
                             </ul>
 
-                            <div className="mt-4 text-xs font-semibold text-foreground">
+                            <div className="text-foreground mt-4 text-xs font-semibold">
                               {m['pages.pricing.m025']()}
                             </div>
-                            <ul className="mt-2 space-y-1.5 text-xs text-foreground/85">
+                            <ul className="text-foreground/85 mt-2 space-y-1.5 text-xs">
                               {unlimitedFeatures.map((f) => (
                                 <li key={f} className="flex items-center gap-2">
-                                  <span className="size-1 shrink-0 rounded-full bg-foreground" />
+                                  <span className="bg-foreground size-1 shrink-0 rounded-full" />
                                   <span>{f}</span>
                                 </li>
                               ))}
@@ -285,7 +290,7 @@ function PricingPage() {
                           'mt-7 flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold transition-all disabled:opacity-60',
                           b.popular
                             ? 'bg-foreground text-background hover:bg-foreground/90'
-                            : 'border border-border bg-white text-foreground hover:bg-muted'
+                            : 'border-border text-foreground hover:bg-muted border bg-white'
                         )}
                       >
                         {buyingId === b.id && (
@@ -302,49 +307,46 @@ function PricingPage() {
                 </div>
               ) : (
                 <div className="mt-8">
-                  <p className="mb-4 text-center text-sm text-muted-foreground">
+                  <p className="text-muted-foreground mb-4 text-center text-sm">
                     {m['pages.pricing.m029']()}
                   </p>
-                  <div className="grid grid-cols-1 items-stretch divide-y divide-border overflow-hidden rounded-2xl border border-border bg-white lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+                  <div className="divide-border border-border grid grid-cols-1 items-stretch divide-y overflow-hidden rounded-2xl border bg-white lg:grid-cols-3 lg:divide-x lg:divide-y-0">
                     {proPacks.map((p) => (
                       <div
                         key={p.id}
                         className={cn(
                           'relative flex flex-col justify-between p-6 sm:p-8',
                           p.popular &&
-                            'bg-muted/35 before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-foreground'
+                            'bg-muted/35 before:bg-foreground before:absolute before:inset-x-0 before:top-0 before:h-1'
                         )}
                       >
                         <div>
                           <div className="flex items-center justify-between gap-2">
-                            <h2 className="text-lg font-bold text-foreground">
+                            <h2 className="text-foreground text-lg font-bold">
                               {p.name}
                             </h2>
                             {p.popular && (
-                              <span className="rounded-full bg-foreground px-2.5 py-0.5 text-[11px] font-semibold text-background">
+                              <span className="bg-foreground text-background rounded-full px-2.5 py-0.5 text-[11px] font-semibold">
                                 {m['pages.pricing.m030']()}
                               </span>
                             )}
                           </div>
-                          <div className="mt-4 font-sans text-4xl font-bold tracking-tight text-foreground">
+                          <div className="text-foreground mt-4 font-sans text-4xl font-bold tracking-tight">
                             {p.price}
                           </div>
-                          <div className="mt-1.5 text-xs text-muted-foreground">
+                          <div className="text-muted-foreground mt-1.5 text-xs">
                             {p.unit}
                           </div>
-                          <div className="mt-5 space-y-2 border-t border-border pt-4 text-sm text-muted-foreground">
+                          <div className="border-border text-muted-foreground mt-5 space-y-2 border-t pt-4 text-sm">
                             <div className="flex items-center gap-2">
-                              <Check className="size-4 text-foreground" />
+                              <Check className="text-foreground size-4" />
                               <span>
-                                {p.gens}{' '}
-                                {m['pages.pricing.m022']()}
+                                {p.gens} {m['pages.pricing.m022']()}
                               </span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <Check className="size-4 text-foreground" />
-                              <span>
-                                {m['pages.pricing.m018']()}
-                              </span>
+                              <Check className="text-foreground size-4" />
+                              <span>{m['pages.pricing.m018']()}</span>
                             </div>
                           </div>
                         </div>
@@ -362,7 +364,7 @@ function PricingPage() {
                             'mt-6 flex h-11 w-full items-center justify-center rounded-lg text-sm font-semibold transition-all',
                             p.popular
                               ? 'bg-foreground text-background hover:bg-foreground/90'
-                              : 'border border-border bg-white text-foreground hover:bg-muted'
+                              : 'border-border text-foreground hover:bg-muted border bg-white'
                           )}
                         >
                           {session?.user
@@ -372,7 +374,7 @@ function PricingPage() {
                       </div>
                     ))}
                   </div>
-                  <p className="mt-4 text-center text-xs text-muted-foreground">
+                  <p className="text-muted-foreground mt-4 text-center text-xs">
                     {m['pages.pricing.m032']()}
                   </p>
                 </div>
@@ -381,29 +383,29 @@ function PricingPage() {
               {/* How AI Credits work */}
               <div className="mt-16">
                 <div className="text-center">
-                  <h2 className="font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+                  <h2 className="text-foreground font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
                     {m['pages.pricing.m033']()}
                   </h2>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground mt-2 text-sm">
                     {m['pages.pricing.m034']()}
                   </p>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-white md:grid-cols-3 md:divide-x md:divide-y-0">
+                <div className="divide-border border-border mt-6 grid grid-cols-1 divide-y overflow-hidden rounded-2xl border bg-white md:grid-cols-3 md:divide-x md:divide-y-0">
                   <div className="p-6">
-                    <div className="text-lg font-bold text-foreground">
+                    <div className="text-foreground text-lg font-bold">
                       {m['pages.pricing.m035']()}
                     </div>
-                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                    <ul className="text-muted-foreground mt-3 space-y-2 text-sm">
                       <li>• {m['pages.pricing.m036']()}</li>
                       <li>• {m['pages.pricing.m037']()}</li>
                     </ul>
                   </div>
                   <div className="p-6">
-                    <div className="text-lg font-bold text-foreground">
+                    <div className="text-foreground text-lg font-bold">
                       {m['pages.pricing.m038']()}
                     </div>
-                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                    <ul className="text-muted-foreground mt-3 space-y-2 text-sm">
                       <li>• {m['pages.pricing.m008']()}</li>
                       <li>• {m['pages.pricing.m039']()}</li>
                       <li>• {m['pages.pricing.m040']()}</li>
@@ -411,22 +413,16 @@ function PricingPage() {
                   </div>
                   <div className="bg-muted/25 p-6">
                     <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-foreground">
+                      <span className="text-foreground text-lg font-bold">
                         {m['pages.pricing.m041']()}
                       </span>
-                      <span className="rounded bg-foreground px-1.5 py-0.5 text-[10px] font-semibold text-background">
+                      <span className="bg-foreground text-background rounded px-1.5 py-0.5 text-[10px] font-semibold">
                         {m['pages.pricing.m042']()}
                       </span>
                     </div>
-                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                      <li>
-                        •{' '}
-                        {m['pages.pricing.m043']()}
-                      </li>
-                      <li>
-                        •{' '}
-                        {m['pages.pricing.m014']()}
-                      </li>
+                    <ul className="text-muted-foreground mt-3 space-y-2 text-sm">
+                      <li>• {m['pages.pricing.m043']()}</li>
+                      <li>• {m['pages.pricing.m014']()}</li>
                     </ul>
                   </div>
                 </div>
@@ -435,12 +431,12 @@ function PricingPage() {
           </section>
 
           {/* Pricing FAQ (4 verbatim items) */}
-          <section className="border-t border-border bg-muted/20 py-14 sm:py-16">
+          <section className="border-border bg-muted/20 border-t py-14 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 sm:px-6">
-              <h2 className="mb-8 text-center font-sans text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              <h2 className="text-foreground mb-8 text-center font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
                 {m['pages.pricing.m044']()}
               </h2>
-              <div className="divide-y divide-border rounded-2xl border border-border bg-white">
+              <div className="divide-border border-border divide-y rounded-2xl border bg-white">
                 {PRICING_FAQS.map((item, idx) => {
                   const isOpen = openFaq === idx;
                   return (
@@ -449,19 +445,21 @@ function PricingPage() {
                         <button
                           type="button"
                           onClick={() => setOpenFaq(isOpen ? null : idx)}
-                          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted/40"
+                          className="text-foreground hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium transition-colors"
                         >
-                          <span>{isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}</span>
+                          <span>
+                            {isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}
+                          </span>
                           <ChevronDown
                             className={cn(
-                              'size-4 shrink-0 text-muted-foreground transition-transform',
+                              'text-muted-foreground size-4 shrink-0 transition-transform',
                               isOpen && 'rotate-180'
                             )}
                           />
                         </button>
                       </h3>
                       {isOpen && (
-                        <div className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">
+                        <div className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
                           {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
                         </div>
                       )}
@@ -481,17 +479,39 @@ export const Route = createFileRoute('/pricing')({
   loader: () => {
     const locale = getLocale();
     return {
+      locale,
       title: m['pages.pricing.m045']({}, { locale }),
       description: m['pages.pricing.m046']({}, { locale }),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: loaderData.title },
-          { name: 'description', content: loaderData.description },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return {};
+    const { locale, title, description } = loaderData;
+    const name = title.split(' | ')[0];
+    return buildSeoHead({
+      title,
+      description,
+      path: '/pricing',
+      locale,
+      jsonLd: [
+        breadcrumbJsonLd(
+          [
+            {
+              name: tDynamic('style_detail.breadcrumb.home', {}, { locale }),
+              path: '/',
+            },
+            { name, path: '/pricing' },
+          ],
+          locale
+        ),
+        faqJsonLd(
+          PRICING_FAQS.map((f) => ({
+            q: tDynamic(locale === 'zh' ? f.qZh : f.qEn, {}, { locale }),
+            a: tDynamic(locale === 'zh' ? f.aZh : f.aEn, {}, { locale }),
+          }))
+        ),
+      ],
+    });
+  },
   component: PricingPage,
 });

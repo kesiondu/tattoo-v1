@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 
 import { Link, useRouter } from '@/core/i18n/navigation';
 import { envConfigs } from '@/config';
+import { buildSeoHead, siteUrl } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
@@ -50,7 +51,7 @@ export const Route = createFileRoute('/blog/$slug')({
   },
   head: ({ loaderData }) => {
     if (!loaderData) return {};
-    const { post } = loaderData;
+    const { post, locale } = loaderData;
     if (post.preview) {
       return {
         meta: [
@@ -59,12 +60,31 @@ export const Route = createFileRoute('/blog/$slug')({
         ],
       };
     }
-    return {
-      meta: [
-        { title: `${post.title} | ${envConfigs.app_name}` },
-        { name: 'description', content: post.description },
+    const title = `${post.title} | ${envConfigs.app_name}`;
+    const url = `${siteUrl()}${locale === 'zh' ? '/zh' : ''}/blog/${post.slug}`;
+    return buildSeoHead({
+      title,
+      description: post.description,
+      path: `/blog/${post.slug}`,
+      locale,
+      image: post.image,
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: post.title,
+          description: post.description,
+          datePublished: post.createdAt,
+          author: {
+            '@type': 'Person',
+            name: post.authorName || 'TattooGenerator.online Editorial',
+          },
+          publisher: { '@type': 'Organization', name: envConfigs.app_name },
+          mainEntityOfPage: url,
+          ...(post.image ? { image: `${siteUrl()}${post.image}` } : {}),
+        },
       ],
-    };
+    });
   },
   component: BlogPostPage,
 });

@@ -17,6 +17,12 @@ import { toast } from 'sonner';
 import { useSession } from '@/core/auth/client';
 import { tDynamic } from '@/core/i18n/dynamic';
 import { useRouter } from '@/core/i18n/navigation';
+import {
+  breadcrumbJsonLd,
+  buildSeoHead,
+  faqJsonLd,
+  webAppJsonLd,
+} from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
@@ -921,17 +927,40 @@ export const Route = createFileRoute('/tattoo-try-on')({
   loader: () => {
     const locale = getLocale();
     return {
+      locale,
       title: m['tryon.meta.title']({}, { locale }),
       description: m['tryon.meta.description']({}, { locale }),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: loaderData.title },
-          { name: 'description', content: loaderData.description },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return {};
+    const { locale, title, description } = loaderData;
+    const name = title.split(' | ')[0];
+    return buildSeoHead({
+      title,
+      description,
+      path: '/tattoo-try-on',
+      locale,
+      jsonLd: [
+        webAppJsonLd({ name, description, path: '/tattoo-try-on', locale }),
+        breadcrumbJsonLd(
+          [
+            {
+              name: tDynamic('style_detail.breadcrumb.home', {}, { locale }),
+              path: '/',
+            },
+            { name, path: '/tattoo-try-on' },
+          ],
+          locale
+        ),
+        faqJsonLd(
+          [1, 2, 3, 4, 5, 6].map((n) => ({
+            q: tDynamic(`tryon.faq.q${n}`, {}, { locale }),
+            a: tDynamic(`tryon.faq.a${n}`, {}, { locale }),
+          }))
+        ),
+      ],
+    });
+  },
   component: TattooTryOnPage,
 });

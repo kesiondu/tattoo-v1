@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { createFileRoute, notFound } from '@tanstack/react-router';
+import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import {
   getLocalizedIdea,
   getTattooIdeaBySlug,
+  LEGACY_TATTOO_IDEA_SLUGS,
   TATTOO_IDEAS_BY_SLUG,
 } from '@/data/tattoo-ideas';
 import { getLocalizedStyle, getTattooStyleBySlug } from '@/data/tattoo-styles';
@@ -395,6 +396,13 @@ function TattooIdeaDetailPage() {
 
 export const Route = createFileRoute('/tattoo-ideas/$slug')({
   loader: ({ params }) => {
+    const legacySlug = LEGACY_TATTOO_IDEA_SLUGS[params.slug];
+    if (legacySlug) {
+      throw redirect({
+        href: `/tattoo-ideas/${legacySlug}`,
+        statusCode: 301,
+      });
+    }
     const idea = getTattooIdeaBySlug(params.slug);
     if (!idea) throw notFound();
     const locale = getLocale();
@@ -484,6 +492,10 @@ export const Route = createFileRoute('/tattoo-ideas/$slug')({
         { property: 'og:image', content: imageUrl },
         { property: 'og:url', content: pageUrl },
         { property: 'og:type', content: 'article' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: seoTitle },
+        { name: 'twitter:description', content: seoDescription },
+        { name: 'twitter:image', content: imageUrl },
       ],
       scripts: [
         {

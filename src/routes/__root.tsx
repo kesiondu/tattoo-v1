@@ -149,6 +149,22 @@ export const Route = createRootRoute({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { title: envConfigs.app_name },
         { name: 'description', content: envConfigs.app_description },
+        { property: 'og:title', content: envConfigs.app_name },
+        { property: 'og:description', content: envConfigs.app_description },
+        {
+          property: 'og:image',
+          content: `${appUrl}/brand/tattoogenerator-og.png`,
+        },
+        { property: 'og:url', content: canonicalHref },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: envConfigs.app_name },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: envConfigs.app_name },
+        { name: 'twitter:description', content: envConfigs.app_description },
+        {
+          name: 'twitter:image',
+          content: `${appUrl}/brand/tattoogenerator-og.png`,
+        },
       ],
       links: [
         { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },

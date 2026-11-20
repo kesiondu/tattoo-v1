@@ -55,6 +55,22 @@ export function InkStudioFooter() {
               </li>
               <li>
                 <Link
+                  href="/name-tattoo-generator"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.name_generator']()}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tattoo-stencil-generator"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.stencil_generator']()}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/my-designs"
                   className="hover:text-foreground transition-colors hover:underline"
                 >

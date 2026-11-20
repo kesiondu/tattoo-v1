@@ -89,6 +89,21 @@ function withPoweredBy(response: Response): Response {
 // so getLocale() resolves per-request (AsyncLocalStorage) during SSR.
 export default {
   async fetch(req: Request): Promise<Response> {
+    const requestUrl = new URL(req.url);
+    const isPublicHost =
+      requestUrl.hostname === 'tattoogenerator.online' ||
+      requestUrl.hostname === 'www.tattoogenerator.online';
+    if (
+      isPublicHost &&
+      (requestUrl.hostname === 'www.tattoogenerator.online' ||
+        requestUrl.protocol === 'http:')
+    ) {
+      const destination = new URL(
+        `${requestUrl.pathname}${requestUrl.search}${requestUrl.hash}`,
+        'https://tattoogenerator.online'
+      );
+      return Response.redirect(destination, 301);
+    }
     await ensureCloudflareEnv();
     // Wrap the whole request so anything before/after the handler shares
     // the same db client too.

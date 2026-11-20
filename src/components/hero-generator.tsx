@@ -50,63 +50,63 @@ const PRIMARY_STYLES: StyleItem[] = [
   {
     id: 'pick-for-me',
     label: () => m['home.style.pick_for_me'](),
-    img: '/assets/styles/pick-for-me.webp',
+    img: '/assets/styles/sm/pick-for-me.webp',
     isAuto: true,
   },
   {
     id: 'fine-line',
     label: () => m['home.style.fine_line'](),
-    img: '/assets/styles/fine-line.webp',
+    img: '/assets/styles/sm/fine-line.webp',
   },
   {
     id: 'minimalist',
     label: () => m['home.style.minimalist'](),
-    img: '/assets/styles/minimalist.webp',
+    img: '/assets/styles/sm/minimalist.webp',
   },
   {
     id: 'lettering',
     label: () => m['home.style.lettering'](),
-    img: '/assets/styles/lettering.webp',
+    img: '/assets/styles/sm/lettering.webp',
   },
   {
     id: 'realism',
     label: () => m['home.style.realism'](),
-    img: '/assets/styles/realism.webp',
+    img: '/assets/styles/sm/realism.webp',
   },
   {
     id: 'black-grey',
     label: () => m['home.style.black_grey'](),
-    img: '/assets/styles/black-grey.webp',
+    img: '/assets/styles/sm/black-grey.webp',
   },
   {
     id: 'american-traditional',
     label: () => m['home.style.american_traditional'](),
-    img: '/assets/styles/old-school.webp',
+    img: '/assets/styles/sm/old-school.webp',
   },
   {
     id: 'japanese',
     label: () => m['home.style.japanese'](),
-    img: '/assets/styles/japanese.webp',
+    img: '/assets/styles/sm/japanese.webp',
   },
   {
     id: 'blackwork',
     label: () => m['home.style.blackwork'](),
-    img: '/assets/styles/blackwork.webp',
+    img: '/assets/styles/sm/blackwork.webp',
   },
   {
     id: 'geometric',
     label: () => m['home.style.geometric'](),
-    img: '/assets/styles/geometric.webp',
+    img: '/assets/styles/sm/geometric.webp',
   },
   {
     id: 'neo-traditional',
     label: () => m['home.style.neo_traditional'](),
-    img: '/assets/styles/neo-traditional.webp',
+    img: '/assets/styles/sm/neo-traditional.webp',
   },
   {
     id: 'micro-realism',
     label: () => m['home.style.micro_realism'](),
-    img: '/assets/styles/micro-realism.webp',
+    img: '/assets/styles/sm/micro-realism.webp',
   },
 ];
 
@@ -114,52 +114,52 @@ const EXTRA_STYLES: StyleItem[] = [
   {
     id: 'watercolor',
     label: () => m['home.style.watercolor'](),
-    img: '/assets/styles/watercolor.webp',
+    img: '/assets/styles/sm/watercolor.webp',
   },
   {
     id: 'tribal',
     label: () => m['home.style.tribal'](),
-    img: '/assets/styles/blackwork.webp',
+    img: '/assets/styles/sm/blackwork.webp',
   },
   {
     id: 'cyberpunk',
     label: () => m['home.style.cyberpunk'](),
-    img: '/assets/styles/geometric.webp',
+    img: '/assets/styles/sm/geometric.webp',
   },
   {
     id: 'anime',
     label: () => m['home.style.anime'](),
-    img: '/assets/styles/japanese.webp',
+    img: '/assets/styles/sm/japanese.webp',
   },
   {
     id: 'dotwork',
     label: () => m['home.style.dotwork'](),
-    img: '/assets/styles/blackwork.webp',
+    img: '/assets/styles/sm/blackwork.webp',
   },
   {
     id: 'sketch',
     label: () => m['home.style.sketch'](),
-    img: '/assets/styles/fine-line.webp',
+    img: '/assets/styles/sm/fine-line.webp',
   },
   {
     id: 'celtic',
     label: () => m['home.style.celtic'](),
-    img: '/assets/styles/geometric.webp',
+    img: '/assets/styles/sm/geometric.webp',
   },
   {
     id: 'trash-polka',
     label: () => m['home.style.trash_polka'](),
-    img: '/assets/styles/black-grey.webp',
+    img: '/assets/styles/sm/black-grey.webp',
   },
   {
     id: 'chicano',
     label: () => m['home.style.chicano'](),
-    img: '/assets/styles/realism.webp',
+    img: '/assets/styles/sm/realism.webp',
   },
   {
     id: 'illustrative',
     label: () => m['home.style.illustrative'](),
-    img: '/assets/styles/neo-traditional.webp',
+    img: '/assets/styles/sm/neo-traditional.webp',
   },
 ];
 
@@ -284,12 +284,12 @@ export function HeroGenerator({
       setActiveModelLabel(res.modelLabel);
       if (tier === 'clean_artwork') {
         setGeneratedArtUrl(
-          res.imageUrl || '/home-values/phoenix-clean-artwork.webp'
+          res.imageUrl || '/home-hero-set/dagger-rose-artwork.jpg'
         );
         setPreviewTab('artwork');
       } else {
         setGeneratedBodyUrl(
-          res.imageUrl || '/home-values/phoenix-body-preview.webp'
+          res.imageUrl || '/home-hero-set/dagger-rose-model-preview.jpg'
         );
         setPreviewTab('body');
       }
@@ -340,6 +340,10 @@ export function HeroGenerator({
                     <img
                       src={activeStyleObj.img}
                       alt={activeStyleObj.label()}
+                      width={36}
+                      height={36}
+                      loading="lazy"
+                      decoding="async"
                       className="size-full object-contain"
                     />
                   </div>
@@ -384,6 +388,10 @@ export function HeroGenerator({
                             <img
                               src={style.img}
                               alt={style.label()}
+                              width={128}
+                              height={128}
+                              loading="lazy"
+                              decoding="async"
                               className="h-full w-full object-contain p-1.5 transition-transform duration-200 group-hover:scale-105"
                             />
                             {style.isAuto && (
@@ -742,6 +750,10 @@ export function HeroGenerator({
                   <img
                     src="/tattoo-generator/examples/body-preview-collage.jpg"
                     alt={m['home.hero.example_label']()}
+                    width={825}
+                    height={1024}
+                    fetchPriority="high"
+                    decoding="async"
                     className="block h-auto w-full"
                   />
                 </div>
@@ -749,7 +761,7 @@ export function HeroGenerator({
                 <div className="grid aspect-[16/11] w-full grid-cols-2 gap-2 bg-neutral-50 p-2 sm:aspect-[4/3]">
                   <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
-                      src="/home-values/phoenix-clean-artwork.webp"
+                      src="/home-hero-set/dagger-rose-artwork.jpg"
                       alt={m['home.hero.tab_art']()}
                       className="h-full w-full object-contain p-2"
                     />

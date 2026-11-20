@@ -24,6 +24,11 @@ export interface TattooIdeaPage {
   relatedIdeaSlugs: string[];
 }
 
+export const LEGACY_TATTOO_IDEA_SLUGS: Record<string, string> = {
+  'cybersigilism-tattoo-36': 'cybersigilism-shoulder-arm-tattoo',
+  'mandala-tattoo-112': 'mandala-hip-tattoo',
+};
+
 export const TATTOO_IDEAS: TattooIdeaPage[] = [
   {
     "slug": "rib-calligraphy-tattoo",
@@ -42,7 +47,7 @@ export const TATTOO_IDEAS: TattooIdeaPage[] = [
     ]
   },
   {
-    "slug": "cybersigilism-tattoo-36",
+    "slug": "cybersigilism-shoulder-arm-tattoo",
     "i18nKey": "idea_page.cybersigilism_tattoo_36",
     "styleSlug": "cybersigilism",
     "artworkUrl": "/gallery/cybersigilism-tattoo-36-artwork.webp",
@@ -67,7 +72,7 @@ export const TATTOO_IDEAS: TattooIdeaPage[] = [
     "imageHeight": 1024,
     "prompt": "Symmetrical ornamental botanical flower medallion with delicate filigree curls and stippled dotwork petals curving along the upper thigh, crisp black linework, airy negative space, realistic tattoo photography",
     "relatedIdeaSlugs": [
-      "mandala-tattoo-112",
+      "mandala-hip-tattoo",
       "fine-line-decorative-star-tattoo",
       "cherry-blossom-tattoo",
       "dotwork-eye-tattoo-with-moth-wings"
@@ -122,7 +127,7 @@ export const TATTOO_IDEAS: TattooIdeaPage[] = [
     ]
   },
   {
-    "slug": "mandala-tattoo-112",
+    "slug": "mandala-hip-tattoo",
     "i18nKey": "idea_page.mandala_tattoo_112",
     "styleSlug": "mandala",
     "artworkUrl": "/gallery/mandala-tattoo-112-artwork.webp",
@@ -179,7 +184,7 @@ export const TATTOO_IDEAS: TattooIdeaPage[] = [
     "imageHeight": 1024,
     "prompt": "Interlocking sacred geometry hexagon grid cascading down the lower leg and calf, crisp straight black lines with subtle dotwork shading gradients, modern architectural tattoo photography",
     "relatedIdeaSlugs": [
-      "mandala-tattoo-112",
+      "mandala-hip-tattoo",
       "dotwork-eye-tattoo-with-moth-wings",
       "blackwork-leaf-tattoo",
       "cybersigilism-tattoo-36"
@@ -307,7 +312,7 @@ export const TATTOO_IDEAS: TattooIdeaPage[] = [
     "imageHeight": 1024,
     "prompt": "Mystical dotwork all-seeing eye framed by symmetrical moth wings and stippled geometric rays on the forearm, pure black ink pepper shading, crisp outlines, realistic tattoo photography",
     "relatedIdeaSlugs": [
-      "mandala-tattoo-112",
+      "mandala-hip-tattoo",
       "geometric-hexagon-tattoo",
       "ornamental-flower-tattoo",
       "blackwork-leaf-tattoo"
@@ -339,7 +344,7 @@ export const TATTOO_IDEAS: TattooIdeaPage[] = [
     "imageHeight": 1024,
     "prompt": "Bold graphic blackwork botanical leaf branch with solid pure black fills and crisp negative-space veins wrapping cleanly along the forearm, high-contrast tattoo photography",
     "relatedIdeaSlugs": [
-      "cybersigilism-tattoo-36",
+      "cybersigilism-shoulder-arm-tattoo",
       "cybersigilism-tattoo",
       "geometric-hexagon-tattoo",
       "ornamental-flower-tattoo"
@@ -355,9 +360,9 @@ export const TATTOO_IDEAS: TattooIdeaPage[] = [
     "imageHeight": 1024,
     "prompt": "Sweeping symmetrical black cybersigilism wing sigil stretching across the upper back and tapering down the spine, razor-thin neo-tribal spikes, high-contrast black ink, realistic tattoo photography",
     "relatedIdeaSlugs": [
-      "cybersigilism-tattoo-36",
+      "cybersigilism-shoulder-arm-tattoo",
       "blackwork-leaf-tattoo",
-      "mandala-tattoo-112",
+      "mandala-hip-tattoo",
       "ornamental-flower-tattoo"
     ]
   },
