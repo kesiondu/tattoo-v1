@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { SeoRelatedTools } from '@/components/seo-related-tools';
-import { SitePageLayout } from '@/components/site-page-layout';
+import { MarketingPageLayout } from '@/components/marketing-page-layout';
 import {
   Dialog,
   DialogContent,
@@ -322,7 +322,7 @@ function TattooPriceCalculatorPage() {
   }
 
   return (
-    <SitePageLayout>
+    <MarketingPageLayout>
       {({ openAuth }) => (
         <>
           {/* 1. Hero + 2-Column Calculator */}
@@ -1075,7 +1075,7 @@ function TattooPriceCalculatorPage() {
           </Dialog>
         </>
       )}
-    </SitePageLayout>
+    </MarketingPageLayout>
   );
 }
 

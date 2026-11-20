@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale, localizeUrl } from '@/paraglide/runtime.js';
 import { HeroGenerator } from '@/components/hero-generator';
-import { SitePageLayout } from '@/components/site-page-layout';
+import { MarketingPageLayout } from '@/components/marketing-page-layout';
 
 function StyleDetailPage() {
   const { styleSlug } = Route.useLoaderData();
@@ -49,7 +49,7 @@ function StyleDetailPage() {
   }
 
   return (
-    <SitePageLayout>
+    <MarketingPageLayout>
       {({ openAuth }) => (
         <div className="bg-background text-foreground">
           {/* Module 1: Breadcrumb Navigation */}
@@ -374,7 +374,7 @@ function StyleDetailPage() {
           </section>
         </div>
       )}
-    </SitePageLayout>
+    </MarketingPageLayout>
   );
 }
 

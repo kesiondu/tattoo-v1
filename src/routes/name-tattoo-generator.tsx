@@ -11,7 +11,7 @@ import {
 } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { SitePageLayout } from '@/components/site-page-layout';
+import { MarketingPageLayout } from '@/components/marketing-page-layout';
 
 const FONT_CHOICES = [
   {
@@ -79,7 +79,7 @@ function NameTattooGeneratorPage() {
   }
 
   return (
-    <SitePageLayout>
+    <MarketingPageLayout>
       <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <nav
           aria-label={m['common.accessibility.breadcrumb']()}
@@ -188,7 +188,7 @@ function NameTattooGeneratorPage() {
           </div>
         </section>
       </main>
-    </SitePageLayout>
+    </MarketingPageLayout>
   );
 }
 

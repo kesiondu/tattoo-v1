@@ -3,11 +3,11 @@ import { createFileRoute } from '@tanstack/react-router';
 import { buildSeoHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { SitePageLayout } from '@/components/site-page-layout';
+import { MarketingPageLayout } from '@/components/marketing-page-layout';
 
 function AcceptableUsePage() {
   return (
-    <SitePageLayout>
+    <MarketingPageLayout>
       <article className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
         <h1 className="text-foreground font-sans text-3xl font-bold tracking-tight">
           {m['pages.legal.aup_title']()}
@@ -21,7 +21,7 @@ function AcceptableUsePage() {
           <p>{m['pages.legal.aup_p3']()}</p>
         </div>
       </article>
-    </SitePageLayout>
+    </MarketingPageLayout>
   );
 }
 

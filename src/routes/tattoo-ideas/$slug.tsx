@@ -24,7 +24,7 @@ import { envConfigs } from '@/config';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale, localizeUrl } from '@/paraglide/runtime.js';
-import { SitePageLayout } from '@/components/site-page-layout';
+import { MarketingPageLayout } from '@/components/marketing-page-layout';
 
 function TattooIdeaDetailPage() {
   const { slug } = Route.useLoaderData();
@@ -55,7 +55,7 @@ function TattooIdeaDetailPage() {
   }
 
   return (
-    <SitePageLayout>
+    <MarketingPageLayout>
       <div className="bg-background text-foreground">
         {/* Module 1: Breadcrumb */}
         <nav
@@ -472,7 +472,7 @@ function TattooIdeaDetailPage() {
           </div>
         </section>
       </div>
-    </SitePageLayout>
+    </MarketingPageLayout>
   );
 }
 

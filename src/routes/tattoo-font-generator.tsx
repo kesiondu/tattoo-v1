@@ -35,7 +35,7 @@ import {
 } from '@/components/font-style-preview';
 import { DEFAULT_INK, InkColorPicker } from '@/components/ink-color-picker';
 import { SeoRelatedTools } from '@/components/seo-related-tools';
-import { SitePageLayout } from '@/components/site-page-layout';
+import { MarketingPageLayout } from '@/components/marketing-page-layout';
 import { FontSurfaceDemo } from '@/components/surface-tattoo-demo';
 
 interface FontVariant {
@@ -1041,7 +1041,7 @@ function TattooFontGeneratorPage() {
   }
 
   return (
-    <SitePageLayout>
+    <MarketingPageLayout>
       {({ openAuth }) => (
         <>
           {/* 1. Hero Header */}
@@ -2079,7 +2079,7 @@ function TattooFontGeneratorPage() {
           />
         </>
       )}
-    </SitePageLayout>
+    </MarketingPageLayout>
   );
 }
 
