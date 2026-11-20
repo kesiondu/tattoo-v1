@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import {
   ArrowRight,
   ChevronDown,
+  Download,
   HelpCircle,
   Loader2,
+  Share2,
   Sparkles,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -37,6 +39,7 @@ interface HeroGeneratorProps {
   heroSubtitle?: string;
   promptPlaceholder?: string;
   externalPrompt?: { text: string; key: number } | null;
+  stencilMode?: boolean;
 }
 
 interface StyleItem {
@@ -173,6 +176,7 @@ export function HeroGenerator({
   heroSubtitle,
   promptPlaceholder,
   externalPrompt,
+  stencilMode = false,
 }: HeroGeneratorProps) {
   const { data: session } = useSession();
 
@@ -218,6 +222,7 @@ export function HeroGenerator({
   const [generatedBodyUrl, setGeneratedBodyUrl] = useState<string | null>(null);
   const [generatedArtUrl, setGeneratedArtUrl] = useState<string | null>(null);
   const [activeModelLabel, setActiveModelLabel] = useState<string | null>(null);
+  const [stencilSize, setStencilSize] = useState('medium');
 
   const visibleStyles = showAllStyles ? ALL_STYLES : PRIMARY_STYLES;
   const activeStyleObj =
@@ -256,13 +261,15 @@ export function HeroGenerator({
   }
 
   async function runGeneration(
-    tier: 'fast_body_preview' | 'hq_body_preview' | 'clean_artwork'
+    tier: 'fast_body_preview' | 'hq_body_preview' | 'clean_artwork',
+    promptOverride?: string
   ) {
     if (!session?.user) {
       onOpenAuth?.();
       return;
     }
-    if (!prompt.trim()) {
+    const generationPrompt = promptOverride ?? prompt.trim();
+    if (!generationPrompt) {
       setOpenStep(2);
       toast.info(m['home.hero.need_prompt']());
       return;
@@ -277,7 +284,7 @@ export function HeroGenerator({
         imageUrl: string | null;
       }>('/api/tattoo/generate', {
         tier,
-        prompt: prompt.trim(),
+        prompt: generationPrompt,
         style: selectedStyle,
         placement: placementSummary ?? undefined,
       });
@@ -302,7 +309,220 @@ export function HeroGenerator({
   }
 
   function handleGenerate() {
+    if (stencilMode) {
+      if (!prompt.trim()) {
+        toast.info(m['home.hero.need_prompt']());
+        return;
+      }
+      const sizeInstruction =
+        stencilSize === 'small'
+          ? 'designed for a small tattoo, with simple, clear linework'
+          : stencilSize === 'large'
+            ? 'designed for a large tattoo, with balanced detailed linework'
+            : 'designed for a medium-sized tattoo, with readable linework';
+      void runGeneration(
+        'clean_artwork',
+        `${prompt.trim()}, ${sizeInstruction}`
+      );
+      return;
+    }
     void runGeneration('fast_body_preview');
+  }
+
+  async function createStencilSvg(): Promise<Blob> {
+    if (!generatedArtUrl) throw new Error('Generate line art first.');
+    const response = await fetch(generatedArtUrl);
+    if (!response.ok) throw new Error('Could not load the generated line art.');
+    const imageBlob = await response.blob();
+    if (!imageBlob.type.startsWith('image/')) {
+      throw new Error('The generated result is not an image.');
+    }
+    const imageDataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () =>
+        typeof reader.result === 'string'
+          ? resolve(reader.result)
+          : reject(new Error('Could not prepare the SVG export.'));
+      reader.onerror = () =>
+        reject(new Error('Could not prepare the SVG export.'));
+      reader.readAsDataURL(imageBlob);
+    });
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900"><image href="${imageDataUrl}" width="1200" height="900" preserveAspectRatio="xMidYMid meet" /></svg>`;
+    return new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  }
+
+  function downloadStencilSvg(blob: Blob) {
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'tattoo-line-art-reference.svg';
+    anchor.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async function handleDownloadStencilSvg() {
+    try {
+      downloadStencilSvg(await createStencilSvg());
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'SVG export failed.'
+      );
+    }
+  }
+
+  async function handleShareStencil() {
+    try {
+      const blob = await createStencilSvg();
+      const file = new File([blob], 'tattoo-line-art-reference.svg', {
+        type: 'image/svg+xml',
+      });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Tattoo line art reference',
+          text: 'Please review this tattoo line art reference.',
+        });
+      } else {
+        downloadStencilSvg(blob);
+        const subject = encodeURIComponent('Tattoo line art for review');
+        const body = encodeURIComponent(
+          'Please review my tattoo line art reference. I have downloaded the SVG file and will attach it to this email.'
+        );
+        window.location.href = `mailto:?subject=${subject}&body=${body}`;
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') return;
+      toast.error(
+        error instanceof Error ? error.message : 'Could not share the design.'
+      );
+    }
+  }
+
+  if (stencilMode) {
+    const isZh = getLocale() === 'zh';
+    const sizeOptions = isZh
+      ? [
+          ['small', m['tools.stencil.generator_size_small']()],
+          ['medium', m['tools.stencil.generator_size_option']()],
+          ['large', m['tools.stencil.generator_size_large']()],
+        ]
+      : [
+          ['small', m['tools.stencil.generator_size_small']()],
+          ['medium', m['tools.stencil.generator_size_option']()],
+          ['large', m['tools.stencil.generator_size_large']()],
+        ];
+
+    return (
+      <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="bg-card grid items-start gap-5 rounded-2xl border p-4 shadow-sm sm:p-6 lg:grid-cols-2">
+          <div className="space-y-4">
+            <label className="block space-y-2">
+              <span className="text-sm font-semibold">
+                {m['tools.stencil.generator_prompt_label']()}
+              </span>
+              <textarea
+                value={prompt}
+                onChange={(event) => setPrompt(event.target.value)}
+                placeholder={m['tools.stencil.generator_placeholder']()}
+                rows={5}
+                className="border-input placeholder:text-muted-foreground focus:border-foreground focus:ring-foreground/10 bg-background w-full resize-y rounded-xl border p-3 text-sm leading-6 outline-none focus:ring-2"
+              />
+            </label>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="block space-y-2">
+                <span className="text-sm font-semibold">
+                  {m['tools.stencil.generator_style_label']()}
+                </span>
+                <select
+                  value={selectedStyle}
+                  onChange={(event) => setSelectedStyle(event.target.value)}
+                  className="border-input bg-background w-full rounded-lg border px-3 py-2.5 text-sm"
+                >
+                  {ALL_STYLES.map((style) => (
+                    <option key={style.id} value={style.id}>
+                      {style.id === 'fine-line'
+                        ? m['tools.stencil.generator_style_option']()
+                        : style.label()}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="block space-y-2">
+                <span className="text-sm font-semibold">
+                  {m['tools.stencil.generator_size_label']()}
+                </span>
+                <select
+                  value={stencilSize}
+                  onChange={(event) => setStencilSize(event.target.value)}
+                  className="border-input bg-background w-full rounded-lg border px-3 py-2.5 text-sm"
+                >
+                  {sizeOptions.map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <button
+              type="button"
+              disabled={generating}
+              onClick={handleGenerate}
+              className="bg-foreground text-background hover:bg-foreground/90 flex h-12 w-full items-center justify-center gap-2 rounded-lg px-4 text-base font-semibold shadow-sm transition-colors disabled:opacity-60"
+            >
+              {generating ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Sparkles className="size-4" />
+              )}
+              <span>
+                {generating
+                  ? m['tools.stencil.generator_loading']()
+                  : m['tools.stencil.generator_button']()}
+              </span>
+            </button>
+          </div>
+          <div className="bg-muted/30 flex min-h-[320px] flex-col rounded-xl border p-3 sm:min-h-[380px] sm:p-4">
+            <div
+              aria-live="polite"
+              className="bg-background flex min-h-[260px] flex-1 items-center justify-center overflow-hidden rounded-lg sm:min-h-[320px]"
+            >
+              {generatedArtUrl ? (
+                <img
+                  src={generatedArtUrl}
+                  alt={m['tools.stencil.generator_result_alt']()}
+                  className="max-h-[420px] w-full object-contain"
+                />
+              ) : (
+                <p className="text-muted-foreground max-w-xs px-6 text-center text-sm leading-6">
+                  {m['tools.stencil.generator_result_empty']()}
+                </p>
+              )}
+            </div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              <button
+                type="button"
+                disabled={!generatedArtUrl || generating}
+                onClick={() => void handleDownloadStencilSvg()}
+                className="border-border bg-background inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Download className="size-4" />
+                <span>{m['tools.stencil.generator_download']()}</span>
+              </button>
+              <button
+                type="button"
+                disabled={!generatedArtUrl || generating}
+                onClick={() => void handleShareStencil()}
+                className="border-border bg-background inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Share2 className="size-4" />
+                <span>{m['tools.stencil.generator_send']()}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (

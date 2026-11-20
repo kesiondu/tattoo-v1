@@ -247,7 +247,6 @@ function TattooPriceCalculatorPage() {
   );
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [bodyAreaOpen, setBodyAreaOpen] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const cityObj = CITIES.find((c) => c.name === city) ?? CITIES[0];
   const artistObj = ARTISTS.find((a) => a.id === artistId) ?? ARTISTS[2];
@@ -887,6 +886,96 @@ function TattooPriceCalculatorPage() {
                 ))}
               </div>
 
+              <section className="mt-12 border-t pt-10">
+                <h2 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {m['pages.price.guide_size_title']()}
+                </h2>
+                <p className="text-muted-foreground mt-3 max-w-4xl text-sm leading-7">
+                  {m['pages.price.guide_size_intro']()}
+                </p>
+                <div className="mt-5 grid gap-4 md:grid-cols-3">
+                  <article className="rounded-xl border bg-white p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.price.guide_size_h1']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.price.guide_size_p1']()}
+                    </p>
+                  </article>
+                  <article className="rounded-xl border bg-white p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.price.guide_size_h2']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.price.guide_size_p2']()}
+                    </p>
+                  </article>
+                  <article className="rounded-xl border bg-white p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.price.guide_size_h3']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.price.guide_size_p3']()}
+                    </p>
+                  </article>
+                </div>
+              </section>
+              <section className="mt-12 border-t pt-10">
+                <h2 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {m['pages.price.guide_artist_title']()}
+                </h2>
+                <p className="text-muted-foreground mt-3 max-w-4xl text-sm leading-7">
+                  {m['pages.price.guide_artist_intro']()}
+                </p>
+                <div className="mt-5 grid gap-4 md:grid-cols-2">
+                  <article className="rounded-xl border bg-white p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.price.guide_artist_h1']()}
+                    </h3>
+                    <ul className="text-muted-foreground mt-3 space-y-2 text-sm leading-6">
+                      <li>• {m['pages.price.guide_artist_item1']()}</li>
+                      <li>• {m['pages.price.guide_artist_item2']()}</li>
+                      <li>• {m['pages.price.guide_artist_item3']()}</li>
+                      <li>• {m['pages.price.guide_artist_item4']()}</li>
+                      <li>• {m['pages.price.guide_artist_item5']()}</li>
+                      <li>• {m['pages.price.guide_artist_item6']()}</li>
+                      <li>• {m['pages.price.guide_artist_item7']()}</li>
+                    </ul>
+                  </article>
+                  <article className="rounded-xl border bg-white p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.price.guide_artist_h2']()}
+                    </h3>
+                    <ol className="text-muted-foreground mt-3 space-y-2 text-sm leading-6">
+                      <li>1. {m['pages.price.guide_artist_q1']()}</li>
+                      <li>2. {m['pages.price.guide_artist_q2']()}</li>
+                      <li>3. {m['pages.price.guide_artist_q3']()}</li>
+                      <li>4. {m['pages.price.guide_artist_q4']()}</li>
+                    </ol>
+                    <h3 className="mt-5 font-semibold">
+                      {m['pages.price.guide_artist_h3']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.price.guide_artist_p3']()}
+                    </p>
+                  </article>
+                </div>
+              </section>
+              <section className="mt-12 border-t pt-10">
+                <h2 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {m['pages.price.guide_mistakes_title']()}
+                </h2>
+                <ul className="text-muted-foreground mt-4 grid gap-3 text-sm leading-6 sm:grid-cols-2">
+                  <li>• {m['pages.price.guide_mistake1']()}</li>
+                  <li>• {m['pages.price.guide_mistake2']()}</li>
+                  <li>• {m['pages.price.guide_mistake3']()}</li>
+                  <li>• {m['pages.price.guide_mistake4']()}</li>
+                  <li>• {m['pages.price.guide_mistake5']()}</li>
+                  <li>• {m['pages.price.guide_mistake6']()}</li>
+                  <li>• {m['pages.price.guide_mistake7']()}</li>
+                </ul>
+              </section>
+
               {/* Bottom CTA strip */}
               <div className="border-border mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border bg-white p-5">
                 <div className="text-foreground text-sm font-semibold">
@@ -932,35 +1021,16 @@ function TattooPriceCalculatorPage() {
                 {m['pages.price.m081']()}
               </h2>
               <div className="divide-border border-border divide-y rounded-2xl border bg-white">
-                {CALC_FAQS.map((item, idx) => {
-                  const isOpen = openFaq === idx;
-                  return (
-                    <div key={tDynamic(item.qEn)}>
-                      <h3 className="flex">
-                        <button
-                          type="button"
-                          onClick={() => setOpenFaq(isOpen ? null : idx)}
-                          className="text-foreground hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium transition-colors"
-                        >
-                          <span>
-                            {isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}
-                          </span>
-                          <ChevronDown
-                            className={cn(
-                              'text-muted-foreground size-4 shrink-0 transition-transform',
-                              isOpen && 'rotate-180'
-                            )}
-                          />
-                        </button>
-                      </h3>
-                      {isOpen && (
-                        <div className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
-                          {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                {CALC_FAQS.map((item) => (
+                  <article key={tDynamic(item.qEn)} className="px-5 py-4">
+                    <h3 className="text-foreground text-sm font-semibold">
+                      {isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                      {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
+                    </p>
+                  </article>
+                ))}
               </div>
             </div>
           </section>

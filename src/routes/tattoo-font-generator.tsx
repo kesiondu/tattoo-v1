@@ -815,7 +815,6 @@ function TattooFontGeneratorPage() {
 
   const [guideCat, setGuideCat] = useState<string>('all');
   const [showAllGuide, setShowAllGuide] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const activeStyle =
     FONT_STYLES.find((s) => s.id === selectedStyleId) ?? FONT_STYLES[0];
@@ -1925,6 +1924,98 @@ function TattooFontGeneratorPage() {
             </div>
           </section>
 
+          <section className="border-border border-y bg-white py-12 sm:py-16">
+            <div className="mx-auto max-w-7xl space-y-10 px-4 sm:px-6 lg:px-8">
+              <div>
+                <h2 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {m['pages.fontgen.guide_size_title']()}
+                </h2>
+                <p className="text-muted-foreground mt-3 max-w-4xl text-sm leading-7">
+                  {m['pages.fontgen.guide_size_intro']()}
+                </p>
+                <div className="mt-5 grid gap-4 md:grid-cols-2">
+                  <article className="rounded-xl border p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.fontgen.guide_size_h1']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.fontgen.guide_size_p1']()}
+                    </p>
+                  </article>
+                  <article className="rounded-xl border p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.fontgen.guide_size_h2']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.fontgen.guide_size_p2']()}
+                    </p>
+                  </article>
+                  <article className="rounded-xl border p-5 md:col-span-2">
+                    <h3 className="font-semibold">
+                      {m['pages.fontgen.guide_size_h3']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.fontgen.guide_size_p3']()}
+                    </p>
+                    <ul className="text-muted-foreground mt-3 space-y-2 text-sm leading-6">
+                      <li>• {m['pages.fontgen.guide_size_script']()}</li>
+                      <li>• {m['pages.fontgen.guide_size_classic']()}</li>
+                      <li>• {m['pages.fontgen.guide_size_block']()}</li>
+                    </ul>
+                    <p className="text-muted-foreground mt-3 text-sm leading-6">
+                      {m['pages.fontgen.guide_size_note']()}
+                    </p>
+                  </article>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {m['pages.fontgen.guide_artist_title']()}
+                </h2>
+                <div className="mt-5 grid gap-4 md:grid-cols-3">
+                  <article className="rounded-xl border p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.fontgen.guide_artist_h1']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.fontgen.guide_artist_p1']()}
+                    </p>
+                  </article>
+                  <article className="rounded-xl border p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.fontgen.guide_artist_h2']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.fontgen.guide_artist_p2']()}
+                    </p>
+                  </article>
+                  <article className="rounded-xl border p-5">
+                    <h3 className="font-semibold">
+                      {m['pages.fontgen.guide_artist_h3']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                      {m['pages.fontgen.guide_artist_p3']()}
+                    </p>
+                  </article>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {m['pages.fontgen.guide_mistakes_title']()}
+                </h2>
+                <ul className="text-muted-foreground mt-4 grid gap-3 text-sm leading-6 sm:grid-cols-2">
+                  <li>• {m['pages.fontgen.guide_mistake1']()}</li>
+                  <li>• {m['pages.fontgen.guide_mistake2']()}</li>
+                  <li>• {m['pages.fontgen.guide_mistake3']()}</li>
+                  <li>• {m['pages.fontgen.guide_mistake4']()}</li>
+                  <li>• {m['pages.fontgen.guide_mistake5']()}</li>
+                  <li>• {m['pages.fontgen.guide_mistake6']()}</li>
+                  <li>• {m['pages.fontgen.guide_mistake7']()}</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
           {/* 6. FAQ (9 Items) */}
           <section className="border-border border-t py-12 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 sm:px-6">
@@ -1933,35 +2024,16 @@ function TattooFontGeneratorPage() {
               </h2>
 
               <div className="divide-border border-border divide-y rounded-2xl border bg-white">
-                {FAQS.map((item, idx) => {
-                  const isOpen = openFaq === idx;
-                  return (
-                    <div key={tDynamic(item.qEn)}>
-                      <h3 className="flex">
-                        <button
-                          type="button"
-                          onClick={() => setOpenFaq(isOpen ? null : idx)}
-                          className="text-foreground hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium transition-colors"
-                        >
-                          <span>
-                            {isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}
-                          </span>
-                          <ChevronDown
-                            className={cn(
-                              'text-muted-foreground size-4 shrink-0 transition-transform',
-                              isOpen && 'rotate-180'
-                            )}
-                          />
-                        </button>
-                      </h3>
-                      {isOpen && (
-                        <div className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
-                          {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                {FAQS.map((item) => (
+                  <article key={tDynamic(item.qEn)} className="px-5 py-4">
+                    <h3 className="text-foreground text-sm font-semibold">
+                      {isZh ? tDynamic(item.qZh) : tDynamic(item.qEn)}
+                    </h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                      {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
+                    </p>
+                  </article>
+                ))}
               </div>
             </div>
           </section>
