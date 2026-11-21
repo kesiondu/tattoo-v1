@@ -62,23 +62,49 @@ export class GeminiProvider implements AIProvider {
     if (options && options.image_input && Array.isArray(options.image_input)) {
       for (const imageUrl of options.image_input) {
         try {
-          const imageResp = await fetch(imageUrl);
-          if (imageResp.ok) {
-            const arrayBuffer = await imageResp.arrayBuffer();
-            const buffer = Buffer.from(arrayBuffer);
-            const base64Image = buffer.toString('base64');
-            const mimeType =
-              imageResp.headers.get('content-type') || 'image/jpeg';
-
+          // Inline data URLs are common for locally composed references and
+          // are not supported by every runtime's fetch; parse them directly.
+          const dataMatch =
+            typeof imageUrl === 'string'
+              ? /^data:([^;]+);base64,(.+)$/i.exec(imageUrl)
+              : null;
+          if (dataMatch) {
             requestParts.push({
               inlineData: {
-                mimeType,
-                data: base64Image,
+                mimeType: dataMatch[1],
+                data: dataMatch[2],
               },
             });
+            continue;
           }
+
+          const imageResp = await fetch(imageUrl, {
+            signal: AbortSignal.timeout(30_000),
+          });
+          if (!imageResp.ok) {
+            throw new Error(`failed to fetch image input: ${imageResp.status}`);
+          }
+          const arrayBuffer = await imageResp.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
+          const base64Image = buffer.toString('base64');
+          const mimeType =
+            imageResp.headers.get('content-type') || 'image/jpeg';
+
+          requestParts.push({
+            inlineData: {
+              mimeType,
+              data: base64Image,
+            },
+          });
         } catch (e) {
-          console.error('failed to fetch image input', imageUrl, e);
+          console.error(
+            'failed to fetch image input',
+            typeof imageUrl === 'string' ? imageUrl.slice(0, 64) : imageUrl,
+            e
+          );
+          // Do not silently generate without the selected body/placement
+          // reference; fail and let the task refund the credits.
+          throw e;
         }
       }
     }
@@ -100,6 +126,7 @@ export class GeminiProvider implements AIProvider {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(120_000),
     });
 
     if (!resp.ok) {

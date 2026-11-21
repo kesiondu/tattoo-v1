@@ -252,6 +252,11 @@ function DashboardPage() {
       apiGet<Subscription | null>('/api/user/subscriptions/current'),
     enabled: on.billing,
   });
+  const lifetimeProQuery = useQuery({
+    queryKey: ['user-entitlements', session?.user?.id],
+    queryFn: () => apiGet<{ lifetimePro: boolean }>('/api/user/entitlements'),
+    enabled: Boolean(session?.user),
+  });
   const ordersQuery = useQuery({
     queryKey: ['user-payments', 'recent'],
     queryFn: () =>
@@ -279,7 +284,9 @@ function DashboardPage() {
     ? loading
     : subscription?.planName ||
       subscription?.productName ||
-      m['settings.overview.plan_free']();
+      (lifetimeProQuery.data?.lifetimePro
+        ? m['home.pricing.lifetime_pro']()
+        : m['settings.overview.plan_free']());
   const planHint = subscription?.canceledEndAt
     ? m['settings.billing.ends_on']({
         date: formatDate(subscription.canceledEndAt),
@@ -290,7 +297,9 @@ function DashboardPage() {
         })
       : subscription
         ? m['settings.overview.plan_description']()
-        : m['settings.overview.plan_free_description']();
+        : lifetimeProQuery.data?.lifetimePro
+          ? m['settings.overview.plan_lifetime_description']()
+          : m['settings.overview.plan_free_description']();
 
   const name = session?.user?.name || session?.user?.email || '';
   const statCards = [
@@ -333,7 +342,9 @@ function DashboardPage() {
               hint={planHint}
               action={
                 !subscriptionQuery.isPending &&
-                !subscription && (
+                !subscription &&
+                !lifetimeProQuery.isPending &&
+                !lifetimeProQuery.data?.lifetimePro && (
                   <Link
                     href="/pricing"
                     className={buttonVariants({

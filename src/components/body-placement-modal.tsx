@@ -188,8 +188,7 @@ export function BodyPlacementModal({
   onModelChange,
   onConfirm,
 }: BodyPlacementModalProps) {
-  const part =
-    BODY_PARTS.find((p) => p.id === partId) ?? BODY_PARTS[0];
+  const part = BODY_PARTS.find((p) => p.id === partId) ?? BODY_PARTS[0];
 
   const [viewId, setViewId] = useState<string>(part.defaultView);
   const [points, setPoints] = useState<NormalizedPoint[]>([]);
@@ -287,21 +286,21 @@ export function BodyPlacementModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex max-h-[92vh] w-[calc(100%-1.5rem)] max-w-3xl flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl">
         {/* Header */}
-        <DialogHeader className="border-b border-border px-5 py-4 text-left sm:px-6">
-          <DialogTitle className="font-display text-lg font-semibold tracking-tight text-foreground">
+        <DialogHeader className="border-border border-b px-5 py-4 text-left sm:px-6">
+          <DialogTitle className="font-display text-foreground text-lg font-semibold tracking-tight">
             {m['home.placement.modal_title']()}
           </DialogTitle>
-          <DialogDescription className="mt-1 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+          <DialogDescription className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             {m['home.placement.modal_subtitle']()}
           </DialogDescription>
         </DialogHeader>
 
         {/* Controls Bar: Model + Skin Tone + Optional Sub-Views */}
-        <div className="flex flex-col gap-3 border-b border-border bg-white px-5 py-3 sm:px-6">
+        <div className="border-border flex flex-col gap-3 border-b bg-white px-5 py-3 sm:px-6">
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
             {/* Model selector */}
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
+              <span className="text-foreground inline-flex items-center gap-1 text-xs font-medium">
                 {m['home.placement.model_label']()}
                 <span
                   title={m['home.placement.model_help']()}
@@ -310,7 +309,7 @@ export function BodyPlacementModal({
                   <HelpCircle className="size-3.5" />
                 </span>
               </span>
-              <div className="inline-flex rounded-lg border border-border bg-muted/60 p-0.5">
+              <div className="border-border bg-muted/60 inline-flex rounded-lg border p-0.5">
                 {(
                   [
                     { id: 'man', label: m['home.placement.model_man']() },
@@ -327,7 +326,7 @@ export function BodyPlacementModal({
                       className={cn(
                         'cursor-pointer rounded-md px-3.5 py-1 text-xs font-medium transition-all',
                         active
-                          ? 'bg-white text-foreground shadow-xs'
+                          ? 'text-foreground bg-white shadow-xs'
                           : 'text-muted-foreground hover:text-foreground'
                       )}
                     >
@@ -340,7 +339,7 @@ export function BodyPlacementModal({
 
             {/* Skin tone selector */}
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
+              <span className="text-foreground inline-flex items-center gap-1 text-xs font-medium">
                 {m['home.placement.skin_tone_label']()}
                 <span
                   title={m['home.placement.skin_tone_help']()}
@@ -363,7 +362,7 @@ export function BodyPlacementModal({
                       className={cn(
                         'size-6 cursor-pointer rounded-full border border-black/15 transition-transform',
                         active
-                          ? 'scale-105 ring-2 ring-foreground ring-offset-2'
+                          ? 'ring-foreground scale-105 ring-2 ring-offset-2'
                           : 'hover:scale-105'
                       )}
                       style={{ backgroundColor: tone.color }}
@@ -373,6 +372,9 @@ export function BodyPlacementModal({
               </div>
             </div>
           </div>
+          <p className="text-muted-foreground text-center text-[10px] leading-relaxed">
+            {m['home.placement.model_note']()}
+          </p>
 
           {/* Sub-view tabs (only when body part has multiple views) */}
           {part.views.length > 1 && (
@@ -388,7 +390,7 @@ export function BodyPlacementModal({
                       'cursor-pointer rounded-full border px-3 py-1 text-xs font-medium transition-colors',
                       active
                         ? 'border-foreground bg-foreground text-background'
-                        : 'border-border bg-white text-muted-foreground hover:border-foreground/40 hover:text-foreground'
+                        : 'border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground bg-white'
                     )}
                   >
                     {v.label()}
@@ -440,13 +442,13 @@ export function BodyPlacementModal({
             {points.length === 0 && !isDrawing && (
               <div className="pointer-events-none absolute inset-x-3 bottom-3 flex justify-center">
                 <div className="rounded-lg border border-black/10 bg-white/90 px-3 py-2 text-center shadow-xs backdrop-blur-xs">
-                  <div className="text-[10px] font-medium text-muted-foreground">
+                  <div className="text-muted-foreground text-[10px] font-medium">
                     {m['home.placement.overlay_optional']()}
                   </div>
-                  <div className="text-xs font-semibold text-foreground">
+                  <div className="text-foreground text-xs font-semibold">
                     {m['home.placement.overlay_title']()}
                   </div>
-                  <div className="text-[11px] text-muted-foreground">
+                  <div className="text-muted-foreground text-[11px]">
                     {m['home.placement.overlay_desc']()}
                   </div>
                 </div>
@@ -462,7 +464,7 @@ export function BodyPlacementModal({
                   e.stopPropagation();
                   setPoints([]);
                 }}
-                className="absolute top-3 right-3 z-10 inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-black/10 bg-white/95 px-2.5 py-1.5 text-xs font-medium text-foreground shadow-xs transition-colors hover:bg-white"
+                className="text-foreground absolute top-3 right-3 z-10 inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-black/10 bg-white/95 px-2.5 py-1.5 text-xs font-medium shadow-xs transition-colors hover:bg-white"
               >
                 <Trash2 className="size-3.5" />
                 <span>{m['home.placement.clear']()}</span>
@@ -472,14 +474,14 @@ export function BodyPlacementModal({
         </div>
 
         {/* Footer */}
-        <div className="flex flex-col gap-3 border-t border-border bg-[#fafaf9] px-5 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div className="border-border flex flex-col gap-3 border-t bg-[#fafaf9] px-5 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div className="min-w-0">
-            <div className="text-xs font-semibold text-foreground sm:text-sm">
+            <div className="text-foreground text-xs font-semibold sm:text-sm">
               {hasCustomArea
                 ? m['home.placement.footer_drawn_title']()
                 : m['home.placement.footer_default_title']()}
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-muted-foreground text-xs">
               {hasCustomArea
                 ? m['home.placement.footer_drawn_desc']()
                 : m['home.placement.footer_default_desc']()}
@@ -489,7 +491,7 @@ export function BodyPlacementModal({
           <button
             type="button"
             onClick={handleConfirm}
-            className="inline-flex h-9 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-foreground px-4 text-xs font-semibold text-background transition-colors hover:bg-foreground/90 sm:text-sm"
+            className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-9 shrink-0 cursor-pointer items-center justify-center rounded-lg px-4 text-xs font-semibold transition-colors sm:text-sm"
           >
             {hasCustomArea
               ? m['home.placement.cta_use_placement']()

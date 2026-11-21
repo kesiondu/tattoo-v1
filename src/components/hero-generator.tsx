@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   ChevronDown,
@@ -11,10 +11,16 @@ import {
 import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
-import { apiPost } from '@/lib/api-client';
+import {
+  TATTOO_GENERATION_COSTS,
+  type TattooGenerationTier,
+} from '@/config/tattoo-credits';
+import { apiGet, apiPost } from '@/lib/api-client';
+import { traceStencilFromBlob } from '@/lib/trace-stencil';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
+import { usePublicConfig } from '@/hooks/use-public-config';
 import {
   BODY_PARTS,
   BodyPlacementModal,
@@ -168,6 +174,184 @@ const EXTRA_STYLES: StyleItem[] = [
 
 const ALL_STYLES = [...PRIMARY_STYLES, ...EXTRA_STYLES];
 
+const DRAFT_KEY = 'tattoo:generator:draft:v1';
+const ACTIVE_TASK_KEY = 'tattoo:active-task:v1';
+const PENDING_REQUEST_KEY = 'tattoo:pending-request:v1';
+const DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
+const PENDING_REQUEST_TTL_MS = 30 * 60 * 1000;
+
+type DraftOwner = { ownerId: string };
+
+type TattooDraft = DraftOwner & {
+  v: 1;
+  updatedAt: number;
+  prompt: string;
+  style: string;
+  placement: BodyPlacementSelection | null;
+  skinTone: SkinToneId;
+  model: ModelGender;
+  stencilSize: string;
+  openStep: 1 | 2 | 3 | null;
+  previewTab: 'body' | 'artwork';
+};
+
+type ActiveTaskDraft = DraftOwner & {
+  id: string;
+  tier: TattooGenerationTier;
+  updatedAt: number;
+};
+
+type PendingRequest = DraftOwner & {
+  id: string;
+  signature: string;
+  updatedAt: number;
+};
+
+function readSessionJson<T>(key: string): T | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.sessionStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeSessionJson(key: string, value: unknown) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.sessionStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Quota/unavailable: the page still works, it just won't survive a reload.
+  }
+}
+
+function removeSessionValue(key: string) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.sessionStorage.removeItem(key);
+  } catch {
+    // ignore
+  }
+}
+
+function ownerIdOf(userId?: string | null) {
+  return userId || 'anonymous';
+}
+
+function canRestoreForOwner(
+  value: DraftOwner | null,
+  userId?: string | null
+): boolean {
+  if (!value) return false;
+  if (!userId) return value.ownerId === 'anonymous';
+  return value.ownerId === 'anonymous' || value.ownerId === userId;
+}
+
+function readTattooDraft(userId?: string | null): TattooDraft | null {
+  const draft = readSessionJson<TattooDraft>(DRAFT_KEY);
+  if (!draft || draft.v !== 1) return null;
+  if (!canRestoreForOwner(draft, userId)) return null;
+  if (!draft.updatedAt || Date.now() - draft.updatedAt > DRAFT_TTL_MS) {
+    removeSessionValue(DRAFT_KEY);
+    return null;
+  }
+  return draft;
+}
+
+function readActiveTask(userId?: string | null): ActiveTaskDraft | null {
+  const task = readSessionJson<ActiveTaskDraft>(ACTIVE_TASK_KEY);
+  if (!task || !task.id) return null;
+  if (!canRestoreForOwner(task, userId)) return null;
+  if (!task.updatedAt || Date.now() - task.updatedAt > DRAFT_TTL_MS) {
+    removeSessionValue(ACTIVE_TASK_KEY);
+    return null;
+  }
+  return task;
+}
+
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.crossOrigin = 'anonymous';
+    image.onload = () => resolve(image);
+    image.onerror = () =>
+      reject(new Error('Could not load the body reference'));
+    image.src = src;
+  });
+}
+
+/**
+ * The placement modal records points against a 3:4 container that shows the
+ * 2:3 body photo with `object-contain` (letterboxed on the left/right).
+ * Convert those points to the body image itself, then draw the marked region
+ * onto a copy of that image. The annotated copy is what the model receives,
+ * so the tattoo lands where the user actually drew it.
+ */
+async function buildPlacementReference(
+  selection: BodyPlacementSelection
+): Promise<{
+  placement: BodyPlacementSelection;
+  placementImage?: string;
+}> {
+  const src = new URL(
+    getBodyReferenceSrc(selection.partId, selection.viewId, selection.skinTone),
+    window.location.origin
+  ).toString();
+
+  const image = await loadImage(src);
+  const containerAspect = 3 / 4;
+  const imageAspect = image.naturalWidth / image.naturalHeight;
+
+  let drawWidth = 1;
+  let drawHeight = 1;
+  let offsetX = 0;
+  let offsetY = 0;
+  if (imageAspect > containerAspect) {
+    drawHeight = containerAspect / imageAspect;
+    offsetY = (1 - drawHeight) / 2;
+  } else {
+    drawWidth = imageAspect / containerAspect;
+    offsetX = (1 - drawWidth) / 2;
+  }
+
+  const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+  const points = selection.points.map((point) => ({
+    x: clamp01((point.x - offsetX) / drawWidth),
+    y: clamp01((point.y - offsetY) / drawHeight),
+  }));
+
+  const canvas = document.createElement('canvas');
+  canvas.width = image.naturalWidth;
+  canvas.height = image.naturalHeight;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return { placement: { ...selection, points } };
+
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  if (points.length >= 3) {
+    ctx.beginPath();
+    points.forEach((point, index) => {
+      const x = point.x * canvas.width;
+      const y = point.y * canvas.height;
+      if (index === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(236, 72, 153, 0.12)';
+    ctx.fill();
+    ctx.strokeStyle = '#ec4899';
+    ctx.lineWidth = Math.max(4, canvas.width * 0.006);
+    ctx.stroke();
+  }
+
+  return {
+    placement: { ...selection, points },
+    placementImage:
+      points.length >= 3 ? canvas.toDataURL('image/png') : undefined,
+  };
+}
+
 export function HeroGenerator({
   onOpenAuth,
   initialStyle,
@@ -178,7 +362,9 @@ export function HeroGenerator({
   externalPrompt,
   stencilMode = false,
 }: HeroGeneratorProps) {
-  const { data: session } = useSession();
+  const { data: session, isPending: sessionPending } = useSession();
+  const { data: publicConfigs } = usePublicConfig();
+  const showCredits = publicConfigs?.credits_enabled !== 'false';
 
   const validInitialStyle =
     initialStyle && ALL_STYLES.some((s) => s.id === initialStyle)
@@ -215,12 +401,78 @@ export function HeroGenerator({
   const [placementModalOpen, setPlacementModalOpen] = useState(false);
   const [previewTab, setPreviewTab] = useState<'body' | 'artwork'>('body');
   const [generating, setGenerating] = useState(false);
+  const [generationStatus, setGenerationStatus] = useState<
+    'idle' | 'processing' | 'success' | 'failed'
+  >('idle');
+  const [generationError, setGenerationError] = useState<string | null>(null);
+  const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [surpriseIdx, setSurpriseIdx] = useState(0);
   const [examplesOpen, setExamplesOpen] = useState(false);
   const [generatedBodyUrl, setGeneratedBodyUrl] = useState<string | null>(null);
   const [generatedArtUrl, setGeneratedArtUrl] = useState<string | null>(null);
   const [activeModelLabel, setActiveModelLabel] = useState<string | null>(null);
   const [stencilSize, setStencilSize] = useState('medium');
+  const draftRestoredRef = useRef(false);
+  const generatingRef = useRef(false);
+
+  // Restore the draft only after the session settles, so a signed-in user's
+  // anonymous draft (saved before login) is not rejected. Never auto-generate.
+  useEffect(() => {
+    if (sessionPending || draftRestoredRef.current) return;
+    draftRestoredRef.current = true;
+    const draft = readTattooDraft(session?.user?.id);
+    if (!draft) return;
+    if (!initialPrompt && draft.prompt) setPrompt(draft.prompt);
+    if (!initialStyle && ALL_STYLES.some((s) => s.id === draft.style)) {
+      setSelectedStyle(draft.style);
+      setShowAllStyles(EXTRA_STYLES.some((s) => s.id === draft.style));
+    }
+    if (draft.placement) {
+      setPlacement(draft.placement);
+      setSkinTone(draft.placement.skinTone);
+      setModelGender(draft.placement.model);
+    } else {
+      if (draft.skinTone) setSkinTone(draft.skinTone);
+      if (draft.model) setModelGender(draft.model);
+    }
+    if (draft.stencilSize) setStencilSize(draft.stencilSize);
+    if (draft.openStep) setOpenStep(draft.openStep);
+    if (draft.previewTab) setPreviewTab(draft.previewTab);
+  }, [initialPrompt, initialStyle, session?.user?.id, sessionPending]);
+
+  // Debounced sessionStorage draft. The owner is anonymous before login and
+  // becomes the user id afterwards, so returning from sign-in still restores.
+  useEffect(() => {
+    if (sessionPending || !draftRestoredRef.current) return;
+    const timer = window.setTimeout(() => {
+      const draft: TattooDraft = {
+        v: 1,
+        ownerId: ownerIdOf(session?.user?.id),
+        updatedAt: Date.now(),
+        prompt,
+        style: selectedStyle,
+        placement,
+        skinTone,
+        model: modelGender,
+        stencilSize,
+        openStep,
+        previewTab,
+      };
+      writeSessionJson(DRAFT_KEY, draft);
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [
+    modelGender,
+    openStep,
+    placement,
+    previewTab,
+    prompt,
+    selectedStyle,
+    session?.user?.id,
+    sessionPending,
+    skinTone,
+    stencilSize,
+  ]);
 
   const visibleStyles = showAllStyles ? ALL_STYLES : PRIMARY_STYLES;
   const activeStyleObj =
@@ -258,11 +510,45 @@ export function HeroGenerator({
     setSurpriseIdx((i) => i + 1);
   }
 
+  function applyTaskResult(task: {
+    tier: string;
+    imageUrl: string | null;
+    modelLabel?: string | null;
+  }) {
+    if (!task.imageUrl) return;
+    if (task.modelLabel) setActiveModelLabel(task.modelLabel);
+    if (task.tier === 'clean_artwork') {
+      setGeneratedArtUrl(task.imageUrl);
+      setPreviewTab('artwork');
+    } else {
+      setGeneratedBodyUrl(task.imageUrl);
+      setPreviewTab('body');
+    }
+  }
+
   async function runGeneration(
-    tier: 'fast_body_preview' | 'hq_body_preview' | 'clean_artwork',
+    tier: TattooGenerationTier,
     promptOverride?: string
   ) {
+    // Auth is still restoring after a redirect; do not treat the user as
+    // signed out and reopen the sign-in modal.
+    if (sessionPending) return;
     if (!session?.user) {
+      // Flush the draft before leaving for sign-in; the debounce may not have
+      // fired yet, and the callback returns with a full page load.
+      writeSessionJson(DRAFT_KEY, {
+        v: 1,
+        ownerId: 'anonymous',
+        updatedAt: Date.now(),
+        prompt,
+        style: selectedStyle,
+        placement,
+        skinTone,
+        model: modelGender,
+        stencilSize,
+        openStep,
+        previewTab,
+      } satisfies TattooDraft);
       onOpenAuth?.();
       return;
     }
@@ -272,39 +558,258 @@ export function HeroGenerator({
       toast.info(m['home.hero.need_prompt']());
       return;
     }
+
+    if (generatingRef.current) return;
+    generatingRef.current = true;
+
+    const requestSignature = JSON.stringify({
+      tier,
+      prompt: generationPrompt,
+      style: selectedStyle,
+      placement: placement
+        ? {
+            partId: placement.partId,
+            viewId: placement.viewId,
+            model: placement.model,
+            skinTone: placement.skinTone,
+            points: placement.points,
+          }
+        : null,
+    });
+    const ownerId = ownerIdOf(session.user.id);
+    const pending = readSessionJson<PendingRequest>(PENDING_REQUEST_KEY);
+    const requestId =
+      pending &&
+      pending.ownerId === ownerId &&
+      pending.signature === requestSignature &&
+      Date.now() - pending.updatedAt < PENDING_REQUEST_TTL_MS
+        ? pending.id
+        : crypto.randomUUID();
+    writeSessionJson(PENDING_REQUEST_KEY, {
+      id: requestId,
+      ownerId,
+      signature: requestSignature,
+      updatedAt: Date.now(),
+    } satisfies PendingRequest);
+
+    const controller = new AbortController();
+    const timeoutTimer = window.setTimeout(() => controller.abort(), 180_000);
+
     setGenerating(true);
+    setGenerationStatus('processing');
+    setGenerationError(null);
+    setActiveTaskId(null);
+    setGeneratedBodyUrl(null);
+    setGeneratedArtUrl(null);
+    removeSessionValue(ACTIVE_TASK_KEY);
+
     try {
+      const referenceImage = placement
+        ? new URL(
+            getBodyReferenceSrc(
+              placement.partId,
+              placement.viewId,
+              placement.skinTone
+            ),
+            window.location.origin
+          ).toString()
+        : undefined;
+
+      let placementPayload = placement
+        ? {
+            partId: placement.partId,
+            viewId: placement.viewId,
+            model: placement.model,
+            skinTone: placement.skinTone,
+            points: placement.points,
+          }
+        : undefined;
+      let placementImage: string | undefined;
+
+      // Draw the lasso onto the actual body image. If the browser cannot do
+      // it, still send the structured points; never block generation.
+      if (placement) {
+        try {
+          const built = await buildPlacementReference(placement);
+          placementPayload = {
+            partId: built.placement.partId,
+            viewId: built.placement.viewId,
+            model: built.placement.model,
+            skinTone: built.placement.skinTone,
+            points: built.placement.points,
+          };
+          placementImage = built.placementImage;
+        } catch {
+          // Fall back to the unadjusted points.
+        }
+      }
+
       const res = await apiPost<{
         taskId: string;
         tier: string;
         model: string;
         modelLabel: string;
+        status: 'processing' | 'success' | 'failed';
         imageUrl: string | null;
-      }>('/api/tattoo/generate', {
-        tier,
-        prompt: generationPrompt,
-        style: selectedStyle,
-        placement: placementSummary ?? undefined,
-      });
+        error?: string;
+      }>(
+        '/api/tattoo/generate',
+        {
+          requestId,
+          tier,
+          prompt: generationPrompt,
+          style: selectedStyle,
+          placement: placementPayload,
+          placementLabel: placementSummary ?? undefined,
+          referenceImage,
+          placementImage,
+        },
+        { signal: controller.signal }
+      );
+
       setActiveModelLabel(res.modelLabel);
-      if (tier === 'clean_artwork') {
-        setGeneratedArtUrl(
-          res.imageUrl || '/home-hero-set/dagger-rose-artwork.jpg'
-        );
-        setPreviewTab('artwork');
-      } else {
-        setGeneratedBodyUrl(
-          res.imageUrl || '/home-hero-set/dagger-rose-model-preview.jpg'
-        );
-        setPreviewTab('body');
+
+      if (res.status === 'success' && res.imageUrl) {
+        applyTaskResult(res);
+        setGenerationStatus('success');
+        setGenerating(false);
+        setActiveTaskId(null);
+        // Persist the finished task too: a refresh restores the same result
+        // instead of showing an empty canvas (and tempting a paid retry).
+        writeSessionJson(ACTIVE_TASK_KEY, {
+          id: res.taskId,
+          tier,
+          ownerId,
+          updatedAt: Date.now(),
+        } satisfies ActiveTaskDraft);
+        removeSessionValue(PENDING_REQUEST_KEY);
+        toast.success(`${m['home.hero.submitted']()} · ${res.modelLabel}`);
+        return;
       }
-      toast.success(`${m['home.hero.submitted']()} · ${res.modelLabel}`);
+
+      if (res.status === 'processing' && res.taskId) {
+        setActiveTaskId(res.taskId);
+        setGenerationStatus('processing');
+        writeSessionJson(ACTIVE_TASK_KEY, {
+          id: res.taskId,
+          tier,
+          ownerId,
+          updatedAt: Date.now(),
+        } satisfies ActiveTaskDraft);
+        removeSessionValue(PENDING_REQUEST_KEY);
+        toast.info(`${m['home.hero.submitted']()} · ${res.modelLabel}`);
+        return;
+      }
+
+      if (res.status === 'failed') {
+        const message = res.error || 'Generation failed';
+        setGenerationStatus('failed');
+        setGenerationError(message);
+        setGenerating(false);
+        setActiveTaskId(null);
+        removeSessionValue(ACTIVE_TASK_KEY);
+        removeSessionValue(PENDING_REQUEST_KEY);
+        toast.error(message);
+        return;
+      }
+
+      throw new Error('The AI provider returned no image');
     } catch (err: any) {
-      toast.error(err?.message || 'Generation failed');
-    } finally {
+      const message =
+        err?.name === 'AbortError'
+          ? m['home.hero.timeout_hint']()
+          : err?.message || 'Generation failed';
+      setGenerationStatus('failed');
+      setGenerationError(message);
       setGenerating(false);
+      setActiveTaskId(null);
+      removeSessionValue(ACTIVE_TASK_KEY);
+      // Keep PENDING_REQUEST_KEY: a retry will reuse the same request/task id
+      // and cannot charge twice if the server actually finished.
+      toast.error(message);
+    } finally {
+      generatingRef.current = false;
+      window.clearTimeout(timeoutTimer);
     }
   }
+
+  // A generated task can outlive the page (Kie is asynchronous). Keep polling
+  // our own endpoint; never call the provider from the browser.
+  useEffect(() => {
+    if (!activeTaskId || generationStatus !== 'processing' || !session?.user) {
+      return;
+    }
+
+    let cancelled = false;
+    let timer: number | undefined;
+
+    const poll = async () => {
+      try {
+        const task = await apiGet<{
+          id: string;
+          status: string;
+          tier: string;
+          modelLabel: string;
+          imageUrl: string | null;
+          error: string | null;
+        }>(`/api/tattoo/tasks/${encodeURIComponent(activeTaskId)}`);
+        if (cancelled) return;
+
+        if (task.status === 'success' && task.imageUrl) {
+          applyTaskResult(task);
+          setGenerationStatus('success');
+          setGenerating(false);
+          setActiveTaskId(null);
+          toast.success(`${m['home.hero.submitted']()} · ${task.modelLabel}`);
+          return;
+        }
+
+        if (task.status === 'failed' || task.status === 'canceled') {
+          setGenerationStatus('failed');
+          setGenerationError(task.error || 'Generation failed');
+          setGenerating(false);
+          setActiveTaskId(null);
+          removeSessionValue(ACTIVE_TASK_KEY);
+          toast.error(task.error || 'Generation failed');
+          return;
+        }
+
+        timer = window.setTimeout(poll, 3000);
+      } catch (err: any) {
+        if (cancelled) return;
+        const message = err?.message || '';
+        if (/not found|unauthorized/i.test(message)) {
+          setGenerationStatus('failed');
+          setGenerationError(message || 'Generation failed');
+          setGenerating(false);
+          setActiveTaskId(null);
+          removeSessionValue(ACTIVE_TASK_KEY);
+          return;
+        }
+        // A transient network error is not a generation failure; keep polling.
+        timer = window.setTimeout(poll, 5000);
+      }
+    };
+
+    void poll();
+    return () => {
+      cancelled = true;
+      if (timer) window.clearTimeout(timer);
+    };
+    // applyTaskResult is derived from setState only; activeTaskId/status drive it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTaskId, generationStatus, session?.user?.id]);
+
+  // Restore the in-flight/last task after a refresh. It only reads the task;
+  // it never creates a new one or charges again.
+  useEffect(() => {
+    if (sessionPending || !session?.user) return;
+    const saved = readActiveTask(session.user.id);
+    if (!saved) return;
+    setActiveTaskId(saved.id);
+    setGenerationStatus('processing');
+    setGenerating(true);
+  }, [session?.user?.id, sessionPending]);
 
   function handleGenerate() {
     if (stencilMode) {
@@ -335,17 +840,9 @@ export function HeroGenerator({
     if (!imageBlob.type.startsWith('image/')) {
       throw new Error('The generated result is not an image.');
     }
-    const imageDataUrl = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () =>
-        typeof reader.result === 'string'
-          ? resolve(reader.result)
-          : reject(new Error('Could not prepare the SVG export.'));
-      reader.onerror = () =>
-        reject(new Error('Could not prepare the SVG export.'));
-      reader.readAsDataURL(imageBlob);
-    });
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900"><image href="${imageDataUrl}" width="1200" height="900" preserveAspectRatio="xMidYMid meet" /></svg>`;
+    // Trace the bitmap into real outlines so the exported SVG stays sharp at
+    // any size. Never fall back to embedding the raster inside an SVG.
+    const { svg } = await traceStencilFromBlob(imageBlob);
     return new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
   }
 
@@ -464,7 +961,7 @@ export function HeroGenerator({
             </div>
             <button
               type="button"
-              disabled={generating}
+              disabled={generating || sessionPending}
               onClick={handleGenerate}
               className="bg-foreground text-background hover:bg-foreground/90 flex h-12 w-full items-center justify-center gap-2 rounded-lg px-4 text-base font-semibold shadow-sm transition-colors disabled:opacity-60"
             >
@@ -478,6 +975,12 @@ export function HeroGenerator({
                   ? m['tools.stencil.generator_loading']()
                   : m['tools.stencil.generator_button']()}
               </span>
+              {showCredits && !generating && (
+                <span className="text-background/70 text-xs font-medium">
+                  · {TATTOO_GENERATION_COSTS.clean_artwork}{' '}
+                  {m['pages.pricing.m021']()}
+                </span>
+              )}
             </button>
           </div>
           <div className="bg-muted/30 flex min-h-[320px] flex-col rounded-xl border p-3 sm:min-h-[380px] sm:p-4">
@@ -485,7 +988,35 @@ export function HeroGenerator({
               aria-live="polite"
               className="bg-background flex min-h-[260px] flex-1 items-center justify-center overflow-hidden rounded-lg sm:min-h-[320px]"
             >
-              {generatedArtUrl ? (
+              {generationStatus === 'processing' ? (
+                <div className="flex flex-col items-center gap-3 px-6 text-center">
+                  <Loader2 className="text-foreground size-6 animate-spin" />
+                  <p className="text-foreground text-sm font-semibold">
+                    {m['home.hero.submitted']()}
+                  </p>
+                  <p className="text-muted-foreground max-w-xs text-xs leading-5">
+                    {m['home.hero.processing_hint']()}
+                  </p>
+                </div>
+              ) : generationStatus === 'failed' ? (
+                <div className="flex flex-col items-center gap-3 px-6 text-center">
+                  <p className="text-foreground text-sm font-semibold">
+                    {m['home.hero.failed_title']()}
+                  </p>
+                  <p className="text-muted-foreground max-w-xs text-xs leading-5">
+                    {generationError || m['home.hero.failed_hint']()}
+                  </p>
+                  <button
+                    type="button"
+                    disabled={generating || sessionPending}
+                    onClick={handleGenerate}
+                    className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-semibold disabled:opacity-60"
+                  >
+                    <Sparkles className="size-3.5" />
+                    <span>{m['tools.stencil.generator_button']()}</span>
+                  </button>
+                </div>
+              ) : generatedArtUrl ? (
                 <img
                   src={generatedArtUrl}
                   alt={m['tools.stencil.generator_result_alt']()}
@@ -861,7 +1392,7 @@ export function HeroGenerator({
           {/* Primary Black Generate CTA */}
           <button
             type="button"
-            disabled={generating}
+            disabled={generating || sessionPending}
             onClick={handleGenerate}
             className="bg-foreground text-background hover:bg-foreground/90 mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-lg px-4 text-base font-semibold shadow-sm transition-all disabled:opacity-60 sm:text-lg"
           >
@@ -871,6 +1402,12 @@ export function HeroGenerator({
               <Sparkles className="size-4" />
             )}
             <span>{m['home.hero.cta']()}</span>
+            {showCredits && !generating && (
+              <span className="text-background/70 text-xs font-medium">
+                · {TATTOO_GENERATION_COSTS.fast_body_preview}{' '}
+                {m['pages.pricing.m021']()}
+              </span>
+            )}
             <ArrowRight className="size-4" />
           </button>
         </div>
@@ -934,21 +1471,33 @@ export function HeroGenerator({
                   <div className="absolute right-2.5 bottom-2.5 left-2.5 flex flex-wrap items-center justify-center gap-2">
                     <button
                       type="button"
-                      disabled={generating}
+                      disabled={generating || sessionPending}
                       onClick={() => void runGeneration('hq_body_preview')}
                       className="text-foreground inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs hover:bg-white disabled:opacity-60"
                     >
                       <Sparkles className="size-3" />
                       <span>{m['pages.home.m001']()}</span>
+                      {showCredits && (
+                        <span className="text-foreground/60">
+                          · {TATTOO_GENERATION_COSTS.hq_body_preview}{' '}
+                          {m['pages.pricing.m021']()}
+                        </span>
+                      )}
                     </button>
                     <button
                       type="button"
-                      disabled={generating}
+                      disabled={generating || sessionPending}
                       onClick={() => void runGeneration('clean_artwork')}
                       className="bg-foreground/90 text-background hover:bg-foreground inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs disabled:opacity-60"
                     >
                       <Sparkles className="size-3" />
                       <span>{m['pages.home.m002']()}</span>
+                      {showCredits && (
+                        <span className="text-background/70">
+                          · {TATTOO_GENERATION_COSTS.clean_artwork}{' '}
+                          {m['pages.pricing.m021']()}
+                        </span>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -962,6 +1511,37 @@ export function HeroGenerator({
                   <span className="border-border text-foreground absolute top-2.5 left-2.5 rounded-full border bg-white/95 px-2.5 py-1 text-[10px] font-semibold shadow-xs">
                     Nano Banana Pro
                   </span>
+                </div>
+              ) : generationStatus === 'processing' ? (
+                <div
+                  aria-live="polite"
+                  className="flex aspect-[16/11] w-full flex-col items-center justify-center gap-3 bg-neutral-50 px-6 text-center sm:aspect-[4/3]"
+                >
+                  <Loader2 className="text-foreground size-7 animate-spin" />
+                  <p className="text-foreground text-sm font-semibold">
+                    {m['home.hero.submitted']()}
+                  </p>
+                  <p className="text-muted-foreground max-w-xs text-xs leading-5">
+                    {m['home.hero.processing_hint']()}
+                  </p>
+                </div>
+              ) : generationStatus === 'failed' ? (
+                <div className="flex aspect-[16/11] w-full flex-col items-center justify-center gap-3 bg-neutral-50 px-6 text-center sm:aspect-[4/3]">
+                  <p className="text-foreground text-sm font-semibold">
+                    {m['home.hero.failed_title']()}
+                  </p>
+                  <p className="text-muted-foreground max-w-sm text-xs leading-5">
+                    {generationError || m['home.hero.failed_hint']()}
+                  </p>
+                  <button
+                    type="button"
+                    disabled={generating || sessionPending}
+                    onClick={() => void runGeneration('fast_body_preview')}
+                    className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-semibold disabled:opacity-60"
+                  >
+                    <Sparkles className="size-3.5" />
+                    <span>{m['home.hero.cta']()}</span>
+                  </button>
                 </div>
               ) : previewTab === 'body' ? (
                 <div className="w-full">
@@ -1009,20 +1589,22 @@ export function HeroGenerator({
               )}
 
               {/* Centered Clickable Overlay Card (only when showing example collage) */}
-              {!generatedBodyUrl && !generatedArtUrl && (
-                <button
-                  type="button"
-                  onClick={() => setExamplesOpen(true)}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-black/10 bg-white/95 px-5 py-3 text-center shadow-lg backdrop-blur-md transition-transform hover:scale-[1.02]"
-                >
-                  <div className="text-foreground text-sm font-semibold">
-                    {m['home.hero.example_label']()}
-                  </div>
-                  <div className="text-muted-foreground mt-0.5 text-xs">
-                    {m['home.hero.example_text']()}
-                  </div>
-                </button>
-              )}
+              {!generatedBodyUrl &&
+                !generatedArtUrl &&
+                generationStatus === 'idle' && (
+                  <button
+                    type="button"
+                    onClick={() => setExamplesOpen(true)}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-black/10 bg-white/95 px-5 py-3 text-center shadow-lg backdrop-blur-md transition-transform hover:scale-[1.02]"
+                  >
+                    <div className="text-foreground text-sm font-semibold">
+                      {m['home.hero.example_label']()}
+                    </div>
+                    <div className="text-muted-foreground mt-0.5 text-xs">
+                      {m['home.hero.example_text']()}
+                    </div>
+                  </button>
+                )}
             </div>
           </div>
         </div>

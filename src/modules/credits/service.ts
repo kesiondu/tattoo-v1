@@ -336,7 +336,14 @@ export async function planDeductForRefund(params: {
 
 // --- Revoke (restore credits from a consumed record) ---
 
-export async function revoke(consumeCreditId: string) {
+/**
+ * Plan restoring a consumed record. Returned steps claim the consumption row
+ * and increment every source grant, so callers can bundle the refund into
+ * their own atomic write (for example, marking an AI task failed).
+ */
+export async function planRevoke(
+  consumeCreditId: string
+): Promise<{ steps: (q: any) => AtomicStep[] } | null> {
   const [consumeRecord] = await db()
     .select()
     .from(credit)
@@ -349,14 +356,18 @@ export async function revoke(consumeCreditId: string) {
     )
     .limit(1);
 
-  if (!consumeRecord || !consumeRecord.consumedDetail) return;
+  if (!consumeRecord || !consumeRecord.consumedDetail) return null;
 
-  const items: { creditId: string; creditsConsumed: number }[] = JSON.parse(
-    consumeRecord.consumedDetail
-  );
-
+  let items: { creditId: string; creditsConsumed: number }[];
   try {
-    await atomic((q) => [
+    items = JSON.parse(consumeRecord.consumedDetail);
+  } catch {
+    return null;
+  }
+  if (!Array.isArray(items) || items.length === 0) return null;
+
+  return {
+    steps: (q) => [
       // Claim the consumption record first: a retried or concurrent revoke
       // (e.g. a provider's failure callback delivered twice) must restore once.
       guard({
@@ -379,7 +390,16 @@ export async function revoke(consumeCreditId: string) {
           })
           .where(eq(credit.id, item.creditId))
       ),
-    ]);
+    ],
+  };
+}
+
+export async function revoke(consumeCreditId: string) {
+  const plan = await planRevoke(consumeCreditId);
+  if (!plan) return;
+
+  try {
+    await atomic(plan.steps);
   } catch (error) {
     if (error instanceof AtomicGuardError) return; // already revoked
     throw error;

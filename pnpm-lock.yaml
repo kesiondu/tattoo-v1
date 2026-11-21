@@ -4,10 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  seroval: 1.6.8
-  seroval-plugins: 1.6.8
-
 importers:
 
   .:
@@ -432,6 +428,9 @@ importers:
       drizzle-orm:
         specifier: ^0.44.2
         version: 0.44.7(@libsql/client@0.14.0)(kysely@0.29.6)(mysql2@3.22.0(@types/node@22.19.17))(postgres@3.4.9)
+      esm-potrace-wasm:
+        specifier: ^0.5.1
+        version: 0.5.1
       lucide-react:
         specifier: ^0.511.0
         version: 0.511.0(react@19.2.5)
@@ -4278,6 +4277,9 @@ packages:
 
   escape-html@1.0.3:
     resolution: {integrity: sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==}
+
+  esm-potrace-wasm@0.5.1:
+    resolution: {integrity: sha512-FQRYdusO24eILzBoa5uUSdFjH2I9wgOE+Ex1/tfj8l9+4OIsrMPSi+eJ4wR2FBfUq4thHDL2bFtxYQCxVZ7grQ==}
 
   esprima@4.0.1:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
@@ -9451,6 +9453,8 @@ snapshots:
   escalade@3.2.0: {}
 
   escape-html@1.0.3: {}
+
+  esm-potrace-wasm@0.5.1: {}
 
   esprima@4.0.1: {}
 

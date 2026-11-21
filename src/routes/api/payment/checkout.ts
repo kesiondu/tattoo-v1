@@ -4,6 +4,7 @@ import { resolveCharge } from '@/server/payment/charge';
 import { getAuth } from '@/core/auth';
 import { getPricingProduct } from '@/config/pricing';
 import { getAllConfigs } from '@/modules/config/service';
+import { hasLifetimePro } from '@/modules/entitlements/service';
 import { createCheckout } from '@/modules/payment/service';
 import { localizedPath } from '@/lib/locale-path';
 import { enforceMinIntervalRateLimit } from '@/lib/rate-limit';
@@ -65,10 +66,35 @@ async function POST({ request }: { request: Request }) {
     if (product.kind === 'guest_post') {
       return respErr('Unknown product');
     }
+    // Top-up packs are for Lifetime Pro members only. The UI may hide them,
+    // but this check is the source of truth.
+    if (
+      product.requiresLifetimePro &&
+      !(await hasLifetimePro(session.user.id))
+    ) {
+      return respErr('Lifetime Pro required');
+    }
 
     // Catalog price for the chosen provider (CNY providers, admin test
     // amounts): see resolveCharge.
     const configs = await getAllConfigs();
+
+    // Creem sells against its own product ids. Without an explicit mapping
+    // the provider would receive our internal id and fail after the redirect.
+    if (payment_provider === 'creem') {
+      let mapped = false;
+      try {
+        const mapping = JSON.parse(
+          configs.creem_product_ids_mapping || '{}'
+        ) as Record<string, string>;
+        mapped = Boolean(mapping[product.productId]);
+      } catch {
+        mapped = false;
+      }
+      if (!mapped) {
+        return respErr('Creem is not configured for this product');
+      }
+    }
     const charge = await resolveCharge({
       product,
       paymentProvider: payment_provider,

@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   Camera,
@@ -17,6 +18,7 @@ import { toast } from 'sonner';
 import { useSession } from '@/core/auth/client';
 import { tDynamic } from '@/core/i18n/dynamic';
 import { useRouter } from '@/core/i18n/navigation';
+import { apiGet } from '@/lib/api-client';
 import {
   breadcrumbJsonLd,
   buildSeoHead,
@@ -163,9 +165,104 @@ const SKIN_TONES = [
   { id: 'dark', hex: '#3A312A' },
 ];
 
+const TRYON_DRAFT_KEY = 'tattoo:tryon:draft:v1';
+const TRYON_DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
+
+type TryOnDraft = {
+  ownerId: string;
+  updatedAt: number;
+  designUrl: string | null;
+  bodyUrl: string | null;
+  activeTemplateId: string | null;
+  skinId: string;
+  previewMode: '2d' | '3d' | null;
+  scale: number;
+  rotation: number;
+  opacity: number;
+  posX: number;
+  posY: number;
+};
+
+function readTryOnDraft(userId?: string | null): TryOnDraft | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.sessionStorage.getItem(TRYON_DRAFT_KEY);
+    if (!raw) return null;
+    const draft = JSON.parse(raw) as TryOnDraft;
+    if (!draft?.updatedAt) return null;
+    if (Date.now() - draft.updatedAt > TRYON_DRAFT_TTL_MS) {
+      window.sessionStorage.removeItem(TRYON_DRAFT_KEY);
+      return null;
+    }
+    const owner = userId || 'anonymous';
+    if (draft.ownerId !== 'anonymous' && draft.ownerId !== owner) {
+      return null;
+    }
+    return draft;
+  } catch {
+    return null;
+  }
+}
+
+function writeTryOnDraft(draft: TryOnDraft) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.sessionStorage.setItem(TRYON_DRAFT_KEY, JSON.stringify(draft));
+  } catch {
+    // Quota/unavailable: mode switching still works in memory.
+  }
+}
+
+async function uploadToPersistentDataUrl(
+  file: File,
+  kind: 'design' | 'body'
+): Promise<string> {
+  const objectUrl = URL.createObjectURL(file);
+  try {
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('Could not read the image'));
+      img.src = objectUrl;
+    });
+    const maxSide = kind === 'body' ? 1600 : 1400;
+    const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(image.width * scale));
+    canvas.height = Math.max(1, Math.round(image.height * scale));
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Canvas is unavailable');
+    if (kind === 'body') {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    // A data URL survives an OAuth full-page redirect (and sessionStorage),
+    // unlike a blob URL. WebP keeps design transparency.
+    const dataUrl =
+      kind === 'design'
+        ? canvas.toDataURL('image/webp', 0.9)
+        : canvas.toDataURL('image/jpeg', 0.86);
+    URL.revokeObjectURL(objectUrl);
+    return dataUrl.startsWith('data:image/')
+      ? dataUrl
+      : canvas.toDataURL('image/png');
+  } catch {
+    return new Promise<string>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        resolve(String(reader.result || ''));
+      };
+      reader.onerror = () => resolve(objectUrl);
+      reader.readAsDataURL(file);
+    });
+  }
+}
+
 function TattooTryOnPage() {
   const isZh = getLocale() === 'zh';
-  const { data: session } = useSession();
+  const { data: session, isPending: sessionPending } = useSession();
   const router = useRouter();
   const search = Route.useSearch();
   const initialTattoo =
@@ -207,6 +304,91 @@ function TattooTryOnPage() {
   const transparentDesignUrl = useTransparentTattooSrc(designUrl);
 
   const hasLiveCanvas = Boolean(designUrl && resolvedBodyUrl && previewMode);
+  const is3d = previewMode === '3d';
+
+  const entitlementsQuery = useQuery({
+    queryKey: ['user-entitlements', session?.user?.id],
+    queryFn: () => apiGet<{ lifetimePro: boolean }>('/api/user/entitlements'),
+    enabled: Boolean(session?.user?.id),
+    staleTime: 30_000,
+  });
+  const restoredRef = useRef(false);
+
+  // If Lifetime Pro was removed (refund), the user signed out, or the draft
+  // came from another account, never leave the page in a restored 3D state.
+  useEffect(() => {
+    if (sessionPending || previewMode !== '3d') return;
+    const signedOut = !session?.user;
+    const proRevoked =
+      entitlementsQuery.isSuccess && !entitlementsQuery.data?.lifetimePro;
+    if (signedOut || proRevoked) setPreviewMode('2d');
+  }, [
+    entitlementsQuery.data?.lifetimePro,
+    entitlementsQuery.isSuccess,
+    previewMode,
+    session?.user,
+    sessionPending,
+  ]);
+
+  // Restore the try-on workspace after login/refresh. Uploads are converted to
+  // data URLs so they survive an OAuth full-page redirect; legacy blob URLs
+  // cannot outlive the page and are skipped.
+  useEffect(() => {
+    if (sessionPending || restoredRef.current) return;
+    restoredRef.current = true;
+    if (initialTattoo) return;
+    const draft = readTryOnDraft(session?.user?.id);
+    if (!draft) return;
+    if (draft.designUrl && !draft.designUrl.startsWith('blob:')) {
+      setDesignUrl(draft.designUrl);
+    }
+    if (draft.activeTemplateId) {
+      setActiveTemplateId(draft.activeTemplateId);
+    } else if (draft.bodyUrl && !draft.bodyUrl.startsWith('blob:')) {
+      setBodyUrl(draft.bodyUrl);
+    }
+    if (draft.skinId) setSkinId(draft.skinId);
+    if (draft.previewMode) setPreviewMode(draft.previewMode);
+    if (Number.isFinite(draft.scale)) setScale(draft.scale);
+    if (Number.isFinite(draft.rotation)) setRotation(draft.rotation);
+    if (Number.isFinite(draft.opacity)) setOpacity(draft.opacity);
+    if (Number.isFinite(draft.posX)) setPosX(draft.posX);
+    if (Number.isFinite(draft.posY)) setPosY(draft.posY);
+  }, [initialTattoo, session?.user?.id, sessionPending]);
+
+  useEffect(() => {
+    if (sessionPending || !restoredRef.current) return;
+    const timer = window.setTimeout(() => {
+      writeTryOnDraft({
+        ownerId: session?.user?.id || 'anonymous',
+        updatedAt: Date.now(),
+        designUrl: designUrl?.startsWith('blob:') ? null : designUrl,
+        bodyUrl: bodyUrl?.startsWith('blob:') ? null : bodyUrl,
+        activeTemplateId,
+        skinId,
+        previewMode,
+        scale,
+        rotation,
+        opacity,
+        posX,
+        posY,
+      });
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [
+    activeTemplateId,
+    bodyUrl,
+    designUrl,
+    opacity,
+    posX,
+    posY,
+    previewMode,
+    rotation,
+    scale,
+    session?.user?.id,
+    sessionPending,
+    skinId,
+  ]);
 
   const faqs = [
     { q: m['tryon.faq.q1'](), a: m['tryon.faq.a1']() },
@@ -217,23 +399,41 @@ function TattooTryOnPage() {
     { q: m['tryon.faq.q6'](), a: m['tryon.faq.a6']() },
   ];
 
-  function handleDesignUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleDesignUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setDesignUrl(URL.createObjectURL(file));
+    setDesignUrl(await uploadToPersistentDataUrl(file, 'design'));
     if (!previewMode) setPreviewMode('2d');
   }
 
-  function handleBodyUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleBodyUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    const dataUrl = await uploadToPersistentDataUrl(file, 'body');
     setActiveTemplateId(null);
-    setBodyUrl(URL.createObjectURL(file));
+    setBodyUrl(dataUrl);
     setPosX(50);
     setPosY(46);
     setScale(34);
     setRotation(0);
     if (!previewMode) setPreviewMode('2d');
+  }
+
+  function flushTryOnDraftNow() {
+    writeTryOnDraft({
+      ownerId: session?.user?.id || 'anonymous',
+      updatedAt: Date.now(),
+      designUrl: designUrl?.startsWith('blob:') ? null : designUrl,
+      bodyUrl: bodyUrl?.startsWith('blob:') ? null : bodyUrl,
+      activeTemplateId,
+      skinId,
+      previewMode,
+      scale,
+      rotation,
+      opacity,
+      posX,
+      posY,
+    });
   }
 
   function selectBodyTemplate(tpl: (typeof BODY_TEMPLATES)[number]) {
@@ -388,6 +588,7 @@ function TattooTryOnPage() {
                           type="button"
                           onClick={() => {
                             if (!session?.user) {
+                              flushTryOnDraftNow();
                               openAuth();
                             } else {
                               router.push('/my-designs');
@@ -440,6 +641,7 @@ function TattooTryOnPage() {
                           type="button"
                           onClick={() => {
                             if (!session?.user) {
+                              flushTryOnDraftNow();
                               openAuth();
                             } else {
                               toast.info(m['pages.tryon.m001']());
@@ -468,7 +670,13 @@ function TattooTryOnPage() {
                   <div className="grid grid-cols-2 gap-3 pt-2">
                     <button
                       type="button"
-                      onClick={() => loadDemoPair('2d')}
+                      onClick={() => {
+                        if (!designUrl && !resolvedBodyUrl) {
+                          loadDemoPair('2d');
+                          return;
+                        }
+                        setPreviewMode('2d');
+                      }}
                       className={cn(
                         'relative flex cursor-pointer flex-col items-center justify-center rounded-xl px-3 pt-4 pb-2.5 text-center text-white transition-all',
                         previewMode === '2d'
@@ -490,11 +698,27 @@ function TattooTryOnPage() {
                     <button
                       type="button"
                       onClick={() => {
+                        if (sessionPending) return;
                         if (!session?.user) {
+                          // A full-page OAuth redirect can discard the
+                          // debounced draft; flush it before leaving.
+                          flushTryOnDraftNow();
                           openAuth();
                           return;
                         }
-                        loadDemoPair('3d');
+                        if (entitlementsQuery.isLoading) {
+                          toast.info(m['tryon.config.mode_3d_checking']());
+                          return;
+                        }
+                        if (!entitlementsQuery.data?.lifetimePro) {
+                          toast.error(m['tryon.config.mode_3d_locked']());
+                          return;
+                        }
+                        if (!designUrl && !resolvedBodyUrl) {
+                          loadDemoPair('3d');
+                          return;
+                        }
+                        setPreviewMode('3d');
                       }}
                       className={cn(
                         'relative flex cursor-pointer flex-col items-center justify-center rounded-xl px-3 pt-4 pb-2.5 text-center text-white transition-all',
@@ -548,7 +772,7 @@ function TattooTryOnPage() {
                       <div
                         className="absolute inset-0"
                         style={
-                          activeTemplateId
+                          is3d && activeTemplateId
                             ? {
                                 maskImage: `url(${resolvedBodyUrl!})`,
                                 WebkitMaskImage: `url(${resolvedBodyUrl!})`,
@@ -578,7 +802,9 @@ function TattooTryOnPage() {
                             top: `${posY}%`,
                             width: `${scale}%`,
                             opacity: opacity / 100,
-                            transform: `translate(-50%, -50%) perspective(480px) rotateY(${((posX - 50) * 0.65).toFixed(1)}deg) rotateX(${((46 - posY) * 0.25).toFixed(1)}deg) rotateZ(${rotation}deg)`,
+                            transform: is3d
+                              ? `translate(-50%, -50%) perspective(480px) rotateY(${((posX - 50) * 0.65).toFixed(1)}deg) rotateX(${((46 - posY) * 0.25).toFixed(1)}deg) rotateZ(${rotation}deg)`
+                              : `translate(-50%, -50%) rotateZ(${rotation}deg)`,
                           }}
                         >
                           <img

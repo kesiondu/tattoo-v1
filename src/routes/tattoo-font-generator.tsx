@@ -25,6 +25,7 @@ import {
   webAppJsonLd,
 } from '@/lib/seo';
 import type { TattooFontPreset } from '@/lib/tattoo-font-library';
+import { traceStencilFromBlob } from '@/lib/trace-stencil';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
@@ -937,66 +938,121 @@ function TattooFontGeneratorPage() {
       : content;
   }
 
-  function handleDownloadLetteringPng() {
-    setDownloadMenuOpen(false);
-    const rendered = getRenderedText();
+  /**
+   * Draws the lettering at the same size/position the paddles show, honouring
+   * the variant's letter spacing. Used by both the PNG and SVG exports so the
+   * traced outlines match what the user previewed.
+   */
+  async function renderLetteringCanvas(
+    scale: number,
+    background: 'transparent' | 'white',
+    ink: string
+  ) {
+    const width = 768 * scale;
+    const height = 512 * scale;
+    const fontSize = 84 * scale;
     const canvas = document.createElement('canvas');
-    canvas.width = 768;
-    canvas.height = 512;
+    canvas.width = width;
+    canvas.height = height;
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    // Transparent RGBA background (0, 0, 0, 0)
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = inkColor ?? DEFAULT_INK;
-    ctx.font = `${activeVariant.fontStyle === 'italic' ? 'italic ' : ''}${activeVariant.fontWeight ?? 600} 84px ${activeVariant.fontFamily}`;
-    ctx.textAlign = 'center';
+    if (!ctx) throw new Error('Could not prepare the lettering export.');
+
+    if (background === 'white') {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+    } else {
+      ctx.clearRect(0, 0, width, height);
+    }
+
+    const style = activeVariant.fontStyle === 'italic' ? 'italic ' : '';
+    const weight = activeVariant.fontWeight ?? 600;
+    const family = activeVariant.fontFamily;
+    const font = `${style}${weight} ${fontSize}px ${family}`;
+    const rendered = getRenderedText();
+    // Make sure the webfont is ready, otherwise the canvas falls back silently.
+    await document.fonts.load(font, rendered);
+    ctx.font = font;
+    ctx.fillStyle = ink;
+    ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(rendered, canvas.width / 2, canvas.height / 2);
-    const a = document.createElement('a');
-    a.href = canvas.toDataURL('image/png');
-    a.download = `tattoo-generator-${activeStyle.id}.png`;
-    a.click();
-    toast.success(m['pages.fontgen.m007']());
+
+    const spacingEm = Number.parseFloat(activeVariant.letterSpacing ?? '0');
+    const spacing = Number.isFinite(spacingEm) ? spacingEm * fontSize : 0;
+    const glyphs = [...rendered];
+    const widths = glyphs.map((glyph) => ctx.measureText(glyph).width);
+    const total =
+      widths.reduce((sum, glyphWidth) => sum + glyphWidth, 0) +
+      spacing * Math.max(0, glyphs.length - 1);
+
+    let x = (width - total) / 2;
+    const y = height / 2;
+    glyphs.forEach((glyph, index) => {
+      ctx.fillText(glyph, x, y);
+      x += widths[index] + spacing;
+    });
+
+    return canvas;
   }
 
-  function handleDownloadLetteringSvg() {
-    setDownloadMenuOpen(false);
-    const rendered = getRenderedText()
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-    const fontFamilyAttr = activeVariant.fontFamily.replace(/"/g, "'");
-    const fontStyleAttr = activeVariant.fontStyle ?? 'normal';
-    const fontWeightAttr = activeVariant.fontWeight ?? 600;
-    const letterSpacingAttr = activeVariant.letterSpacing ?? '0.02em';
-
-    const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 512" width="768" height="512" fill="none">
-  <text
-    x="50%"
-    y="50%"
-    dominant-baseline="central"
-    text-anchor="middle"
-    fill="${inkColor ?? DEFAULT_INK}"
-    font-family="${fontFamilyAttr}"
-    font-style="${fontStyleAttr}"
-    font-weight="${fontWeightAttr}"
-    font-size="84"
-    letter-spacing="${letterSpacingAttr}"
-  >${rendered}</text>
-</svg>`;
-
-    const blob = new Blob([svgContent], {
-      type: 'image/svg+xml;charset=utf-8',
-    });
+  function downloadBlob(blob: Blob, filename: string) {
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `tattoo-generator-${activeStyle.id}.svg`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    toast.success(m['pages.fontgen.m008']());
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async function handleDownloadLetteringPng() {
+    setDownloadMenuOpen(false);
+    try {
+      const canvas = await renderLetteringCanvas(
+        1,
+        'transparent',
+        inkColor ?? DEFAULT_INK
+      );
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, 'image/png')
+      );
+      if (!blob) throw new Error('Could not render the lettering.');
+      downloadBlob(blob, `tattoo-generator-${activeStyle.id}.png`);
+      toast.success(m['pages.fontgen.m007']());
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'PNG export failed.'
+      );
+    }
+  }
+
+  async function handleDownloadLetteringSvg() {
+    setDownloadMenuOpen(false);
+    try {
+      // Trace the rendered glyphs at 2x so the outlines stay smooth, then ship
+      // real vector paths instead of <text> that depends on installed fonts.
+      const canvas = await renderLetteringCanvas(2, 'white', '#000000');
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, 'image/png')
+      );
+      if (!blob) throw new Error('Could not render the lettering.');
+      const { svg } = await traceStencilFromBlob(blob);
+      const inked = svg.replace(
+        /fill="#0{6}"/gi,
+        `fill="${inkColor ?? DEFAULT_INK}"`
+      );
+      const sized = inked.replace(
+        /width="\d+" height="\d+"/i,
+        'width="768" height="512"'
+      );
+      downloadBlob(
+        new Blob([sized], { type: 'image/svg+xml;charset=utf-8' }),
+        `tattoo-generator-${activeStyle.id}.svg`
+      );
+      toast.success(m['pages.fontgen.m008']());
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'SVG export failed.'
+      );
+    }
   }
 
   function handleDownloadSkinPng() {
@@ -1297,9 +1353,9 @@ function TattooFontGeneratorPage() {
                               left: `${posX}%`,
                               top: `${posY}%`,
                               transform:
-                                previewMode === 'font'
-                                  ? `translate(-50%, -50%) scale(${sizePct / 100}) rotateZ(${rotation}deg)`
-                                  : `translate(-50%, -50%) perspective(480px) rotateY(${((posX - activePlacement.x) * 0.6).toFixed(1)}deg) rotateX(${((activePlacement.y - posY) * 0.25).toFixed(1)}deg) scale(${sizePct / 100}) rotateZ(${rotation}deg)`,
+                                previewMode === '3d'
+                                  ? `translate(-50%, -50%) perspective(480px) rotateY(${((posX - activePlacement.x) * 0.6).toFixed(1)}deg) rotateX(${((activePlacement.y - posY) * 0.25).toFixed(1)}deg) scale(${sizePct / 100}) rotateZ(${rotation}deg)`
+                                  : `translate(-50%, -50%) scale(${sizePct / 100}) rotateZ(${rotation}deg)`,
                               opacity: opacity / 100,
                             }}
                           >
@@ -1373,10 +1429,6 @@ function TattooFontGeneratorPage() {
                           <button
                             type="button"
                             onClick={() => {
-                              if (!session?.user) {
-                                openAuth();
-                                return;
-                              }
                               switchPreviewMode('3d');
                               toast.info(m['pages.fontgen.m026']());
                             }}
@@ -1387,10 +1439,6 @@ function TattooFontGeneratorPage() {
                                 : 'text-muted-foreground hover:text-foreground'
                             )}
                           >
-                            <span className="absolute -top-2.5 right-1 inline-flex items-center gap-0.5 rounded bg-neutral-200 px-1.5 py-0.5 text-[9px] leading-none font-semibold text-neutral-800">
-                              <Sparkles className="size-2" />
-                              Pro
-                            </span>
                             {m['pages.fontgen.m027']()}
                           </button>
 

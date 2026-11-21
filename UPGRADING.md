@@ -46,6 +46,41 @@ exports, permission codes, and behavior that changes for end users.
 
 ---
 
+## Unreleased: Tattoo generation credits, task history, Lifetime Pro
+
+The tattoo generator now charges **2 credits per AI image** (body preview,
+HQ body preview and clean artwork are separate 2-credit tasks). A failed task
+refunds its charge exactly once. Tasks are stored in `ai_task`, can be resumed
+after a refresh, and appear under `/my-designs`. The home preview now sends the
+selected body image and the drawn region to the model.
+
+The pricing page has six one-time products: `b12`, `b40`, `b120` (credit
+bundles that grant Lifetime Pro) and `p70`, `p200`, `p600` (top-up packs that
+require Lifetime Pro). Lifetime Pro unlocks 3D try-on on body templates;
+the font generator preview is free and does not require login.
+
+### Action required
+
+- [ ] **Pricing catalog**: merge the six new entries from
+      `src/config/pricing.ts`. Do not map them to `starter_monthly` or the
+      existing `*_lifetime` products; they must stay `PaymentType.ONE_TIME`.
+- [ ] **Payment provider mappings**: if Creem is enabled, map all six IDs to
+      one-time Creem products. If Alipay/WeChat Pay is enabled, add
+      `cnyPriceInCents` for each product or checkout will refuse it.
+- [ ] **Storage**: configure R2/S3 in Admin → Settings → Storage so generated
+      images have durable URLs. Without storage the result is kept as an
+      inline data URL in the task row.
+- [ ] **Kie body references**: Kie must be able to fetch the body image over
+      the public internet. With Storage configured, a localhost/private
+      reference is copied to storage first; otherwise checkout is refused
+      before any credits are charged instead of generating without the reference.
+- [ ] **Custom generate clients**: send a UUID `requestId` in the request
+      body. It becomes the task id and makes retries idempotent; the browser
+      client already does this.
+- [ ] **Verify**: run `pnpm test:tattoo` and apply a test payment to each of the
+      six products; confirm the amount, credits, no subscription, duplicate
+      webhook idempotency and Lifetime Pro unlock.
+
 ## 2026-10-17: Guest posts (off by default)
 
 Outside authors can submit paid articles: they write at

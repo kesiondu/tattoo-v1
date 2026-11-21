@@ -37,10 +37,16 @@ export type PricingProduct = {
    * 'guest_post': a guest post package. Sold only through
    * /api/guest-posts/$id/checkout (tied to an approved submission); the
    * generic checkout refuses it.
+   * 'credit_bundle': one-time credit bundle that also grants Lifetime Pro.
+   * 'pro_credit_pack': one-time top-up available only to Lifetime Pro members.
    */
-  kind?: 'guest_post';
+  kind?: 'guest_post' | 'credit_bundle' | 'pro_credit_pack';
   /** Guest post packages: most external links the article may contain. */
   maxLinks?: number;
+  /** Credit bundles grant Lifetime Pro on the first paid order. */
+  grantsLifetimePro?: boolean;
+  /** Top-up packs refuse checkout unless the buyer already has Lifetime Pro. */
+  requiresLifetimePro?: boolean;
 };
 
 /**
@@ -134,6 +140,7 @@ export const pricingCatalog: Record<string, PricingProduct> = {
     type: PaymentType.ONE_TIME,
     priceInCents: 14900,
     currency: 'usd',
+    grantsLifetimePro: true,
     credits: 100000,
   },
   pro_lifetime: {
@@ -144,6 +151,7 @@ export const pricingCatalog: Record<string, PricingProduct> = {
     type: PaymentType.ONE_TIME,
     priceInCents: 49900,
     currency: 'usd',
+    grantsLifetimePro: true,
     credits: 1000000,
   },
   enterprise_lifetime: {
@@ -154,7 +162,87 @@ export const pricingCatalog: Record<string, PricingProduct> = {
     type: PaymentType.ONE_TIME,
     priceInCents: 199900,
     currency: 'usd',
+    grantsLifetimePro: true,
     credits: 10000000,
+  },
+
+  // Tattoo credit bundles (pricing page tab 1). These are the six one-time
+  // products shown at /pricing. They must stay ONE_TIME: a subscription here
+  // would silently turn a $6.99 purchase into a recurring charge.
+  b12: {
+    productId: 'b12',
+    productName: 'Starter Pack',
+    planName: 'Starter Pack',
+    description: '12 credits + Lifetime Pro',
+    type: PaymentType.ONE_TIME,
+    priceInCents: 699,
+    currency: 'usd',
+    credits: 12,
+    kind: 'credit_bundle',
+    grantsLifetimePro: true,
+  },
+  b40: {
+    productId: 'b40',
+    productName: 'Creator Pack',
+    planName: 'Creator Pack',
+    description: '40 credits + Lifetime Pro',
+    type: PaymentType.ONE_TIME,
+    priceInCents: 1499,
+    currency: 'usd',
+    credits: 40,
+    kind: 'credit_bundle',
+    grantsLifetimePro: true,
+  },
+  b120: {
+    productId: 'b120',
+    productName: 'Studio Pack',
+    planName: 'Studio Pack',
+    description: '120 credits + Lifetime Pro',
+    type: PaymentType.ONE_TIME,
+    priceInCents: 2999,
+    currency: 'usd',
+    credits: 120,
+    kind: 'credit_bundle',
+    grantsLifetimePro: true,
+  },
+
+  // Tattoo Pro credit packs (pricing page tab 2). Only buyers who already own
+  // Lifetime Pro may check out — enforced server-side in the checkout route.
+  p70: {
+    productId: 'p70',
+    productName: '70 Credits',
+    planName: '70 Credits',
+    description: '70 credits top-up',
+    type: PaymentType.ONE_TIME,
+    priceInCents: 1999,
+    currency: 'usd',
+    credits: 70,
+    kind: 'pro_credit_pack',
+    requiresLifetimePro: true,
+  },
+  p200: {
+    productId: 'p200',
+    productName: '200 Credits',
+    planName: '200 Credits',
+    description: '200 credits top-up',
+    type: PaymentType.ONE_TIME,
+    priceInCents: 3999,
+    currency: 'usd',
+    credits: 200,
+    kind: 'pro_credit_pack',
+    requiresLifetimePro: true,
+  },
+  p600: {
+    productId: 'p600',
+    productName: '600 Credits',
+    planName: '600 Credits',
+    description: '600 credits top-up',
+    type: PaymentType.ONE_TIME,
+    priceInCents: 9999,
+    currency: 'usd',
+    credits: 600,
+    kind: 'pro_credit_pack',
+    requiresLifetimePro: true,
   },
 
   // Guest posts (see src/modules/guest-posts). Published permanently, every
@@ -198,4 +286,12 @@ export function listPricingProducts(): PricingProduct[] {
 
 export function listGuestPostPackages(): PricingProduct[] {
   return listPricingProducts().filter((p) => p.kind === 'guest_post');
+}
+
+export function listLifetimeProProducts(): PricingProduct[] {
+  return listPricingProducts().filter((p) => p.grantsLifetimePro === true);
+}
+
+export function isLifetimeProProductId(productId: string): boolean {
+  return getPricingProduct(productId)?.grantsLifetimePro === true;
 }

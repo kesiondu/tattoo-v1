@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Check, ChevronDown, Loader2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
 import { tDynamic } from '@/core/i18n/dynamic';
+import { getPricingProduct } from '@/config/pricing';
+import { apiGet, apiPost } from '@/lib/api-client';
+import { currentPathWithQuery } from '@/lib/redirect';
 import {
   breadcrumbJsonLd,
   buildSeoHead,
@@ -14,8 +18,21 @@ import {
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
+import { usePublicConfig } from '@/hooks/use-public-config';
 import { MarketingPageLayout } from '@/components/marketing-page-layout';
+import {
+  PaymentProviderModal,
+  type PaymentProvider,
+} from '@/components/payment-provider-modal';
 import { SeoRelatedTools } from '@/components/seo-related-tools';
+
+const ALL_PROVIDERS: PaymentProvider[] = [
+  'stripe',
+  'creem',
+  'paypal',
+  'alipay',
+  'wechat',
+];
 
 const PRICING_FAQS = [
   {
@@ -46,11 +63,36 @@ const PRICING_FAQS = [
 
 function PricingPage() {
   const isZh = getLocale() === 'zh';
-  const { data: session } = useSession();
+  const { data: session, isPending: sessionPending } = useSession();
+  const { data: publicConfigsData } = usePublicConfig();
+  const publicConfigs = publicConfigsData ?? {};
 
   const [tab, setTab] = useState<'bundles' | 'packs'>('bundles');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [buyingId, setBuyingId] = useState<string | null>(null);
+  const [loadingProvider, setLoadingProvider] =
+    useState<PaymentProvider | null>(null);
+  const [providerModalOpen, setProviderModalOpen] = useState(false);
+  const [pendingProduct, setPendingProduct] = useState<{
+    id: string;
+    name: string;
+    price: string;
+  } | null>(null);
+
+  const enabledProviders = ALL_PROVIDERS.filter(
+    (p) => publicConfigs[`${p}_enabled`] === 'true'
+  );
+  const entitlementsQuery = useQuery({
+    queryKey: ['user-entitlements', session?.user?.id],
+    queryFn: () => apiGet<{ lifetimePro: boolean }>('/api/user/entitlements'),
+    enabled: Boolean(session?.user?.id),
+    staleTime: 30_000,
+  });
+  const packLocked =
+    Boolean(session?.user) &&
+    entitlementsQuery.isSuccess &&
+    !entitlementsQuery.data?.lifetimePro;
+  const packPending = Boolean(session?.user) && entitlementsQuery.isLoading;
 
   const bundles = [
     {
@@ -124,6 +166,101 @@ function PricingPage() {
     m['pages.pricing.m013'](),
     m['pages.pricing.m014'](),
   ];
+
+  async function startCheckout(productId: string, provider: PaymentProvider) {
+    setBuyingId(productId);
+    setLoadingProvider(provider);
+    try {
+      const data = await apiPost<{ checkout_url?: string }>(
+        '/api/payment/checkout',
+        {
+          product_id: productId,
+          payment_provider: provider,
+          redirect: currentPathWithQuery('/pricing'),
+          locale: getLocale(),
+        }
+      );
+      if (!data?.checkout_url) {
+        throw new Error('Checkout failed');
+      }
+      window.location.href = data.checkout_url;
+    } catch (error: any) {
+      toast.error(error?.message || 'Checkout failed');
+      setBuyingId(null);
+      setLoadingProvider(null);
+    }
+  }
+
+  function chooseProvider(provider: PaymentProvider) {
+    if (!pendingProduct) return;
+    const product = pendingProduct;
+    setProviderModalOpen(false);
+    setPendingProduct(null);
+    void startCheckout(product.id, provider);
+  }
+
+  function handleBuy(
+    product: {
+      id: string;
+      name: string;
+      price: string;
+      requiresLifetimePro?: boolean;
+    },
+    openAuth: () => void
+  ) {
+    if (sessionPending) return;
+    if (!session?.user) {
+      openAuth();
+      return;
+    }
+
+    if (
+      product.requiresLifetimePro &&
+      entitlementsQuery.isSuccess &&
+      !entitlementsQuery.data?.lifetimePro
+    ) {
+      toast.error(m['pages.pricing.m032']());
+      return;
+    }
+
+    const catalogProduct = getPricingProduct(product.id);
+    const providers =
+      enabledProviders.length > 0
+        ? enabledProviders
+        : (['stripe'] as PaymentProvider[]);
+    // CNY-only providers cannot price these USD one-time products unless the
+    // catalog has a CNY amount. Hide them instead of letting checkout fail.
+    const supportedProviders = providers.filter(
+      (provider) =>
+        (provider !== 'alipay' && provider !== 'wechat') ||
+        Boolean(catalogProduct?.cnyPriceInCents)
+    );
+    if (supportedProviders.length === 0) {
+      toast.error(m['pages.pricing.no_provider']());
+      return;
+    }
+    const defaultProvider = (publicConfigs.default_payment_provider ||
+      supportedProviders[0] ||
+      'stripe') as PaymentProvider;
+    const usableDefault = supportedProviders.includes(defaultProvider)
+      ? defaultProvider
+      : supportedProviders[0];
+
+    if (
+      publicConfigs.select_payment_enabled === 'true' &&
+      supportedProviders.length > 1
+    ) {
+      setPendingProduct({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+      });
+      setProviderModalOpen(true);
+      return;
+    }
+
+    void startCheckout(product.id, usableDefault);
+  }
 
   return (
     <MarketingPageLayout>
@@ -277,16 +414,13 @@ function PricingPage() {
 
                       <button
                         type="button"
-                        disabled={buyingId === b.id}
-                        onClick={() => {
-                          if (!session?.user) {
-                            openAuth();
-                            return;
-                          }
-                          setBuyingId(b.id);
-                          toast.info(m['pages.pricing.m026']());
-                          setTimeout(() => setBuyingId(null), 800);
-                        }}
+                        disabled={buyingId === b.id || sessionPending}
+                        onClick={() =>
+                          handleBuy(
+                            { id: b.id, name: b.name, price: b.price },
+                            openAuth
+                          )
+                        }
                         className={cn(
                           'mt-7 flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold transition-all disabled:opacity-60',
                           b.popular
@@ -354,23 +488,40 @@ function PricingPage() {
 
                         <button
                           type="button"
-                          onClick={() => {
-                            if (!session?.user) {
-                              openAuth();
-                              return;
-                            }
-                            toast.info(m['pages.pricing.m026']());
-                          }}
+                          disabled={
+                            buyingId === p.id ||
+                            sessionPending ||
+                            packPending ||
+                            packLocked
+                          }
+                          onClick={() =>
+                            handleBuy(
+                              {
+                                id: p.id,
+                                name: p.name,
+                                price: p.price,
+                                requiresLifetimePro: true,
+                              },
+                              openAuth
+                            )
+                          }
                           className={cn(
-                            'mt-6 flex h-11 w-full items-center justify-center rounded-lg text-sm font-semibold transition-all',
+                            'mt-6 flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold transition-all disabled:opacity-60',
                             p.popular
                               ? 'bg-foreground text-background hover:bg-foreground/90'
                               : 'border-border text-foreground hover:bg-muted border bg-white'
                           )}
                         >
-                          {session?.user
-                            ? m['pages.pricing.m031']()
-                            : m['pages.pricing.m028']()}
+                          {buyingId === p.id && (
+                            <Loader2 className="size-4 animate-spin" />
+                          )}
+                          <span>
+                            {packLocked
+                              ? m['pages.pricing.pack_locked']()
+                              : session?.user
+                                ? m['pages.pricing.m031']()
+                                : m['pages.pricing.m028']()}
+                          </span>
                         </button>
                       </div>
                     ))}
@@ -482,6 +633,31 @@ function PricingPage() {
               </div>
             </div>
           </section>
+
+          <PaymentProviderModal
+            open={providerModalOpen}
+            onOpenChange={(open) => {
+              setProviderModalOpen(open);
+              if (!open) {
+                setPendingProduct(null);
+                setLoadingProvider(null);
+              }
+            }}
+            providers={(enabledProviders.length
+              ? enabledProviders
+              : (['stripe'] as PaymentProvider[])
+            ).filter((provider) => {
+              if (provider !== 'alipay' && provider !== 'wechat') return true;
+              const product = pendingProduct
+                ? getPricingProduct(pendingProduct.id)
+                : null;
+              return Boolean(product?.cnyPriceInCents);
+            })}
+            loadingProvider={loadingProvider}
+            onSelect={chooseProvider}
+            planName={pendingProduct?.name}
+            price={pendingProduct?.price}
+          />
         </>
       )}
     </MarketingPageLayout>

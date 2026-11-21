@@ -1,16 +1,53 @@
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { ArrowRight, Lock, Sparkles } from 'lucide-react';
+import {
+  ArrowRight,
+  Image as ImageIcon,
+  Loader2,
+  Lock,
+  Sparkles,
+} from 'lucide-react';
 
 import { useSession } from '@/core/auth/client';
 import { Link } from '@/core/i18n/navigation';
+import { apiGet } from '@/lib/api-client';
 import { noIndexHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { MarketingPageLayout } from '@/components/marketing-page-layout';
 
+interface TattooDesign {
+  id: string;
+  status: string;
+  tier: string;
+  modelLabel: string;
+  prompt: string;
+  imageUrl: string | null;
+  error: string | null;
+  costCredits: number;
+  createdAt: string;
+}
+
 function MyDesignsPage() {
-  const { data: session } = useSession();
+  const { data: session, isPending: sessionPending } = useSession();
   const user = session?.user;
+
+  const designsQuery = useQuery({
+    queryKey: ['tattoo-designs', user?.id],
+    queryFn: () => apiGet<TattooDesign[]>('/api/tattoo/tasks'),
+    enabled: Boolean(user?.id),
+    staleTime: 0,
+    refetchInterval: (query) => {
+      const rows = query.state.data;
+      return rows?.some(
+        (row) => row.status === 'pending' || row.status === 'processing'
+      )
+        ? 5000
+        : false;
+    },
+  });
+
+  const designs = designsQuery.data ?? [];
 
   return (
     <MarketingPageLayout>
@@ -23,7 +60,7 @@ function MyDesignsPage() {
                   {m['home.footer.my_designs']()}
                 </h1>
                 <p className="text-muted-foreground mt-1 text-sm">
-                  {m['home.auth.signin_desc']()}
+                  {m['home.designs.subtitle']()}
                 </p>
               </div>
               <Link
@@ -36,35 +73,55 @@ function MyDesignsPage() {
             </div>
 
             {!user ? (
-              <div className="border-border rounded-2xl border bg-[#fafaf9] px-6 py-16 text-center">
-                <div className="border-border mx-auto mb-4 flex size-12 items-center justify-center rounded-full border bg-white">
-                  <Lock className="text-foreground size-5" />
+              sessionPending ? (
+                <div className="border-border flex items-center justify-center rounded-2xl border bg-[#fafaf9] px-6 py-16">
+                  <Loader2 className="text-foreground size-5 animate-spin" />
                 </div>
+              ) : (
+                <div className="border-border rounded-2xl border bg-[#fafaf9] px-6 py-16 text-center">
+                  <div className="border-border mx-auto mb-4 flex size-12 items-center justify-center rounded-full border bg-white">
+                    <Lock className="text-foreground size-5" />
+                  </div>
+                  <h2 className="text-foreground text-lg font-semibold">
+                    {m['home.auth.signin_title']()}
+                  </h2>
+                  <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm">
+                    {m['home.auth.signin_desc']()}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={openAuth}
+                    className="bg-foreground text-background hover:bg-foreground/90 mt-6 inline-flex h-10 items-center gap-2 rounded-lg px-6 text-sm font-semibold transition-colors"
+                  >
+                    <span>{m['home.nav.log_in']()}</span>
+                    <ArrowRight className="size-4" />
+                  </button>
+                </div>
+              )
+            ) : designsQuery.isLoading ? (
+              <div className="border-border flex items-center justify-center rounded-2xl border bg-[#fafaf9] px-6 py-16">
+                <Loader2 className="text-foreground size-5 animate-spin" />
+              </div>
+            ) : designsQuery.isError ? (
+              <div className="border-border rounded-2xl border bg-[#fafaf9] px-6 py-16 text-center">
                 <h2 className="text-foreground text-lg font-semibold">
-                  {m['home.auth.signin_title']()}
+                  {m['home.designs.error_title']()}
                 </h2>
                 <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm">
-                  {m['home.auth.signin_desc']()}
+                  {(designsQuery.error as Error)?.message ||
+                    m['home.designs.error_hint']()}
                 </p>
-                <button
-                  type="button"
-                  onClick={openAuth}
-                  className="bg-foreground text-background hover:bg-foreground/90 mt-6 inline-flex h-10 items-center gap-2 rounded-lg px-6 text-sm font-semibold transition-colors"
-                >
-                  <span>{m['home.nav.log_in']()}</span>
-                  <ArrowRight className="size-4" />
-                </button>
               </div>
-            ) : (
+            ) : designs.length === 0 ? (
               <div className="border-border rounded-2xl border bg-[#fafaf9] px-6 py-16 text-center">
                 <div className="border-border mx-auto mb-4 flex size-12 items-center justify-center rounded-full border bg-white">
                   <Sparkles className="text-foreground size-5" />
                 </div>
                 <h2 className="text-foreground text-lg font-semibold">
-                  {m['home.cta.title']()}
+                  {m['home.designs.empty_title']()}
                 </h2>
                 <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm">
-                  {m['home.cta.subtitle']()}
+                  {m['home.designs.empty_hint']()}
                 </p>
                 <Link
                   href="/"
@@ -73,6 +130,75 @@ function MyDesignsPage() {
                   <span>{m['home.cta.button']()}</span>
                   <ArrowRight className="size-4" />
                 </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {designs.map((design) => (
+                  <div
+                    key={design.id}
+                    className="border-border flex flex-col overflow-hidden rounded-2xl border bg-white shadow-xs"
+                  >
+                    <div className="bg-muted/40 relative flex aspect-[4/3] items-center justify-center overflow-hidden">
+                      {design.status === 'success' && design.imageUrl ? (
+                        <a
+                          href={design.imageUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block size-full"
+                        >
+                          <img
+                            src={design.imageUrl}
+                            alt={design.prompt.slice(0, 80)}
+                            className="size-full object-cover"
+                          />
+                        </a>
+                      ) : (
+                        <div className="flex flex-col items-center gap-2 px-4 text-center">
+                          {design.status === 'processing' ||
+                          design.status === 'pending' ? (
+                            <Loader2 className="text-foreground size-5 animate-spin" />
+                          ) : (
+                            <ImageIcon className="text-muted-foreground size-5" />
+                          )}
+                          <span className="text-muted-foreground text-xs">
+                            {design.status === 'processing' ||
+                            design.status === 'pending'
+                              ? m['home.designs.processing']()
+                              : m['home.designs.failed']()}
+                          </span>
+                        </div>
+                      )}
+                      <span className="text-foreground absolute top-2.5 left-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-semibold shadow-xs backdrop-blur-xs">
+                        {design.status === 'success'
+                          ? m['home.designs.success']()
+                          : design.status === 'failed' ||
+                              design.status === 'canceled'
+                            ? m['home.designs.failed']()
+                            : m['home.designs.processing']()}
+                      </span>
+                    </div>
+                    <div className="flex flex-1 flex-col gap-2 p-4">
+                      <p className="text-foreground line-clamp-2 text-sm font-medium">
+                        {design.prompt}
+                      </p>
+                      {(design.status === 'failed' ||
+                        design.status === 'canceled') &&
+                        design.error && (
+                          <p className="text-muted-foreground line-clamp-2 text-xs">
+                            {design.error}
+                          </p>
+                        )}
+                      <div className="text-muted-foreground mt-auto flex items-center justify-between gap-2 pt-2 text-[11px]">
+                        <span>{design.modelLabel}</span>
+                        <span>
+                          {new Date(design.createdAt)
+                            .toISOString()
+                            .slice(0, 10)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>

@@ -17,7 +17,7 @@ interface WorkflowAndFaqProps {
 }
 
 export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
-  const { data: session } = useSession();
+  const { data: session, isPending: sessionPending } = useSession();
   const router = useRouter();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -26,6 +26,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
   }
 
   function handleBuyCredits() {
+    if (sessionPending) return;
     if (!session?.user) {
       onOpenAuth?.();
       return;

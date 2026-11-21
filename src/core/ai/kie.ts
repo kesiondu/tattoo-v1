@@ -163,6 +163,7 @@ export class KieProvider implements AIProvider {
       method: 'POST',
       headers,
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(120_000),
     });
     if (!resp.ok) {
       throw new Error(`request failed with status: ${resp.status}`);
@@ -289,7 +290,11 @@ export class KieProvider implements AIProvider {
       Authorization: `Bearer ${this.configs.apiKey}`,
     };
 
-    const resp = await fetch(apiUrl, { method: 'GET', headers });
+    const resp = await fetch(apiUrl, {
+      method: 'GET',
+      headers,
+      signal: AbortSignal.timeout(30_000),
+    });
     if (!resp.ok) {
       throw new Error(`request failed with status: ${resp.status}`);
     }
@@ -375,7 +380,11 @@ export class KieProvider implements AIProvider {
       Authorization: `Bearer ${this.configs.apiKey}`,
     };
 
-    const resp = await fetch(apiUrl, { method: 'GET', headers });
+    const resp = await fetch(apiUrl, {
+      method: 'GET',
+      headers,
+      signal: AbortSignal.timeout(30_000),
+    });
     if (!resp.ok) {
       throw new Error(`request failed with status: ${resp.status}`);
     }
