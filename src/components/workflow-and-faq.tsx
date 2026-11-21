@@ -1,16 +1,14 @@
-import { useState } from 'react';
-import {
-  ArrowDown,
-  ArrowRight,
-  Check,
-  ChevronDown,
-  Sparkles,
-} from 'lucide-react';
+import { ArrowDown, ArrowRight, ChevronDown } from 'lucide-react';
 
 import { useSession } from '@/core/auth/client';
 import { Link, useRouter } from '@/core/i18n/navigation';
-import { cn } from '@/lib/utils';
+import { getPricingProduct } from '@/config/pricing';
 import { m } from '@/paraglide/messages.js';
+import {
+  ArtistBoundary,
+  SizePlacementTable,
+} from '@/components/home-seo-sections';
+import { InlineLinks } from '@/components/inline-links';
 
 interface WorkflowAndFaqProps {
   onOpenAuth?: () => void;
@@ -19,7 +17,6 @@ interface WorkflowAndFaqProps {
 export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
   const { data: session, isPending: sessionPending } = useSession();
   const router = useRouter();
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   function scrollToHero() {
     document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' });
@@ -34,45 +31,32 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
     router.push('/pricing');
   }
 
-  const bundles = [
+  function packPrice(productId: string) {
+    const product = getPricingProduct(productId);
+    return product ? `$${(product.priceInCents / 100).toFixed(2)}` : '';
+  }
+
+  const comparisonRows = [
     {
-      id: 'b1',
-      name: m['home.pricing.b1_name'](),
-      price: '$6.99',
-      desc: m['home.pricing.b1_desc'](),
-      credits: 12,
-      generations: 6,
-      popular: false,
+      label: m['home.pricing.compare_generations'](),
+      starter: '✓ (6)',
+      creator: '✓ (20)',
+      studio: '✓ (60)',
     },
+    { label: m['home.pricing.f1'](), starter: '✓', creator: '✓', studio: '✓' },
+    { label: m['home.pricing.f2'](), starter: '✓', creator: '✓', studio: '✓' },
+    { label: m['home.pricing.f3'](), starter: '✓', creator: '✓', studio: '✓' },
+    { label: m['home.pricing.f4'](), starter: '✓', creator: '✓', studio: '✓' },
+    { label: m['home.pricing.u1'](), starter: '✓', creator: '✓', studio: '✓' },
+    { label: m['home.pricing.u2'](), starter: '✓', creator: '✓', studio: '✓' },
+    { label: m['home.pricing.f5'](), starter: '✓', creator: '✓', studio: '✓' },
     {
-      id: 'b2',
-      name: m['home.pricing.b2_name'](),
-      price: '$14.99',
-      desc: m['home.pricing.b2_desc'](),
-      credits: 40,
-      generations: 20,
-      popular: true,
-    },
-    {
-      id: 'b3',
-      name: m['home.pricing.b3_name'](),
-      price: '$29.99',
-      desc: m['home.pricing.b3_desc'](),
-      credits: 120,
-      generations: 60,
-      popular: false,
+      label: m['home.pricing.lifetime_pro'](),
+      starter: '✓',
+      creator: '✓',
+      studio: '✓',
     },
   ];
-
-  const proFeatures = [
-    m['home.pricing.f1'](),
-    m['home.pricing.f2'](),
-    m['home.pricing.f3'](),
-    m['home.pricing.f4'](),
-    m['home.pricing.f5'](),
-  ];
-
-  const unlimitedFeatures = [m['home.pricing.u1'](), m['home.pricing.u2']()];
 
   const faqs = [
     { q: m['home.faq.q1'](), a: m['home.faq.a1']() },
@@ -81,6 +65,9 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
     { q: m['home.faq.q4'](), a: m['home.faq.a4']() },
     { q: m['home.faq.q5'](), a: m['home.faq.a5']() },
     { q: m['home.faq.q6'](), a: m['home.faq.a6']() },
+    { q: m['home.faq.q7'](), a: m['home.faq.a7']() },
+    { q: m['home.faq.q8'](), a: m['home.faq.a8']() },
+    { q: m['home.faq.q9'](), a: m['home.faq.a9']() },
   ];
 
   return (
@@ -326,147 +313,98 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
         </div>
       </section>
 
+      <SizePlacementTable />
+
       {/* SECTION 5: Pricing Section */}
       <section
         id="pricing"
         className="border-border bg-muted/30 scroll-mt-20 border-y py-12 md:py-16"
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 text-center">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 text-center">
             <div className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
               {m['home.pricing.eyebrow']()}
             </div>
             <h2 className="text-foreground mt-2 font-sans text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
               {m['home.pricing.title']()}
             </h2>
-
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-              {[
-                m['home.pricing.p1'](),
-                m['home.pricing.p2'](),
-                m['home.pricing.p3'](),
-              ].map((pill) => (
-                <span
-                  key={pill}
-                  className="border-border text-foreground inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1 text-xs font-medium"
-                >
-                  <Check className="text-foreground size-3.5" />
-                  <span>{pill}</span>
-                </span>
-              ))}
+            <div className="text-muted-foreground mx-auto mt-3 max-w-2xl space-y-3 text-sm leading-7">
+              {m['home.pricing.compare_intro']()
+                .split('\n\n')
+                .map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {bundles.map((bundle) => (
-              <div
-                key={bundle.id}
-                className={cn(
-                  'relative flex flex-col justify-between rounded-2xl border bg-white p-6 transition-all',
-                  bundle.popular
-                    ? 'border-foreground ring-foreground shadow-md ring-1'
-                    : 'border-border shadow-2xs'
-                )}
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2">
-                    <h3 className="text-foreground text-base font-semibold">
-                      {bundle.name}
-                    </h3>
-                    {bundle.popular && (
-                      <span className="bg-foreground text-background rounded-full px-2.5 py-0.5 text-[11px] font-semibold">
-                        {m['home.pricing.most_popular']()}
-                      </span>
+          <div className="border-border overflow-x-auto rounded-2xl border bg-white shadow-2xs">
+            <table className="w-full table-fixed border-collapse text-left text-[11px] sm:text-sm">
+              <thead className="bg-muted/50 text-foreground">
+                <tr>
+                  <th className="w-[46%] px-2 py-3 font-semibold sm:px-5">
+                    {m['home.pricing.compare_col_feature']()}
+                  </th>
+                  <th className="px-2 py-3 text-center font-semibold sm:px-5">
+                    <div>{m['home.pricing.compare_col_starter']()}</div>
+                    <div className="text-muted-foreground mt-1 text-[10px] font-normal">
+                      {packPrice('b12')}
+                    </div>
+                  </th>
+                  <th className="px-2 py-3 text-center font-semibold sm:px-5">
+                    <div>{m['home.pricing.compare_col_creator']()}</div>
+                    <div className="text-muted-foreground mt-1 text-[10px] font-normal">
+                      {packPrice('b40')}
+                    </div>
+                  </th>
+                  <th className="px-2 py-3 text-center font-semibold sm:px-5">
+                    <div>{m['home.pricing.compare_col_studio']()}</div>
+                    <div className="text-muted-foreground mt-1 text-[10px] font-normal">
+                      {packPrice('b120')}
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-border divide-y">
+                {comparisonRows.map((row) => (
+                  <tr key={row.label}>
+                    <th className="text-foreground px-2 py-3 text-left font-medium sm:px-5">
+                      {row.label}
+                    </th>
+                    {[row.starter, row.creator, row.studio].map(
+                      (value, index) => (
+                        <td
+                          key={`${row.label}-${index}`}
+                          className="text-muted-foreground px-2 py-3 text-center sm:px-5"
+                        >
+                          {value}
+                        </td>
+                      )
                     )}
-                  </div>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-                  <div className="mt-3 flex items-baseline gap-1">
-                    <span className="text-foreground font-sans text-4xl font-bold tracking-tight">
-                      {bundle.price}
-                    </span>
-                  </div>
-                  <p className="text-muted-foreground mt-1.5 text-sm">
-                    {bundle.desc}
-                  </p>
+          <p className="text-muted-foreground mx-auto mt-4 max-w-3xl text-center text-xs leading-6">
+            {m['home.pricing.compare_note']()}
+          </p>
 
-                  {/* Credits summary */}
-                  <div className="border-border mt-5 space-y-2 border-t pt-4 text-sm">
-                    <div className="text-foreground flex items-center gap-2 font-medium">
-                      <Check className="size-4 shrink-0" />
-                      <span>
-                        {m['home.pricing.credits']({ count: bundle.credits })}
-                      </span>
-                    </div>
-                    <div className="text-muted-foreground flex items-center gap-2">
-                      <Check className="text-foreground size-4 shrink-0" />
-                      <span>
-                        {m['home.pricing.generations']({
-                          count: bundle.generations,
-                        })}
-                      </span>
-                    </div>
-                    <div className="text-muted-foreground flex items-center gap-2">
-                      <Check className="text-foreground size-4 shrink-0" />
-                      <span>{m['home.pricing.never_expire']()}</span>
-                    </div>
-                  </div>
-
-                  {/* Lifetime Pro Gift */}
-                  <div className="border-border mt-5 border-t pt-4">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-foreground text-sm font-semibold">
-                        {m['home.pricing.lifetime_pro']()}
-                      </span>
-                      <span className="bg-foreground text-background inline-flex min-h-6 shrink-0 items-center gap-1 rounded px-1.5 text-[10px] font-medium">
-                        <Sparkles className="size-2.5" />
-                        {m['home.pricing.gift']()}
-                      </span>
-                    </div>
-                    <div className="text-muted-foreground mt-1 text-xs font-medium">
-                      {m['home.pricing.all_features']()}
-                    </div>
-                    <ul className="text-muted-foreground mt-2.5 space-y-1.5 text-xs">
-                      {proFeatures.map((feat) => (
-                        <li key={feat} className="flex items-center gap-2">
-                          <Check className="text-foreground size-3.5 shrink-0" />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="text-muted-foreground mt-4 text-xs font-medium">
-                      {m['home.pricing.unlimited']()}
-                    </div>
-                    <ul className="text-muted-foreground mt-2 space-y-1.5 text-xs">
-                      {unlimitedFeatures.map((feat) => (
-                        <li key={feat} className="flex items-center gap-2">
-                          <Check className="text-foreground size-3.5 shrink-0" />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleBuyCredits}
-                  className={cn(
-                    'mt-6 flex h-10 w-full items-center justify-center rounded-lg text-sm font-semibold transition-all',
-                    bundle.popular
-                      ? 'bg-foreground text-background hover:bg-foreground/90'
-                      : 'border-border text-foreground hover:bg-muted border bg-white'
-                  )}
-                >
-                  {m['home.pricing.buy']()}
-                </button>
-              </div>
-            ))}
+          <div className="mt-6 text-center">
+            <button
+              type="button"
+              onClick={handleBuyCredits}
+              className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-10 items-center justify-center rounded-lg px-5 text-sm font-semibold transition-colors"
+            >
+              {m['home.pricing.compare_cta']()}
+            </button>
           </div>
         </div>
       </section>
 
-      {/* SECTION 6: FAQ Accordion (6 Numbered Questions, All Collapsed by Default) */}
+      <ArtistBoundary />
+
+      {/* SECTION 6: FAQ Accordion (server-rendered, answers remain in HTML) */}
       <section id="faq" className="scroll-mt-20 py-12 md:py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="text-foreground mb-8 text-center font-sans text-2xl font-bold tracking-tight sm:text-3xl">
@@ -474,42 +412,29 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
           </h2>
 
           <div className="divide-border border-border divide-y rounded-2xl border bg-white">
-            {faqs.map((item, idx) => {
-              const isOpen = openFaq === idx;
-              return (
-                <div key={item.q}>
-                  <h3 className="flex">
-                    <button
-                      type="button"
-                      onClick={() => setOpenFaq(isOpen ? null : idx)}
-                      className="hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span
-                          aria-hidden="true"
-                          data-index={idx + 1}
-                          className="bg-muted text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold before:content-[attr(data-index)]"
-                        />
-                        <span className="text-foreground text-sm font-medium sm:text-[15px]">
-                          {item.q}
-                        </span>
-                      </div>
-                      <ChevronDown
-                        className={cn(
-                          'text-muted-foreground size-4 shrink-0 transition-transform duration-200',
-                          isOpen && 'rotate-180'
-                        )}
-                      />
-                    </button>
-                  </h3>
-                  {isOpen && (
-                    <div className="text-muted-foreground px-5 pt-0 pb-4 pl-14 text-sm leading-relaxed">
-                      {item.a}
-                    </div>
-                  )}
+            {faqs.map((item, idx) => (
+              <details key={item.q} className="group">
+                <summary className="hover:bg-muted/40 flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left transition-colors [&::-webkit-details-marker]:hidden">
+                  <span className="flex items-center gap-3">
+                    <span
+                      aria-hidden="true"
+                      data-index={idx + 1}
+                      className="bg-muted text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold before:content-[attr(data-index)]"
+                    />
+                    <span className="text-foreground text-sm font-medium sm:text-[15px]">
+                      {item.q}
+                    </span>
+                  </span>
+                  <ChevronDown
+                    className="text-muted-foreground size-4 shrink-0 transition-transform duration-200 group-open:rotate-180"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <div className="text-muted-foreground px-5 pt-0 pb-4 pl-14 text-sm leading-relaxed">
+                  {item.a}
                 </div>
-              );
-            })}
+              </details>
+            ))}
           </div>
         </div>
       </section>
@@ -533,6 +458,35 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                 <span>{m['home.cta.button']()}</span>
                 <ArrowRight className="size-4" />
               </button>
+            </div>
+            <div className="mx-auto mt-6 max-w-2xl space-y-3 text-sm leading-7 text-white/75">
+              {m['home.cta.closing']()
+                .split('\n\n')
+                .map((paragraph, index) => (
+                  <p key={index}>
+                    <InlineLinks text={paragraph} linkClassName="text-white" />
+                  </p>
+                ))}
+            </div>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm font-semibold">
+              <a
+                href="#hero"
+                className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white"
+              >
+                {m['home.cta.tool_generator']()}
+              </a>
+              <Link
+                href="/tattoo-try-on"
+                className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white"
+              >
+                {m['home.cta.tool_try_on']()}
+              </Link>
+              <Link
+                href="/tattoo-price-calculator"
+                className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white"
+              >
+                {m['home.nav.price_calculator']()}
+              </Link>
             </div>
           </div>
         </div>

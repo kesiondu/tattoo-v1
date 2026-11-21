@@ -51,7 +51,7 @@ export const Route = createFileRoute('/')({
       locale,
       title: m['home.meta.title']({}, { locale }),
       description: m['home.meta.description']({}, { locale }),
-      faqs: [1, 2, 3, 4, 5, 6].map((n) => ({
+      faqs: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => ({
         q: tDynamic(`home.faq.q${n}`, {}, { locale }),
         a: tDynamic(`home.faq.a${n}`, {}, { locale }),
       })),

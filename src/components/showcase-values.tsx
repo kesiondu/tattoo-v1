@@ -1,5 +1,7 @@
 import { Link } from '@/core/i18n/navigation';
 import { m } from '@/paraglide/messages.js';
+import { StyleOverview } from '@/components/home-seo-sections';
+import { InlineLinks } from '@/components/inline-links';
 
 interface ShowcaseValuesProps {
   onOpenAuth?: () => void;
@@ -139,6 +141,15 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
         id="gallery"
         className="scroll-mt-20 overflow-hidden pt-10 pb-12 md:pt-12 md:pb-16"
       >
+        <div className="mx-auto mb-8 max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-balance md:text-4xl">
+            {m['home.gallery.title']()}
+          </h2>
+          <p className="text-muted-foreground mx-auto mt-3 max-w-2xl text-sm leading-7">
+            {m['home.gallery.subtitle']()}
+          </p>
+        </div>
+
         <div className="relative min-h-[456px] space-y-4 md:min-h-[616px]">
           {/* Left & Right edge fade */}
           <div className="from-background pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r to-transparent" />
@@ -222,6 +233,8 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
         </div>
       </section>
 
+      <StyleOverview />
+
       {/* SECTION 3: Value Props — 3-Column Subgrid */}
       <section
         id="why-tattoo-generator"
@@ -245,13 +258,17 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                 {m['home.values.c1_title']()}
               </h3>
               <p className="text-muted-foreground mb-4 text-sm leading-7 lg:text-base">
-                {m['home.values.c1_desc']()}
+                <InlineLinks
+                  text={m['home.values.c1_desc']()}
+                  linkClassName="text-foreground"
+                />
               </p>
               <ul className="mb-6 flex flex-wrap content-start items-start gap-2">
                 {[
                   m['home.values.c1_t1'](),
                   m['home.values.c1_t2'](),
                   m['home.values.c1_t3'](),
+                  m['home.values.c1_t4'](),
                 ].map((tag) => (
                   <li
                     key={tag}
@@ -325,13 +342,17 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                 {m['home.values.c2_title']()}
               </h3>
               <p className="text-muted-foreground mb-4 text-sm leading-7 lg:text-base">
-                {m['home.values.c2_desc']()}
+                <InlineLinks
+                  text={m['home.values.c2_desc']()}
+                  linkClassName="text-foreground"
+                />
               </p>
               <ul className="mb-6 flex flex-wrap content-start items-start gap-2">
                 {[
                   m['home.values.c2_t1'](),
                   m['home.values.c2_t2'](),
                   m['home.values.c2_t3'](),
+                  m['home.values.c2_t4'](),
                 ].map((tag) => (
                   <li
                     key={tag}
@@ -505,13 +526,17 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                 {m['home.values.c3_title']()}
               </h3>
               <p className="text-muted-foreground mb-4 text-sm leading-7 lg:text-base">
-                {m['home.values.c3_desc']()}
+                <InlineLinks
+                  text={m['home.values.c3_desc']()}
+                  linkClassName="text-foreground"
+                />
               </p>
               <ul className="mb-6 flex flex-wrap content-start items-start gap-2">
                 {[
                   m['home.values.c3_t1'](),
                   m['home.values.c3_t2'](),
                   m['home.values.c3_t3'](),
+                  m['home.values.c3_t4'](),
                 ].map((tag) => (
                   <li
                     key={tag}
