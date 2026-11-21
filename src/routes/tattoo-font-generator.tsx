@@ -30,6 +30,7 @@ import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { FontLibraryDialog } from '@/components/font-library-dialog';
+import { FontSeoModules } from '@/components/font-seo-sections';
 import {
   FontStylePreview,
   PREVIEW_FONTS,
@@ -762,7 +763,32 @@ const FAQS = [
     aEn: 'pages.fontgen.d099',
     aZh: 'pages.fontgen.d099',
   },
+  {
+    qEn: 'pages.fontgen.d100',
+    qZh: 'pages.fontgen.d100',
+    aEn: 'pages.fontgen.d101',
+    aZh: 'pages.fontgen.d101',
+  },
+  {
+    qEn: 'pages.fontgen.d102',
+    qZh: 'pages.fontgen.d102',
+    aEn: 'pages.fontgen.d103',
+    aZh: 'pages.fontgen.d103',
+  },
+  {
+    qEn: 'pages.fontgen.d104',
+    qZh: 'pages.fontgen.d104',
+    aEn: 'pages.fontgen.d105',
+    aZh: 'pages.fontgen.d105',
+  },
 ];
+
+// High-resolution export targets. The on-screen paddles are 768x512, which
+// is fine for previews but visibly soft when a downloaded PNG is enlarged or
+// printed. Render lettering at 4x and skin previews at 2x so the text stays
+// crisp in the exported file.
+const LETTERING_EXPORT_SCALE = 4;
+const SKIN_EXPORT_SCALE = 2;
 
 function TattooFontGeneratorPage() {
   const isZh = getLocale() === 'zh';
@@ -970,6 +996,7 @@ function TattooFontGeneratorPage() {
     const font = `${style}${weight} ${fontSize}px ${family}`;
     const rendered = getRenderedText();
     // Make sure the webfont is ready, otherwise the canvas falls back silently.
+    await document.fonts.ready;
     await document.fonts.load(font, rendered);
     ctx.font = font;
     ctx.fillStyle = ink;
@@ -1007,7 +1034,7 @@ function TattooFontGeneratorPage() {
     setDownloadMenuOpen(false);
     try {
       const canvas = await renderLetteringCanvas(
-        1,
+        LETTERING_EXPORT_SCALE,
         'transparent',
         inkColor ?? DEFAULT_INK
       );
@@ -1055,44 +1082,78 @@ function TattooFontGeneratorPage() {
     }
   }
 
-  function handleDownloadSkinPng() {
+  function pickFontIdea(value: string) {
+    setText(value);
+    setVariantIdx(0);
+    setGenerated(true);
+    window.requestAnimationFrame(() => {
+      document.getElementById('font-workspace')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+  }
+
+  async function handleDownloadSkinPng() {
     setDownloadMenuOpen(false);
     const rendered = getRenderedText();
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const w = img.naturalWidth || 768;
-      const h = img.naturalHeight || 1152;
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      ctx.fillStyle = '#e5e5e5';
-      ctx.fillRect(0, 0, w, h);
-      ctx.filter = activeSkin.filter === 'none' ? 'none' : activeSkin.filter;
-      ctx.drawImage(img, 0, 0, w, h);
-      ctx.filter = 'none';
+    img.onload = async () => {
+      try {
+        const sourceWidth = img.naturalWidth || 768;
+        const sourceHeight = img.naturalHeight || 1152;
+        const w = sourceWidth * SKIN_EXPORT_SCALE;
+        const h = sourceHeight * SKIN_EXPORT_SCALE;
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('Could not prepare the skin preview export.');
 
-      ctx.save();
-      ctx.translate((posX / 100) * w, (posY / 100) * h);
-      ctx.rotate((rotation * Math.PI) / 180);
-      ctx.scale(sizePct / 100, sizePct / 100);
-      ctx.globalAlpha = opacity / 100;
-      ctx.fillStyle = inkColor ?? DEFAULT_INK;
-      const basePx = Math.round(w * 0.072);
-      ctx.font = `${activeVariant.fontStyle === 'italic' ? 'italic ' : ''}${activeVariant.fontWeight ?? 600} ${basePx}px ${activeVariant.fontFamily}`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(rendered, 0, 0);
-      ctx.restore();
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.fillStyle = '#e5e5e5';
+        ctx.fillRect(0, 0, w, h);
+        ctx.filter = activeSkin.filter === 'none' ? 'none' : activeSkin.filter;
+        ctx.drawImage(img, 0, 0, w, h);
+        ctx.filter = 'none';
 
-      const a = document.createElement('a');
-      a.href = canvas.toDataURL('image/png');
-      a.download = `tattoo-generator-${activeStyle.id}-${placementId}.png`;
-      a.click();
-      toast.success(m['pages.fontgen.m009']());
+        const basePx = Math.round(w * 0.072);
+        const font = `${activeVariant.fontStyle === 'italic' ? 'italic ' : ''}${activeVariant.fontWeight ?? 600} ${basePx}px ${activeVariant.fontFamily}`;
+        // The skin source is 1024px wide, but rendering the text on a larger
+        // canvas keeps the lettering sharp when the preview is enlarged.
+        await document.fonts.ready;
+        await document.fonts.load(font, rendered);
+
+        ctx.save();
+        ctx.translate((posX / 100) * w, (posY / 100) * h);
+        ctx.rotate((rotation * Math.PI) / 180);
+        ctx.scale(sizePct / 100, sizePct / 100);
+        ctx.globalAlpha = opacity / 100;
+        ctx.fillStyle = inkColor ?? DEFAULT_INK;
+        ctx.font = font;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(rendered, 0, 0);
+        ctx.restore();
+
+        const blob = await new Promise<Blob | null>((resolve) =>
+          canvas.toBlob(resolve, 'image/png')
+        );
+        if (!blob) throw new Error('Could not render the skin preview.');
+        downloadBlob(
+          blob,
+          `tattoo-generator-${activeStyle.id}-${placementId}.png`
+        );
+        toast.success(m['pages.fontgen.m009']());
+      } catch (error) {
+        toast.error(
+          error instanceof Error ? error.message : 'PNG export failed.'
+        );
+      }
     };
+    img.onerror = () => toast.error('Could not load the skin preview.');
     img.src = `/tattoo-font-generator/placements/${placementId}/medium.webp`;
   }
 
@@ -2064,7 +2125,9 @@ function TattooFontGeneratorPage() {
             </div>
           </section>
 
-          {/* 6. FAQ (9 Items) */}
+          <FontSeoModules onPickText={pickFontIdea} />
+
+          {/* 7. FAQ (12 Items) */}
           <section className="border-border border-t py-12 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 sm:px-6">
               <h2 className="text-foreground mb-8 text-center font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
