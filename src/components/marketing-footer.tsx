@@ -25,9 +25,9 @@ export function MarketingFooter() {
 
           {/* Column 1: Create */}
           <div>
-            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
+            <p className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
               {m['home.footer.create']()}
-            </h4>
+            </p>
             <ul className="text-muted-foreground space-y-2.5 text-sm">
               <li>
                 <Link
@@ -82,9 +82,9 @@ export function MarketingFooter() {
 
           {/* Column 2: Explore */}
           <div>
-            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
+            <p className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
               {m['home.footer.explore']()}
-            </h4>
+            </p>
             <ul className="text-muted-foreground space-y-2.5 text-sm">
               <li>
                 <Link
@@ -123,9 +123,9 @@ export function MarketingFooter() {
 
           {/* Column 3: Resources */}
           <div>
-            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
+            <p className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
               {m['home.footer.resources']()}
-            </h4>
+            </p>
             <ul className="text-muted-foreground space-y-2.5 text-sm">
               <li>
                 <Link
@@ -164,9 +164,9 @@ export function MarketingFooter() {
 
           {/* Column 4: Legal */}
           <div>
-            <h4 className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
+            <p className="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
               {m['home.footer.legal']()}
-            </h4>
+            </p>
             <ul className="text-muted-foreground space-y-2.5 text-sm">
               <li>
                 <Link

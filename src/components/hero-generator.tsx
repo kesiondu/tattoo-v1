@@ -184,9 +184,7 @@ export function HeroGenerator({
     initialStyle && ALL_STYLES.some((s) => s.id === initialStyle)
       ? initialStyle
       : 'pick-for-me';
-  const [openStep, setOpenStep] = useState<1 | 2 | 3 | null>(
-    initialPrompt || initialStyle ? 2 : 1
-  );
+  const [openStep, setOpenStep] = useState<1 | 2 | 3 | null>(2);
   const [selectedStyle, setSelectedStyle] = useState<string>(validInitialStyle);
   const [showAllStyles, setShowAllStyles] = useState(
     EXTRA_STYLES.some((s) => s.id === validInitialStyle)

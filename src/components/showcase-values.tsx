@@ -146,15 +146,15 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
 
           {/* Row 1 */}
           <div className="animate-marquee-left flex w-max gap-3 pr-3 md:gap-4 md:pr-4">
-            {[...MARQUEE_ROW_1, ...MARQUEE_ROW_1].map((item, idx) => (
+            {MARQUEE_ROW_1.map((item) => (
               <Link
-                key={`r1-${idx}`}
+                key={`r1-${item.src}`}
                 href={item.href}
                 className="group bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
               >
                 <img
                   src={item.src}
-                  alt={idx < MARQUEE_ROW_1.length ? item.alt() : ''}
+                  alt={item.alt()}
                   width={300}
                   height={300}
                   loading="lazy"
@@ -163,19 +163,36 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                 />
               </Link>
             ))}
+            {MARQUEE_ROW_1.map((item) => (
+              <div
+                key={`r1-clone-${item.src}`}
+                aria-hidden="true"
+                className="bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
+              >
+                <img
+                  src={item.src}
+                  alt=""
+                  width={300}
+                  height={300}
+                  loading="lazy"
+                  decoding="async"
+                  className="size-full object-cover"
+                />
+              </div>
+            ))}
           </div>
 
           {/* Row 2 */}
           <div className="animate-marquee-right flex w-max gap-3 pr-3 md:gap-4 md:pr-4">
-            {[...MARQUEE_ROW_2, ...MARQUEE_ROW_2].map((item, idx) => (
+            {MARQUEE_ROW_2.map((item) => (
               <Link
-                key={`r2-${idx}`}
+                key={`r2-${item.src}`}
                 href={item.href}
                 className="group bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
               >
                 <img
                   src={item.src}
-                  alt={idx < MARQUEE_ROW_2.length ? item.alt() : ''}
+                  alt={item.alt()}
                   width={300}
                   height={300}
                   loading="lazy"
@@ -183,6 +200,23 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                   className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </Link>
+            ))}
+            {MARQUEE_ROW_2.map((item) => (
+              <div
+                key={`r2-clone-${item.src}`}
+                aria-hidden="true"
+                className="bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
+              >
+                <img
+                  src={item.src}
+                  alt=""
+                  width={300}
+                  height={300}
+                  loading="lazy"
+                  decoding="async"
+                  className="size-full object-cover"
+                />
+              </div>
             ))}
           </div>
         </div>

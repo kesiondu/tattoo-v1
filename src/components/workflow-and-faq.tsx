@@ -484,9 +484,11 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                       className="hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="bg-muted text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold">
-                          {idx + 1}
-                        </span>
+                        <span
+                          aria-hidden="true"
+                          data-index={idx + 1}
+                          className="bg-muted text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold before:content-[attr(data-index)]"
+                        />
                         <span className="text-foreground text-sm font-medium sm:text-[15px]">
                           {item.q}
                         </span>
