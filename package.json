@@ -11,7 +11,7 @@
     "start": "node .output/server/index.mjs",
     "precf:build": "node scripts/db-setup.mjs",
     "cf:build": "node scripts/cf-build.mjs",
-    "cf:deploy": "sh -c 'set -a && [ -f .env.production ] && . ./.env.production; set +a && pnpm cf:build && exec wrangler deploy'",
+    "cf:deploy": "node scripts/cf-deploy.mjs",
     "postinstall": "node scripts/db-setup.mjs",
     "db:setup": "node scripts/db-setup.mjs",
     "db:push": "tsx scripts/with-env.ts drizzle-kit push --config=drizzle.config.ts",
