@@ -1572,21 +1572,6 @@ export function HeroGenerator({
                   <div className="absolute right-2.5 bottom-2.5 left-2.5 flex flex-wrap items-center justify-center gap-2">
                     <button
                       type="button"
-                      disabled={generating || sessionPending}
-                      onClick={() => void runGeneration('hq_body_preview')}
-                      className="text-foreground inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs hover:bg-white disabled:opacity-60"
-                    >
-                      <Sparkles className="size-3" />
-                      <span>{m['pages.home.m001']()}</span>
-                      {showCredits && (
-                        <span className="text-foreground/60">
-                          · {TATTOO_GENERATION_COSTS.hq_body_preview}{' '}
-                          {m['pages.pricing.m021']()}
-                        </span>
-                      )}
-                    </button>
-                    <button
-                      type="button"
                       onClick={() => setExportOpen(true)}
                       className="text-foreground inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs hover:bg-white"
                     >

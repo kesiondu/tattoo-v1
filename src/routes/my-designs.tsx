@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import {
@@ -16,6 +17,13 @@ import { noIndexHead } from '@/lib/seo';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
 import { MarketingPageLayout } from '@/components/marketing-page-layout';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 interface TattooDesign {
   id: string;
@@ -23,9 +31,91 @@ interface TattooDesign {
   tier: string;
   prompt: string;
   imageUrl: string | null;
+  artworkUrl?: string | null;
+  hasArtwork?: boolean;
   error: string | null;
   costCredits: number;
   createdAt: string;
+}
+
+function DesignImage({
+  url,
+  id,
+  prompt,
+  art,
+}: {
+  url: string;
+  id: string;
+  prompt: string;
+  art: boolean;
+}) {
+  const title = art ? m['home.hero.tab_art']() : m['home.hero.tab_body']();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(false);
+  async function download() {
+    setBusy(true);
+    setError(false);
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error();
+      const blob = await res.blob();
+      if (!blob.type.startsWith('image/')) throw new Error();
+      const href = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = href;
+      link.download =
+        'tattoo-' +
+        id +
+        '-' +
+        (art ? 'reference' : 'preview') +
+        '.' +
+        (blob.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(href), 1000);
+    } catch {
+      setError(true);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <Dialog onOpenChange={() => setError(false)}>
+      <DialogTrigger className="hover:bg-muted flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 pt-6 pb-2">
+        <img
+          src={url}
+          alt=""
+          loading="lazy"
+          className="min-h-0 w-full flex-1 object-contain"
+        />
+        <span className="text-xs font-medium">{title}</span>
+      </DialogTrigger>
+      <DialogContent className="max-h-[90dvh] overflow-auto sm:max-w-2xl">
+        <DialogTitle>{title}</DialogTitle>
+        <DialogDescription className="line-clamp-2">{prompt}</DialogDescription>
+        <img
+          src={url}
+          alt={title}
+          className="mx-auto max-h-[58dvh] max-w-full object-contain"
+        />
+        <button
+          type="button"
+          disabled={busy}
+          onClick={download}
+          className="bg-foreground text-background inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-4 font-semibold disabled:opacity-60"
+        >
+          {busy ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <Download className="size-4" />
+          )}
+          {art
+            ? m['home.hero.export_art_button']()
+            : m['home.hero.export_preview_button']()}
+        </button>
+        {error && <p role="alert">{m['home.designs.download_failed']()}</p>}
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 function MyDesignsPage() {
@@ -48,27 +138,6 @@ function MyDesignsPage() {
   });
 
   const designs = designsQuery.data ?? [];
-
-  async function downloadDesign(url: string, id: string) {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Could not load the generated image.');
-      const image = await response.blob();
-      if (!image.type.startsWith('image/')) {
-        throw new Error('The generated result is not an image.');
-      }
-      const objectUrl = URL.createObjectURL(image);
-      const anchor = document.createElement('a');
-      anchor.href = objectUrl;
-      anchor.download = `tattoo-design-${id}.png`;
-      anchor.click();
-      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1_000);
-    } catch (error) {
-      // The history page has no toast provider dependency; opening the image
-      // remains available as a direct fallback if a download fails.
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }
-  }
 
   return (
     <MarketingPageLayout>
@@ -160,19 +229,33 @@ function MyDesignsPage() {
                     className="border-border flex flex-col overflow-hidden rounded-2xl border bg-white shadow-xs"
                   >
                     <div className="bg-muted/40 relative flex aspect-[4/3] items-center justify-center overflow-hidden">
-                      {design.status === 'success' && design.imageUrl ? (
-                        <a
-                          href={design.imageUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="block size-full"
-                        >
-                          <img
-                            src={design.imageUrl}
-                            alt={design.prompt.slice(0, 80)}
-                            className="size-full object-cover"
-                          />
-                        </a>
+                      {design.imageUrl ||
+                      design.artworkUrl ||
+                      design.hasArtwork ? (
+                        <>
+                          {design.imageUrl && (
+                            <DesignImage
+                              id={design.id}
+                              url={design.imageUrl}
+                              prompt={design.prompt}
+                              art={[
+                                'clean_artwork',
+                                'stencil_from_preview',
+                              ].includes(design.tier)}
+                            />
+                          )}
+                          {(design.artworkUrl || design.hasArtwork) && (
+                            <DesignImage
+                              id={design.id}
+                              url={
+                                design.artworkUrl ||
+                                `/api/tattoo/tasks/${encodeURIComponent(design.id)}/artwork`
+                              }
+                              prompt={design.prompt}
+                              art
+                            />
+                          )}
+                        </>
                       ) : (
                         <div className="flex flex-col items-center gap-2 px-4 text-center">
                           {design.status === 'processing' ||
@@ -210,18 +293,6 @@ function MyDesignsPage() {
                           </p>
                         )}
                       <div className="text-muted-foreground mt-auto flex items-center justify-between gap-2 pt-2 text-[11px]">
-                        {design.status === 'success' && design.imageUrl && (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              void downloadDesign(design.imageUrl!, design.id)
-                            }
-                            className="text-foreground hover:bg-muted inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-semibold transition-colors"
-                          >
-                            <Download className="size-3.5" />
-                            <span>{m['home.hero.download_preview']()}</span>
-                          </button>
-                        )}
                         <span>
                           {new Date(design.createdAt)
                             .toISOString()

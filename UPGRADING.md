@@ -48,6 +48,9 @@ exports, permission codes, and behavior that changes for end users.
 
 ## Unreleased: Automatic tattoo design packs
 
+My Designs displays each available preview and line reference as a separate
+thumbnail. Opening either thumbnail shows its download dialog.
+
 New packs now generate one independent PNG motif and compose the placement
 and line reference on the server. Ship the versioned PNG silhouette assets
 under `public/placement-v1` with the Worker and enable its ASSETS binding.
