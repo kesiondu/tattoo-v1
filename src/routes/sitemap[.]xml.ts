@@ -1,6 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { TATTOO_IDEAS } from '@/data/tattoo-ideas';
-import { TATTOO_STYLES } from '@/data/tattoo-styles';
 
 import { envConfigs } from '@/config';
 import { baseLocale, locales, localizeUrl } from '@/paraglide/runtime.js';
@@ -23,9 +21,7 @@ const STATIC_ENTRIES: Entry[] = [
   },
   { path: '/name-tattoo-generator', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/tattoo-font-generator', changeFrequency: 'weekly', priority: 0.9 },
-  { path: '/tattoo-styles', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/tattoo-fonts', changeFrequency: 'weekly', priority: 0.8 },
-  { path: '/tattoo-ideas', changeFrequency: 'weekly', priority: 0.8 },
   {
     path: '/tattoo-price-calculator',
     changeFrequency: 'weekly',
@@ -98,26 +94,6 @@ export const Route = createFileRoute('/sitemap.xml')({
             ...entry,
             lastModified: CONTENT_LAST_MODIFIED[entry.path],
           })),
-          ...TATTOO_STYLES.map(
-            (style): Entry => ({
-              path: `/tattoo-styles/${style.slug}`,
-              changeFrequency: 'weekly',
-              priority: 0.8,
-            })
-          ),
-          ...TATTOO_IDEAS.map(
-            (idea): Entry => ({
-              path: `/tattoo-ideas/${idea.slug}`,
-              lastModified: [
-                'cybersigilism-shoulder-arm-tattoo',
-                'mandala-hip-tattoo',
-              ].includes(idea.slug)
-                ? '2026-11-20'
-                : undefined,
-              changeFrequency: 'monthly',
-              priority: 0.7,
-            })
-          ),
         ];
 
         // Blog posts: db posts merged with any local MDX posts.

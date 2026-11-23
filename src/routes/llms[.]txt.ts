@@ -36,22 +36,10 @@ const STATIC_PAGES: { path: string; title: string; description: string }[] = [
       'Preview names, dates, and short phrases in tattoo lettering styles and export a design reference.',
   },
   {
-    path: '/tattoo-styles',
-    title: 'Tattoo Styles Guide',
-    description:
-      'Compare tattoo styles, visual characteristics, and common placements.',
-  },
-  {
     path: '/tattoo-fonts',
     title: 'Tattoo Fonts Guide',
     description:
       'Compare lettering styles, readability, and use cases for tattoo text.',
-  },
-  {
-    path: '/tattoo-ideas',
-    title: 'Tattoo Ideas Gallery',
-    description:
-      'Browse illustrated tattoo concepts with style, placement, prompt, and on-skin preview details.',
   },
   {
     path: '/tattoo-price-calculator',
@@ -109,8 +97,6 @@ export const Route = createFileRoute('/llms.txt')({
           '',
           '## Tattoo Idea Collections',
           '',
-          `- [Tattoo styles](${pageUrl('/tattoo-styles')}): Style pages compare specific visual approaches and link to related examples.`,
-          `- [Tattoo ideas](${pageUrl('/tattoo-ideas')}): Each detail page includes artwork, placement context, a generation prompt, and related ideas.`,
           `- [Name tattoo generator](${pageUrl('/name-tattoo-generator')}): Compare name lettering previews and export a PNG reference.`,
           `- [Tattoo stencil generator](${pageUrl('/tattoo-stencil-generator')}): Generate a tattoo concept from text and export a line-art reference for review with a tattoo artist.`,
           '',

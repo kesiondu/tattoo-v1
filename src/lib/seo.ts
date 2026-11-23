@@ -81,6 +81,7 @@ export function buildSeoHead(opts: {
   locale: string;
   image?: string;
   jsonLd?: object[];
+  robots?: string;
 }) {
   const url = pageUrlFor(opts.path, opts.locale);
   const image = `${siteUrl()}${opts.image ?? DEFAULT_OG_IMAGE}`;
@@ -102,6 +103,7 @@ export function buildSeoHead(opts: {
       { name: 'twitter:title', content: opts.title },
       { name: 'twitter:description', content: opts.description },
       { name: 'twitter:image', content: image },
+      ...(opts.robots ? [{ name: 'robots', content: opts.robots }] : []),
     ],
     scripts:
       opts.jsonLd && opts.jsonLd.length

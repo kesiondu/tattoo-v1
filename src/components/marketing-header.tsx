@@ -27,7 +27,6 @@ export function MarketingHeader({ onOpenAuth }: MarketingHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [internalAuthOpen, setInternalAuthOpen] = useState(false);
-  const [stylesOpen, setStylesOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
 
   const { data: session } = useSession();
@@ -55,43 +54,6 @@ export function MarketingHeader({ onOpenAuth }: MarketingHeaderProps) {
     }
   }
 
-  const styleItems = [
-    {
-      label: m['home.style.fine_line'](),
-      href: '/tattoo-styles/fine-line',
-    },
-    {
-      label: m['home.style.minimalist'](),
-      href: '/tattoo-styles/minimalist',
-    },
-    {
-      label: m['home.style.lettering'](),
-      href: '/tattoo-styles/lettering',
-    },
-    { label: m['home.style.realism'](), href: '/tattoo-styles/realism' },
-    {
-      label: m['home.style.black_grey'](),
-      href: '/tattoo-styles/black-grey',
-    },
-    {
-      label: m['home.style.american_traditional'](),
-      href: '/tattoo-styles/american-traditional',
-    },
-    { label: m['home.style.japanese'](), href: '/tattoo-styles/japanese' },
-    {
-      label: m['home.style.blackwork'](),
-      href: '/tattoo-styles/blackwork',
-    },
-    {
-      label: m['home.style.geometric'](),
-      href: '/tattoo-styles/geometric',
-    },
-    {
-      label: m['home.style.neo_traditional'](),
-      href: '/tattoo-styles/neo-traditional',
-    },
-  ];
-
   const navLinkCls =
     'inline-flex h-9 items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted';
 
@@ -118,7 +80,7 @@ export function MarketingHeader({ onOpenAuth }: MarketingHeaderProps) {
             </span>
           </Link>
 
-          {/* Center: Desktop 7-item Navigation */}
+          {/* Center: Desktop Navigation */}
           <nav className="hidden items-center gap-1 lg:flex">
             <Link
               href="/"
@@ -151,84 +113,12 @@ export function MarketingHeader({ onOpenAuth }: MarketingHeaderProps) {
               </span>
             </Link>
 
-            {/* Styles dropdown */}
-            <div className="relative" onMouseLeave={() => setStylesOpen(false)}>
-              <button
-                type="button"
-                onClick={() => {
-                  setStylesOpen((v) => !v);
-                  setToolsOpen(false);
-                }}
-                onMouseEnter={() => {
-                  setStylesOpen(true);
-                  setToolsOpen(false);
-                }}
-                className={cn(
-                  navLinkCls,
-                  'gap-1',
-                  pathname === '/tattoo-styles' && 'bg-muted'
-                )}
-              >
-                <span>{m['home.nav.styles']()}</span>
-                <ChevronDown
-                  className={cn(
-                    'text-muted-foreground size-3.5 transition-transform duration-150',
-                    stylesOpen && 'rotate-180'
-                  )}
-                />
-              </button>
-
-              {stylesOpen && (
-                <div className="absolute top-full left-0 z-50 w-56 pt-1.5">
-                  <div className="border-border rounded-xl border bg-white p-1.5 shadow-lg">
-                    <div className="grid grid-cols-1 gap-0.5">
-                      {styleItems.map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => setStylesOpen(false)}
-                          className="text-foreground/85 hover:bg-muted hover:text-foreground block rounded-lg px-3 py-1.5 text-sm transition-colors"
-                        >
-                          {item.label}
-                        </Link>
-                      ))}
-                    </div>
-                    <div className="border-border mt-1 border-t pt-1">
-                      <Link
-                        href="/tattoo-styles"
-                        onClick={() => setStylesOpen(false)}
-                        className="text-foreground hover:bg-muted block rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
-                      >
-                        {m['home.nav.view_all_styles']()} →
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <Link
-              href="/tattoo-ideas"
-              className={cn(
-                navLinkCls,
-                pathname === '/tattoo-ideas' && 'bg-muted'
-              )}
-            >
-              {m['home.nav.tattoo_ideas']()}
-            </Link>
-
             {/* Tools dropdown */}
             <div className="relative" onMouseLeave={() => setToolsOpen(false)}>
               <button
                 type="button"
-                onClick={() => {
-                  setToolsOpen((v) => !v);
-                  setStylesOpen(false);
-                }}
-                onMouseEnter={() => {
-                  setToolsOpen(true);
-                  setStylesOpen(false);
-                }}
+                onClick={() => setToolsOpen((v) => !v)}
+                onMouseEnter={() => setToolsOpen(true)}
                 className={cn(
                   navLinkCls,
                   'gap-1',
@@ -354,20 +244,6 @@ export function MarketingHeader({ onOpenAuth }: MarketingHeaderProps) {
                 <span className="bg-foreground text-background rounded px-1 py-0.5 text-[9px] leading-none font-semibold">
                   {m['home.nav.badge_3d']()}
                 </span>
-              </Link>
-              <Link
-                href="/tattoo-styles"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-foreground hover:bg-muted rounded-lg px-3 py-2 text-sm font-medium"
-              >
-                {m['home.nav.styles']()}
-              </Link>
-              <Link
-                href="/tattoo-ideas"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-foreground hover:bg-muted rounded-lg px-3 py-2 text-sm font-medium"
-              >
-                {m['home.nav.tattoo_ideas']()}
               </Link>
               <Link
                 href="/tattoo-price-calculator"

@@ -461,6 +461,7 @@ export const Route = createFileRoute('/tattoo-styles/$style')({
       meta: [
         { title: t.seoTitle },
         { name: 'description', content: t.seoDescription },
+        { name: 'robots', content: 'noindex, follow' },
         { property: 'og:title', content: t.seoTitle },
         { property: 'og:description', content: t.seoDescription },
         { property: 'og:image', content: ogImage },

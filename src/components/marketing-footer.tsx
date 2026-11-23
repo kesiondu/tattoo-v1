@@ -88,26 +88,10 @@ export function MarketingFooter() {
             <ul className="text-muted-foreground space-y-2.5 text-sm">
               <li>
                 <Link
-                  href="/tattoo-styles"
-                  className="hover:text-foreground transition-colors hover:underline"
-                >
-                  {m['home.footer.tattoo_styles']()}
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/tattoo-fonts"
                   className="hover:text-foreground transition-colors hover:underline"
                 >
                   {m['home.footer.tattoo_fonts']()}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/tattoo-ideas"
-                  className="hover:text-foreground transition-colors hover:underline"
-                >
-                  {m['home.footer.tattoo_ideas']()}
                 </Link>
               </li>
               <li>

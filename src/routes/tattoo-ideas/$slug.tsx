@@ -569,6 +569,7 @@ export const Route = createFileRoute('/tattoo-ideas/$slug')({
       meta: [
         { title: seoTitle },
         { name: 'description', content: seoDescription },
+        { name: 'robots', content: 'noindex, follow' },
         { property: 'og:title', content: seoTitle },
         { property: 'og:description', content: seoDescription },
         { property: 'og:image', content: imageUrl },
