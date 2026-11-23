@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import {
   getPublicStoredImageUrl,
   publishRemoteImage,
+  uploadGeneratedImage,
 } from '@/server/tattoo/storage';
 import {
   getTattooTask,
@@ -13,6 +14,7 @@ import { AIMediaType, KieProvider } from '@/core/ai';
 import { getAuth } from '@/core/auth';
 import {
   TATTOO_GENERATION_COSTS,
+  TATTOO_PREVIEW_PLUS_ARTWORK_COST,
   TATTOO_TASK_SCENE,
   type TattooGenerationTier,
 } from '@/config/tattoo-credits';
@@ -28,6 +30,7 @@ import { respData, respErr } from '@/lib/resp';
 
 const STATIC_ASSET_ORIGIN = 'https://assets.tattoogenerator.online';
 const STATIC_BODY_REFERENCE_PREFIX = '/v1/tattoo-generator/body-references/';
+const MAX_PLACEMENT_OVERLAY_BYTES = 5 * 1024 * 1024;
 
 /** Every tattoo generation uses one model family for predictable results. */
 export const TATTOO_AI_MODELS = {
@@ -131,6 +134,17 @@ function normalizePlacement(value: any): PlacementInput | undefined {
   return { partId, viewId, model, skinTone, points };
 }
 
+function parsePlacementOverlay(value: unknown): Buffer | null {
+  if (typeof value !== 'string') return null;
+  const match = /^data:image\/png;base64,([a-z0-9+/=]+)$/i.exec(value);
+  if (!match) throw new Error('Invalid placement reference image');
+  const image = Buffer.from(match[1], 'base64');
+  if (!image.byteLength || image.byteLength > MAX_PLACEMENT_OVERLAY_BYTES) {
+    throw new Error('Placement reference image is too large');
+  }
+  return image;
+}
+
 function isTrustedRequestOrigin(origin: string | undefined, appUrl: string) {
   if (!origin) return false;
 
@@ -232,6 +246,7 @@ function taskResponse(row: any) {
           modelLabel: view.modelLabel,
           status: 'success',
           imageUrl: view.imageUrl,
+          artworkUrl: view.artworkUrl,
           hasArtwork: view.hasArtwork,
         })
       : respData({
@@ -267,6 +282,7 @@ function taskResponse(row: any) {
     modelLabel: view.modelLabel,
     status: 'processing',
     imageUrl: view.imageUrl,
+    artworkUrl: view.artworkUrl,
     hasArtwork: view.hasArtwork,
     artworkError: view.artworkError,
     stage: view.stage,
@@ -324,7 +340,7 @@ export function buildOnBodyPreviewPrompt(params: {
     ? `The tattoo must be placed only on the user-selected body region: ${regionLabel}.`
     : '';
   const regionPart = pointsText
-    ? `The selected region is the polygon with these normalized coordinates (origin at top-left, x/y in 0..1): ${pointsText}. Keep the tattoo entirely inside this polygon and follow the body contour there.`
+    ? `HARD PLACEMENT BOUNDARY: the selected region is the polygon with these normalized coordinates (origin at top-left, x/y in 0..1): ${pointsText}. The tattoo ink must be 100% contained inside this polygon. No ink may cross, touch, or extend beyond its boundary. Never enlarge, shift, mirror, or substitute a nearby anatomical area.`
     : '';
   const subjectPart =
     placement?.model === 'woman'
@@ -339,12 +355,13 @@ export function buildOnBodyPreviewPrompt(params: {
     'The tattoo is custom-sized and shaped to flow naturally with the anatomy and contours of the selected area. Crisp ink lines, balanced contrast, and natural matte ink integration into real skin texture and pores.',
     'Shot in soft, even studio lighting with a clean, neutral minimalist background. Sharp focus on the tattoo, authentic photographic grain, no glossy sticker effect, artificial glow, watermark, lettering artifacts, or placement overlays.',
     hasReference
-      ? 'Use the attached body reference photo as the exact same pose, camera angle, skin tone, lighting and background. Do not crop or resize the body.'
+      ? 'Use the attached adult reference photo only for the exact same pose, camera angle, skin tone, lighting, background, and framing.'
       : 'Show the tattoo on a realistic body area with natural skin and lighting.',
     hasPlacementMark
       ? 'A translucent pink outline in the reference marks the allowed placement area; use it only as a position guide and do not reproduce the pink color or overlay in the result.'
       : '',
     subjectPart,
+    'Choose the tattoo ink palette to suit the subject and tattoo style. Honor any specific hues or monochrome treatment described in the idea. Otherwise use expressive colored pigments where they suit the design, or black and grey for monochrome styles. Render the pigments as naturally healed ink within the selected area and preserve the surrounding skin tone.',
     placementPart,
     regionPart,
     placementCameraInstruction(placement),
@@ -356,10 +373,11 @@ export function buildOnBodyPreviewPrompt(params: {
 
 export function buildFlatStencilPrompt(): string {
   return [
-    "Extract the tattoo design from the person's skin in this image and convert it into a completely flat, 2D professional tattoo stencil line drawing on a pure solid white background (#FFFFFF).",
-    'Unwarp any body curvature or perspective distortion so the artwork lies completely flat, centered, and surrounded by generous white margins. Preserve the original composition without forcing symmetry.',
+    'Use the supplied image solely as a reference for the existing tattoo ink design. Produce a de-identified, completely flat 2D professional tattoo reference drawing on a pure solid white background (#FFFFFF).',
+    'Extract only the visible ink marks and ignore every non-ink visual element. The output must be a pure line drawing, never a photograph or subject portrait.',
+    'Correct curvature and perspective distortion so the artwork lies completely flat, centered, and surrounded by generous white margins. Preserve the original composition without forcing symmetry.',
     'Render strictly in pure solid black ink lines (#000000) only: crisp, continuous outlines with clean line-weight hierarchy suitable for thermal stencil transfer paper.',
-    'Completely remove the human body, skin texture, hair, lighting, shadows, greyscale shading, color fills, background, gradients, stippling, and paper texture.',
+    'Remove all photographic texture, hair, lighting, shadows, greyscale shading, color fills, background, gradients, stippling, and paper texture.',
     'Preserve the exact visible tattoo composition, symbols, proportions, and line placement from the input image. Do not invent, omit, restyle, or add design elements. If a detail is ambiguous, retain only clearly visible ink marks rather than hallucinating new artwork.',
   ].join(' ');
 }
@@ -424,6 +442,10 @@ async function POST({ request }: { request: Request }) {
         ? body.placementLabel.slice(0, 200)
         : undefined;
     const placement = normalizePlacement(body?.placement);
+    const placementOverlay = parsePlacementOverlay(body?.placementOverlay);
+    if (placementOverlay && !placement) {
+      return respErr('A placement reference requires a body placement');
+    }
     const referenceImage =
       typeof body?.referenceImage === 'string'
         ? body.referenceImage
@@ -432,6 +454,9 @@ async function POST({ request }: { request: Request }) {
       typeof body?.sourceTaskId === 'string'
         ? body.sourceTaskId.slice(0, 128)
         : undefined;
+    const autoStencil =
+      body?.autoStencil === true &&
+      (tier === 'fast_body_preview' || tier === 'hq_body_preview');
     const configs = await getAllConfigs();
     const appUrl = configs.app_url || 'http://localhost:3000';
     const requestOrigin = new URL(request.url).origin;
@@ -526,8 +551,8 @@ async function POST({ request }: { request: Request }) {
             style,
             placement,
             placementLabel,
-            hasReference: Boolean(kieReference),
-            hasPlacementMark: false,
+            hasReference: Boolean(kieReference || placementOverlay),
+            hasPlacementMark: Boolean(placementOverlay),
           });
     const stencilPrompt = buildFlatStencilPrompt();
     const standaloneArtworkPrompt = buildStandaloneArtworkPrompt({
@@ -542,7 +567,11 @@ async function POST({ request }: { request: Request }) {
           : bodyPrompt!;
 
     const creditsEnabled = configs.credits_enabled !== 'false';
-    const costCredits = creditsEnabled ? TATTOO_GENERATION_COSTS[tier] : 0;
+    const costCredits = creditsEnabled
+      ? autoStencil
+        ? TATTOO_PREVIEW_PLUS_ARTWORK_COST
+        : TATTOO_GENERATION_COSTS[tier]
+      : 0;
 
     const task = await createTask({
       id: requestId,
@@ -566,6 +595,7 @@ async function POST({ request }: { request: Request }) {
         stencilPrompt,
         bodyReferenceUrl: kieReference,
         sourceTaskId,
+        autoStencil,
       },
     });
 
@@ -576,6 +606,34 @@ async function POST({ request }: { request: Request }) {
         return respErr('Request id already used');
       }
       return taskResponse(task);
+    }
+
+    if (placementOverlay) {
+      try {
+        const storedOverlay = await uploadGeneratedImage({
+          body: placementOverlay,
+          contentType: 'image/png',
+          taskId: task.id,
+          kind: 'placement',
+        });
+        kieReference = await getPublicStoredImageUrl(storedOverlay.storageKey);
+        if (!kieReference || !isPubliclyFetchableUrl(kieReference)) {
+          throw new Error('Placement reference storage is not public');
+        }
+      } catch {
+        await updateTask({
+          taskId: task.id,
+          status: AITaskStatus.FAILED,
+          taskResult: {
+            error:
+              'The placement reference could not be prepared; your credits were refunded.',
+            tier,
+          },
+        });
+        return respErr(
+          'The placement reference could not be prepared. Your credits were refunded.'
+        );
+      }
     }
 
     try {

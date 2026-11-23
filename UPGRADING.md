@@ -46,6 +46,24 @@ exports, permission codes, and behavior that changes for end users.
 
 ---
 
+## Unreleased: Automatic tattoo design packs
+
+The homepage generator now charges **4 credits once** for a design pack,
+automatically generating its on-body placement preview and a matching clean
+flat artist reference in sequence. It no longer asks users to confirm or pay
+again for the reference. If the second stage cannot be started or completed,
+the whole 4-credit charge is refunded. Placement prompts now treat the lassoed
+region as a hard no-ink-outside-boundary constraint.
+
+### Action required
+
+- [ ] **Customized tattoo generators**: merge `hero-generator.tsx`,
+      `api/tattoo/generate.ts`, `server/tattoo/tasks.ts`, both locale files,
+      and `config/tattoo-credits.ts` together. The automatic second stage
+      requires publicly retrievable image storage for the provider.
+
+---
+
 ## Unreleased: Dodo Payments provider
 
 Dodo Payments is available as a hosted-checkout provider in test mode or live

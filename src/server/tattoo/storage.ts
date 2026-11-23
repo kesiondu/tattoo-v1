@@ -7,7 +7,7 @@ const GENERATED_IMAGE_TYPES = new Set([
   'image/webp',
 ]);
 
-export type TattooStoredImageKind = 'image' | 'artwork';
+export type TattooStoredImageKind = 'image' | 'artwork' | 'placement';
 
 function normalizedImageType(value: string): string | null {
   const contentType = value.split(';', 1)[0]?.trim().toLowerCase();
@@ -30,7 +30,12 @@ async function uploadToStorage(params: {
   try {
     const storage = await getStorage();
     if (!storage) return null;
-    const suffix = kind === 'artwork' ? '-artwork' : '';
+    const suffix =
+      kind === 'artwork'
+        ? '-artwork'
+        : kind === 'placement'
+          ? '-placement'
+          : '';
     const storageKey = `tattoo/generated/${taskId ? `${taskId}${suffix}` : crypto.randomUUID()}.${ext}`;
     const result = await storage.uploadFile({
       body,

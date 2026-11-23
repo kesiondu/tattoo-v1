@@ -1,4 +1,7 @@
-import { persistRemoteImage } from '@/server/tattoo/storage';
+import {
+  getPublicStoredImageUrl,
+  persistRemoteImage,
+} from '@/server/tattoo/storage';
 import { and, eq, inArray, lt } from 'drizzle-orm';
 
 import { AIMediaType, KieProvider } from '@/core/ai';
@@ -25,6 +28,7 @@ export interface TattooTaskView {
   modelLabel: string;
   prompt: string;
   imageUrl: string | null;
+  artworkUrl: string | null;
   hasArtwork: boolean;
   error: string | null;
   artworkError: string | null;
@@ -64,6 +68,7 @@ function parseOptions(value: unknown): {
   bodyPrompt?: string;
   stencilPrompt?: string;
   bodyReferenceUrl?: string;
+  autoStencil?: boolean;
 } {
   return parseJson(value) ?? {};
 }
@@ -83,6 +88,7 @@ export function toTaskView(row: any): TattooTaskView {
     modelLabel: result.modelLabel || options.modelLabel || row.model,
     prompt: options.userPrompt || row.prompt,
     imageUrl: result.imageUrl || result.images?.[0]?.imageUrl || null,
+    artworkUrl: result.artworkUrl || null,
     hasArtwork: Boolean(result.artworkStorageKey),
     error: result.error || null,
     artworkError: result.artworkError || null,
@@ -222,8 +228,87 @@ async function refreshKieTask(row: any): Promise<void> {
       return;
     }
 
-    // Kie result URLs expire. Copy the image into our storage before marking
+    // Kie result URLs expire. Copy each result into our storage before marking
     // the task successful so /my-designs does not rot.
+    if (options.autoStencil && previousResult.stage !== 'stencil_extraction') {
+      const storedBody = await persistRemoteImage(providerImageUrl, row.id);
+      const referenceUrl = await getPublicStoredImageUrl(storedBody.storageKey);
+      if (!referenceUrl || !options.stencilPrompt) {
+        await updateTask({
+          taskId: row.id,
+          status: AITaskStatus.FAILED,
+          taskResult: {
+            ...previousResult,
+            error:
+              'Clean reference extraction could not start; your credits were refunded.',
+            tier: options.tier,
+          },
+        });
+        return;
+      }
+
+      try {
+        const next = await kie.generate({
+          params: {
+            mediaType: AIMediaType.IMAGE,
+            model: row.model,
+            prompt: options.stencilPrompt || '',
+            options: { image_input: [referenceUrl] },
+          },
+        });
+        await updateTask({
+          taskId: row.id,
+          status: AITaskStatus.PROCESSING,
+          providerTaskId: next.taskId,
+          taskResult: {
+            imageUrl: storedBody.url,
+            storageKey: storedBody.storageKey,
+            contentType: storedBody.contentType,
+            tier: options.tier,
+            modelLabel: options.modelLabel,
+            providerStatus: next.taskStatus,
+            stage: 'stencil_extraction',
+          },
+        });
+      } catch {
+        await updateTask({
+          taskId: row.id,
+          status: AITaskStatus.FAILED,
+          taskResult: {
+            ...previousResult,
+            error:
+              'Clean reference extraction could not start; your credits were refunded.',
+            tier: options.tier,
+          },
+        });
+      }
+      return;
+    }
+
+    if (options.autoStencil && previousResult.stage === 'stencil_extraction') {
+      const storedArtwork = await persistRemoteImage(
+        providerImageUrl,
+        row.id,
+        'artwork'
+      );
+      await updateTask({
+        taskId: row.id,
+        status: AITaskStatus.SUCCESS,
+        taskInfo: { status: AITaskStatus.SUCCESS },
+        taskResult: {
+          ...previousResult,
+          artworkUrl: storedArtwork.url,
+          artworkStorageKey: storedArtwork.storageKey,
+          artworkContentType: storedArtwork.contentType,
+          tier: options.tier,
+          modelLabel: options.modelLabel,
+          providerStatus: res.taskStatus,
+          stage: 'done',
+        },
+      });
+      return;
+    }
+
     const storedImage = await persistRemoteImage(providerImageUrl, row.id);
     await updateTask({
       taskId: row.id,
@@ -251,6 +336,7 @@ async function refreshKieTask(row: any): Promise<void> {
       taskId: row.id,
       status: AITaskStatus.FAILED,
       taskResult: {
+        ...previousResult,
         error:
           res.taskInfo?.errorMessage ||
           res.taskInfo?.errorCode ||

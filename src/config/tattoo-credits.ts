@@ -2,9 +2,8 @@
  * Credit prices for tattoo AI generation. Shared by the server (authoritative
  * charge) and the UI (button labels) so the two can never drift apart.
  *
- * Every user-confirmed generation costs credits independently. A body preview
- * is generated first; its flat stencil is an optional second task that uses
- * the confirmed preview as its image input.
+ * A standard generation is a single 4-credit design pack: an on-body preview
+ * followed automatically by its clean flat reference extraction.
  */
 export const TATTOO_GENERATION_COSTS = {
   fast_body_preview: 2,

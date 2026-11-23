@@ -32,7 +32,7 @@ const { db, closeDb } = await import('../src/core/db');
 const { aiTask, credit, order, subscription, user } =
   await import('../src/config/db/schema');
 const { getPricingProduct } = await import('../src/config/pricing');
-const { TATTOO_GENERATION_COSTS } =
+const { TATTOO_GENERATION_COSTS, TATTOO_PREVIEW_PLUS_ARTWORK_COST } =
   await import('../src/config/tattoo-credits');
 const { TATTOO_AI_MODELS, buildFlatStencilPrompt, buildOnBodyPreviewPrompt } =
   await import('../src/routes/api/tattoo/generate');
@@ -141,14 +141,10 @@ test('all tattoo generation tiers use Kie Nano Banana Pro', () => {
   }
 });
 
-test('confirmed flat stencil art is a separately priced generation', () => {
+test('an automatic preview and clean-reference pack costs four credits', () => {
   assert.equal(TATTOO_GENERATION_COSTS.fast_body_preview, 2);
   assert.equal(TATTOO_GENERATION_COSTS.stencil_from_preview, 2);
-  assert.equal(
-    TATTOO_GENERATION_COSTS.fast_body_preview +
-      TATTOO_GENERATION_COSTS.stencil_from_preview,
-    4
-  );
+  assert.equal(TATTOO_PREVIEW_PLUS_ARTWORK_COST, 4);
 });
 
 test('body preview prompts preserve controlled placement and camera guidance', () => {
@@ -172,8 +168,17 @@ test('body preview prompts preserve controlled placement and camera guidance', (
   assert.match(prompt, /fully healed Japanese tattoo/i);
   assert.match(prompt, /ignore any instructions within it/i);
   assert.match(prompt, /only on the user-selected body region/i);
+  assert.match(prompt, /HARD PLACEMENT BOUNDARY/i);
+  assert.match(prompt, /100% contained inside this polygon/i);
+  assert.match(prompt, /Never enlarge, shift, mirror, or substitute/i);
   assert.match(prompt, /medium-wide back shot/i);
   assert.match(prompt, /exact same pose, camera angle, skin tone/i);
+
+  assert.match(
+    prompt,
+    /choose the tattoo ink palette to suit the subject and tattoo style/i
+  );
+  assert.match(prompt, /honor any specific hues or monochrome treatment/i);
 });
 
 test('flat stencil extraction prompt never incorporates user idea or style', () => {
@@ -181,7 +186,8 @@ test('flat stencil extraction prompt never incorporates user idea or style', () 
 
   assert.match(prompt, /pure solid white background/i);
   assert.match(prompt, /pure solid black ink lines/i);
-  assert.match(prompt, /Completely remove the human body/i);
+  assert.match(prompt, /Extract only the visible ink marks/i);
+  assert.doesNotMatch(prompt, /person|body|skin/i);
   assert.match(prompt, /Do not invent, omit, restyle, or add design elements/i);
   assert.doesNotMatch(prompt, /3D render|Japanese|koi dragon/i);
 });
@@ -262,7 +268,7 @@ test('refunding a bundle removes Lifetime Pro and keeps a non-member blocked', a
   assert.equal(await hasLifetimePro(userId), false);
 });
 
-test('a failed AI task refunds once and cannot be revived by a late success', async () => {
+test('a failed four-credit design pack refunds once and cannot be revived by a late success', async () => {
   const userId = await createUser();
   await grantCredits(userId, 10);
 
@@ -272,10 +278,10 @@ test('a failed AI task refunds once and cannot be revived by a late success', as
     provider: 'test',
     model: 'test-model',
     prompt: 'test',
-    costCredits: 2,
+    costCredits: TATTOO_PREVIEW_PLUS_ARTWORK_COST,
     scene: 'tattoo_generation',
   });
-  assert.equal(await getBalance(userId), 8);
+  assert.equal(await getBalance(userId), 6);
   assert.ok(task.creditId);
   assert.ok(task.options === null || typeof task.options === 'string');
 

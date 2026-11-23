@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { useSession } from '@/core/auth/client';
 import {
   TATTOO_GENERATION_COSTS,
+  TATTOO_PREVIEW_PLUS_ARTWORK_COST,
   type TattooGenerationTier,
 } from '@/config/tattoo-credits';
 import { apiGet, apiPost } from '@/lib/api-client';
@@ -21,7 +22,6 @@ import { traceStencilFromBlob } from '@/lib/trace-stencil';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { useConfirm } from '@/hooks/use-confirm';
 import { usePublicConfig } from '@/hooks/use-public-config';
 import {
   BODY_PARTS,
@@ -288,12 +288,16 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 /**
  * The placement modal records points against a 3:4 container that shows the
  * 2:3 body photo with `object-contain` (letterboxed on the left/right).
- * Convert those points to the body image itself. Kie receives the normalized
- * polygon in the prompt metadata together with the original body reference.
+ * Convert those points to the body image itself and render the same lasso on
+ * the reference. Kie receives both the marked image and the normalized
+ * polygon, so placement is a visible constraint as well as a text instruction.
  */
 async function buildPlacementReference(
   selection: BodyPlacementSelection
-): Promise<{ placement: BodyPlacementSelection }> {
+): Promise<{
+  placement: BodyPlacementSelection;
+  markedReference: string;
+}> {
   const src = new URL(
     getBodyReferenceSrc(selection.partId, selection.viewId, selection.skinTone),
     window.location.origin
@@ -321,7 +325,38 @@ async function buildPlacementReference(
     y: clamp01((point.y - offsetY) / drawHeight),
   }));
 
-  return { placement: { ...selection, points } };
+  const canvas = document.createElement('canvas');
+  const maxEdge = 1600;
+  const scale = Math.min(
+    1,
+    maxEdge / Math.max(image.naturalWidth, image.naturalHeight)
+  );
+  canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+  canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const context = canvas.getContext('2d');
+  if (!context) throw new Error('Could not prepare the placement reference');
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+  context.beginPath();
+  points.forEach((point, index) => {
+    const x = point.x * canvas.width;
+    const y = point.y * canvas.height;
+    if (index === 0) context.moveTo(x, y);
+    else context.lineTo(x, y);
+  });
+  context.closePath();
+  context.fillStyle = 'rgba(236, 72, 153, 0.30)';
+  context.strokeStyle = '#ec4899';
+  context.lineWidth = Math.max(
+    3,
+    Math.round(Math.min(canvas.width, canvas.height) * 0.006)
+  );
+  context.fill();
+  context.stroke();
+
+  return {
+    placement: { ...selection, points },
+    markedReference: canvas.toDataURL('image/png'),
+  };
 }
 
 export function HeroGenerator({
@@ -336,7 +371,6 @@ export function HeroGenerator({
 }: HeroGeneratorProps) {
   const { data: session, isPending: sessionPending } = useSession();
   const { data: publicConfigs } = usePublicConfig();
-  const { confirm, dialog: confirmDialog } = useConfirm();
   const showCredits = publicConfigs?.credits_enabled !== 'false';
 
   const validInitialStyle =
@@ -388,9 +422,6 @@ export function HeroGenerator({
   const [consultationSize, setConsultationSize] = useState('');
   const [generatedBodyUrl, setGeneratedBodyUrl] = useState<string | null>(null);
   const [generatedArtUrl, setGeneratedArtUrl] = useState<string | null>(null);
-  const [generatedBodyTaskId, setGeneratedBodyTaskId] = useState<string | null>(
-    null
-  );
   const [stencilSize, setStencilSize] = useState('medium');
   const draftRestoredRef = useRef(false);
   const generatingRef = useRef(false);
@@ -495,6 +526,7 @@ export function HeroGenerator({
     taskId?: string;
     tier: string;
     imageUrl: string | null;
+    artworkUrl?: string | null;
     hasArtwork?: boolean;
     artworkError?: string | null;
   }) {
@@ -504,8 +536,12 @@ export function HeroGenerator({
       setPreviewTab('artwork');
     } else {
       setGeneratedBodyUrl(task.imageUrl);
-      setGeneratedBodyTaskId(task.taskId ?? task.id ?? null);
-      setPreviewTab('body');
+      if (task.artworkUrl) {
+        setGeneratedArtUrl(task.artworkUrl);
+        setPreviewTab('artwork');
+      } else {
+        setPreviewTab('body');
+      }
     }
   }
 
@@ -557,6 +593,7 @@ export function HeroGenerator({
 
     const requestSignature = JSON.stringify({
       tier,
+      autoStencil: tier === 'fast_body_preview' && !stencilMode,
       prompt: generationPrompt,
       sourceTaskId: sourceTaskId ?? null,
       style: selectedStyle,
@@ -598,7 +635,6 @@ export function HeroGenerator({
     } else {
       setGeneratedBodyUrl(null);
       setGeneratedArtUrl(null);
-      setGeneratedBodyTaskId(null);
     }
     removeSessionValue(ACTIVE_TASK_KEY);
 
@@ -623,6 +659,7 @@ export function HeroGenerator({
             points: placement.points,
           }
         : undefined;
+      let placementOverlay: string | undefined;
       // Normalize the lasso against the actual body image. If the browser
       // cannot load it, still send the structured points; never block.
       if (placement) {
@@ -635,6 +672,7 @@ export function HeroGenerator({
             skinTone: built.placement.skinTone,
             points: built.placement.points,
           };
+          placementOverlay = built.markedReference;
         } catch {
           // Fall back to the unadjusted points.
         }
@@ -646,6 +684,7 @@ export function HeroGenerator({
         model: string;
         status: 'processing' | 'success' | 'failed';
         imageUrl: string | null;
+        artworkUrl?: string | null;
         hasArtwork?: boolean;
         artworkError?: string | null;
         error?: string;
@@ -659,7 +698,9 @@ export function HeroGenerator({
           placement: placementPayload,
           placementLabel: placementSummary ?? undefined,
           referenceImage,
+          placementOverlay,
           sourceTaskId,
+          autoStencil: tier === 'fast_body_preview' && !stencilMode,
         },
         { signal: controller.signal }
       );
@@ -758,14 +799,15 @@ export function HeroGenerator({
           status: string;
           tier: string;
           imageUrl: string | null;
+          artworkUrl?: string | null;
           hasArtwork?: boolean;
           artworkError?: string | null;
           error: string | null;
         }>(`/api/tattoo/tasks/${encodeURIComponent(activeTaskId)}`);
         if (cancelled) return;
 
-        // The body preview is the primary result. It becomes available while
-        // the optional stencil extraction is still running.
+        // The body preview becomes available while its included clean
+        // reference extraction is still running.
         if (task.imageUrl) {
           applyTaskResult(task);
         }
@@ -845,22 +887,6 @@ export function HeroGenerator({
       return;
     }
     void runGeneration('fast_body_preview');
-  }
-
-  async function revealGeneratedArtwork() {
-    if (!generatedBodyTaskId) return;
-    if (
-      !(await confirm({
-        title: m['home.hero.stencil_confirm_title'](),
-        description: m['home.hero.stencil_confirm_description']({
-          credits: TATTOO_GENERATION_COSTS.stencil_from_preview,
-        }),
-        confirmLabel: m['home.hero.stencil_confirm_action'](),
-      }))
-    ) {
-      return;
-    }
-    void runGeneration('stencil_from_preview', undefined, generatedBodyTaskId);
   }
 
   async function createStencilSvg(): Promise<Blob> {
@@ -1517,8 +1543,7 @@ export function HeroGenerator({
             <span>{m['home.hero.cta']()}</span>
             {showCredits && !generating && (
               <span className="text-background/70 text-xs font-medium">
-                · {TATTOO_GENERATION_COSTS.fast_body_preview}{' '}
-                {m['pages.pricing.m021']()}
+                · {TATTOO_PREVIEW_PLUS_ARTWORK_COST} {m['pages.pricing.m021']()}
               </span>
             )}
             <ArrowRight className="size-4" />
@@ -1599,21 +1624,6 @@ export function HeroGenerator({
                     >
                       <Download className="size-3" />
                       <span>{m['home.hero.export_reference']()}</span>
-                    </button>
-                    <button
-                      type="button"
-                      disabled={generating || sessionPending}
-                      onClick={() => void revealGeneratedArtwork()}
-                      className="bg-foreground/90 text-background hover:bg-foreground inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs disabled:opacity-60"
-                    >
-                      <Sparkles className="size-3" />
-                      <span>{m['pages.home.m002']()}</span>
-                      {showCredits && (
-                        <span className="text-background/70">
-                          · {TATTOO_GENERATION_COSTS.stencil_from_preview}{' '}
-                          {m['pages.pricing.m021']()}
-                        </span>
-                      )}
                     </button>
                   </div>
                 </div>
@@ -1893,7 +1903,6 @@ export function HeroGenerator({
           </div>
         </DialogContent>
       </Dialog>
-      {confirmDialog}
     </section>
   );
 }
