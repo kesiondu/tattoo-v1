@@ -147,7 +147,7 @@ export function getBodyReferenceSrc(
   viewId: string,
   skinTone: SkinToneId
 ) {
-  return `/tattoo-generator/body-references/${partId}/${viewId}/${skinTone}.webp`;
+  return `https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/${partId}/${viewId}/${skinTone}.webp`;
 }
 
 export function pointsToSvgPath(

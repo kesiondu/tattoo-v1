@@ -10,7 +10,7 @@ export function MarketingFooter() {
           <div className="col-span-2 space-y-3">
             <Link href="/" className="inline-flex items-center gap-2">
               <img
-                src="/brand/tattoo-generator-logo.svg"
+                src="https://assets.tattoogenerator.online/v1/brand/tattoo-generator-logo.svg"
                 alt={m['home.brand_logo_alt']()}
                 className="size-7 rounded"
               />

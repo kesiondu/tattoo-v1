@@ -22,6 +22,9 @@ import { getAllConfigs } from '@/modules/config/service';
 import { enforceMinIntervalRateLimit } from '@/lib/rate-limit';
 import { respData, respErr } from '@/lib/resp';
 
+const STATIC_ASSET_ORIGIN = 'https://assets.tattoogenerator.online';
+const STATIC_BODY_REFERENCE_PREFIX = '/v1/tattoo-generator/body-references/';
+
 /**
  * Tattoo AI Model Routing:
  * - Fast Body Preview: Google Gemini 3.1 Flash Image (Nano Banana 2)
@@ -181,11 +184,14 @@ function isAllowedReferenceImage(
       Boolean(requestOrigin) &&
       url.origin === requestOrigin &&
       isTrustedRequestOrigin(requestOrigin, appUrl);
-    if (!sameAppOrigin && !sameRequestOrigin) return false;
-    return (
-      url.pathname.startsWith('/tattoo-generator/body-references/') &&
-      !url.pathname.includes('..')
-    );
+    const sameStaticAssetOrigin = url.origin === STATIC_ASSET_ORIGIN;
+    if (!sameAppOrigin && !sameRequestOrigin && !sameStaticAssetOrigin) {
+      return false;
+    }
+    const allowedPath = sameStaticAssetOrigin
+      ? url.pathname.startsWith(STATIC_BODY_REFERENCE_PREFIX)
+      : url.pathname.startsWith('/tattoo-generator/body-references/');
+    return allowedPath && !url.pathname.includes('..');
   } catch {
     return false;
   }

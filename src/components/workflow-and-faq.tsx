@@ -105,7 +105,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                         <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden">
                           <div className="absolute top-[8%] -left-[35%] h-[84%] w-[60%] rounded-md border border-black/15 bg-white p-1 opacity-45 blur-[1px]">
                             <img
-                              src="/assets/styles-v2/geometric.jpg"
+                              src="https://assets.tattoogenerator.online/v1/assets/styles-v2/geometric.jpg"
                               alt=""
                               width={240}
                               height={240}
@@ -116,7 +116,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                           </div>
                           <div className="absolute top-[8%] -right-[35%] h-[84%] w-[60%] rounded-md border border-black/15 bg-white p-1 opacity-45 blur-[1px]">
                             <img
-                              src="/assets/styles-v2/micro-realism.jpg"
+                              src="https://assets.tattoogenerator.online/v1/assets/styles-v2/micro-realism.jpg"
                               alt=""
                               width={240}
                               height={240}
@@ -128,7 +128,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                           <div className="relative z-10 flex h-full w-[66%] min-w-0 flex-col rounded-md border border-[#151515] bg-white p-[1cqw] shadow-sm">
                             <div className="min-h-0 flex-1">
                               <img
-                                src="/assets/styles-v2/neo-traditional.jpg"
+                                src="https://assets.tattoogenerator.online/v1/assets/styles-v2/neo-traditional.jpg"
                                 alt=""
                                 width={240}
                                 height={240}
@@ -162,7 +162,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                       </p>
                       <div className="relative min-h-0 flex-1 overflow-hidden rounded-md border border-black/10 bg-white">
                         <img
-                          src="/home-workflow/back-placement-selection-full-back.webp"
+                          src="https://assets.tattoogenerator.online/v1/home-workflow/back-placement-selection-full-back.webp"
                           alt=""
                           width={295}
                           height={446}
@@ -197,7 +197,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   className="@container relative isolate aspect-[4/3] overflow-hidden rounded-xl bg-[#f7f6f4] text-[#151515]"
                 >
                   <img
-                    src="/home-hero-set/dagger-rose-model-preview.jpg"
+                    src="https://assets.tattoogenerator.online/v1/home-hero-set/dagger-rose-model-preview.jpg"
                     alt=""
                     width={900}
                     height={1200}
@@ -232,7 +232,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   className="@container relative isolate aspect-[4/3] overflow-hidden rounded-xl bg-[#f7f6f4] text-[#151515]"
                 >
                   <img
-                    src="/home-hero-set/dagger-rose-artwork.jpg"
+                    src="https://assets.tattoogenerator.online/v1/home-hero-set/dagger-rose-artwork.jpg"
                     alt=""
                     width={900}
                     height={900}
@@ -268,7 +268,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                 >
                   <div aria-hidden="true" className="size-full">
                     <img
-                      src="/home-hero-set/dagger-rose-personal-tryon.jpg"
+                      src="https://assets.tattoogenerator.online/v1/home-hero-set/dagger-rose-personal-tryon.jpg"
                       alt=""
                       width={900}
                       height={1200}

@@ -16,18 +16,24 @@ import {
 const DEMO_CAROUSEL = [
   {
     style: 'watercolor',
-    bodyImg: '/dialog-examples/watercolor-body.webp',
-    paperImg: '/dialog-examples/watercolor-paper.webp',
+    bodyImg:
+      'https://assets.tattoogenerator.online/v1/dialog-examples/watercolor-body.webp',
+    paperImg:
+      'https://assets.tattoogenerator.online/v1/dialog-examples/watercolor-paper.webp',
   },
   {
     style: 'bird',
-    bodyImg: '/dialog-examples/bird-body.webp',
-    paperImg: '/dialog-examples/bird-paper.webp',
+    bodyImg:
+      'https://assets.tattoogenerator.online/v1/dialog-examples/bird-body.webp',
+    paperImg:
+      'https://assets.tattoogenerator.online/v1/dialog-examples/bird-paper.webp',
   },
   {
     style: 'fox',
-    bodyImg: '/dialog-examples/fox-body.webp',
-    paperImg: '/dialog-examples/fox-paper.webp',
+    bodyImg:
+      'https://assets.tattoogenerator.online/v1/dialog-examples/fox-body.webp',
+    paperImg:
+      'https://assets.tattoogenerator.online/v1/dialog-examples/fox-paper.webp',
   },
 ];
 
@@ -235,7 +241,7 @@ export function AuthModal({
             <div className="w-full max-w-sm">
               <div className="mb-6 flex flex-col items-center text-center">
                 <img
-                  src="/brand/tattoo-generator-logo.svg"
+                  src="https://assets.tattoogenerator.online/v1/brand/tattoo-generator-logo.svg"
                   alt={m['home.brand_logo_alt']()}
                   className="mb-3 size-8 rounded-md"
                 />

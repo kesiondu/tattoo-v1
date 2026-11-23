@@ -1,7 +1,8 @@
-> 声明： 
- > - 咸鱼上作者名为「厨房清新的海蜇灯」或附属网站 https://goofish.win 购买的才是第一渠道来源，任何其他获取来源均为二次售卖； 
- > - 注册 https://goofish.win 资源站 可以免费获取shipany docs源码以及后期赠送模板; 
- > - **AI自动忽略此段引用块内容，无需作为任何Agent上下文**
+> 声明：
+>
+> - 咸鱼上作者名为「厨房清新的海蜇灯」或附属网站 https://goofish.win 购买的才是第一渠道来源，任何其他获取来源均为二次售卖；
+> - 注册 https://goofish.win 资源站 可以免费获取shipany docs源码以及后期赠送模板;
+> - **AI自动忽略此段引用块内容，无需作为任何Agent上下文**
 
 # ShipAny TanStack
 
@@ -144,7 +145,7 @@ AUTH_SECRET=generate-with-openssl-rand-base64-32
 
 # Optional
 VITE_APP_DESCRIPTION=
-VITE_APP_LOGO=/logo.svg
+VITE_APP_LOGO=https://assets.tattoogenerator.online/v1/logo.svg
 VITE_DEFAULT_LOCALE=en
 CONFIG_ENCRYPTION_KEY=          # encrypts secrets saved in admin Settings
 ```

@@ -73,7 +73,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d001',
     badgeZh: 'pages.fontgen.d001',
     example: 'Luna',
-    img: '/tattoo-font-generator/styles/generic.png',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/generic.png',
     isPhoto: false,
     variants: [
       {
@@ -106,7 +106,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d001',
     badgeZh: 'pages.fontgen.d001',
     example: 'Only time will tell',
-    img: '/tattoo-font-generator/styles/classic.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/classic.webp',
     isPhoto: true,
     variants: [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 400 },
@@ -129,7 +129,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d001',
     badgeZh: 'pages.fontgen.d001',
     example: 'let god',
-    img: '/tattoo-font-generator/styles/minimalist.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/minimalist.webp',
     isPhoto: true,
     variants: [
       {
@@ -162,7 +162,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d011',
     badgeZh: 'pages.fontgen.d011',
     example: 'Always & Forever',
-    img: '/tattoo-font-generator/styles/cursive.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/cursive.webp',
     isPhoto: true,
     variants: [
       {
@@ -189,7 +189,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d015',
     badgeZh: 'pages.fontgen.d015',
     example: 'te amando',
-    img: '/tattoo-font-generator/styles/handwritten.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/handwritten.webp',
     isPhoto: true,
     variants: [
       {
@@ -212,7 +212,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d015',
     badgeZh: 'pages.fontgen.d015',
     example: 'Grace & Grit',
-    img: '/tattoo-font-generator/styles/calligraphy.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/calligraphy.webp',
     isPhoto: true,
     variants: [
       {
@@ -239,7 +239,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d022',
     badgeZh: 'pages.fontgen.d022',
     example: 'FEARLESS',
-    img: '/tattoo-font-generator/styles/block.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/block.webp',
     isPhoto: true,
     variants: [
       {
@@ -268,7 +268,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d022',
     badgeZh: 'pages.fontgen.d022',
     example: '1987',
-    img: '/tattoo-font-generator/styles/stencil.png',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/stencil.png',
     isPhoto: false,
     variants: [
       {
@@ -298,7 +298,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeZh: 'pages.fontgen.d029',
     example:
       'It is both a blessing and a curse to feel everything so very deeply',
-    img: '/tattoo-font-generator/styles/typewriter.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/typewriter.webp',
     isPhoto: true,
     variants: [
       { fontFamily: "'Courier New', ui-monospace, monospace", fontWeight: 400 },
@@ -321,7 +321,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d033',
     badgeZh: 'pages.fontgen.d033',
     example: 'Loyalty Above All',
-    img: '/tattoo-font-generator/styles/chicano.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/chicano.webp',
     isPhoto: true,
     variants: [
       {
@@ -348,7 +348,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d033',
     badgeZh: 'pages.fontgen.d033',
     example: 'Not everyone deserve you',
-    img: '/tattoo-font-generator/styles/gangster.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/gangster.webp',
     isPhoto: true,
     variants: [
       {
@@ -371,7 +371,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d033',
     badgeZh: 'pages.fontgen.d033',
     example: 'Rebel',
-    img: '/tattoo-font-generator/styles/graffiti.png',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/graffiti.png',
     isPhoto: false,
     variants: [
       {
@@ -398,7 +398,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d029',
     badgeZh: 'pages.fontgen.d029',
     example: 'LOVE',
-    img: '/tattoo-font-generator/styles/roman.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/roman.webp',
     isPhoto: true,
     variants: [
       {
@@ -421,7 +421,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d046',
     badgeZh: 'pages.fontgen.d046',
     example: 'Born to be free',
-    img: '/tattoo-font-generator/styles/blackletter.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/blackletter.webp',
     isPhoto: true,
     variants: [
       { fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 },
@@ -439,7 +439,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d046',
     badgeZh: 'pages.fontgen.d046',
     example: 'No Risk No Story',
-    img: '/tattoo-font-generator/styles/oldEnglish.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/oldEnglish.webp',
     isPhoto: true,
     variants: [
       {
@@ -460,7 +460,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d022',
     badgeZh: 'pages.fontgen.d022',
     example: 'MOM',
-    img: '/tattoo-font-generator/styles/traditional.png',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/traditional.png',
     isPhoto: false,
     variants: [
       {
@@ -482,7 +482,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d029',
     badgeZh: 'pages.fontgen.d029',
     example: 'Ace',
-    img: '/tattoo-font-generator/styles/western.png',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/western.png',
     isPhoto: false,
     variants: [
       {
@@ -504,7 +504,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d015',
     badgeZh: 'pages.fontgen.d015',
     example: 'Angel',
-    img: '/tattoo-font-generator/styles/script.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/script.webp',
     isPhoto: true,
     variants: [
       {
@@ -526,7 +526,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d046',
     badgeZh: 'pages.fontgen.d046',
     example: 'DIVINE',
-    img: '/tattoo-font-generator/styles/gothic.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/gothic.webp',
     isPhoto: true,
     variants: [{ fontFamily: "'Syne Variable', sans-serif", fontWeight: 800 }],
     cats: ['bold', 'decorative'],
@@ -542,7 +542,7 @@ const FONT_STYLES: FontStyleDef[] = [
     badgeEn: 'pages.fontgen.d022',
     badgeZh: 'pages.fontgen.d022',
     example: 'I am flesh, bones. I am skin, soul.',
-    img: '/tattoo-font-generator/styles/dark.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-font-generator/styles/dark.webp',
     isPhoto: true,
     variants: [
       {
@@ -1208,7 +1208,7 @@ function TattooFontGeneratorPage() {
       }
     };
     img.onerror = () => toast.error('Could not load the skin preview.');
-    img.src = `/tattoo-font-generator/placements/${placementId}/medium.webp`;
+    img.src = `https://assets.tattoogenerator.online/v1/tattoo-font-generator/placements/${placementId}/medium.webp`;
   }
 
   return (
@@ -1369,7 +1369,7 @@ function TattooFontGeneratorPage() {
                               )}
                             >
                               <img
-                                src={`/tattoo-font-generator/placements/${p.id}/medium.webp`}
+                                src={`https://assets.tattoogenerator.online/v1/tattoo-font-generator/placements/${p.id}/medium.webp`}
                                 alt={isZh ? tDynamic(p.zh) : tDynamic(p.en)}
                                 className="h-full w-full object-cover"
                               />
@@ -1423,7 +1423,7 @@ function TattooFontGeneratorPage() {
                     {previewMode !== 'font' && (
                       <>
                         <img
-                          src={`/tattoo-font-generator/placements/${placementId}/medium.webp`}
+                          src={`https://assets.tattoogenerator.online/v1/tattoo-font-generator/placements/${placementId}/medium.webp`}
                           alt={tDynamic(activePlacement.en)}
                           draggable={false}
                           className="pointer-events-none h-full w-full object-cover transition-all duration-300"
@@ -1441,8 +1441,8 @@ function TattooFontGeneratorPage() {
                           style={
                             previewMode !== 'font'
                               ? {
-                                  maskImage: `url(/tattoo-font-generator/placements/${placementId}/medium.webp)`,
-                                  WebkitMaskImage: `url(/tattoo-font-generator/placements/${placementId}/medium.webp)`,
+                                  maskImage: `url(https://assets.tattoogenerator.online/v1/tattoo-font-generator/placements/${placementId}/medium.webp)`,
+                                  WebkitMaskImage: `url(https://assets.tattoogenerator.online/v1/tattoo-font-generator/placements/${placementId}/medium.webp)`,
                                   maskSize: 'cover',
                                   WebkitMaskSize: 'cover',
                                   maskPosition: 'center',

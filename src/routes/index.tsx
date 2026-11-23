@@ -77,7 +77,7 @@ export const Route = createFileRoute('/')({
           '@type': 'Organization',
           name: 'Tattoo Generator',
           url: `${siteUrl()}/`,
-          logo: `${siteUrl()}/brand/tattoo-generator-logo.png`,
+          logo: 'https://assets.tattoogenerator.online/v1/brand/tattoo-generator-logo.png',
         },
         {
           '@context': 'https://schema.org',

@@ -147,31 +147,31 @@ const COMPLEXITIES = [
 const BODY_AREA_MODAL_ITEMS = [
   {
     id: 'Back',
-    img: '/tattoo-generator/body-references/back/back-view/medium.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/back/back-view/medium.webp',
   },
   {
     id: 'Chest',
-    img: '/tattoo-generator/body-references/chest-torso/male-front-torso/medium.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/chest-torso/male-front-torso/medium.webp',
   },
   {
     id: 'Forearm',
-    img: '/tattoo-generator/body-references/arm/outer-arm/medium.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/arm/outer-arm/medium.webp',
   },
   {
     id: 'Thigh',
-    img: '/tattoo-generator/body-references/leg/front-leg/medium.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/leg/front-leg/medium.webp',
   },
   {
     id: 'Hand',
-    img: '/tattoo-generator/body-references/hand/back-of-hand/medium.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/hand/back-of-hand/medium.webp',
   },
   {
     id: 'Ankle',
-    img: '/tattoo-generator/body-references/foot-ankle/top-outer-foot-ankle/medium.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/foot-ankle/top-outer-foot-ankle/medium.webp',
   },
   {
     id: 'Neck',
-    img: '/tattoo-generator/body-references/neck-ear/front-neck-collarbone/medium.webp',
+    img: 'https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/neck-ear/front-neck-collarbone/medium.webp',
   },
 ];
 

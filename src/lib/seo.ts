@@ -1,7 +1,13 @@
 import { envConfigs } from '@/config';
 import { localizeUrl } from '@/paraglide/runtime.js';
 
-export const DEFAULT_OG_IMAGE = '/brand/tattoo-generator-og.png';
+export const DEFAULT_OG_IMAGE =
+  'https://assets.tattoogenerator.online/v1/brand/tattoo-generator-og.png';
+
+function imageUrl(image: string): string {
+  if (/^https?:\/\//i.test(image)) return image;
+  return `${siteUrl()}${image.startsWith('/') ? '' : '/'}${image}`;
+}
 
 export type FaqItem = { q: string; a: string };
 
@@ -61,7 +67,7 @@ export function webAppJsonLd(opts: {
     url: pageUrlFor(opts.path, opts.locale),
     applicationCategory: 'DesignApplication',
     operatingSystem: 'Web',
-    image: `${siteUrl()}${opts.image ?? DEFAULT_OG_IMAGE}`,
+    image: imageUrl(opts.image ?? DEFAULT_OG_IMAGE),
     isAccessibleForFree: true,
   };
 }
@@ -84,7 +90,7 @@ export function buildSeoHead(opts: {
   robots?: string;
 }) {
   const url = pageUrlFor(opts.path, opts.locale);
-  const image = `${siteUrl()}${opts.image ?? DEFAULT_OG_IMAGE}`;
+  const image = imageUrl(opts.image ?? DEFAULT_OG_IMAGE);
   return {
     meta: [
       { title: opts.title },

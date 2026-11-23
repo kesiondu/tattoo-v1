@@ -56,8 +56,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['ribs'],
     placementEn: 'pages.ideas.d003',
     placementZh: 'pages.ideas.d003',
-    artwork: '/gallery/rib-calligraphy-tattoo-artwork.webp',
-    body: '/gallery/rib-calligraphy-tattoo-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/rib-calligraphy-tattoo-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/rib-calligraphy-tattoo-body.webp',
   },
   {
     slug: 'cybersigilism-shoulder-arm-tattoo',
@@ -69,8 +70,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['back-of-hand', 'fingers'],
     placementEn: 'pages.ideas.d006',
     placementZh: 'pages.ideas.d006',
-    artwork: '/gallery/cybersigilism-tattoo-36-artwork.webp',
-    body: '/gallery/cybersigilism-tattoo-36-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/cybersigilism-tattoo-36-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/cybersigilism-tattoo-36-body.webp',
   },
   {
     slug: 'ornamental-flower-tattoo',
@@ -82,8 +84,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['thigh'],
     placementEn: 'pages.ideas.d009',
     placementZh: 'pages.ideas.d009',
-    artwork: '/gallery/ornamental-flower-tattoo-artwork.webp',
-    body: '/gallery/ornamental-flower-tattoo-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/ornamental-flower-tattoo-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/ornamental-flower-tattoo-body.webp',
   },
   {
     slug: 'japanese-fox-and-kitsune-mask-tattoo',
@@ -95,8 +98,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['ribs', 'side-waist'],
     placementEn: 'pages.ideas.d012',
     placementZh: 'pages.ideas.d012',
-    artwork: '/gallery/japanese-fox-and-kitsune-mask-tattoo-artwork.webp',
-    body: '/gallery/japanese-fox-and-kitsune-mask-tattoo-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/japanese-fox-and-kitsune-mask-tattoo-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/japanese-fox-and-kitsune-mask-tattoo-body.webp',
   },
   {
     slug: 'minimalist-cat-tattoo',
@@ -108,8 +112,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['shoulder'],
     placementEn: 'pages.ideas.d015',
     placementZh: 'pages.ideas.d015',
-    artwork: '/gallery/minimalist-cat-tattoo-artwork.webp',
-    body: '/gallery/minimalist-cat-tattoo-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/minimalist-cat-tattoo-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/minimalist-cat-tattoo-body.webp',
   },
   {
     slug: 'cherry-blossom-tattoo',
@@ -121,8 +126,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['wrist', 'back-of-hand'],
     placementEn: 'pages.ideas.d018',
     placementZh: 'pages.ideas.d018',
-    artwork: '/gallery/cherry-blossom-tattoo-artwork.webp',
-    body: '/gallery/cherry-blossom-tattoo-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/cherry-blossom-tattoo-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/cherry-blossom-tattoo-body.webp',
   },
   {
     slug: 'mandala-hip-tattoo',
@@ -134,8 +140,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['side-hip'],
     placementEn: 'pages.ideas.d021',
     placementZh: 'pages.ideas.d021',
-    artwork: '/gallery/mandala-tattoo-112-artwork.webp',
-    body: '/gallery/mandala-tattoo-112-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/mandala-tattoo-112-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/mandala-tattoo-112-body.webp',
   },
   {
     slug: 'fine-line-decorative-star-tattoo',
@@ -147,8 +154,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['chest', 'abdomen'],
     placementEn: 'pages.ideas.d024',
     placementZh: 'pages.ideas.d024',
-    artwork: '/gallery/fine-line-decorative-star-tattoo-artwork.webp',
-    body: '/gallery/fine-line-decorative-star-tattoo-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/fine-line-decorative-star-tattoo-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/fine-line-decorative-star-tattoo-body.webp',
   },
   {
     slug: 'hand-calligraphy-tattoo',
@@ -160,8 +168,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['back-of-hand'],
     placementEn: 'pages.ideas.d026',
     placementZh: 'pages.ideas.d026',
-    artwork: '/gallery/hand-calligraphy-tattoo-artwork.webp',
-    body: '/gallery/hand-calligraphy-tattoo-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/hand-calligraphy-tattoo-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/hand-calligraphy-tattoo-body.webp',
   },
   {
     slug: 'geometric-hexagon-tattoo',
@@ -173,8 +182,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['lower-leg'],
     placementEn: 'pages.ideas.d029',
     placementZh: 'pages.ideas.d029',
-    artwork: '/gallery/geometric-07-artwork.webp',
-    body: '/gallery/geometric-07-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/geometric-07-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/geometric-07-body.webp',
   },
   {
     slug: 'single-needle-scissors-tattoo',
@@ -186,8 +196,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['forearm'],
     placementEn: 'pages.ideas.d032',
     placementZh: 'pages.ideas.d032',
-    artwork: '/gallery/single-needle-artwork.webp',
-    body: '/gallery/single-needle-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/single-needle-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/single-needle-body.webp',
   },
   {
     slug: 'fine-line-ribbon-bow-tattoo',
@@ -199,8 +210,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['upper-arm'],
     placementEn: 'pages.ideas.d034',
     placementZh: 'pages.ideas.d034',
-    artwork: '/gallery/fine-line-ribbon-artwork.webp',
-    body: '/gallery/fine-line-ribbon-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/fine-line-ribbon-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/fine-line-ribbon-body.webp',
     artworkScale: 'scale-[1.2]',
   },
   {
@@ -213,8 +225,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['forearm'],
     placementEn: 'pages.ideas.d032',
     placementZh: 'pages.ideas.d032',
-    artwork: '/dialog-examples/watercolor-paper.webp',
-    body: '/dialog-examples/watercolor-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/dialog-examples/watercolor-paper.webp',
+    body: 'https://assets.tattoogenerator.online/v1/dialog-examples/watercolor-body.webp',
   },
   {
     slug: 'black-and-grey-hummingbird-and-flower-tattoo',
@@ -226,8 +239,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['upper-arm'],
     placementEn: 'pages.ideas.d034',
     placementZh: 'pages.ideas.d034',
-    artwork: '/dialog-examples/bird-paper.webp',
-    body: '/dialog-examples/bird-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/dialog-examples/bird-paper.webp',
+    body: 'https://assets.tattoogenerator.online/v1/dialog-examples/bird-body.webp',
   },
   {
     slug: 'minimalist-fox-finger-tattoo',
@@ -239,8 +253,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['fingers'],
     placementEn: 'pages.ideas.d040',
     placementZh: 'pages.ideas.d040',
-    artwork: '/dialog-examples/fox-paper.webp',
-    body: '/dialog-examples/fox-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/dialog-examples/fox-paper.webp',
+    body: 'https://assets.tattoogenerator.online/v1/dialog-examples/fox-body.webp',
     artworkScale: 'scale-[1.25]',
   },
   {
@@ -253,8 +268,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['back'],
     placementEn: 'pages.ideas.d042',
     placementZh: 'pages.ideas.d042',
-    artwork: '/home-values/phoenix-clean-artwork.webp',
-    body: '/home-values/phoenix-body-original.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/home-values/phoenix-clean-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/home-values/phoenix-body-original.webp',
   },
   {
     slug: 'chest-blackletter-tattoo',
@@ -266,8 +282,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['chest'],
     placementEn: 'pages.ideas.d044',
     placementZh: 'pages.ideas.d044',
-    artwork: '/tattoo-how-it-works/clean-artwork.webp',
-    body: '/tattoo-how-it-works/body-preview.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/tattoo-how-it-works/clean-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/tattoo-how-it-works/body-preview.webp',
   },
   {
     slug: 'dotwork-eye-tattoo-with-moth-wings',
@@ -279,8 +296,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['shoulder'],
     placementEn: 'pages.ideas.d015',
     placementZh: 'pages.ideas.d015',
-    artwork: '/gallery/dotwork-eye-artwork.webp',
-    body: '/gallery/dotwork-eye-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/dotwork-eye-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/dotwork-eye-body.webp',
     artworkScale: 'scale-[1.3]',
   },
   {
@@ -293,8 +311,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['upper-arm'],
     placementEn: 'pages.ideas.d034',
     placementZh: 'pages.ideas.d034',
-    artwork: '/gallery/minimalist-butterfly-artwork.webp',
-    body: '/gallery/minimalist-butterfly-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/minimalist-butterfly-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/minimalist-butterfly-body.webp',
     artworkScale: 'scale-[1.3]',
   },
   {
@@ -307,8 +326,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['upper-arm'],
     placementEn: 'pages.ideas.d034',
     placementZh: 'pages.ideas.d034',
-    artwork: '/gallery/blackwork-leaf-artwork.webp',
-    body: '/gallery/blackwork-leaf-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/blackwork-leaf-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/blackwork-leaf-body.webp',
   },
   {
     slug: 'cybersigilism-tattoo',
@@ -320,8 +340,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['back'],
     placementEn: 'pages.ideas.d042',
     placementZh: 'pages.ideas.d042',
-    artwork: '/gallery/cybersigilism-back-artwork.webp',
-    body: '/gallery/cybersigilism-back-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/cybersigilism-back-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/cybersigilism-back-body.webp',
   },
   {
     slug: 'american-traditional-dagger-and-rose-tattoo',
@@ -333,8 +354,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['forearm'],
     placementEn: 'pages.ideas.d032',
     placementZh: 'pages.ideas.d032',
-    artwork: '/gallery/american-traditional-dagger-artwork.webp',
-    body: '/gallery/american-traditional-dagger-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/american-traditional-dagger-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/american-traditional-dagger-body.webp',
   },
   {
     slug: 'chicano-female-portrait-and-rose-tattoo',
@@ -346,8 +368,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['forearm'],
     placementEn: 'pages.ideas.d032',
     placementZh: 'pages.ideas.d032',
-    artwork: '/gallery/chicano-portrait-artwork.webp',
-    body: '/gallery/chicano-portrait-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/chicano-portrait-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/chicano-portrait-body.webp',
   },
   {
     slug: 'watercolor-hummingbird-tattoo',
@@ -359,8 +382,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     placements: ['upper-arm'],
     placementEn: 'pages.ideas.d034',
     placementZh: 'pages.ideas.d034',
-    artwork: '/gallery/watercolor-hummingbird-artwork.webp',
-    body: '/gallery/watercolor-hummingbird-body.webp',
+    artwork:
+      'https://assets.tattoogenerator.online/v1/gallery/watercolor-hummingbird-artwork.webp',
+    body: 'https://assets.tattoogenerator.online/v1/gallery/watercolor-hummingbird-body.webp',
     artworkScale: 'scale-[1.25]',
   },
 ];

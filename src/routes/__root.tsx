@@ -153,7 +153,8 @@ export const Route = createRootRoute({
         { property: 'og:description', content: envConfigs.app_description },
         {
           property: 'og:image',
-          content: `${appUrl}/brand/tattoo-generator-og.png`,
+          content:
+            'https://assets.tattoogenerator.online/v1/brand/tattoo-generator-og.png',
         },
         { property: 'og:url', content: canonicalHref },
         { property: 'og:type', content: 'website' },
@@ -163,14 +164,28 @@ export const Route = createRootRoute({
         { name: 'twitter:description', content: envConfigs.app_description },
         {
           name: 'twitter:image',
-          content: `${appUrl}/brand/tattoo-generator-og.png`,
+          content:
+            'https://assets.tattoogenerator.online/v1/brand/tattoo-generator-og.png',
         },
       ],
       links: [
-        { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+        {
+          rel: 'preconnect',
+          href: 'https://assets.tattoogenerator.online',
+          crossOrigin: 'anonymous',
+        },
+        {
+          rel: 'dns-prefetch',
+          href: 'https://assets.tattoogenerator.online',
+        },
+        {
+          rel: 'icon',
+          href: 'https://assets.tattoogenerator.online/v1/favicon.svg',
+          type: 'image/svg+xml',
+        },
         {
           rel: 'apple-touch-icon',
-          href: '/brand/tattoo-generator-apple-touch-icon-180.png',
+          href: 'https://assets.tattoogenerator.online/v1/brand/tattoo-generator-apple-touch-icon-180.png',
         },
         { rel: 'canonical', href: canonicalHref },
         ...locales.map((loc) => ({

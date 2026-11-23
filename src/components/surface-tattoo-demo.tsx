@@ -125,7 +125,8 @@ function useLoopingPath(waypoints: Waypoint[], segmentDurationMs: number) {
       // Guard against waypoints changing (e.g. during HMR) while a frame is
       // in flight, which would otherwise leave `a`/`b` undefined.
       if (waypoints.length < 2) return;
-      const elapsed = ((now - startTime) % totalDuration + totalDuration) % totalDuration;
+      const elapsed =
+        (((now - startTime) % totalDuration) + totalDuration) % totalDuration;
       const segFloat = elapsed / segmentDurationMs;
       const rawIdx = Math.floor(segFloat);
       const idx = rawIdx % waypoints.length;
@@ -175,7 +176,7 @@ const TRYON_WAYPOINTS: Waypoint[] = [
 export function TryOnSurfaceDemo({ onClick }: { onClick?: () => void }) {
   const pose = useLoopingPath(TRYON_WAYPOINTS, 2200);
   const swallowSrc = useTransparentTattooSrc(
-    '/tattoo-generator/demo/traditional-swallows-olive-branch.webp'
+    'https://assets.tattoogenerator.online/v1/tattoo-generator/demo/traditional-swallows-olive-branch.webp'
   );
 
   return (
@@ -186,10 +187,10 @@ export function TryOnSurfaceDemo({ onClick }: { onClick?: () => void }) {
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') onClick?.();
       }}
-      className="relative min-h-[420px] flex-1 cursor-pointer overflow-hidden rounded-xl border border-border/80 bg-[#efefef] shadow-xs select-none"
+      className="border-border/80 relative min-h-[420px] flex-1 cursor-pointer overflow-hidden rounded-xl border bg-[#efefef] shadow-xs select-none"
     >
       <img
-        src="/tattoo-generator/body-references/chest-torso/male-side-ribs/medium.webp"
+        src="https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/chest-torso/male-side-ribs/medium.webp"
         alt="3D live adjustment example"
         draggable={false}
         className="pointer-events-none size-full object-cover object-top"
@@ -200,9 +201,9 @@ export function TryOnSurfaceDemo({ onClick }: { onClick?: () => void }) {
         className="pointer-events-none absolute inset-0"
         style={{
           maskImage:
-            'url(/tattoo-generator/body-references/chest-torso/male-side-ribs/medium.webp)',
+            'url(https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/chest-torso/male-side-ribs/medium.webp)',
           WebkitMaskImage:
-            'url(/tattoo-generator/body-references/chest-torso/male-side-ribs/medium.webp)',
+            'url(https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/chest-torso/male-side-ribs/medium.webp)',
           maskSize: 'cover',
           WebkitMaskSize: 'cover',
           maskPosition: 'top',
@@ -272,7 +273,7 @@ export function FontSurfaceDemo({
   return (
     <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-[#e5e5e5] select-none">
       <img
-        src="/tattoo-font-generator/placements/upper-chest/medium.webp"
+        src="https://assets.tattoogenerator.online/v1/tattoo-font-generator/placements/upper-chest/medium.webp"
         alt={label}
         draggable={false}
         className="pointer-events-none size-full object-cover"
@@ -283,9 +284,9 @@ export function FontSurfaceDemo({
         className="pointer-events-none absolute inset-0"
         style={{
           maskImage:
-            'url(/tattoo-font-generator/placements/upper-chest/medium.webp)',
+            'url(https://assets.tattoogenerator.online/v1/tattoo-font-generator/placements/upper-chest/medium.webp)',
           WebkitMaskImage:
-            'url(/tattoo-font-generator/placements/upper-chest/medium.webp)',
+            'url(https://assets.tattoogenerator.online/v1/tattoo-font-generator/placements/upper-chest/medium.webp)',
           maskSize: 'cover',
           WebkitMaskSize: 'cover',
           maskPosition: 'center',
@@ -330,7 +331,7 @@ export function FontSurfaceDemo({
         <MousePointer2 className="size-4 fill-white text-neutral-900 drop-shadow-sm" />
       </div>
 
-      <span className="pointer-events-none absolute top-3 left-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-foreground shadow-xs backdrop-blur-xs">
+      <span className="text-foreground pointer-events-none absolute top-3 left-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold shadow-xs backdrop-blur-xs">
         {label}
       </span>
     </div>

@@ -71,7 +71,7 @@ export function MarketingHeader({ onOpenAuth }: MarketingHeaderProps) {
           {/* Left: Brand Logo */}
           <Link href="/" className="flex h-10 shrink-0 items-center gap-2">
             <img
-              src="/brand/tattoo-generator-logo.svg"
+              src="https://assets.tattoogenerator.online/v1/brand/tattoo-generator-logo.svg"
               alt={m['home.brand_logo_alt']()}
               className="size-7 rounded"
             />

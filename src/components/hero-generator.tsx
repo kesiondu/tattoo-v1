@@ -59,63 +59,63 @@ const PRIMARY_STYLES: StyleItem[] = [
   {
     id: 'pick-for-me',
     label: () => m['home.style.pick_for_me'](),
-    img: '/assets/styles-v2/pick-for-me.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/pick-for-me.jpg',
     isAuto: true,
   },
   {
     id: 'fine-line',
     label: () => m['home.style.fine_line'](),
-    img: '/assets/styles-v2/fine-line.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/fine-line.jpg',
   },
   {
     id: 'minimalist',
     label: () => m['home.style.minimalist'](),
-    img: '/assets/styles-v2/minimalist.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/minimalist.jpg',
   },
   {
     id: 'lettering',
     label: () => m['home.style.lettering'](),
-    img: '/assets/styles-v2/lettering.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/lettering.jpg',
   },
   {
     id: 'realism',
     label: () => m['home.style.realism'](),
-    img: '/assets/styles-v2/realism.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/realism.jpg',
   },
   {
     id: 'black-grey',
     label: () => m['home.style.black_grey'](),
-    img: '/assets/styles-v2/black-grey.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/black-grey.jpg',
   },
   {
     id: 'american-traditional',
     label: () => m['home.style.american_traditional'](),
-    img: '/assets/styles-v2/old-school.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/old-school.jpg',
   },
   {
     id: 'japanese',
     label: () => m['home.style.japanese'](),
-    img: '/assets/styles-v2/japanese.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/japanese.jpg',
   },
   {
     id: 'blackwork',
     label: () => m['home.style.blackwork'](),
-    img: '/assets/styles-v2/blackwork.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/blackwork.jpg',
   },
   {
     id: 'geometric',
     label: () => m['home.style.geometric'](),
-    img: '/assets/styles-v2/geometric.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/geometric.jpg',
   },
   {
     id: 'neo-traditional',
     label: () => m['home.style.neo_traditional'](),
-    img: '/assets/styles-v2/neo-traditional.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/neo-traditional.jpg',
   },
   {
     id: 'micro-realism',
     label: () => m['home.style.micro_realism'](),
-    img: '/assets/styles-v2/micro-realism.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/micro-realism.jpg',
   },
 ];
 
@@ -123,52 +123,52 @@ const EXTRA_STYLES: StyleItem[] = [
   {
     id: 'watercolor',
     label: () => m['home.style.watercolor'](),
-    img: '/assets/styles-v2/watercolor.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/watercolor.jpg',
   },
   {
     id: 'tribal',
     label: () => m['home.style.tribal'](),
-    img: '/assets/styles-v2/tribal.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/tribal.jpg',
   },
   {
     id: 'cyberpunk',
     label: () => m['home.style.cyberpunk'](),
-    img: '/assets/styles-v2/cyberpunk.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/cyberpunk.jpg',
   },
   {
     id: 'anime',
     label: () => m['home.style.anime'](),
-    img: '/assets/styles-v2/anime.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/anime.jpg',
   },
   {
     id: 'dotwork',
     label: () => m['home.style.dotwork'](),
-    img: '/assets/styles-v2/dotwork.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/dotwork.jpg',
   },
   {
     id: 'sketch',
     label: () => m['home.style.sketch'](),
-    img: '/assets/styles-v2/sketch.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/sketch.jpg',
   },
   {
     id: 'celtic',
     label: () => m['home.style.celtic'](),
-    img: '/assets/styles-v2/celtic.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/celtic.jpg',
   },
   {
     id: 'trash-polka',
     label: () => m['home.style.trash_polka'](),
-    img: '/assets/styles-v2/trash-polka.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/trash-polka.jpg',
   },
   {
     id: 'chicano',
     label: () => m['home.style.chicano'](),
-    img: '/assets/styles-v2/chicano.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/chicano.jpg',
   },
   {
     id: 'illustrative',
     label: () => m['home.style.illustrative'](),
-    img: '/assets/styles-v2/illustrative.jpg',
+    img: 'https://assets.tattoogenerator.online/v1/assets/styles-v2/illustrative.jpg',
   },
 ];
 
@@ -1546,7 +1546,7 @@ export function HeroGenerator({
               ) : previewTab === 'body' ? (
                 <div className="w-full">
                   <img
-                    src="/tattoo-generator/examples/body-preview-collage.jpg"
+                    src="https://assets.tattoogenerator.online/v1/tattoo-generator/examples/body-preview-collage.jpg"
                     alt={m['home.hero.example_label']()}
                     width={825}
                     height={1024}
@@ -1559,28 +1559,28 @@ export function HeroGenerator({
                 <div className="grid aspect-[16/11] w-full grid-cols-2 gap-2 bg-neutral-50 p-2 sm:aspect-[4/3]">
                   <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
-                      src="/home-hero-set/dagger-rose-artwork.jpg"
+                      src="https://assets.tattoogenerator.online/v1/home-hero-set/dagger-rose-artwork.jpg"
                       alt={m['home.hero.tab_art']()}
                       className="h-full w-full object-contain p-2"
                     />
                   </div>
                   <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
-                      src="/tattoo-how-it-works/clean-artwork.webp"
+                      src="https://assets.tattoogenerator.online/v1/tattoo-how-it-works/clean-artwork.webp"
                       alt={m['home.hero.tab_art']()}
                       className="h-full w-full object-contain p-2"
                     />
                   </div>
                   <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
-                      src="/dialog-examples/watercolor-paper.webp"
+                      src="https://assets.tattoogenerator.online/v1/dialog-examples/watercolor-paper.webp"
                       alt={m['home.hero.tab_art']()}
                       className="h-full w-full object-contain p-2"
                     />
                   </div>
                   <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
-                      src="/dialog-examples/fox-paper.webp"
+                      src="https://assets.tattoogenerator.online/v1/dialog-examples/fox-paper.webp"
                       alt={m['home.hero.tab_art']()}
                       className="h-full w-full object-contain p-2"
                     />
@@ -1634,7 +1634,7 @@ export function HeroGenerator({
           </DialogHeader>
           <div className="overflow-hidden rounded-xl bg-white">
             <img
-              src="/dialog-examples/example-tattoo-designs.jpg"
+              src="https://assets.tattoogenerator.online/v1/dialog-examples/example-tattoo-designs.jpg"
               alt={m['home.hero.example_label']()}
               className="h-auto w-full object-contain"
             />

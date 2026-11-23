@@ -299,7 +299,7 @@ function TattooTryOnPage() {
     ? (BODY_TEMPLATES.find((tpl) => tpl.id === activeTemplateId) ?? null)
     : null;
   const resolvedBodyUrl = activeTemplateId
-    ? `/tattoo-generator/body-references/${activeTemplateId}/${skinId}.webp`
+    ? `https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/${activeTemplateId}/${skinId}.webp`
     : bodyUrl;
   const transparentDesignUrl = useTransparentTattooSrc(designUrl);
 
@@ -438,14 +438,16 @@ function TattooTryOnPage() {
 
   function selectBodyTemplate(tpl: (typeof BODY_TEMPLATES)[number]) {
     setActiveTemplateId(tpl.id);
-    setBodyUrl(`/tattoo-generator/body-references/${tpl.id}/${skinId}.webp`);
+    setBodyUrl(
+      `https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/${tpl.id}/${skinId}.webp`
+    );
     setPosX(tpl.x);
     setPosY(tpl.y);
     setScale(tpl.scale);
     setRotation(0);
     if (!designUrl) {
       setDesignUrl(
-        '/tattoo-generator/demo/traditional-swallows-olive-branch.webp'
+        'https://assets.tattoogenerator.online/v1/tattoo-generator/demo/traditional-swallows-olive-branch.webp'
       );
     }
     if (!previewMode) setPreviewMode('2d');
@@ -453,14 +455,14 @@ function TattooTryOnPage() {
 
   function loadDemoPair(mode: '2d' | '3d' = '2d') {
     setDesignUrl(
-      '/tattoo-generator/demo/traditional-swallows-olive-branch.webp'
+      'https://assets.tattoogenerator.online/v1/tattoo-generator/demo/traditional-swallows-olive-branch.webp'
     );
     const demoTpl =
       BODY_TEMPLATES.find((tpl) => tpl.id === 'chest-torso/male-side-ribs') ??
       BODY_TEMPLATES[0];
     setActiveTemplateId(demoTpl.id);
     setBodyUrl(
-      `/tattoo-generator/body-references/${demoTpl.id}/${skinId}.webp`
+      `https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/${demoTpl.id}/${skinId}.webp`
     );
     setPosX(demoTpl.x);
     setPosY(demoTpl.y);
@@ -928,7 +930,7 @@ function TattooTryOnPage() {
                             {m['tryon.demo.tattoo_label']()}
                           </span>
                           <img
-                            src="/tattoo-generator/demo/traditional-swallows-olive-branch.webp"
+                            src="https://assets.tattoogenerator.online/v1/tattoo-generator/demo/traditional-swallows-olive-branch.webp"
                             alt={m['tryon.demo.tattoo_label']()}
                             className="h-full w-full object-contain pt-3"
                           />
@@ -953,7 +955,7 @@ function TattooTryOnPage() {
                             {m['tryon.demo.body_label']()}
                           </span>
                           <img
-                            src="/tattoo-generator/body-references/chest-torso/male-side-ribs/medium.webp"
+                            src="https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/chest-torso/male-side-ribs/medium.webp"
                             alt={m['tryon.demo.body_label']()}
                             className="h-full w-full object-contain"
                           />
@@ -1123,7 +1125,7 @@ function TattooTryOnPage() {
 
               <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
                 {BODY_TEMPLATES.map((tpl) => {
-                  const url = `/tattoo-generator/body-references/${tpl.id}/${skinId}.webp`;
+                  const url = `https://assets.tattoogenerator.online/v1/tattoo-generator/body-references/${tpl.id}/${skinId}.webp`;
                   return (
                     <button
                       key={tpl.id}

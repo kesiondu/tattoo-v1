@@ -20,7 +20,9 @@ export const envConfigs: Record<string, string> = {
   app_description:
     publicEnv('VITE_APP_DESCRIPTION') ??
     'Design custom tattoo artwork with AI, preview realistic placement on your body in 2D and 3D, and export clean stencils.',
-  app_logo: publicEnv('VITE_APP_LOGO') ?? '/logo.svg',
+  app_logo:
+    publicEnv('VITE_APP_LOGO') ??
+    'https://assets.tattoogenerator.online/v1/logo.svg',
 
   // Database
   database_url: procEnv.DATABASE_URL ?? '',

@@ -38,7 +38,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "fine-line",
     "i18nKey": "style_page.fine_line",
     "heroStyleId": "fine-line",
-    "image": "/assets/styles/fine-line.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/fine-line.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -57,7 +57,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "minimalist",
     "i18nKey": "style_page.minimalist",
     "heroStyleId": "minimalist",
-    "image": "/assets/styles/minimalist.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/minimalist.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -76,7 +76,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "floral",
     "i18nKey": "style_page.floral",
     "heroStyleId": "fine-line",
-    "image": "/assets/styles/floral.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/floral.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -95,7 +95,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "lettering",
     "i18nKey": "style_page.lettering",
     "heroStyleId": "lettering",
-    "image": "/assets/styles/lettering.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/lettering.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -114,7 +114,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "realism",
     "i18nKey": "style_page.realism",
     "heroStyleId": "realism",
-    "image": "/assets/styles/realism.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/realism.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -133,7 +133,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "black-grey",
     "i18nKey": "style_page.black_grey",
     "heroStyleId": "black-grey",
-    "image": "/assets/styles/black-grey.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/black-grey.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -152,7 +152,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "american-traditional",
     "i18nKey": "style_page.american_traditional",
     "heroStyleId": "american-traditional",
-    "image": "/assets/styles/old-school.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/old-school.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -171,7 +171,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "japanese",
     "i18nKey": "style_page.japanese",
     "heroStyleId": "japanese",
-    "image": "/assets/styles/japanese.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/japanese.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -190,7 +190,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "blackwork",
     "i18nKey": "style_page.blackwork",
     "heroStyleId": "blackwork",
-    "image": "/assets/styles/blackwork.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/blackwork.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -209,7 +209,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "geometric",
     "i18nKey": "style_page.geometric",
     "heroStyleId": "geometric",
-    "image": "/assets/styles/geometric.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/geometric.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -228,7 +228,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "neo-traditional",
     "i18nKey": "style_page.neo_traditional",
     "heroStyleId": "neo-traditional",
-    "image": "/assets/styles/neo-traditional.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/neo-traditional.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -247,7 +247,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "micro-realism",
     "i18nKey": "style_page.micro_realism",
     "heroStyleId": "micro-realism",
-    "image": "/assets/styles/micro-realism.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/micro-realism.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -266,7 +266,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "watercolor",
     "i18nKey": "style_page.watercolor",
     "heroStyleId": "watercolor",
-    "image": "/assets/styles/watercolor.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/watercolor.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -285,7 +285,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "dotwork",
     "i18nKey": "style_page.dotwork",
     "heroStyleId": "dotwork",
-    "image": "/assets/styles/dotwork.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/dotwork.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -304,7 +304,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "ornamental",
     "i18nKey": "style_page.ornamental",
     "heroStyleId": "ornamental",
-    "image": "/assets/styles/ornamental.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/ornamental.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -323,7 +323,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "anime",
     "i18nKey": "style_page.anime",
     "heroStyleId": "anime",
-    "image": "/assets/styles/anime.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/anime.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -342,7 +342,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "illustrative",
     "i18nKey": "style_page.illustrative",
     "heroStyleId": "illustrative",
-    "image": "/assets/styles/illustrative.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/illustrative.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -361,7 +361,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "tribal",
     "i18nKey": "style_page.tribal",
     "heroStyleId": "tribal",
-    "image": "/assets/styles/tribal.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/tribal.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -380,7 +380,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "chicano",
     "i18nKey": "style_page.chicano",
     "heroStyleId": "chicano",
-    "image": "/assets/styles/chicano.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/chicano.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -399,7 +399,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "mandala",
     "i18nKey": "style_page.mandala",
     "heroStyleId": "mandala",
-    "image": "/assets/styles/mandala.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/mandala.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -418,7 +418,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "single-needle",
     "i18nKey": "style_page.single_needle",
     "heroStyleId": "single-needle",
-    "image": "/assets/styles/single-needle.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/single-needle.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -437,7 +437,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "patch",
     "i18nKey": "style_page.patch",
     "heroStyleId": "patch",
-    "image": "/assets/styles/patch.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/patch-sticker.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
@@ -456,7 +456,7 @@ export const TATTOO_STYLES: TattooStylePage[] = [
     "slug": "cybersigilism",
     "i18nKey": "style_page.cybersigilism",
     "heroStyleId": "cybersigilism",
-    "image": "/assets/styles/cybersigilism.webp",
+    "image": "https://assets.tattoogenerator.online/v1/assets/styles/cybersigilism.webp",
     "promptCount": 4,
     "placementCount": 5,
     "faqLinks": [
