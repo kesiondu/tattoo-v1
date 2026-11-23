@@ -789,14 +789,18 @@ const FAQS = [
 // crisp in the exported file.
 const LETTERING_EXPORT_SCALE = 4;
 const SKIN_EXPORT_SCALE = 2;
+const DEFAULT_TATTOO_TEXT = 'Angel';
+const DEFAULT_TATTOO_STYLE_ID = 'script';
 
 function TattooFontGeneratorPage() {
   const isZh = getLocale() === 'zh';
   const search = Route.useSearch();
   const { data: session } = useSession();
 
-  const [text, setText] = useState(search.name ?? 'Stay True');
-  const [selectedStyleId, setSelectedStyleId] = useState('generic');
+  const [text, setText] = useState(search.name ?? DEFAULT_TATTOO_TEXT);
+  const [selectedStyleId, setSelectedStyleId] = useState(
+    DEFAULT_TATTOO_STYLE_ID
+  );
   const [variantIdx, setVariantIdx] = useState(0);
   const [fontLibraryOpen, setFontLibraryOpen] = useState(false);
   const [libraryPreset, setLibraryPreset] = useState<TattooFontPreset | null>(
@@ -958,7 +962,7 @@ function TattooFontGeneratorPage() {
   }
 
   function getRenderedText() {
-    const content = text.trim() || 'Stay True';
+    const content = text.trim() || DEFAULT_TATTOO_TEXT;
     return activeVariant.textTransform === 'uppercase'
       ? content.toUpperCase()
       : content;
@@ -1265,7 +1269,7 @@ function TattooFontGeneratorPage() {
                       maxLength={30}
                       value={text}
                       onChange={(e) => setText(e.target.value)}
-                      placeholder="Stay True, Luna, Amor Fati"
+                      placeholder="Angel, Faith, Blessed"
                       className="border-input text-foreground placeholder:text-muted-foreground focus:border-foreground focus:ring-foreground/10 h-11 w-full rounded-lg border bg-white px-3.5 text-sm transition-all outline-none focus:ring-2"
                     />
                   </div>
@@ -1492,7 +1496,7 @@ function TattooFontGeneratorPage() {
                                   activeVariant.textTransform ?? 'none',
                               }}
                             >
-                              {text.trim() || 'Stay True'}
+                              {text.trim() || DEFAULT_TATTOO_TEXT}
                             </span>
                           </div>
                         </div>
@@ -1515,6 +1519,11 @@ function TattooFontGeneratorPage() {
                     <FontSurfaceDemo
                       text={text}
                       label={m['pages.fontgen.m023']()}
+                      fontFamily={activeVariant.fontFamily}
+                      fontStyle={activeVariant.fontStyle}
+                      fontWeight={activeVariant.fontWeight}
+                      letterSpacing={activeVariant.letterSpacing}
+                      textTransform={activeVariant.textTransform}
                     />
                   ) : (
                     <div className="border-border flex flex-col justify-between rounded-xl border bg-white p-5">

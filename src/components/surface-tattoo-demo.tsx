@@ -263,12 +263,22 @@ const FONT_WAYPOINTS: Waypoint[] = [
 export function FontSurfaceDemo({
   text,
   label,
+  fontFamily,
+  fontStyle = 'normal',
+  fontWeight = 500,
+  letterSpacing = '0.02em',
+  textTransform = 'none',
 }: {
   text?: string;
   label: string;
+  fontFamily: string;
+  fontStyle?: 'normal' | 'italic';
+  fontWeight?: number;
+  letterSpacing?: string;
+  textTransform?: 'none' | 'uppercase';
 }) {
   const pose = useLoopingPath(FONT_WAYPOINTS, 2100);
-  const displayText = text?.trim() || 'Stay True';
+  const displayText = text?.trim() || 'Angel';
 
   return (
     <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-[#e5e5e5] select-none">
@@ -307,10 +317,11 @@ export function FontSurfaceDemo({
           <span
             className="block text-center text-2xl whitespace-nowrap text-[#1c1917] sm:text-[26px]"
             style={{
-              fontFamily: "'Libre Baskerville', Georgia, serif",
-              fontStyle: 'italic',
-              fontWeight: 500,
-              letterSpacing: '0.02em',
+              fontFamily,
+              fontStyle,
+              fontWeight,
+              letterSpacing,
+              textTransform,
             }}
           >
             {displayText}

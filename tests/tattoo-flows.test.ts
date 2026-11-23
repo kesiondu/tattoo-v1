@@ -32,13 +32,15 @@ const { db, closeDb } = await import('../src/core/db');
 const { aiTask, credit, order, subscription, user } =
   await import('../src/config/db/schema');
 const { getPricingProduct } = await import('../src/config/pricing');
+const { TATTOO_AI_MODELS } = await import('../src/routes/api/tattoo/generate');
 const { hasLifetimePro } = await import('../src/modules/entitlements/service');
 const { settleCheckoutOrder, refundOrder } =
   await import('../src/modules/payment/service');
 const { createTask, updateTask, AITaskStatus } =
   await import('../src/modules/ai-tasks/service');
 const { getBalance } = await import('../src/modules/credits/service');
-const { listTattooTasks } = await import('../src/server/tattoo/tasks');
+const { getTattooTaskArtworkStorage, listTattooTasks } =
+  await import('../src/server/tattoo/tasks');
 
 after(async () => {
   try {
@@ -127,6 +129,13 @@ function paidSession(orderNo: string) {
 before(async () => {
   // Non-admin user for catalog/entitlement tests.
   await createUser();
+});
+
+test('all tattoo generation tiers use Kie Nano Banana Pro', () => {
+  for (const model of Object.values(TATTOO_AI_MODELS)) {
+    assert.equal(model.kieModel, 'nano-banana-pro');
+    assert.equal(model.label, 'Kie Nano Banana Pro');
+  }
 });
 
 test('the six tattoo products are one-time and match the pricing page', () => {
@@ -269,6 +278,58 @@ test('a successful AI task is terminal and is not refunded by a late failure', a
   assert.equal(
     await updateTask({ taskId: task.id, status: AITaskStatus.FAILED }),
     false
+  );
+  assert.equal(await getBalance(userId), 8);
+});
+
+test('a body preview task exposes its matching stored artwork without a second charge', async () => {
+  const userId = await createUser();
+  await grantCredits(userId, 10);
+
+  const task = await createTask({
+    userId,
+    mediaType: 'image',
+    provider: 'test',
+    model: 'test-model',
+    prompt: 'body preview from a stored rose master',
+    costCredits: 2,
+    scene: 'tattoo_generation',
+    options: {
+      tier: 'fast_body_preview',
+      userPrompt: 'a small rose',
+      modelLabel: 'Test model',
+    },
+  });
+
+  assert.equal(await getBalance(userId), 8);
+  assert.equal(
+    await updateTask({
+      taskId: task.id,
+      status: AITaskStatus.SUCCESS,
+      taskResult: {
+        imageUrl: `/api/tattoo/tasks/${task.id}/image`,
+        storageKey: `tattoo/generated/${task.id}.png`,
+        contentType: 'image/png',
+        artworkUrl: `/api/tattoo/tasks/${task.id}/artwork`,
+        artworkStorageKey: `tattoo/generated/${task.id}-artwork.png`,
+        artworkContentType: 'image/png',
+        tier: 'fast_body_preview',
+      },
+    }),
+    true
+  );
+
+  const rows = await listTattooTasks(userId);
+  const view = rows.find((item: any) => item.id === task.id);
+  assert.equal(view?.imageUrl, `/api/tattoo/tasks/${task.id}/image`);
+  assert.equal(view?.hasArtwork, true);
+  assert.deepEqual(await getTattooTaskArtworkStorage(userId, task.id), {
+    storageKey: `tattoo/generated/${task.id}-artwork.png`,
+    contentType: 'image/png',
+  });
+  assert.equal(
+    await getTattooTaskArtworkStorage('another-user', task.id),
+    null
   );
   assert.equal(await getBalance(userId), 8);
 });

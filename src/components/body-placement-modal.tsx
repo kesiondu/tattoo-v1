@@ -270,6 +270,7 @@ export function BodyPlacementModal({
   }
 
   function handleConfirm() {
+    if (points.length < 3) return;
     onConfirm({
       partId: part.id,
       viewId,
@@ -491,7 +492,8 @@ export function BodyPlacementModal({
           <button
             type="button"
             onClick={handleConfirm}
-            className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-9 shrink-0 cursor-pointer items-center justify-center rounded-lg px-4 text-xs font-semibold transition-colors sm:text-sm"
+            disabled={!hasCustomArea}
+            className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-9 shrink-0 cursor-pointer items-center justify-center rounded-lg px-4 text-xs font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
           >
             {hasCustomArea
               ? m['home.placement.cta_use_placement']()

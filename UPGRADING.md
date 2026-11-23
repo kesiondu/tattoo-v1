@@ -48,11 +48,15 @@ exports, permission codes, and behavior that changes for end users.
 
 ## Unreleased: Tattoo generation credits, task history, Lifetime Pro
 
-The tattoo generator now charges **2 credits per AI image** (body preview,
-HQ body preview and clean artwork are separate 2-credit tasks). A failed task
-refunds its charge exactly once. Tasks are stored in `ai_task`, can be resumed
-after a refresh, and appear under `/my-designs`. The home preview now sends the
-selected body image and the drawn region to the model.
+The tattoo generator now charges **2 credits per design**. A body-preview task
+first stores a clean artwork master, then renders the body preview from that
+exact design; revealing the matching artwork does not create or charge a
+second task. The standalone stencil generator remains a separate 2-credit
+task. A failed task refunds its charge exactly once. Tasks are stored in
+`ai_task`, can be resumed after a refresh, and appear under `/my-designs`. The
+home preview requires the selected body image and a drawn region. All tattoo
+tiers use Kie `nano-banana-pro`; Gemini and `nano-banana-2` are not used by
+this flow.
 
 The pricing page has six one-time products: `b12`, `b40`, `b120` (credit
 bundles that grant Lifetime Pro) and `p70`, `p200`, `p600` (top-up packs that
@@ -76,9 +80,15 @@ the font generator preview is free and does not require login.
       the public internet. With Storage configured, a localhost/private
       reference is copied to storage first; otherwise generation is refused
       before any credits are charged instead of generating without the reference.
+- [ ] **AI provider**: configure `kie_api_key` before enabling tattoo
+      generation. A Gemini key alone is no longer sufficient for this flow.
 - [ ] **Custom generate clients**: send a UUID `requestId` in the request
       body. It becomes the task id and makes retries idempotent; the browser
       client already does this.
+- [ ] **Custom body-preview clients**: after a successful body task reports
+      `hasArtwork: true`, load its matching master from
+      `/api/tattoo/tasks/<taskId>/artwork` with the user's authenticated
+      session. Do not submit a second `clean_artwork` task for the home flow.
 - [ ] **Verify**: run `pnpm test:tattoo` and apply a test payment to each of the
       six products; confirm the amount, credits, no subscription, duplicate
       webhook idempotency and Lifetime Pro unlock.

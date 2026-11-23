@@ -1,11 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
-import {
-  publishRemoteImage,
-  uploadGeneratedImage,
-} from '@/server/tattoo/storage';
+import { publishRemoteImage } from '@/server/tattoo/storage';
 import { toTaskView } from '@/server/tattoo/tasks';
 
-import { AIMediaType, GeminiProvider, KieProvider } from '@/core/ai';
+import { AIMediaType, KieProvider } from '@/core/ai';
 import { getAuth } from '@/core/auth';
 import {
   TATTOO_GENERATION_COSTS,
@@ -26,24 +23,20 @@ const STATIC_ASSET_ORIGIN = 'https://assets.tattoogenerator.online';
 const STATIC_BODY_REFERENCE_PREFIX = '/v1/tattoo-generator/body-references/';
 
 /**
- * Tattoo AI Model Routing:
- * - Fast Body Preview: Google Gemini 3.1 Flash Image (Nano Banana 2)
- * - High-Quality Body Preview / Clean Artwork: Nano Banana Pro
+ * Every tattoo generation is routed through Kie Nano Banana Pro so the clean
+ * master, body preview and standalone stencil use one consistent model family.
  */
 export const TATTOO_AI_MODELS = {
   fast_body_preview: {
-    label: 'Google Gemini 3.1 Flash Image (Nano Banana 2)',
-    geminiModel: 'gemini-3.1-flash-image-preview',
-    kieModel: 'nano-banana-2',
+    label: 'Kie Nano Banana Pro',
+    kieModel: 'nano-banana-pro',
   },
   hq_body_preview: {
-    label: 'Nano Banana Pro',
-    geminiModel: 'gemini-3-pro-image-preview',
+    label: 'Kie Nano Banana Pro',
     kieModel: 'nano-banana-pro',
   },
   clean_artwork: {
-    label: 'Nano Banana Pro',
-    geminiModel: 'gemini-3-pro-image-preview',
+    label: 'Kie Nano Banana Pro',
     kieModel: 'nano-banana-pro',
   },
 } as const;
@@ -51,7 +44,6 @@ export const TATTOO_AI_MODELS = {
 export type { TattooGenerationTier };
 
 const MAX_PROMPT_LENGTH = 1600;
-const MAX_REFERENCE_DATA_URL_LENGTH = 12 * 1024 * 1024;
 
 const BODY_PART_VIEWS: Record<string, string[]> = {
   back: ['back-view'],
@@ -172,10 +164,6 @@ function isAllowedReferenceImage(
   appUrl: string,
   requestOrigin?: string
 ): boolean {
-  if (/^data:image\/(png|jpe?g|webp);base64,/i.test(value)) {
-    return value.length <= MAX_REFERENCE_DATA_URL_LENGTH;
-  }
-
   try {
     const base = new URL(appUrl);
     const url = new URL(value, base);
@@ -236,6 +224,7 @@ function taskResponse(row: any) {
           modelLabel: view.modelLabel,
           status: 'success',
           imageUrl: view.imageUrl,
+          hasArtwork: view.hasArtwork,
         })
       : respData({
           taskId: view.id,
@@ -244,6 +233,7 @@ function taskResponse(row: any) {
           modelLabel: view.modelLabel,
           status: 'failed',
           imageUrl: null,
+          hasArtwork: false,
           error: 'The AI provider returned no image',
         });
   }
@@ -258,6 +248,7 @@ function taskResponse(row: any) {
       modelLabel: view.modelLabel,
       status: 'failed',
       imageUrl: null,
+      hasArtwork: false,
       error: view.error || 'Generation failed',
     });
   }
@@ -268,6 +259,7 @@ function taskResponse(row: any) {
     modelLabel: view.modelLabel,
     status: 'processing',
     imageUrl: null,
+    hasArtwork: false,
   });
 }
 
@@ -279,6 +271,7 @@ function buildTattooPrompt(params: {
   placementLabel?: string;
   hasReference?: boolean;
   hasPlacementMark?: boolean;
+  hasDesignReference?: boolean;
 }): string {
   const {
     tier,
@@ -288,6 +281,7 @@ function buildTattooPrompt(params: {
     placementLabel,
     hasReference,
     hasPlacementMark,
+    hasDesignReference,
   } = params;
   const stylePart =
     style && style !== 'pick-for-me' ? `, in ${style} tattoo style` : '';
@@ -332,6 +326,9 @@ function buildTattooPrompt(params: {
       : 'Show the tattoo on a realistic body area with natural skin and lighting.',
     hasPlacementMark
       ? 'A translucent pink outline in the reference marks the allowed placement area; use it only as a position guide and do not reproduce the pink color or overlay in the result.'
+      : '',
+    hasDesignReference
+      ? 'Use the attached clean tattoo artwork as the exact design source. Preserve its composition and linework; only adapt perspective, scale, ink blending and body contour so it looks naturally tattooed on the selected skin area.'
       : '',
     subjectPart,
     placementPart,
@@ -394,11 +391,6 @@ async function POST({ request }: { request: Request }) {
       typeof body?.referenceImage === 'string'
         ? body.referenceImage
         : undefined;
-    const placementImage =
-      typeof body?.placementImage === 'string'
-        ? body.placementImage
-        : undefined;
-
     const configs = await getAllConfigs();
     const appUrl = configs.app_url || 'http://localhost:3000';
     const requestOrigin = new URL(request.url).origin;
@@ -408,13 +400,6 @@ async function POST({ request }: { request: Request }) {
     ) {
       return respErr('Invalid body reference image');
     }
-    if (
-      placementImage &&
-      !isAllowedReferenceImage(placementImage, appUrl, requestOrigin)
-    ) {
-      return respErr('Invalid placement reference image');
-    }
-
     // A request id is the task id, so a retry after a lost response returns
     // the original task instead of charging the user twice.
     if (requestId) {
@@ -430,58 +415,47 @@ async function POST({ request }: { request: Request }) {
       }
     }
 
-    const geminiApiKey =
-      configs.gemini_api_key?.trim() || process.env.GEMINI_API_KEY || '';
     const kieApiKey =
       configs.kie_api_key?.trim() || process.env.KIE_API_KEY || '';
-    const providerName = geminiApiKey ? 'gemini' : kieApiKey ? 'kie' : null;
-    if (!providerName) {
-      return respErr('AI provider is not configured');
+    if (!kieApiKey) {
+      return respErr('Kie AI provider is not configured');
     }
 
     const modelSpec = TATTOO_AI_MODELS[tier];
-    const selectedModel =
-      providerName === 'kie' ? modelSpec.kieModel : modelSpec.geminiModel;
+    const selectedModel = modelSpec.kieModel;
     let kieReference =
-      providerName === 'kie' &&
       tier !== 'clean_artwork' &&
       referenceImage &&
       isPubliclyFetchableUrl(referenceImage)
         ? referenceImage
         : undefined;
-    if (
-      providerName === 'kie' &&
-      tier !== 'clean_artwork' &&
-      referenceImage &&
-      !kieReference
-    ) {
+    if (tier !== 'clean_artwork' && referenceImage && !kieReference) {
       // The app may be running on localhost (or behind a private URL). Copy
       // the reference to public storage so Kie can fetch it instead of
       // silently generating without the selected body.
       kieReference = (await publishRemoteImage(referenceImage)) ?? undefined;
     }
-    if (
-      providerName === 'kie' &&
-      tier !== 'clean_artwork' &&
-      referenceImage &&
-      !kieReference
-    ) {
+    if (tier !== 'clean_artwork' && referenceImage && !kieReference) {
       return respErr(
         'The selected body reference is not publicly accessible to the AI provider. Configure Storage or use a public app URL.'
       );
     }
-    const fullPrompt = buildTattooPrompt({
+    const bodyPrompt = buildTattooPrompt({
       tier,
       prompt: rawPrompt,
       style,
       placement,
       placementLabel,
-      hasReference:
-        providerName === 'kie'
-          ? Boolean(kieReference)
-          : Boolean(referenceImage || placementImage),
-      hasPlacementMark: providerName !== 'kie' && Boolean(placementImage),
+      hasReference: Boolean(kieReference),
+      hasPlacementMark: false,
+      hasDesignReference: tier !== 'clean_artwork',
     });
+    const artworkPrompt = buildTattooPrompt({
+      tier: 'clean_artwork',
+      prompt: rawPrompt,
+      style,
+    });
+    const fullPrompt = tier === 'clean_artwork' ? artworkPrompt : bodyPrompt;
 
     const creditsEnabled = configs.credits_enabled !== 'false';
     const costCredits = creditsEnabled ? TATTOO_GENERATION_COSTS[tier] : 0;
@@ -490,7 +464,7 @@ async function POST({ request }: { request: Request }) {
       id: requestId,
       userId: session.user.id,
       mediaType: AIMediaType.IMAGE,
-      provider: providerName,
+      provider: 'kie',
       model: selectedModel,
       prompt: fullPrompt,
       costCredits,
@@ -501,6 +475,9 @@ async function POST({ request }: { request: Request }) {
         placement,
         modelLabel: modelSpec.label,
         userPrompt: rawPrompt,
+        bodyPrompt,
+        artworkPrompt,
+        bodyReferenceUrl: kieReference,
       },
     });
 
@@ -513,95 +490,15 @@ async function POST({ request }: { request: Request }) {
       return taskResponse(task);
     }
 
-    // A flat stencil is a white-background artwork; sending a body photo would
-    // make the model paint on skin instead.
-    const effectiveReference =
-      tier === 'clean_artwork' ? undefined : referenceImage;
-    const effectivePlacementImage =
-      tier === 'clean_artwork' ? undefined : placementImage;
-
     try {
-      if (providerName === 'gemini') {
-        let storedImage: {
-          url: string;
-          storageKey: string;
-          contentType: string;
-        } | null = null;
-        const gemini = new GeminiProvider({
-          apiKey: geminiApiKey,
-          uploadFile: async ({ body: fileBuf, contentType }) => {
-            storedImage = await uploadGeneratedImage({
-              body: fileBuf,
-              contentType,
-              taskId: task.id,
-            });
-            return { url: storedImage.url };
-          },
-        });
-
-        const imageInput = effectivePlacementImage
-          ? [effectivePlacementImage]
-          : effectiveReference
-            ? [effectiveReference]
-            : [];
-        const res = await gemini.generate({
-          params: {
-            mediaType: AIMediaType.IMAGE,
-            model: selectedModel,
-            prompt: fullPrompt,
-            options: imageInput.length
-              ? { image_input: imageInput }
-              : undefined,
-          },
-        });
-
-        const imageUrl = res.taskInfo?.images?.[0]?.imageUrl ?? null;
-        if (!imageUrl) {
-          await updateTask({
-            taskId: task.id,
-            status: AITaskStatus.FAILED,
-            taskResult: { error: 'The AI provider returned no image' },
-          });
-          return respErr('The AI provider returned no image');
-        }
-
-        const settled = await updateTask({
-          taskId: task.id,
-          status: AITaskStatus.SUCCESS,
-          // Keep only a compact summary. The full provider payload can contain
-          // the same base64 image a second time and bloat the task row.
-          taskInfo: { status: AITaskStatus.SUCCESS, model: selectedModel },
-          taskResult: {
-            imageUrl,
-            storageKey: storedImage?.storageKey,
-            contentType: storedImage?.contentType,
-            tier,
-            modelLabel: modelSpec.label,
-          },
-        });
-        if (!settled) {
-          return respErr('Task already finished');
-        }
-
-        return respData({
-          taskId: task.id,
-          tier,
-          model: selectedModel,
-          modelLabel: modelSpec.label,
-          status: 'success',
-          imageUrl,
-        });
-      }
-
       const kie = new KieProvider({ apiKey: kieApiKey });
       const res = await kie.generate({
         params: {
           mediaType: AIMediaType.IMAGE,
           model: selectedModel,
-          prompt: fullPrompt,
-          // Kie can only fetch public URLs. Local/private references are
-          // rejected above instead of silently generating without the body.
-          options: kieReference ? { image_input: [kieReference] } : undefined,
+          // Body previews are a two-stage pipeline. Generate the clean master
+          // first; polling starts the body-preview stage with that exact image.
+          prompt: artworkPrompt,
         },
       });
 
@@ -613,6 +510,7 @@ async function POST({ request }: { request: Request }) {
           tier,
           modelLabel: modelSpec.label,
           providerStatus: res.taskStatus,
+          stage: tier === 'clean_artwork' ? undefined : 'artwork',
         },
       });
 
@@ -623,6 +521,7 @@ async function POST({ request }: { request: Request }) {
         modelLabel: modelSpec.label,
         status: 'processing',
         imageUrl: null,
+        hasArtwork: false,
       });
     } catch (error: any) {
       await updateTask({

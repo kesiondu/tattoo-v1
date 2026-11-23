@@ -7,6 +7,8 @@ const GENERATED_IMAGE_TYPES = new Set([
   'image/webp',
 ]);
 
+export type TattooStoredImageKind = 'image' | 'artwork';
+
 function normalizedImageType(value: string): string | null {
   const contentType = value.split(';', 1)[0]?.trim().toLowerCase();
   return contentType && GENERATED_IMAGE_TYPES.has(contentType)
@@ -18,8 +20,9 @@ async function uploadToStorage(params: {
   body: Buffer | Uint8Array;
   contentType: string;
   taskId?: string;
+  kind?: TattooStoredImageKind;
 }): Promise<StoredTattooImage | null> {
-  const { body, taskId } = params;
+  const { body, taskId, kind = 'image' } = params;
   const contentType = normalizedImageType(params.contentType);
   if (!contentType) return null;
   const ext = contentType.split('/')[1]?.replace('jpeg', 'jpg') || 'png';
@@ -27,7 +30,8 @@ async function uploadToStorage(params: {
   try {
     const storage = await getStorage();
     if (!storage) return null;
-    const storageKey = `tattoo/generated/${taskId || crypto.randomUUID()}.${ext}`;
+    const suffix = kind === 'artwork' ? '-artwork' : '';
+    const storageKey = `tattoo/generated/${taskId ? `${taskId}${suffix}` : crypto.randomUUID()}.${ext}`;
     const result = await storage.uploadFile({
       body,
       key: storageKey,
@@ -37,7 +41,7 @@ async function uploadToStorage(params: {
     return result.success
       ? {
           url: taskId
-            ? `/api/tattoo/tasks/${encodeURIComponent(taskId)}/image`
+            ? `/api/tattoo/tasks/${encodeURIComponent(taskId)}/${kind}`
             : result.url || '',
           storageKey,
           contentType,
@@ -64,9 +68,10 @@ export async function uploadGeneratedImage(params: {
   body: Buffer | Uint8Array;
   contentType: string;
   taskId: string;
+  kind?: TattooStoredImageKind;
 }): Promise<StoredTattooImage> {
-  const { body, contentType, taskId } = params;
-  const stored = await uploadToStorage({ body, contentType, taskId });
+  const { body, contentType, taskId, kind } = params;
+  const stored = await uploadToStorage({ body, contentType, taskId, kind });
   if (stored) return stored;
   throw new Error(
     'Generated image storage is unavailable. Configure R2 and retry the task.'
@@ -117,7 +122,8 @@ export async function publishRemoteImage(url: string): Promise<string | null> {
  */
 export async function persistRemoteImage(
   url: string,
-  taskId: string
+  taskId: string,
+  kind: TattooStoredImageKind = 'image'
 ): Promise<StoredTattooImage> {
   if (!/^https?:\/\//i.test(url)) {
     throw new Error('The AI provider returned an invalid image URL.');
@@ -140,7 +146,7 @@ export async function persistRemoteImage(
     );
     if (!contentType)
       throw new Error('Provider result is not a supported image.');
-    const stored = await uploadToStorage({ body, contentType, taskId });
+    const stored = await uploadToStorage({ body, contentType, taskId, kind });
     if (stored) return stored;
   } catch (error) {
     console.error('tattoo generated image archive failed:', error);

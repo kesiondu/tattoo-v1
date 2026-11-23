@@ -25,6 +25,7 @@ export interface TattooTaskView {
   modelLabel: string;
   prompt: string;
   imageUrl: string | null;
+  hasArtwork: boolean;
   error: string | null;
   costCredits: number;
   createdAt: Date;
@@ -38,6 +39,10 @@ type StoredTaskResult = {
   error?: string;
   storageKey?: string;
   contentType?: string;
+  artworkUrl?: string;
+  artworkStorageKey?: string;
+  artworkContentType?: string;
+  stage?: 'artwork' | 'body' | 'done';
 };
 
 function parseJson(value: unknown): any {
@@ -53,6 +58,8 @@ function parseOptions(value: unknown): {
   tier?: string;
   modelLabel?: string;
   userPrompt?: string;
+  bodyPrompt?: string;
+  bodyReferenceUrl?: string;
 } {
   return parseJson(value) ?? {};
 }
@@ -72,6 +79,7 @@ export function toTaskView(row: any): TattooTaskView {
     modelLabel: result.modelLabel || options.modelLabel || row.model,
     prompt: options.userPrompt || row.prompt,
     imageUrl: result.imageUrl || result.images?.[0]?.imageUrl || null,
+    hasArtwork: Boolean(result.artworkStorageKey),
     error: result.error || null,
     costCredits: row.costCredits || 0,
     createdAt: row.createdAt,
@@ -196,6 +204,7 @@ async function refreshKieTask(row: any): Promise<void> {
 
   const providerImageUrl = res.taskInfo?.images?.[0]?.imageUrl ?? null;
   const options = parseOptions(row.options);
+  const previousResult = parseResult(row.taskResult);
 
   if (res.taskStatus === AITaskStatus.SUCCESS) {
     if (!providerImageUrl) {
@@ -203,6 +212,52 @@ async function refreshKieTask(row: any): Promise<void> {
         taskId: row.id,
         status: AITaskStatus.FAILED,
         taskResult: { error: 'The AI provider returned no image' },
+      });
+      return;
+    }
+
+    if (
+      previousResult.stage === 'artwork' &&
+      options.tier !== 'clean_artwork'
+    ) {
+      const storedArtwork = await persistRemoteImage(
+        providerImageUrl,
+        row.id,
+        'artwork'
+      );
+      if (!options.bodyPrompt) {
+        await updateTask({
+          taskId: row.id,
+          status: AITaskStatus.FAILED,
+          taskResult: { error: 'Body preview prompt is missing' },
+        });
+        return;
+      }
+
+      const bodyInput = [options.bodyReferenceUrl, providerImageUrl].filter(
+        (value): value is string => Boolean(value)
+      );
+      const next = await kie.generate({
+        params: {
+          mediaType: AIMediaType.IMAGE,
+          model: row.model,
+          prompt: options.bodyPrompt,
+          options: bodyInput.length ? { image_input: bodyInput } : undefined,
+        },
+      });
+      await updateTask({
+        taskId: row.id,
+        status: AITaskStatus.PROCESSING,
+        providerTaskId: next.taskId,
+        taskResult: {
+          artworkUrl: storedArtwork.url,
+          artworkStorageKey: storedArtwork.storageKey,
+          artworkContentType: storedArtwork.contentType,
+          tier: options.tier,
+          modelLabel: options.modelLabel,
+          providerStatus: next.taskStatus,
+          stage: 'body',
+        },
       });
       return;
     }
@@ -222,6 +277,10 @@ async function refreshKieTask(row: any): Promise<void> {
         tier: options.tier,
         modelLabel: options.modelLabel,
         providerStatus: res.taskStatus,
+        artworkUrl: previousResult.artworkUrl,
+        artworkStorageKey: previousResult.artworkStorageKey,
+        artworkContentType: previousResult.artworkContentType,
+        stage: 'done',
       },
     });
     return;
@@ -271,6 +330,28 @@ export async function getTattooTaskStorage(
   return {
     storageKey: result.storageKey,
     contentType: result.contentType || 'image/png',
+  };
+}
+
+export async function getTattooTaskArtworkStorage(
+  userId: string,
+  taskId: string
+): Promise<{ storageKey: string; contentType: string } | null> {
+  const row = await findTask(taskId);
+  if (
+    !row ||
+    row.userId !== userId ||
+    row.scene !== TATTOO_TASK_SCENE ||
+    row.deletedAt ||
+    row.status !== AITaskStatus.SUCCESS
+  ) {
+    return null;
+  }
+  const result = parseResult(row.taskResult);
+  if (!result.artworkStorageKey) return null;
+  return {
+    storageKey: result.artworkStorageKey,
+    contentType: result.artworkContentType || 'image/png',
   };
 }
 

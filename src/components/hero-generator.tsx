@@ -284,16 +284,12 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 /**
  * The placement modal records points against a 3:4 container that shows the
  * 2:3 body photo with `object-contain` (letterboxed on the left/right).
- * Convert those points to the body image itself, then draw the marked region
- * onto a copy of that image. The annotated copy is what the model receives,
- * so the tattoo lands where the user actually drew it.
+ * Convert those points to the body image itself. Kie receives the normalized
+ * polygon in the prompt metadata together with the original body reference.
  */
 async function buildPlacementReference(
   selection: BodyPlacementSelection
-): Promise<{
-  placement: BodyPlacementSelection;
-  placementImage?: string;
-}> {
+): Promise<{ placement: BodyPlacementSelection }> {
   const src = new URL(
     getBodyReferenceSrc(selection.partId, selection.viewId, selection.skinTone),
     window.location.origin
@@ -321,35 +317,7 @@ async function buildPlacementReference(
     y: clamp01((point.y - offsetY) / drawHeight),
   }));
 
-  const canvas = document.createElement('canvas');
-  canvas.width = image.naturalWidth;
-  canvas.height = image.naturalHeight;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return { placement: { ...selection, points } };
-
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-  if (points.length >= 3) {
-    ctx.beginPath();
-    points.forEach((point, index) => {
-      const x = point.x * canvas.width;
-      const y = point.y * canvas.height;
-      if (index === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(236, 72, 153, 0.12)';
-    ctx.fill();
-    ctx.strokeStyle = '#ec4899';
-    ctx.lineWidth = Math.max(4, canvas.width * 0.006);
-    ctx.stroke();
-  }
-
-  return {
-    placement: { ...selection, points },
-    placementImage:
-      points.length >= 3 ? canvas.toDataURL('image/png') : undefined,
-  };
+  return { placement: { ...selection, points } };
 }
 
 export function HeroGenerator({
@@ -370,7 +338,9 @@ export function HeroGenerator({
     initialStyle && ALL_STYLES.some((s) => s.id === initialStyle)
       ? initialStyle
       : 'pick-for-me';
-  const [openStep, setOpenStep] = useState<1 | 2 | 3 | null>(2);
+  const [openStep, setOpenStep] = useState<1 | 2 | 3 | null>(
+    initialStyle ? 2 : 1
+  );
   const [selectedStyle, setSelectedStyle] = useState<string>(validInitialStyle);
   const [showAllStyles, setShowAllStyles] = useState(
     EXTRA_STYLES.some((s) => s.id === validInitialStyle)
@@ -410,6 +380,10 @@ export function HeroGenerator({
   const [examplesOpen, setExamplesOpen] = useState(false);
   const [generatedBodyUrl, setGeneratedBodyUrl] = useState<string | null>(null);
   const [generatedArtUrl, setGeneratedArtUrl] = useState<string | null>(null);
+  const [generatedBodyTaskId, setGeneratedBodyTaskId] = useState<string | null>(
+    null
+  );
+  const [generatedBodyHasArtwork, setGeneratedBodyHasArtwork] = useState(false);
   const [activeModelLabel, setActiveModelLabel] = useState<string | null>(null);
   const [stencilSize, setStencilSize] = useState('medium');
   const draftRestoredRef = useRef(false);
@@ -511,9 +485,12 @@ export function HeroGenerator({
   }
 
   function applyTaskResult(task: {
+    id?: string;
+    taskId?: string;
     tier: string;
     imageUrl: string | null;
     modelLabel?: string | null;
+    hasArtwork?: boolean;
   }) {
     if (!task.imageUrl) return;
     if (task.modelLabel) setActiveModelLabel(task.modelLabel);
@@ -522,6 +499,8 @@ export function HeroGenerator({
       setPreviewTab('artwork');
     } else {
       setGeneratedBodyUrl(task.imageUrl);
+      setGeneratedBodyTaskId(task.taskId ?? task.id ?? null);
+      setGeneratedBodyHasArtwork(Boolean(task.hasArtwork));
       setPreviewTab('body');
     }
   }
@@ -556,6 +535,14 @@ export function HeroGenerator({
     if (!generationPrompt) {
       setOpenStep(2);
       toast.info(m['home.hero.need_prompt']());
+      return;
+    }
+    if (
+      tier !== 'clean_artwork' &&
+      (!placement || placement.points.length < 3)
+    ) {
+      setOpenStep(3);
+      toast.info(m['home.hero.need_placement']());
       return;
     }
 
@@ -599,8 +586,14 @@ export function HeroGenerator({
     setGenerationStatus('processing');
     setGenerationError(null);
     setActiveTaskId(null);
-    setGeneratedBodyUrl(null);
-    setGeneratedArtUrl(null);
+    if (tier === 'clean_artwork') {
+      setGeneratedArtUrl(null);
+    } else {
+      setGeneratedBodyUrl(null);
+      setGeneratedArtUrl(null);
+      setGeneratedBodyTaskId(null);
+      setGeneratedBodyHasArtwork(false);
+    }
     removeSessionValue(ACTIVE_TASK_KEY);
 
     try {
@@ -624,10 +617,8 @@ export function HeroGenerator({
             points: placement.points,
           }
         : undefined;
-      let placementImage: string | undefined;
-
-      // Draw the lasso onto the actual body image. If the browser cannot do
-      // it, still send the structured points; never block generation.
+      // Normalize the lasso against the actual body image. If the browser
+      // cannot load it, still send the structured points; never block.
       if (placement) {
         try {
           const built = await buildPlacementReference(placement);
@@ -638,7 +629,6 @@ export function HeroGenerator({
             skinTone: built.placement.skinTone,
             points: built.placement.points,
           };
-          placementImage = built.placementImage;
         } catch {
           // Fall back to the unadjusted points.
         }
@@ -651,6 +641,7 @@ export function HeroGenerator({
         modelLabel: string;
         status: 'processing' | 'success' | 'failed';
         imageUrl: string | null;
+        hasArtwork?: boolean;
         error?: string;
       }>(
         '/api/tattoo/generate',
@@ -662,7 +653,6 @@ export function HeroGenerator({
           placement: placementPayload,
           placementLabel: placementSummary ?? undefined,
           referenceImage,
-          placementImage,
         },
         { signal: controller.signal }
       );
@@ -751,6 +741,7 @@ export function HeroGenerator({
           tier: string;
           modelLabel: string;
           imageUrl: string | null;
+          hasArtwork?: boolean;
           error: string | null;
         }>(`/api/tattoo/tasks/${encodeURIComponent(activeTaskId)}`);
         if (cancelled) return;
@@ -830,6 +821,17 @@ export function HeroGenerator({
       return;
     }
     void runGeneration('fast_body_preview');
+  }
+
+  function revealGeneratedArtwork() {
+    if (!generatedBodyTaskId || !generatedBodyHasArtwork) {
+      void runGeneration('clean_artwork');
+      return;
+    }
+    setGeneratedArtUrl(
+      `/api/tattoo/tasks/${encodeURIComponent(generatedBodyTaskId)}/artwork`
+    );
+    setPreviewTab('artwork');
   }
 
   async function createStencilSvg(): Promise<Blob> {
@@ -1487,12 +1489,12 @@ export function HeroGenerator({
                     <button
                       type="button"
                       disabled={generating || sessionPending}
-                      onClick={() => void runGeneration('clean_artwork')}
+                      onClick={revealGeneratedArtwork}
                       className="bg-foreground/90 text-background hover:bg-foreground inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs disabled:opacity-60"
                     >
                       <Sparkles className="size-3" />
                       <span>{m['pages.home.m002']()}</span>
-                      {showCredits && (
+                      {showCredits && !generatedBodyHasArtwork && (
                         <span className="text-background/70">
                           · {TATTOO_GENERATION_COSTS.clean_artwork}{' '}
                           {m['pages.pricing.m021']()}
@@ -1559,7 +1561,7 @@ export function HeroGenerator({
                 <div className="grid aspect-[16/11] w-full grid-cols-2 gap-2 bg-neutral-50 p-2 sm:aspect-[4/3]">
                   <div className="border-border/60 overflow-hidden rounded-lg border bg-white">
                     <img
-                      src="https://assets.tattoogenerator.online/v1/home-hero-set/dagger-rose-artwork.jpg"
+                      src="https://assets.tattoogenerator.online/v2/home-hero-set/dagger-rose-flat-stencil.png"
                       alt={m['home.hero.tab_art']()}
                       className="h-full w-full object-contain p-2"
                     />
