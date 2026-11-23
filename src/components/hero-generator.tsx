@@ -3,6 +3,7 @@ import {
   ArrowRight,
   ChevronDown,
   Download,
+  FileText,
   HelpCircle,
   Loader2,
   Share2,
@@ -20,6 +21,7 @@ import { traceStencilFromBlob } from '@/lib/trace-stencil';
 import { cn } from '@/lib/utils';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
+import { useConfirm } from '@/hooks/use-confirm';
 import { usePublicConfig } from '@/hooks/use-public-config';
 import {
   BODY_PARTS,
@@ -30,9 +32,11 @@ import {
   type ModelGender,
   type SkinToneId,
 } from '@/components/body-placement-modal';
+import { CreditBundlePricing } from '@/components/credit-bundle-pricing';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -332,6 +336,7 @@ export function HeroGenerator({
 }: HeroGeneratorProps) {
   const { data: session, isPending: sessionPending } = useSession();
   const { data: publicConfigs } = usePublicConfig();
+  const { confirm, dialog: confirmDialog } = useConfirm();
   const showCredits = publicConfigs?.credits_enabled !== 'false';
 
   const validInitialStyle =
@@ -378,13 +383,14 @@ export function HeroGenerator({
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [surpriseIdx, setSurpriseIdx] = useState(0);
   const [examplesOpen, setExamplesOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [creditPurchaseOpen, setCreditPurchaseOpen] = useState(false);
+  const [consultationSize, setConsultationSize] = useState('');
   const [generatedBodyUrl, setGeneratedBodyUrl] = useState<string | null>(null);
   const [generatedArtUrl, setGeneratedArtUrl] = useState<string | null>(null);
   const [generatedBodyTaskId, setGeneratedBodyTaskId] = useState<string | null>(
     null
   );
-  const [generatedBodyHasArtwork, setGeneratedBodyHasArtwork] = useState(false);
-  const [activeModelLabel, setActiveModelLabel] = useState<string | null>(null);
   const [stencilSize, setStencilSize] = useState('medium');
   const draftRestoredRef = useRef(false);
   const generatingRef = useRef(false);
@@ -489,25 +495,24 @@ export function HeroGenerator({
     taskId?: string;
     tier: string;
     imageUrl: string | null;
-    modelLabel?: string | null;
     hasArtwork?: boolean;
+    artworkError?: string | null;
   }) {
     if (!task.imageUrl) return;
-    if (task.modelLabel) setActiveModelLabel(task.modelLabel);
-    if (task.tier === 'clean_artwork') {
+    if (task.tier === 'clean_artwork' || task.tier === 'stencil_from_preview') {
       setGeneratedArtUrl(task.imageUrl);
       setPreviewTab('artwork');
     } else {
       setGeneratedBodyUrl(task.imageUrl);
       setGeneratedBodyTaskId(task.taskId ?? task.id ?? null);
-      setGeneratedBodyHasArtwork(Boolean(task.hasArtwork));
       setPreviewTab('body');
     }
   }
 
   async function runGeneration(
     tier: TattooGenerationTier,
-    promptOverride?: string
+    promptOverride?: string,
+    sourceTaskId?: string
   ) {
     // Auth is still restoring after a redirect; do not treat the user as
     // signed out and reopen the sign-in modal.
@@ -539,6 +544,7 @@ export function HeroGenerator({
     }
     if (
       tier !== 'clean_artwork' &&
+      tier !== 'stencil_from_preview' &&
       (!placement || placement.points.length < 3)
     ) {
       setOpenStep(3);
@@ -552,6 +558,7 @@ export function HeroGenerator({
     const requestSignature = JSON.stringify({
       tier,
       prompt: generationPrompt,
+      sourceTaskId: sourceTaskId ?? null,
       style: selectedStyle,
       placement: placement
         ? {
@@ -586,13 +593,12 @@ export function HeroGenerator({
     setGenerationStatus('processing');
     setGenerationError(null);
     setActiveTaskId(null);
-    if (tier === 'clean_artwork') {
+    if (tier === 'clean_artwork' || tier === 'stencil_from_preview') {
       setGeneratedArtUrl(null);
     } else {
       setGeneratedBodyUrl(null);
       setGeneratedArtUrl(null);
       setGeneratedBodyTaskId(null);
-      setGeneratedBodyHasArtwork(false);
     }
     removeSessionValue(ACTIVE_TASK_KEY);
 
@@ -638,10 +644,10 @@ export function HeroGenerator({
         taskId: string;
         tier: string;
         model: string;
-        modelLabel: string;
         status: 'processing' | 'success' | 'failed';
         imageUrl: string | null;
         hasArtwork?: boolean;
+        artworkError?: string | null;
         error?: string;
       }>(
         '/api/tattoo/generate',
@@ -653,11 +659,10 @@ export function HeroGenerator({
           placement: placementPayload,
           placementLabel: placementSummary ?? undefined,
           referenceImage,
+          sourceTaskId,
         },
         { signal: controller.signal }
       );
-
-      setActiveModelLabel(res.modelLabel);
 
       if (res.status === 'success' && res.imageUrl) {
         applyTaskResult(res);
@@ -673,7 +678,7 @@ export function HeroGenerator({
           updatedAt: Date.now(),
         } satisfies ActiveTaskDraft);
         removeSessionValue(PENDING_REQUEST_KEY);
-        toast.success(`${m['home.hero.submitted']()} · ${res.modelLabel}`);
+        toast.success(m['home.hero.submitted']());
         return;
       }
 
@@ -687,7 +692,7 @@ export function HeroGenerator({
           updatedAt: Date.now(),
         } satisfies ActiveTaskDraft);
         removeSessionValue(PENDING_REQUEST_KEY);
-        toast.info(`${m['home.hero.submitted']()} · ${res.modelLabel}`);
+        toast.info(m['home.hero.submitted']());
         return;
       }
 
@@ -709,6 +714,19 @@ export function HeroGenerator({
         err?.name === 'AbortError'
           ? m['home.hero.timeout_hint']()
           : err?.message || 'Generation failed';
+
+      // Credits are authoritative on the server. When the server says the
+      // balance is insufficient, preserve the draft and send the user to the
+      // pricing page instead of presenting a generation failure.
+      if (/insufficient credits/i.test(message)) {
+        setGenerating(false);
+        setGenerationStatus('idle');
+        setGenerationError(null);
+        setActiveTaskId(null);
+        setCreditPurchaseOpen(true);
+        return;
+      }
+
       setGenerationStatus('failed');
       setGenerationError(message);
       setGenerating(false);
@@ -739,19 +757,25 @@ export function HeroGenerator({
           id: string;
           status: string;
           tier: string;
-          modelLabel: string;
           imageUrl: string | null;
           hasArtwork?: boolean;
+          artworkError?: string | null;
           error: string | null;
         }>(`/api/tattoo/tasks/${encodeURIComponent(activeTaskId)}`);
         if (cancelled) return;
+
+        // The body preview is the primary result. It becomes available while
+        // the optional stencil extraction is still running.
+        if (task.imageUrl) {
+          applyTaskResult(task);
+        }
 
         if (task.status === 'success' && task.imageUrl) {
           applyTaskResult(task);
           setGenerationStatus('success');
           setGenerating(false);
           setActiveTaskId(null);
-          toast.success(`${m['home.hero.submitted']()} · ${task.modelLabel}`);
+          toast.success(m['home.hero.submitted']());
           return;
         }
 
@@ -823,15 +847,20 @@ export function HeroGenerator({
     void runGeneration('fast_body_preview');
   }
 
-  function revealGeneratedArtwork() {
-    if (!generatedBodyTaskId || !generatedBodyHasArtwork) {
-      void runGeneration('clean_artwork');
+  async function revealGeneratedArtwork() {
+    if (!generatedBodyTaskId) return;
+    if (
+      !(await confirm({
+        title: m['home.hero.stencil_confirm_title'](),
+        description: m['home.hero.stencil_confirm_description']({
+          credits: TATTOO_GENERATION_COSTS.stencil_from_preview,
+        }),
+        confirmLabel: m['home.hero.stencil_confirm_action'](),
+      }))
+    ) {
       return;
     }
-    setGeneratedArtUrl(
-      `/api/tattoo/tasks/${encodeURIComponent(generatedBodyTaskId)}/artwork`
-    );
-    setPreviewTab('artwork');
+    void runGeneration('stencil_from_preview', undefined, generatedBodyTaskId);
   }
 
   async function createStencilSvg(): Promise<Blob> {
@@ -846,6 +875,88 @@ export function HeroGenerator({
     // any size. Never fall back to embedding the raster inside an SVG.
     const { svg } = await traceStencilFromBlob(imageBlob);
     return new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  }
+
+  async function downloadGeneratedImage(url: string, filename: string) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Could not load the generated image.');
+      const image = await response.blob();
+      if (!image.type.startsWith('image/')) {
+        throw new Error('The generated result is not an image.');
+      }
+      const objectUrl = URL.createObjectURL(image);
+      const anchor = document.createElement('a');
+      anchor.href = objectUrl;
+      anchor.download = filename;
+      anchor.click();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1_000);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Image download failed.'
+      );
+    }
+  }
+
+  async function downloadTransparentArtwork() {
+    if (!generatedArtUrl) return;
+    try {
+      const response = await fetch(generatedArtUrl);
+      if (!response.ok) throw new Error('Could not load the clean artwork.');
+      const source = await response.blob();
+      const bitmap = await createImageBitmap(source);
+      const canvas = document.createElement('canvas');
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      if (!context) throw new Error('Could not prepare the clean artwork.');
+      context.drawImage(bitmap, 0, 0);
+      bitmap.close();
+      const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
+      for (let index = 0; index < pixels.data.length; index += 4) {
+        const [red, green, blue] = pixels.data.slice(index, index + 3);
+        if (red > 245 && green > 245 && blue > 245) pixels.data[index + 3] = 0;
+      }
+      context.putImageData(pixels, 0, 0);
+      const transparent = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, 'image/png')
+      );
+      if (!transparent) throw new Error('Could not export the clean artwork.');
+      const objectUrl = URL.createObjectURL(transparent);
+      const anchor = document.createElement('a');
+      anchor.href = objectUrl;
+      anchor.download = 'tattoo-clean-reference-art.png';
+      anchor.click();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1_000);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Clean artwork export failed.'
+      );
+    }
+  }
+
+  function exportConsultationPdf() {
+    if (!generatedBodyUrl || !generatedArtUrl) return;
+    const popup = window.open('', '_blank');
+    if (!popup) {
+      toast.error('Allow pop-ups to export your consultation sheet.');
+      return;
+    }
+    popup.opener = null;
+    const escapedPlacement = (placementSummary || 'Placement to be confirmed')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    const escapedSize = (
+      consultationSize.trim() || 'To be confirmed with artist'
+    )
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    popup.document.write(
+      `<!doctype html><html><head><title>Tattoo consultation sheet</title><style>@page{size:letter;margin:0.45in}*{box-sizing:border-box}body{margin:0;color:#1f1e1b;font-family:Arial,sans-serif}.eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#756f68}.title{margin:6px 0 4px;font-size:25px;letter-spacing:-.04em}.copy{margin:0;color:#615c56;font-size:12px;line-height:1.45}.details{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}.detail{border:1px solid #dedbd6;border-radius:8px;padding:9px}.detail b{display:block;margin-bottom:3px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#756f68}.images{display:grid;grid-template-columns:1fr 1fr;gap:12px}.panel{border:1px solid #dedbd6;border-radius:10px;overflow:hidden}.panel h2{margin:0;padding:9px 10px;border-bottom:1px solid #dedbd6;font-size:12px}.panel img{display:block;width:100%;height:275px;object-fit:contain;background:#f8f7f5}.tip{margin-top:14px;border:1px solid #dedbd6;border-radius:8px;padding:10px;font-size:10px;line-height:1.45;color:#615c56}.tip b{color:#1f1e1b}</style></head><body><div class="eyebrow">Artist-friendly reference</div><h1 class="title">Tattoo Consultation Sheet</h1><p class="copy">Bring this to your consultation as a visual starting point. Your artist will adapt it for your skin, placement, and long-term wear.</p><div class="details"><div class="detail"><b>Placement</b>${escapedPlacement}</div><div class="detail"><b>Target size</b>${escapedSize}</div></div><div class="images"><section class="panel"><h2>On-Body Placement Preview</h2><img src="${generatedBodyUrl}" /></section><section class="panel"><h2>Clean Reference Art</h2><img src="${generatedArtUrl}" /></section></div><div class="tip"><b>Artist etiquette tip:</b> Most professional tattoo artists will redraw your reference to ensure the line weight and shading age well on your skin. Share these files as a clear visual starting point—not a rigid blueprint.</div><script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`
+    );
+    popup.document.close();
   }
 
   function downloadStencilSvg(blob: Blob) {
@@ -1465,11 +1576,6 @@ export function HeroGenerator({
                     alt={m['home.hero.tab_body']()}
                     className="h-full w-full object-cover"
                   />
-                  {activeModelLabel && (
-                    <span className="text-foreground absolute top-2.5 left-2.5 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold shadow-xs backdrop-blur-xs">
-                      {activeModelLabel}
-                    </span>
-                  )}
                   <div className="absolute right-2.5 bottom-2.5 left-2.5 flex flex-wrap items-center justify-center gap-2">
                     <button
                       type="button"
@@ -1488,15 +1594,23 @@ export function HeroGenerator({
                     </button>
                     <button
                       type="button"
+                      onClick={() => setExportOpen(true)}
+                      className="text-foreground inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs hover:bg-white"
+                    >
+                      <Download className="size-3" />
+                      <span>{m['home.hero.export_reference']()}</span>
+                    </button>
+                    <button
+                      type="button"
                       disabled={generating || sessionPending}
-                      onClick={revealGeneratedArtwork}
+                      onClick={() => void revealGeneratedArtwork()}
                       className="bg-foreground/90 text-background hover:bg-foreground inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs disabled:opacity-60"
                     >
                       <Sparkles className="size-3" />
                       <span>{m['pages.home.m002']()}</span>
-                      {showCredits && !generatedBodyHasArtwork && (
+                      {showCredits && (
                         <span className="text-background/70">
-                          · {TATTOO_GENERATION_COSTS.clean_artwork}{' '}
+                          · {TATTOO_GENERATION_COSTS.stencil_from_preview}{' '}
                           {m['pages.pricing.m021']()}
                         </span>
                       )}
@@ -1510,9 +1624,14 @@ export function HeroGenerator({
                     alt={m['home.hero.tab_art']()}
                     className="h-full w-full object-contain"
                   />
-                  <span className="border-border text-foreground absolute top-2.5 left-2.5 rounded-full border bg-white/95 px-2.5 py-1 text-[10px] font-semibold shadow-xs">
-                    Nano Banana Pro
-                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setExportOpen(true)}
+                    className="border-border text-foreground absolute right-2.5 bottom-2.5 inline-flex items-center gap-1 rounded-full border bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-xs hover:bg-white"
+                  >
+                    <Download className="size-3" />
+                    <span>{m['home.hero.export_reference']()}</span>
+                  </button>
                 </div>
               ) : generationStatus === 'processing' ? (
                 <div
@@ -1628,6 +1747,137 @@ export function HeroGenerator({
         }}
       />
 
+      <Dialog open={creditPurchaseOpen} onOpenChange={setCreditPurchaseOpen}>
+        <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto p-0 sm:max-w-5xl">
+          <DialogHeader className="border-border border-b px-5 pt-6 pb-5 sm:px-6">
+            <DialogTitle className="text-foreground text-xl tracking-tight sm:text-2xl">
+              {m['pages.pricing.m015']()}
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground max-w-2xl text-sm leading-6">
+              {m['pages.pricing.m034']()}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-5 sm:p-6">
+            <CreditBundlePricing compact onOpenAuth={onOpenAuth} />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={exportOpen} onOpenChange={setExportOpen}>
+        <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto p-0 sm:max-w-2xl">
+          <DialogHeader className="border-border border-b px-5 pt-6 pb-5 sm:px-6">
+            <DialogTitle className="text-foreground text-xl tracking-tight sm:text-2xl">
+              {m['home.hero.export_title']()}
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground max-w-xl text-sm leading-6">
+              {m['home.hero.export_subtitle']()}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 p-5 sm:p-6">
+            <section className="border-border grid gap-4 rounded-xl border p-4 sm:grid-cols-[1fr_auto] sm:items-center">
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-foreground text-sm font-semibold">
+                    {m['home.hero.export_preview_label']()}
+                  </h3>
+                  <span className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide">
+                    {m['home.hero.export_preview_tag']()}
+                  </span>
+                </div>
+                <p className="text-muted-foreground mt-1.5 text-sm leading-5">
+                  {m['home.hero.export_preview_description']()}
+                </p>
+              </div>
+              <button
+                type="button"
+                disabled={!generatedBodyUrl}
+                onClick={() =>
+                  generatedBodyUrl &&
+                  void downloadGeneratedImage(
+                    generatedBodyUrl,
+                    'tattoo-on-body-preview.png'
+                  )
+                }
+                className="border-border text-foreground hover:bg-muted inline-flex h-10 items-center justify-center gap-2 rounded-lg border px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Download className="size-4" />
+                {m['home.hero.export_preview_button']()}
+              </button>
+            </section>
+
+            <section className="border-border grid gap-4 rounded-xl border p-4 sm:grid-cols-[1fr_auto] sm:items-center">
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-foreground text-sm font-semibold">
+                    {m['home.hero.export_art_label']()}
+                  </h3>
+                  <span className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide">
+                    {m['home.hero.export_art_tag']()}
+                  </span>
+                </div>
+                <p className="text-muted-foreground mt-1.5 text-sm leading-5">
+                  {m['home.hero.export_art_description']()}
+                </p>
+              </div>
+              <button
+                type="button"
+                disabled={!generatedArtUrl}
+                onClick={() => void downloadTransparentArtwork()}
+                className="bg-foreground text-background hover:bg-foreground/90 inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Download className="size-4" />
+                {m['home.hero.export_art_button']()}
+              </button>
+            </section>
+
+            <section className="border-border grid gap-4 rounded-xl border p-4 sm:grid-cols-[1fr_auto] sm:items-center">
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-foreground text-sm font-semibold">
+                    {m['home.hero.export_sheet_label']()}
+                  </h3>
+                  <span className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide">
+                    {m['home.hero.export_sheet_tag']()}
+                  </span>
+                </div>
+                <p className="text-muted-foreground mt-1.5 text-sm leading-5">
+                  {m['home.hero.export_sheet_description']()}
+                </p>
+                <label className="text-muted-foreground mt-3 flex items-center gap-2 text-xs font-medium">
+                  {m['home.hero.export_size_label']()}
+                  <input
+                    value={consultationSize}
+                    onChange={(event) =>
+                      setConsultationSize(event.target.value)
+                    }
+                    placeholder={m['home.hero.export_size_placeholder']()}
+                    className="border-input bg-background text-foreground h-8 min-w-0 flex-1 rounded-md border px-2 text-sm outline-none focus:ring-2 focus:ring-black/10"
+                  />
+                </label>
+              </div>
+              <button
+                type="button"
+                disabled={!generatedBodyUrl || !generatedArtUrl}
+                onClick={exportConsultationPdf}
+                className="border-border text-foreground hover:bg-muted inline-flex h-10 items-center justify-center gap-2 rounded-lg border px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <FileText className="size-4" />
+                {m['home.hero.export_sheet_button']()}
+              </button>
+            </section>
+
+            <aside className="border-border bg-muted/40 rounded-xl border px-4 py-3 text-xs leading-5">
+              <span className="text-foreground font-semibold">
+                {m['home.hero.export_tip_title']()}
+              </span>{' '}
+              <span className="text-muted-foreground">
+                {m['home.hero.export_tip_body']()}
+              </span>
+            </aside>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Example Designs Lightbox Modal */}
       <Dialog open={examplesOpen} onOpenChange={setExamplesOpen}>
         <DialogContent className="text-foreground max-w-4xl bg-white">
@@ -1643,6 +1893,7 @@ export function HeroGenerator({
           </div>
         </DialogContent>
       </Dialog>
+      {confirmDialog}
     </section>
   );
 }

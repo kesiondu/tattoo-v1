@@ -3,6 +3,7 @@ import {
   Coins,
   CreditCard,
   Home,
+  Images,
   Key,
   LayoutDashboard,
   LifeBuoy,
@@ -76,6 +77,12 @@ function SettingsLayout() {
       icon: LifeBuoy,
       group: contentGroup,
       show: features.tickets,
+    },
+    {
+      href: '/my-designs',
+      label: m['settings.nav.my_tattoos'](),
+      icon: Images,
+      group: contentGroup,
     },
   ].filter((item) => item.show !== false);
 

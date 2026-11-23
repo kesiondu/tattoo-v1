@@ -141,6 +141,12 @@ export function getSettingGroups(): SettingGroup[] {
       tab: 'payment',
     },
     {
+      name: 'dodo',
+      title: 'Dodo Payments',
+      description: 'Dodo Payments hosted checkout gateway',
+      tab: 'payment',
+    },
+    {
       name: 'paypal',
       title: 'PayPal',
       description: 'PayPal payment gateway',
@@ -602,6 +608,7 @@ export function getSettings(): Setting[] {
       options: [
         { label: 'Stripe', value: 'stripe' },
         { label: 'Creem', value: 'creem' },
+        { label: 'Dodo Payments', value: 'dodo' },
         { label: 'PayPal', value: 'paypal' },
         { label: 'Alipay', value: 'alipay' },
         { label: 'WeChat Pay', value: 'wechat' },
@@ -694,6 +701,53 @@ export function getSettings(): Setting[] {
       type: 'number',
       placeholder: '留空使用实际金额，填 1 则支付 $0.01',
       group: 'creem',
+      tab: 'payment',
+    },
+
+    // ─── Payment / Dodo Payments ─────────────────────────────────────
+    {
+      name: 'dodo_enabled',
+      title: 'Enable Dodo Payments',
+      type: 'switch',
+      group: 'dodo',
+      tab: 'payment',
+    },
+    {
+      name: 'dodo_environment',
+      title: 'Environment',
+      type: 'select',
+      options: [
+        { label: 'Test mode', value: 'test_mode' },
+        { label: 'Live mode', value: 'live_mode' },
+      ],
+      group: 'dodo',
+      tab: 'payment',
+      defaultValue: 'test_mode',
+    },
+    {
+      name: 'dodo_api_key',
+      title: 'API Key',
+      type: 'password',
+      placeholder: 'dodo_test_…',
+      group: 'dodo',
+      tab: 'payment',
+    },
+    {
+      name: 'dodo_webhook_key',
+      title: 'Webhook Signing Key',
+      type: 'password',
+      placeholder: 'whsec_…',
+      group: 'dodo',
+      tab: 'payment',
+      tip: 'Create a webhook for /api/payment/notify/dodo in the matching Dodo environment.',
+    },
+    {
+      name: 'dodo_product_ids_mapping',
+      title: 'Product IDs Mapping',
+      type: 'textarea',
+      placeholder: '{"starter_monthly": "pdt_xxx"}',
+      tip: 'Map each internal pricing product ID to the matching Dodo product ID. Required before checkout can start.',
+      group: 'dodo',
       tab: 'payment',
     },
 

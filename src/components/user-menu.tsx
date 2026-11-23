@@ -1,6 +1,7 @@
 import {
   CheckIcon,
   EllipsisVerticalIcon,
+  ImagesIcon,
   LanguagesIcon,
   LogOutIcon,
   MonitorIcon,
@@ -141,6 +142,10 @@ export function UserMenu({
                 {m['common.nav.profile']()}
               </DropdownMenuItem>
             )}
+            <DropdownMenuItem onClick={() => router.push('/my-designs')}>
+              <ImagesIcon className="size-4" />
+              {m['common.nav.my_designs']()}
+            </DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger className="gap-2 px-2 py-2">
                 <LanguagesIcon className="size-4" />

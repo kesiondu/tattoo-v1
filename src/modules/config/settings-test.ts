@@ -15,6 +15,7 @@ import { ResendProvider } from '@/core/email/resend';
 import {
   AlipayProvider,
   CreemProvider,
+  DodoProvider,
   PayPalProvider,
   StripeProvider,
   WechatPayProvider,
@@ -42,6 +43,8 @@ export async function runTest(
         return await testStripe(inputs, configs);
       case 'creem':
         return await testCreem(inputs, configs);
+      case 'dodo':
+        return await testDodo(inputs, configs);
       case 'paypal':
         return await testPaypal(inputs, configs);
       case 'alipay':
@@ -185,6 +188,40 @@ async function testCreem(
   return {
     success: true,
     message: 'Checkout session created',
+    details: {
+      'Session ID': session.checkoutInfo.sessionId,
+      'Checkout URL': session.checkoutInfo.checkoutUrl,
+    },
+  };
+}
+
+// --- Dodo Payments ---------------------------------------------------------
+
+async function testDodo(
+  inputs: Record<string, string>,
+  configs: Record<string, string>
+): Promise<TestResult> {
+  const missing = need(configs, ['dodo_api_key']);
+  if (missing) return { success: false, message: missing };
+
+  const provider = new DodoProvider({
+    apiKey: configs.dodo_api_key,
+    webhookKey: configs.dodo_webhook_key || undefined,
+    environment:
+      configs.dodo_environment === 'live_mode' ? 'live_mode' : 'test_mode',
+  });
+  const order: PaymentOrder = {
+    type: PaymentType.ONE_TIME,
+    orderNo: getUniSeq('TEST'),
+    productId: inputs.productId,
+    description: inputs.description || 'Test checkout',
+    successUrl: configuredSuccessUrl('dodo', configs),
+    cancelUrl: configuredSuccessUrl('dodo', configs),
+  };
+  const session = await provider.createPayment({ order });
+  return {
+    success: true,
+    message: 'Dodo test checkout session created',
     details: {
       'Session ID': session.checkoutInfo.sessionId,
       'Checkout URL': session.checkoutInfo.checkoutUrl,

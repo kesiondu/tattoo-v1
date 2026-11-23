@@ -27,6 +27,8 @@ export interface TattooTaskView {
   imageUrl: string | null;
   hasArtwork: boolean;
   error: string | null;
+  artworkError: string | null;
+  stage: string | null;
   costCredits: number;
   createdAt: Date;
 }
@@ -42,7 +44,8 @@ type StoredTaskResult = {
   artworkUrl?: string;
   artworkStorageKey?: string;
   artworkContentType?: string;
-  stage?: 'artwork' | 'body' | 'done';
+  artworkError?: string;
+  stage?: 'artwork' | 'body' | 'body_preview' | 'stencil_extraction' | 'done';
 };
 
 function parseJson(value: unknown): any {
@@ -59,6 +62,7 @@ function parseOptions(value: unknown): {
   modelLabel?: string;
   userPrompt?: string;
   bodyPrompt?: string;
+  stencilPrompt?: string;
   bodyReferenceUrl?: string;
 } {
   return parseJson(value) ?? {};
@@ -81,6 +85,8 @@ export function toTaskView(row: any): TattooTaskView {
     imageUrl: result.imageUrl || result.images?.[0]?.imageUrl || null,
     hasArtwork: Boolean(result.artworkStorageKey),
     error: result.error || null,
+    artworkError: result.artworkError || null,
+    stage: result.stage || null,
     costCredits: row.costCredits || 0,
     createdAt: row.createdAt,
   };
@@ -212,52 +218,6 @@ async function refreshKieTask(row: any): Promise<void> {
         taskId: row.id,
         status: AITaskStatus.FAILED,
         taskResult: { error: 'The AI provider returned no image' },
-      });
-      return;
-    }
-
-    if (
-      previousResult.stage === 'artwork' &&
-      options.tier !== 'clean_artwork'
-    ) {
-      const storedArtwork = await persistRemoteImage(
-        providerImageUrl,
-        row.id,
-        'artwork'
-      );
-      if (!options.bodyPrompt) {
-        await updateTask({
-          taskId: row.id,
-          status: AITaskStatus.FAILED,
-          taskResult: { error: 'Body preview prompt is missing' },
-        });
-        return;
-      }
-
-      const bodyInput = [options.bodyReferenceUrl, providerImageUrl].filter(
-        (value): value is string => Boolean(value)
-      );
-      const next = await kie.generate({
-        params: {
-          mediaType: AIMediaType.IMAGE,
-          model: row.model,
-          prompt: options.bodyPrompt,
-          options: bodyInput.length ? { image_input: bodyInput } : undefined,
-        },
-      });
-      await updateTask({
-        taskId: row.id,
-        status: AITaskStatus.PROCESSING,
-        providerTaskId: next.taskId,
-        taskResult: {
-          artworkUrl: storedArtwork.url,
-          artworkStorageKey: storedArtwork.storageKey,
-          artworkContentType: storedArtwork.contentType,
-          tier: options.tier,
-          modelLabel: options.modelLabel,
-          providerStatus: next.taskStatus,
-          stage: 'body',
-        },
       });
       return;
     }

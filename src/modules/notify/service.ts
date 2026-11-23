@@ -43,6 +43,7 @@ import {
 const PROVIDER_NAMES: Record<string, string> = {
   stripe: 'Stripe',
   creem: 'Creem',
+  dodo: 'Dodo Payments',
   paypal: 'PayPal',
   alipay: 'Alipay',
   wechat: 'WeChat Pay',

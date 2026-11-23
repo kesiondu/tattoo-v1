@@ -95,6 +95,18 @@ async function POST({ request }: { request: Request }) {
         return respErr('Creem is not configured for this product');
       }
     }
+    if (payment_provider === 'dodo') {
+      let mapped = false;
+      try {
+        const mapping = JSON.parse(
+          configs.dodo_product_ids_mapping || '{}'
+        ) as Record<string, string>;
+        mapped = Boolean(mapping[product.productId]);
+      } catch {
+        mapped = false;
+      }
+      if (!mapped) return respErr('Dodo is not configured for this product');
+    }
     const charge = await resolveCharge({
       product,
       paymentProvider: payment_provider,

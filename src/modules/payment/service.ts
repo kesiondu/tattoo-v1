@@ -5,6 +5,7 @@ import { atomic, AtomicGuardError, guard } from '@/core/db/atomic';
 import {
   AlipayProvider,
   CreemProvider,
+  DodoProvider,
   PaymentManager,
   StripeProvider,
   WechatPayProvider,
@@ -71,6 +72,8 @@ async function getPaymentManager(): Promise<PaymentManager> {
     c('stripe_secret_key') || c('stripe_api_key'),
     c('creem_enabled'),
     c('creem_api_key'),
+    c('dodo_enabled'),
+    c('dodo_api_key'),
     c('alipay_app_id'),
     c('wechat_mch_id'),
     c('default_payment_provider'),
@@ -106,6 +109,19 @@ async function getPaymentManager(): Promise<PaymentManager> {
         signingSecret: c('creem_signing_secret') || undefined,
         environment:
           c('creem_environment') === 'production' ? 'production' : 'sandbox',
+      }),
+      isDefault
+    );
+  }
+
+  if (c('dodo_enabled') === 'true' && c('dodo_api_key')) {
+    const isDefault = c('default_payment_provider') === 'dodo';
+    manager.addProvider(
+      new DodoProvider({
+        apiKey: c('dodo_api_key'),
+        webhookKey: c('dodo_webhook_key') || undefined,
+        environment:
+          c('dodo_environment') === 'live_mode' ? 'live_mode' : 'test_mode',
       }),
       isDefault
     );
@@ -186,6 +202,16 @@ export async function createCheckout(params: {
       } catch {
         // invalid JSON — fall through with original productId
       }
+    }
+  }
+  if (resolvedProvider === 'dodo' && paymentOrder.productId) {
+    try {
+      const map = JSON.parse(
+        configs.dodo_product_ids_mapping || '{}'
+      ) as Record<string, string>;
+      resolvedProductId = map[paymentOrder.productId] || resolvedProductId;
+    } catch {
+      // Checkout route gives the buyer a clear configuration error.
     }
   }
 

@@ -15,6 +15,7 @@ import {
 export type PaymentProvider =
   | 'stripe'
   | 'creem'
+  | 'dodo'
   | 'paypal'
   | 'alipay'
   | 'wechat';
@@ -32,6 +33,7 @@ interface Props {
 const providerLabel: Record<PaymentProvider, string> = {
   stripe: 'Stripe',
   creem: 'Creem',
+  dodo: 'Dodo Payments',
   paypal: 'PayPal',
   alipay: 'Alipay',
   wechat: 'WeChat Pay',

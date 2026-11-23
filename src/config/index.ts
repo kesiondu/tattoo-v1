@@ -42,6 +42,13 @@ export const envConfigs: Record<string, string> = {
   stripe_publishable_key: procEnv.STRIPE_PUBLISHABLE_KEY ?? '',
   stripe_signing_secret: procEnv.STRIPE_SIGNING_SECRET ?? '',
 
+  // Payment - Dodo Payments
+  dodo_enabled: procEnv.DODO_PAYMENTS_ENABLED ?? 'false',
+  dodo_api_key: procEnv.DODO_PAYMENTS_API_KEY ?? '',
+  dodo_webhook_key: procEnv.DODO_PAYMENTS_WEBHOOK_KEY ?? '',
+  dodo_environment: procEnv.DODO_PAYMENTS_ENVIRONMENT ?? 'test_mode',
+  dodo_product_ids_mapping: procEnv.DODO_PAYMENTS_PRODUCT_IDS_MAPPING ?? '',
+
   // Payment - PayPal
   paypal_client_id: procEnv.PAYPAL_CLIENT_ID ?? '',
   paypal_client_secret: procEnv.PAYPAL_CLIENT_SECRET ?? '',

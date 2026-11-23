@@ -81,6 +81,24 @@ export const testSpecs: Record<string, TestSpec> = {
       },
     ],
   },
+  dodo: {
+    group: 'dodo',
+    fields: [
+      {
+        name: 'productId',
+        label: 'Dodo product ID',
+        type: 'text',
+        placeholder: 'pdt_xxx',
+        required: true,
+      },
+      {
+        name: 'description',
+        label: 'Description',
+        type: 'text',
+        defaultValue: 'Test checkout',
+      },
+    ],
+  },
   paypal: {
     group: 'paypal',
     fields: [

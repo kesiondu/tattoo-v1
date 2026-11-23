@@ -166,3 +166,12 @@ export async function downloadStoredImage(storageKey: string) {
     contentType: normalizedImageType(result.contentType || '') || 'image/png',
   };
 }
+
+/**
+ * Returns the storage provider's public URL for an already-authorized image.
+ * Callers must check task ownership before exposing this URL to an AI provider.
+ */
+export async function getPublicStoredImageUrl(storageKey: string) {
+  const storage = await getStorage();
+  return storage?.getPublicUrl({ key: storageKey }) || null;
+}

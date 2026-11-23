@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   ArrowRight,
+  Download,
   Image as ImageIcon,
   Loader2,
   Lock,
@@ -20,7 +21,6 @@ interface TattooDesign {
   id: string;
   status: string;
   tier: string;
-  modelLabel: string;
   prompt: string;
   imageUrl: string | null;
   error: string | null;
@@ -48,6 +48,27 @@ function MyDesignsPage() {
   });
 
   const designs = designsQuery.data ?? [];
+
+  async function downloadDesign(url: string, id: string) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Could not load the generated image.');
+      const image = await response.blob();
+      if (!image.type.startsWith('image/')) {
+        throw new Error('The generated result is not an image.');
+      }
+      const objectUrl = URL.createObjectURL(image);
+      const anchor = document.createElement('a');
+      anchor.href = objectUrl;
+      anchor.download = `tattoo-design-${id}.png`;
+      anchor.click();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1_000);
+    } catch (error) {
+      // The history page has no toast provider dependency; opening the image
+      // remains available as a direct fallback if a download fails.
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  }
 
   return (
     <MarketingPageLayout>
@@ -189,7 +210,18 @@ function MyDesignsPage() {
                           </p>
                         )}
                       <div className="text-muted-foreground mt-auto flex items-center justify-between gap-2 pt-2 text-[11px]">
-                        <span>{design.modelLabel}</span>
+                        {design.status === 'success' && design.imageUrl && (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              void downloadDesign(design.imageUrl!, design.id)
+                            }
+                            className="text-foreground hover:bg-muted inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-semibold transition-colors"
+                          >
+                            <Download className="size-3.5" />
+                            <span>{m['home.hero.download_preview']()}</span>
+                          </button>
+                        )}
                         <span>
                           {new Date(design.createdAt)
                             .toISOString()

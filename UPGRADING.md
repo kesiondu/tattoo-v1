@@ -46,6 +46,77 @@ exports, permission codes, and behavior that changes for end users.
 
 ---
 
+## Unreleased: Dodo Payments provider
+
+Dodo Payments is available as a hosted-checkout provider in test mode or live
+mode. It verifies Standard Webhooks before settling orders or granting credits.
+
+Action:
+
+- In **Admin → Settings → Payment → Dodo Payments**, enable test mode, save an
+  API key, map each internal pricing product to a Dodo `pdt_…` product, and
+  select Dodo as the default provider (or enable the payment selector).
+- Register `https://<your-domain>/api/payment/notify/dodo` in the matching
+  Dodo environment and save its webhook signing key. Do not rely on the return
+  URL to fulfill an order.
+- Store production secrets in deployment secrets or encrypted admin settings;
+  never commit `DODO_PAYMENTS_API_KEY`.
+
+## Unreleased: Artist-reference export sheet
+
+The generated-result view now opens an **Export Artist Reference** dialog.
+It can download the on-body preview, produce a transparent-background PNG from
+the clean reference art, and open a print-ready one-page consultation sheet
+that users save as a PDF from their browser print dialog. The PDF includes an
+optional target-size field in inches.
+
+### Action required
+
+- [ ] **Customized generator results**: merge `hero-generator.tsx` and both
+      locale message files. The consultation-sheet button requires both a body
+      preview and clean reference art; it intentionally does not claim a final
+      stencil or replace a tattoo artist's own drawing.
+
+---
+
+## Unreleased: Downloads and tattoo history navigation
+
+Generated on-body previews and flat stencils now expose direct image download
+buttons. Signed-in users can open **My Designs** from both account menus; the
+Settings sidebar adds **My Tattoos**, which links to the same history page.
+
+### Action required
+
+- [ ] **Customized account or Settings navigation**: merge
+      `site-user-menu.tsx`, `user-menu.tsx`, and `settings/route.tsx` so
+      users can reach `/my-designs`. The route remains authenticated through
+      its API calls and is noindexed.
+
+---
+
+## Unreleased: Confirmed body previews and separately charged stencil art
+
+The home tattoo flow now generates the **On-Body Preview** first for 2
+credits. Once the user approves that preview, they can explicitly choose
+**Generate Flat Stencil Art**; the resulting image-to-image task consumes a
+second 2 credits and uses only the confirmed preview as its reference image.
+The body preview remains available if the user declines or the stencil task
+fails. A failed stencil task refunds only that task's 2-credit charge.
+
+### Action required
+
+- [ ] **Storage public domain**: configure the storage provider's public
+      domain (`r2_domain` for R2) before enabling confirmed-preview stencil
+      extraction. The AI provider must be able to fetch the already stored,
+      user-authorized body preview. A private storage endpoint is refused
+      before the second task is created or charged.
+- [ ] **Custom generate clients**: send `tier: "stencil_from_preview"` and
+      the owning successful body task's `sourceTaskId` only after an explicit
+      user confirmation. This creates a separate, idempotent 2-credit task;
+      do not read `/artwork` from the original body task.
+
+---
+
 ## Unreleased: Tattoo generation credits, task history, Lifetime Pro
 
 The tattoo generator now charges **2 credits per design**. A body-preview task
