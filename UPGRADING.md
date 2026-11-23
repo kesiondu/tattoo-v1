@@ -48,6 +48,11 @@ exports, permission codes, and behavior that changes for end users.
 
 ## Unreleased: Automatic tattoo design packs
 
+New packs now generate one independent PNG motif and compose the placement
+and line reference on the server. Ship the versioned PNG silhouette assets
+under `public/placement-v1` with the Worker and enable its ASSETS binding.
+Existing stored results and in-flight tasks keep their original formats.
+
 The homepage generator now charges **4 credits once** for a design pack,
 automatically generating its on-body placement preview and a matching clean
 flat artist reference in sequence. It no longer asks users to confirm or pay

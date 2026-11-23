@@ -288,15 +288,12 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 /**
  * The placement modal records points against a 3:4 container that shows the
  * 2:3 body photo with `object-contain` (letterboxed on the left/right).
- * Convert those points to the body image itself and render the same lasso on
- * the reference. Kie receives both the marked image and the normalized
- * polygon, so placement is a visible constraint as well as a text instruction.
+ * Convert to intrinsic image coordinates for server-side silhouette fitting.
  */
 async function buildPlacementReference(
   selection: BodyPlacementSelection
 ): Promise<{
   placement: BodyPlacementSelection;
-  markedReference: string;
 }> {
   const src = new URL(
     getBodyReferenceSrc(selection.partId, selection.viewId, selection.skinTone),
@@ -325,38 +322,7 @@ async function buildPlacementReference(
     y: clamp01((point.y - offsetY) / drawHeight),
   }));
 
-  const canvas = document.createElement('canvas');
-  const maxEdge = 1600;
-  const scale = Math.min(
-    1,
-    maxEdge / Math.max(image.naturalWidth, image.naturalHeight)
-  );
-  canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
-  canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
-  const context = canvas.getContext('2d');
-  if (!context) throw new Error('Could not prepare the placement reference');
-  context.drawImage(image, 0, 0, canvas.width, canvas.height);
-  context.beginPath();
-  points.forEach((point, index) => {
-    const x = point.x * canvas.width;
-    const y = point.y * canvas.height;
-    if (index === 0) context.moveTo(x, y);
-    else context.lineTo(x, y);
-  });
-  context.closePath();
-  context.fillStyle = 'rgba(236, 72, 153, 0.30)';
-  context.strokeStyle = '#ec4899';
-  context.lineWidth = Math.max(
-    3,
-    Math.round(Math.min(canvas.width, canvas.height) * 0.006)
-  );
-  context.fill();
-  context.stroke();
-
-  return {
-    placement: { ...selection, points },
-    markedReference: canvas.toDataURL('image/png'),
-  };
+  return { placement: { ...selection, points } };
 }
 
 export function HeroGenerator({
@@ -659,10 +625,12 @@ export function HeroGenerator({
             points: placement.points,
           }
         : undefined;
-      let placementOverlay: string | undefined;
-      // Normalize the lasso against the actual body image. If the browser
-      // cannot load it, still send the structured points; never block.
-      if (placement) {
+      // Only submit normalized coordinates after loading the reference.
+      if (
+        placement &&
+        tier !== 'clean_artwork' &&
+        tier !== 'stencil_from_preview'
+      ) {
         try {
           const built = await buildPlacementReference(placement);
           placementPayload = {
@@ -672,9 +640,10 @@ export function HeroGenerator({
             skinTone: built.placement.skinTone,
             points: built.placement.points,
           };
-          placementOverlay = built.markedReference;
         } catch {
-          // Fall back to the unadjusted points.
+          throw new Error(
+            'Could not read the body template. Please reopen the placement selector and retry.'
+          );
         }
       }
 
@@ -698,7 +667,6 @@ export function HeroGenerator({
           placement: placementPayload,
           placementLabel: placementSummary ?? undefined,
           referenceImage,
-          placementOverlay,
           sourceTaskId,
           autoStencil: tier === 'fast_body_preview' && !stencilMode,
         },

@@ -1,6 +1,8 @@
+import { compose, template, type Selection } from '@/server/tattoo/composition';
 import {
   getPublicStoredImageUrl,
   persistRemoteImage,
+  uploadGeneratedImage,
 } from '@/server/tattoo/storage';
 import { and, eq, inArray, lt } from 'drizzle-orm';
 
@@ -69,6 +71,8 @@ function parseOptions(value: unknown): {
   stencilPrompt?: string;
   bodyReferenceUrl?: string;
   autoStencil?: boolean;
+  designFirst?: boolean;
+  placement?: Selection;
 } {
   return parseJson(value) ?? {};
 }
@@ -188,11 +192,8 @@ export async function listTattooTasks(userId: string, limit = 50) {
 
 async function refreshKieTask(row: any): Promise<void> {
   if (!row.taskId) {
-    await updateTask({
-      taskId: row.id,
-      status: AITaskStatus.FAILED,
-      taskResult: { error: 'The AI provider did not return a task id' },
-    });
+    // Submission may still be in flight in another request. Stale tasks are
+    // reclaimed by the existing timeout and refund path.
     return;
   }
 
@@ -230,6 +231,60 @@ async function refreshKieTask(row: any): Promise<void> {
 
     // Kie result URLs expire. Copy each result into our storage before marking
     // the task successful so /my-designs does not rot.
+    if (options.designFirst && options.placement) {
+      const response = await fetch(providerImageUrl, {
+        signal: AbortSignal.timeout(30000),
+      });
+      if (!response.ok) throw new Error('Design download unavailable');
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      const body = await template(options.placement);
+      let result;
+      try {
+        if (bytes.length > 16 * 1024 * 1024)
+          throw new Error('Design file too large');
+        result = compose(body, options.placement, bytes);
+      } catch {
+        await updateTask({
+          taskId: row.id,
+          status: AITaskStatus.FAILED,
+          taskResult: {
+            error:
+              'The design could not be fitted to the selected area. Credits were refunded.',
+            tier: options.tier,
+          },
+        });
+        return;
+      }
+      const image = await uploadGeneratedImage({
+        taskId: row.id,
+        body: result.preview,
+        contentType: 'image/png',
+      });
+      const art = options.autoStencil
+        ? await uploadGeneratedImage({
+            taskId: row.id,
+            kind: 'artwork',
+            body: result.artwork,
+            contentType: 'image/png',
+          })
+        : null;
+      await updateTask({
+        taskId: row.id,
+        status: AITaskStatus.SUCCESS,
+        taskResult: {
+          imageUrl: image.url,
+          storageKey: image.storageKey,
+          contentType: image.contentType,
+          artworkUrl: art?.url,
+          artworkStorageKey: art?.storageKey,
+          artworkContentType: art?.contentType,
+          tier: options.tier,
+          modelLabel: options.modelLabel,
+          stage: 'done',
+        },
+      });
+      return;
+    }
     if (options.autoStencil && previousResult.stage !== 'stencil_extraction') {
       const storedBody = await persistRemoteImage(providerImageUrl, row.id);
       const referenceUrl = await getPublicStoredImageUrl(storedBody.storageKey);
@@ -366,8 +421,7 @@ export async function getTattooTaskStorage(
     !row ||
     row.userId !== userId ||
     row.scene !== TATTOO_TASK_SCENE ||
-    row.deletedAt ||
-    row.status !== AITaskStatus.SUCCESS
+    row.deletedAt
   ) {
     return null;
   }

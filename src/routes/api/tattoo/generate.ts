@@ -1,9 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import {
-  getPublicStoredImageUrl,
-  publishRemoteImage,
-  uploadGeneratedImage,
-} from '@/server/tattoo/storage';
+import { fit, template } from '@/server/tattoo/composition';
+import { getPublicStoredImageUrl } from '@/server/tattoo/storage';
 import {
   getTattooTask,
   getTattooTaskStorage,
@@ -30,7 +27,6 @@ import { respData, respErr } from '@/lib/resp';
 
 const STATIC_ASSET_ORIGIN = 'https://assets.tattoogenerator.online';
 const STATIC_BODY_REFERENCE_PREFIX = '/v1/tattoo-generator/body-references/';
-const MAX_PLACEMENT_OVERLAY_BYTES = 5 * 1024 * 1024;
 
 /** Every tattoo generation uses one model family for predictable results. */
 export const TATTOO_AI_MODELS = {
@@ -132,17 +128,6 @@ function normalizePlacement(value: any): PlacementInput | undefined {
   }
 
   return { partId, viewId, model, skinTone, points };
-}
-
-function parsePlacementOverlay(value: unknown): Buffer | null {
-  if (typeof value !== 'string') return null;
-  const match = /^data:image\/png;base64,([a-z0-9+/=]+)$/i.exec(value);
-  if (!match) throw new Error('Invalid placement reference image');
-  const image = Buffer.from(match[1], 'base64');
-  if (!image.byteLength || image.byteLength > MAX_PLACEMENT_OVERLAY_BYTES) {
-    throw new Error('Placement reference image is too large');
-  }
-  return image;
 }
 
 function isTrustedRequestOrigin(origin: string | undefined, appUrl: string) {
@@ -442,10 +427,6 @@ async function POST({ request }: { request: Request }) {
         ? body.placementLabel.slice(0, 200)
         : undefined;
     const placement = normalizePlacement(body?.placement);
-    const placementOverlay = parsePlacementOverlay(body?.placementOverlay);
-    if (placementOverlay && !placement) {
-      return respErr('A placement reference requires a body placement');
-    }
     const referenceImage =
       typeof body?.referenceImage === 'string'
         ? body.referenceImage
@@ -455,8 +436,8 @@ async function POST({ request }: { request: Request }) {
         ? body.sourceTaskId.slice(0, 128)
         : undefined;
     const autoStencil =
-      body?.autoStencil === true &&
-      (tier === 'fast_body_preview' || tier === 'hq_body_preview');
+      tier === 'fast_body_preview' ||
+      (tier === 'hq_body_preview' && body?.autoStencil === true);
     const configs = await getAllConfigs();
     const appUrl = configs.app_url || 'http://localhost:3000';
     const requestOrigin = new URL(request.url).origin;
@@ -489,35 +470,15 @@ async function POST({ request }: { request: Request }) {
     }
 
     const modelSpec = TATTOO_AI_MODELS[tier];
+    const designFirst =
+      tier === 'fast_body_preview' || tier === 'hq_body_preview';
+    if (designFirst) {
+      if (!placement?.points?.length)
+        return respErr('Circle the tattoo placement first.');
+      fit(await template(placement), placement, 1);
+    }
     const selectedModel = modelSpec.kieModel;
-    let kieReference =
-      tier !== 'clean_artwork' &&
-      tier !== 'stencil_from_preview' &&
-      referenceImage &&
-      isPubliclyFetchableUrl(referenceImage)
-        ? referenceImage
-        : undefined;
-    if (
-      tier !== 'clean_artwork' &&
-      tier !== 'stencil_from_preview' &&
-      referenceImage &&
-      !kieReference
-    ) {
-      // The app may be running on localhost (or behind a private URL). Copy
-      // the reference to public storage so Kie can fetch it instead of
-      // silently generating without the selected body.
-      kieReference = (await publishRemoteImage(referenceImage)) ?? undefined;
-    }
-    if (
-      tier !== 'clean_artwork' &&
-      tier !== 'stencil_from_preview' &&
-      referenceImage &&
-      !kieReference
-    ) {
-      return respErr(
-        'The selected body reference is not publicly accessible to the AI provider. Configure Storage or use a public app URL.'
-      );
-    }
+    let kieReference: string | null = null;
     if (tier === 'stencil_from_preview') {
       if (!sourceTaskId) {
         return respErr('A confirmed body preview is required');
@@ -551,16 +512,20 @@ async function POST({ request }: { request: Request }) {
             style,
             placement,
             placementLabel,
-            hasReference: Boolean(kieReference || placementOverlay),
-            hasPlacementMark: Boolean(placementOverlay),
+            hasReference: Boolean(kieReference),
           });
     const stencilPrompt = buildFlatStencilPrompt();
     const standaloneArtworkPrompt = buildStandaloneArtworkPrompt({
       prompt: rawPrompt,
       style,
     });
-    const fullPrompt =
-      tier === 'clean_artwork'
+    const fullPrompt = designFirst
+      ? [
+          'Create one isolated, unframed tattoo motif on pure white. Draw only the motif with generous white margins. Exclude rectangles, framing lines, borders, panels, paper, shadows, people and lettering unless lettering is the subject.',
+          'Choose healed-ink colors appropriate to the idea and style. Honor explicit color preferences. Make the main silhouette legible at small sizes; for watercolor use distinct pigment shapes and a few clean structural strokes.',
+          'Style: ' + (style || 'custom') + '. Visual subject: ' + rawPrompt,
+        ].join(' ')
+      : tier === 'clean_artwork'
         ? standaloneArtworkPrompt
         : tier === 'stencil_from_preview'
           ? stencilPrompt
@@ -596,6 +561,7 @@ async function POST({ request }: { request: Request }) {
         bodyReferenceUrl: kieReference,
         sourceTaskId,
         autoStencil,
+        designFirst,
       },
     });
 
@@ -608,34 +574,6 @@ async function POST({ request }: { request: Request }) {
       return taskResponse(task);
     }
 
-    if (placementOverlay) {
-      try {
-        const storedOverlay = await uploadGeneratedImage({
-          body: placementOverlay,
-          contentType: 'image/png',
-          taskId: task.id,
-          kind: 'placement',
-        });
-        kieReference = await getPublicStoredImageUrl(storedOverlay.storageKey);
-        if (!kieReference || !isPubliclyFetchableUrl(kieReference)) {
-          throw new Error('Placement reference storage is not public');
-        }
-      } catch {
-        await updateTask({
-          taskId: task.id,
-          status: AITaskStatus.FAILED,
-          taskResult: {
-            error:
-              'The placement reference could not be prepared; your credits were refunded.',
-            tier,
-          },
-        });
-        return respErr(
-          'The placement reference could not be prepared. Your credits were refunded.'
-        );
-      }
-    }
-
     try {
       const kie = new KieProvider({ apiKey: kieApiKey });
       const res = await kie.generate({
@@ -643,8 +581,9 @@ async function POST({ request }: { request: Request }) {
           mediaType: AIMediaType.IMAGE,
           model: selectedModel,
           prompt: fullPrompt,
-          options:
-            tier !== 'clean_artwork' && kieReference
+          options: designFirst
+            ? { output_format: 'png', resolution: '1K', aspect_ratio: '1:1' }
+            : tier !== 'clean_artwork' && kieReference
               ? { image_input: [kieReference] }
               : undefined,
         },
