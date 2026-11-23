@@ -5,14 +5,10 @@ import {
   Calculator,
   ChevronDown,
   DollarSign,
-  FolderHeart,
   MapPin,
   Scan,
-  Sparkles,
-  Upload,
 } from 'lucide-react';
 
-import { useSession } from '@/core/auth/client';
 import { tDynamic } from '@/core/i18n/dynamic';
 import { Link } from '@/core/i18n/navigation';
 import {
@@ -226,7 +222,6 @@ const CALC_FAQS = [
 
 function TattooPriceCalculatorPage() {
   const isZh = getLocale() === 'zh';
-  const { data: session } = useSession();
 
   const [city, setCity] = useState('');
   const [artistId, setArtistId] = useState('');
@@ -323,7 +318,7 @@ function TattooPriceCalculatorPage() {
 
   return (
     <MarketingPageLayout>
-      {({ openAuth }) => (
+      {() => (
         <>
           {/* 1. Hero + 2-Column Calculator */}
           <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16">
@@ -359,52 +354,6 @@ function TattooPriceCalculatorPage() {
                   </div>
 
                   <div className="mt-5 space-y-5">
-                    {/* Dashed Autofill from an image card */}
-                    <div className="border-border flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed bg-[#fafaf9]/60 p-3.5">
-                      <div className="flex items-start gap-3">
-                        <div className="border-border text-muted-foreground flex size-9 shrink-0 items-center justify-center rounded-lg border bg-white">
-                          <Scan className="size-4" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-foreground text-xs font-semibold">
-                              {m['pages.price.m006']()}
-                            </span>
-                            <span className="bg-muted text-foreground inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] font-semibold">
-                              <Sparkles className="size-2.5" />
-                              Pro
-                            </span>
-                          </div>
-                          <p className="text-muted-foreground mt-0.5 text-[11px]">
-                            {m['pages.price.m007']()}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (!session?.user) openAuth();
-                          }}
-                          className="border-border text-foreground hover:bg-muted inline-flex h-8 items-center gap-1.5 rounded-lg border bg-white px-3 text-xs font-medium"
-                        >
-                          <Upload className="size-3.5" />
-                          <span>{m['pages.price.m008']()}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (!session?.user) openAuth();
-                          }}
-                          className="border-border text-foreground hover:bg-muted inline-flex h-8 items-center gap-1.5 rounded-lg border bg-white px-3 text-xs font-medium"
-                        >
-                          <FolderHeart className="size-3.5" />
-                          <span>{m['pages.price.m009']()}</span>
-                        </button>
-                      </div>
-                    </div>
-
                     {/* CITY OR REGION + ARTIST EXPERIENCE */}
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>

@@ -1,5 +1,6 @@
 # deps / build artifacts (rebuilt inside the image)
 node_modules
+.pnpm-store
 .output
 .nitro
 .tanstack
@@ -33,6 +34,7 @@ drizzle
 .codex
 .vercel
 .wrangler
+.wrangler-xdg
 wrangler.jsonc
 wrangler.example.jsonc
 

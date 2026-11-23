@@ -1,7 +1,7 @@
 import { createD1Db } from './d1';
 import { closeMysqlDb, createMysqlDb } from './mysql';
 import { closePostgresDb, createPostgresDb } from './postgres';
-import { createSqliteDb } from './sqlite';
+import { closeSqliteDb, createSqliteDb } from './sqlite';
 import type { DbConfig } from './types';
 
 const mysqlCompatProxyCache = new WeakMap<object, any>();
@@ -187,6 +187,11 @@ export function createDb(config: DbConfig): any {
 }
 
 export async function closeDb(config: DbConfig) {
+  if (['sqlite', 'turso'].includes(config.database_provider)) {
+    await closeSqliteDb();
+    return;
+  }
+
   if (config.database_provider === 'postgresql') {
     await closePostgresDb(config);
     return;

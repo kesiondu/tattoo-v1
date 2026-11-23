@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Calculator, ChevronDown, Menu, Sparkles, X } from 'lucide-react';
+import {
+  Calculator,
+  ChevronDown,
+  Menu,
+  PenTool,
+  Sparkles,
+  X,
+} from 'lucide-react';
 
 import { useSession } from '@/core/auth/client';
 import { Link, usePathname } from '@/core/i18n/navigation';
@@ -248,6 +255,14 @@ export function MarketingHeader({ onOpenAuth }: MarketingHeaderProps) {
                       <Calculator className="text-muted-foreground size-4" />
                       <span>{m['home.nav.price_calculator']()}</span>
                     </Link>
+                    <Link
+                      href="/tattoo-stencil-generator"
+                      onClick={() => setToolsOpen(false)}
+                      className="text-foreground/85 hover:bg-muted hover:text-foreground flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors"
+                    >
+                      <PenTool className="text-muted-foreground size-4" />
+                      <span>{m['home.nav.stencil_generator']()}</span>
+                    </Link>
                   </div>
                 </div>
               )}
@@ -360,6 +375,13 @@ export function MarketingHeader({ onOpenAuth }: MarketingHeaderProps) {
                 className="text-foreground hover:bg-muted rounded-lg px-3 py-2 text-sm font-medium"
               >
                 {m['home.nav.price_calculator']()}
+              </Link>
+              <Link
+                href="/tattoo-stencil-generator"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-foreground hover:bg-muted rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                {m['home.nav.stencil_generator']()}
               </Link>
               <Link
                 href="/pricing"

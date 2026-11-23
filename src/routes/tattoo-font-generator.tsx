@@ -964,6 +964,29 @@ function TattooFontGeneratorPage() {
       : content;
   }
 
+  function drawLetterSpacedText(params: {
+    ctx: CanvasRenderingContext2D;
+    text: string;
+    x: number;
+    y: number;
+    fontSize: number;
+  }) {
+    const { ctx, text, x, y, fontSize } = params;
+    const spacingEm = Number.parseFloat(activeVariant.letterSpacing ?? '0');
+    const spacing = Number.isFinite(spacingEm) ? spacingEm * fontSize : 0;
+    const glyphs = [...text];
+    const widths = glyphs.map((glyph) => ctx.measureText(glyph).width);
+    const total =
+      widths.reduce((sum, glyphWidth) => sum + glyphWidth, 0) +
+      spacing * Math.max(0, glyphs.length - 1);
+
+    let cursor = x - total / 2;
+    glyphs.forEach((glyph, index) => {
+      ctx.fillText(glyph, cursor, y);
+      cursor += widths[index] + spacing;
+    });
+  }
+
   /**
    * Draws the lettering at the same size/position the paddles show, honouring
    * the variant's letter spacing. Used by both the PNG and SVG exports so the
@@ -1003,19 +1026,12 @@ function TattooFontGeneratorPage() {
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
 
-    const spacingEm = Number.parseFloat(activeVariant.letterSpacing ?? '0');
-    const spacing = Number.isFinite(spacingEm) ? spacingEm * fontSize : 0;
-    const glyphs = [...rendered];
-    const widths = glyphs.map((glyph) => ctx.measureText(glyph).width);
-    const total =
-      widths.reduce((sum, glyphWidth) => sum + glyphWidth, 0) +
-      spacing * Math.max(0, glyphs.length - 1);
-
-    let x = (width - total) / 2;
-    const y = height / 2;
-    glyphs.forEach((glyph, index) => {
-      ctx.fillText(glyph, x, y);
-      x += widths[index] + spacing;
+    drawLetterSpacedText({
+      ctx,
+      text: rendered,
+      x: width / 2,
+      y: height / 2,
+      fontSize,
     });
 
     return canvas;
@@ -1126,16 +1142,54 @@ function TattooFontGeneratorPage() {
         await document.fonts.ready;
         await document.fonts.load(font, rendered);
 
+        // Render the ink on its own layer, using the same letter spacing,
+        // position, scale, rotation, perspective approximation, body mask and
+        // multiply blend as the live preview.
+        const inkCanvas = document.createElement('canvas');
+        inkCanvas.width = w;
+        inkCanvas.height = h;
+        const inkCtx = inkCanvas.getContext('2d');
+        if (!inkCtx) throw new Error('Could not prepare the ink layer.');
+
+        inkCtx.save();
+        inkCtx.translate((posX / 100) * w, (posY / 100) * h);
+        if (previewMode === '3d') {
+          const rotateY = ((posX - activePlacement.x) * 0.6 * Math.PI) / 180;
+          const rotateX = ((activePlacement.y - posY) * 0.25 * Math.PI) / 180;
+          inkCtx.transform(
+            Math.cos(rotateY),
+            Math.sin(rotateX) * 0.18,
+            -Math.sin(rotateY) * 0.18,
+            Math.cos(rotateX),
+            0,
+            0
+          );
+        }
+        inkCtx.scale(sizePct / 100, sizePct / 100);
+        inkCtx.rotate((rotation * Math.PI) / 180);
+        inkCtx.fillStyle = inkColor ?? DEFAULT_INK;
+        inkCtx.font = font;
+        inkCtx.textAlign = 'left';
+        inkCtx.textBaseline = 'middle';
+        drawLetterSpacedText({
+          ctx: inkCtx,
+          text: rendered,
+          x: 0,
+          y: 0,
+          fontSize: basePx,
+        });
+        inkCtx.restore();
+
+        // Match the live CSS mask. The current reference images are opaque,
+        // but keeping the mask in the export makes transparent silhouettes
+        // work without changing this pipeline.
+        inkCtx.globalCompositeOperation = 'destination-in';
+        inkCtx.drawImage(img, 0, 0, w, h);
+
         ctx.save();
-        ctx.translate((posX / 100) * w, (posY / 100) * h);
-        ctx.rotate((rotation * Math.PI) / 180);
-        ctx.scale(sizePct / 100, sizePct / 100);
         ctx.globalAlpha = opacity / 100;
-        ctx.fillStyle = inkColor ?? DEFAULT_INK;
-        ctx.font = font;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(rendered, 0, 0);
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.drawImage(inkCanvas, 0, 0);
         ctx.restore();
 
         const blob = await new Promise<Blob | null>((resolve) =>

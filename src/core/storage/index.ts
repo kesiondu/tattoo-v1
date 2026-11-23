@@ -36,6 +36,14 @@ export interface StorageUploadResult {
   provider: string;
 }
 
+export interface StorageDownloadResult {
+  success: boolean;
+  body?: Uint8Array;
+  contentType?: string;
+  error?: string;
+  provider: string;
+}
+
 /**
  * Storage configs interface
  */
@@ -55,6 +63,12 @@ export interface StorageProvider {
 
   // check if object exists (optional)
   exists?: (options: { key: string; bucket?: string }) => Promise<boolean>;
+
+  // download a private object (optional)
+  downloadFile?: (options: {
+    key: string;
+    bucket?: string;
+  }) => Promise<StorageDownloadResult>;
 
   // get public url for key (optional)
   getPublicUrl?: (options: { key: string; bucket?: string }) => string;
@@ -133,6 +147,21 @@ export class StorageManager {
     const provider = this.ensureDefaultProvider();
     if (!provider.exists) return false;
     return provider.exists(options);
+  }
+
+  async downloadFile(options: {
+    key: string;
+    bucket?: string;
+  }): Promise<StorageDownloadResult> {
+    const provider = this.ensureDefaultProvider();
+    if (!provider.downloadFile) {
+      return {
+        success: false,
+        error: 'Storage provider does not support private downloads',
+        provider: provider.name,
+      };
+    }
+    return provider.downloadFile(options);
   }
 
   // get public url using default provider (if supported)

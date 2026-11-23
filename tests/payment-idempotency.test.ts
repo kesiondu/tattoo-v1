@@ -27,14 +27,23 @@ execFileSync(
   ],
   { stdio: 'pipe', env: process.env }
 );
-const { db } = await import('../src/core/db');
+const { closeDb, db } = await import('../src/core/db');
 const { credit, order, subscription, user } =
   await import('../src/config/db/schema');
 const { settleCheckoutOrder, handleSubscriptionRenewal } =
   await import('../src/modules/payment/service');
 
 after(async () => {
-  await rm(directory, { recursive: true, force: true });
+  await closeDb({
+    database_provider: 'sqlite',
+    database_url: process.env.DATABASE_URL,
+  });
+  await rm(directory, {
+    recursive: true,
+    force: true,
+    maxRetries: 5,
+    retryDelay: 50,
+  });
 });
 
 const userId = 'user-1';

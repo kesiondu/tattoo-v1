@@ -8,6 +8,13 @@ const isCloudflareWorker =
 
 // SQLite/libsql singleton
 let sqliteDbInstance: ReturnType<typeof drizzle> | null = null;
+const sqliteClientInstances = new Set<ReturnType<typeof createClient>>();
+
+export async function closeSqliteDb() {
+  for (const client of sqliteClientInstances) client.close();
+  sqliteClientInstances.clear();
+  sqliteDbInstance = null;
+}
 
 export function createSqliteDb(config: DbConfig) {
   const databaseUrl = config.database_url;
@@ -37,6 +44,7 @@ export function createSqliteDb(config: DbConfig) {
       url: databaseUrl,
       ...options,
     });
+    sqliteClientInstances.add(client);
     sqliteDbInstance = drizzle({ client });
     return sqliteDbInstance;
   }
@@ -46,5 +54,6 @@ export function createSqliteDb(config: DbConfig) {
     url: databaseUrl,
     ...options,
   });
+  sqliteClientInstances.add(client);
   return drizzle({ client });
 }

@@ -159,7 +159,6 @@ function PricingPage() {
     m['pages.pricing.m009'](),
     m['pages.pricing.m010'](),
     m['pages.pricing.m011'](),
-    m['pages.pricing.m012'](),
   ];
 
   const unlimitedFeatures = [
@@ -550,7 +549,6 @@ function PricingPage() {
                     </div>
                     <ul className="text-muted-foreground mt-3 space-y-2 text-sm">
                       <li>• {m['pages.pricing.m036']()}</li>
-                      <li>• {m['pages.pricing.m037']()}</li>
                     </ul>
                   </div>
                   <div className="p-6">

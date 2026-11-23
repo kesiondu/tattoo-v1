@@ -1,5 +1,6 @@
 # dependencies
 /node_modules
+/.pnpm-store/
 /.pnp
 .pnp.*
 .yarn/*
@@ -19,6 +20,7 @@ src/paraglide/
 
 # cloudflare — keep wrangler.jsonc tracked for Cloudflare Workers Builds CI (no secrets)
 /.wrangler/
+/.wrangler-xdg/
 
 # claude code local state
 .claude/scheduled_tasks.lock

@@ -2,9 +2,9 @@ FROM node:22-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-# Pin pnpm to v10 — v11 makes ignored-build-scripts fatal even when
+# Pin the exact same pnpm release used by Cloudflare/packageManager — v11 makes ignored-build-scripts fatal even when
 # `pnpm.onlyBuiltDependencies` is set in package.json, breaking CI install.
-RUN apk add --no-cache libc6-compat && npm install -g pnpm@10
+RUN apk add --no-cache libc6-compat && npm install -g pnpm@10.34.9
 
 WORKDIR /app
 

@@ -36,6 +36,8 @@ type StoredTaskResult = {
   tier?: string;
   modelLabel?: string;
   error?: string;
+  storageKey?: string;
+  contentType?: string;
 };
 
 function parseJson(value: unknown): any {
@@ -207,14 +209,16 @@ async function refreshKieTask(row: any): Promise<void> {
 
     // Kie result URLs expire. Copy the image into our storage before marking
     // the task successful so /my-designs does not rot.
-    const imageUrl = await persistRemoteImage(providerImageUrl);
+    const storedImage = await persistRemoteImage(providerImageUrl, row.id);
     await updateTask({
       taskId: row.id,
       status: AITaskStatus.SUCCESS,
       // Compact summary only; taskResult already holds the image URL.
       taskInfo: { status: AITaskStatus.SUCCESS },
       taskResult: {
-        imageUrl,
+        imageUrl: storedImage.url,
+        storageKey: storedImage.storageKey,
+        contentType: storedImage.contentType,
         tier: options.tier,
         modelLabel: options.modelLabel,
         providerStatus: res.taskStatus,
@@ -246,6 +250,28 @@ async function refreshKieTask(row: any): Promise<void> {
       providerTaskId: row.taskId,
     });
   }
+}
+
+export async function getTattooTaskStorage(
+  userId: string,
+  taskId: string
+): Promise<{ storageKey: string; contentType: string } | null> {
+  const row = await findTask(taskId);
+  if (
+    !row ||
+    row.userId !== userId ||
+    row.scene !== TATTOO_TASK_SCENE ||
+    row.deletedAt ||
+    row.status !== AITaskStatus.SUCCESS
+  ) {
+    return null;
+  }
+  const result = parseResult(row.taskResult);
+  if (!result.storageKey) return null;
+  return {
+    storageKey: result.storageKey,
+    contentType: result.contentType || 'image/png',
+  };
 }
 
 export async function getTattooTask(

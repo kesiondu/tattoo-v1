@@ -516,14 +516,21 @@ async function POST({ request }: { request: Request }) {
 
     try {
       if (providerName === 'gemini') {
+        let storedImage: {
+          url: string;
+          storageKey: string;
+          contentType: string;
+        } | null = null;
         const gemini = new GeminiProvider({
           apiKey: geminiApiKey,
-          uploadFile: async ({ body: fileBuf, contentType }) => ({
-            url: await uploadGeneratedImage({
+          uploadFile: async ({ body: fileBuf, contentType }) => {
+            storedImage = await uploadGeneratedImage({
               body: fileBuf,
               contentType,
-            }),
-          }),
+              taskId: task.id,
+            });
+            return { url: storedImage.url };
+          },
         });
 
         const imageInput = effectivePlacementImage
@@ -560,6 +567,8 @@ async function POST({ request }: { request: Request }) {
           taskInfo: { status: AITaskStatus.SUCCESS, model: selectedModel },
           taskResult: {
             imageUrl,
+            storageKey: storedImage?.storageKey,
+            contentType: storedImage?.contentType,
             tier,
             modelLabel: modelSpec.label,
           },

@@ -67,12 +67,14 @@ the font generator preview is free and does not require login.
 - [ ] **Payment provider mappings**: if Creem is enabled, map all six IDs to
       one-time Creem products. If Alipay/WeChat Pay is enabled, add
       `cnyPriceInCents` for each product or checkout will refuse it.
-- [ ] **Storage**: configure R2/S3 in Admin → Settings → Storage so generated
-      images have durable URLs. Without storage the result is kept as an
-      inline data URL in the task row.
+- [ ] **Storage**: configure R2 in Admin → Settings → Storage so generated
+      images can be archived before a task succeeds. Without storage the task
+      fails and refunds once; Gemini data URLs and Kie temporary URLs are no
+      longer accepted as permanent designs. Existing projects must configure
+      a storage provider before enabling paid generation.
 - [ ] **Kie body references**: Kie must be able to fetch the body image over
       the public internet. With Storage configured, a localhost/private
-      reference is copied to storage first; otherwise checkout is refused
+      reference is copied to storage first; otherwise generation is refused
       before any credits are charged instead of generating without the reference.
 - [ ] **Custom generate clients**: send a UUID `requestId` in the request
       body. It becomes the task id and makes retries idempotent; the browser

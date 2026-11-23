@@ -8,6 +8,7 @@ import {
   sanitizeReferrer,
   sanitizeUtm,
 } from './lib/cookie';
+import { resolveLegacyRedirect } from './lib/legacy-redirect';
 import { paraglideMiddleware } from './paraglide/server.js';
 
 // On Cloudflare Workers, stash the binding env (D1, ASSETS, …) on globalThis
@@ -90,6 +91,10 @@ function withPoweredBy(response: Response): Response {
 export default {
   async fetch(req: Request): Promise<Response> {
     const requestUrl = new URL(req.url);
+    const legacyDestination = resolveLegacyRedirect(requestUrl);
+    if (legacyDestination) {
+      return Response.redirect(legacyDestination, 301);
+    }
     const isPublicHost =
       requestUrl.hostname === 'tattoogenerator.online' ||
       requestUrl.hostname === 'www.tattoogenerator.online';

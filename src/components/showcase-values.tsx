@@ -175,10 +175,12 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
               </Link>
             ))}
             {MARQUEE_ROW_1.map((item) => (
-              <div
+              <Link
                 key={`r1-clone-${item.src}`}
+                href={item.href}
                 aria-hidden="true"
-                className="bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
+                tabIndex={-1}
+                className="group bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
               >
                 <img
                   src={item.src}
@@ -187,9 +189,9 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                   height={300}
                   loading="lazy"
                   decoding="async"
-                  className="size-full object-cover"
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -213,10 +215,12 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
               </Link>
             ))}
             {MARQUEE_ROW_2.map((item) => (
-              <div
+              <Link
                 key={`r2-clone-${item.src}`}
+                href={item.href}
                 aria-hidden="true"
-                className="bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
+                tabIndex={-1}
+                className="group bg-muted block size-[220px] shrink-0 overflow-hidden rounded-xl md:size-[300px]"
               >
                 <img
                   src={item.src}
@@ -225,9 +229,9 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
                   height={300}
                   loading="lazy"
                   decoding="async"
-                  className="size-full object-cover"
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-              </div>
+              </Link>
             ))}
           </div>
         </div>

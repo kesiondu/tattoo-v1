@@ -27,7 +27,7 @@ execFileSync(
   ],
   { stdio: 'pipe', env: process.env }
 );
-const { db } = await import('../src/core/db');
+const { closeDb, db } = await import('../src/core/db');
 const schema = await import('../src/config/db/schema');
 const { settleCheckoutOrder } = await import('../src/modules/payment/service');
 const { assertEndpointSecretsResupplied } =
@@ -43,7 +43,16 @@ before(async () => {
     .values({ id: 'u1', name: 'A', email: 'a@example.test' });
 });
 after(async () => {
-  await rm(directory, { recursive: true, force: true });
+  await closeDb({
+    database_provider: 'sqlite',
+    database_url: process.env.DATABASE_URL,
+  });
+  await rm(directory, {
+    recursive: true,
+    force: true,
+    maxRetries: 5,
+    retryDelay: 50,
+  });
 });
 
 async function createdOrder(orderNo: string, provider: string, amount: number) {

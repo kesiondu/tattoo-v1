@@ -1,5 +1,6 @@
 import type {
   StorageConfigs,
+  StorageDownloadResult,
   StorageDownloadUploadOptions,
   StorageProvider,
   StorageUploadOptions,
@@ -83,6 +84,51 @@ export class R2Provider implements StorageProvider {
       return response.ok;
     } catch {
       return false;
+    }
+  };
+
+  downloadFile = async (options: {
+    key: string;
+    bucket?: string;
+  }): Promise<StorageDownloadResult> => {
+    try {
+      const uploadBucket = options.bucket || this.configs.bucket;
+      if (!uploadBucket) {
+        return {
+          success: false,
+          error: 'Bucket is required',
+          provider: this.name,
+        };
+      }
+      const uploadPath = this.getUploadPath();
+      const url = `${this.getEndpoint()}/${uploadBucket}/${uploadPath}/${options.key}`;
+      const { AwsClient } = await import('aws4fetch');
+      const client = new AwsClient({
+        accessKeyId: this.configs.accessKeyId,
+        secretAccessKey: this.configs.secretAccessKey,
+        region: this.configs.region || 'auto',
+      });
+      const response = await client.fetch(new Request(url));
+      if (!response.ok) {
+        return {
+          success: false,
+          error: `Download failed: ${response.status}`,
+          provider: this.name,
+        };
+      }
+      return {
+        success: true,
+        body: new Uint8Array(await response.arrayBuffer()),
+        contentType:
+          response.headers.get('content-type') || 'application/octet-stream',
+        provider: this.name,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        provider: this.name,
+      };
     }
   };
 
