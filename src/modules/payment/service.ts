@@ -70,6 +70,7 @@ async function getPaymentManager(): Promise<PaymentManager> {
   // Rebuild manager if provider configs changed
   const hash = JSON.stringify([
     c('stripe_secret_key') || c('stripe_api_key'),
+    c('stripe_signing_secret') || c('stripe_webhook_secret'),
     c('creem_enabled'),
     c('creem_api_key'),
     c('dodo_enabled'),
@@ -114,7 +115,8 @@ async function getPaymentManager(): Promise<PaymentManager> {
     );
   }
 
-  if (c('dodo_enabled') === 'true' && c('dodo_api_key')) {
+  // Historical Dodo orders still need callbacks and refunds after checkout closes.
+  if (c('dodo_api_key')) {
     const isDefault = c('default_payment_provider') === 'dodo';
     manager.addProvider(
       new DodoProvider({
@@ -204,15 +206,8 @@ export async function createCheckout(params: {
       }
     }
   }
-  if (resolvedProvider === 'dodo' && paymentOrder.productId) {
-    try {
-      const map = JSON.parse(
-        configs.dodo_product_ids_mapping || '{}'
-      ) as Record<string, string>;
-      resolvedProductId = map[paymentOrder.productId] || resolvedProductId;
-    } catch {
-      // Checkout route gives the buyer a clear configuration error.
-    }
+  if (resolvedProvider === 'dodo') {
+    throw new Error('Dodo checkout is no longer available');
   }
 
   const finalSuccessUrl =
@@ -373,6 +368,15 @@ export async function settleCheckoutOrder(
   const subscriptionInfo = session.subscriptionInfo;
 
   if (session.paymentStatus === PaymentStatus.SUCCESS) {
+    if (
+      provider === 'stripe' &&
+      (existingOrder.paymentProvider !== provider ||
+        session.paymentResult?.amount_subtotal !== existingOrder.amount ||
+        paymentInfo?.paymentCurrency?.toLowerCase() !==
+          existingOrder.currency.toLowerCase())
+    ) {
+      throw new Error('Stripe checkout does not match the order');
+    }
     // CNY providers charge exactly the order amount (no coupons or tax on
     // their side), so any mismatch means the notification belongs to some
     // other trade — refuse to settle rather than grant on the wrong payment.

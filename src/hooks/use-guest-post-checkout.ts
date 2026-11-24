@@ -9,7 +9,6 @@ import type { PaymentProvider } from '@/components/payment-provider-modal';
 const ALL_PROVIDERS: PaymentProvider[] = [
   'stripe',
   'creem',
-  'dodo',
   'paypal',
   'alipay',
   'wechat',

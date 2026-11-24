@@ -95,18 +95,6 @@ async function POST({ request }: { request: Request }) {
         return respErr('Creem is not configured for this product');
       }
     }
-    if (payment_provider === 'dodo') {
-      let mapped = false;
-      try {
-        const mapping = JSON.parse(
-          configs.dodo_product_ids_mapping || '{}'
-        ) as Record<string, string>;
-        mapped = Boolean(mapping[product.productId]);
-      } catch {
-        mapped = false;
-      }
-      if (!mapped) return respErr('Dodo is not configured for this product');
-    }
     const charge = await resolveCharge({
       product,
       paymentProvider: payment_provider,
@@ -130,7 +118,6 @@ async function POST({ request }: { request: Request }) {
     // checkout is already signed in, and that page isn't part of this app.
     // Back in the buyer's language (the API URL has no locale prefix).
     const finalRedirect = `${baseUrl}${localizedPath(safeRedirectPath, locale)}`;
-    const successUrl = `${baseUrl}/api/payment/callback?redirect=${encodeURIComponent(finalRedirect)}`;
     const cancelUrl = `${baseUrl}${localizedPath('/pricing', locale)}`;
 
     const checkout = await createCheckout({
@@ -142,10 +129,14 @@ async function POST({ request }: { request: Request }) {
       creditsValidDays: product.creditsValidDays,
       paymentOrder: {
         productId: product.productId,
+        productTaxCode:
+          product.kind === 'credit_bundle' || product.kind === 'pro_credit_pack'
+            ? 'txcd_10105001' // Cloud-hosted AI tools for personal use.
+            : undefined,
         price: { amount: chargeAmount, currency },
         type: product.type,
         description: product.description,
-        successUrl,
+        successUrl: finalRedirect,
         cancelUrl,
         customer: {
           email: session.user.email,

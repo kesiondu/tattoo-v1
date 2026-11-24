@@ -77,8 +77,12 @@ function checkoutSession(sessionId: string, status = 'paid') {
   const start = new Date('2026-10-01T00:00:00Z');
   return {
     paymentStatus: status,
-    paymentResult: { id: sessionId },
-    paymentInfo: { transactionId: `pi_${sessionId}`, paidAt: start },
+    paymentResult: { id: sessionId, amount_subtotal: 2900 },
+    paymentInfo: {
+      transactionId: `pi_${sessionId}`,
+      paymentCurrency: 'usd',
+      paidAt: start,
+    },
     subscriptionId: `sub_${sessionId}`,
     subscriptionResult: {},
     subscriptionInfo: {
@@ -100,6 +104,22 @@ async function readOrder(orderNo: string) {
     .where(eq(order.orderNo, orderNo));
   return row;
 }
+
+test('Stripe settlement refuses an incorrect subtotal or currency', async () => {
+  await createOrder('ORD-MISMATCH', 'cs_mismatch');
+  const existing = await readOrder('ORD-MISMATCH');
+  const wrongAmount = checkoutSession('cs_mismatch');
+  wrongAmount.paymentResult.amount_subtotal = 100;
+  const wrongCurrency = checkoutSession('cs_mismatch');
+  wrongCurrency.paymentInfo.paymentCurrency = 'eur';
+  for (const session of [wrongAmount, wrongCurrency]) {
+    await assert.rejects(
+      settleCheckoutOrder(existing, session, 'stripe'),
+      /does not match/
+    );
+  }
+  assert.equal((await readOrder('ORD-MISMATCH')).status, 'created');
+});
 
 // Local SQLite can't run two write transactions at once (the second gets
 // SQLITE_BUSY), so replay the race deterministically: every request read the

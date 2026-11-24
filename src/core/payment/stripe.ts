@@ -72,6 +72,7 @@ export class StripeProvider implements PaymentProvider {
           unit_amount: order.price.amount, // unit: cents
           product_data: {
             name: order.description || '',
+            tax_code: order.productTaxCode,
           },
         };
 
@@ -169,7 +170,7 @@ export class StripeProvider implements PaymentProvider {
         }
       }
 
-      if (order.type === PaymentType.ONE_TIME) {
+      if (order.type === PaymentType.ONE_TIME && !order.productTaxCode) {
         sessionParams.invoice_creation = {
           enabled: true,
         };
@@ -266,6 +267,9 @@ export class StripeProvider implements PaymentProvider {
         paymentSession = await this.buildPaymentSessionFromCheckoutSession(
           event.data.object as Stripe.Response<Stripe.Checkout.Session>
         );
+        if (event.type === 'checkout.session.async_payment_failed') {
+          paymentSession.paymentStatus = PaymentStatus.FAILED;
+        }
       } else if (eventType === PaymentEventType.PAYMENT_SUCCESS) {
         paymentSession = await this.buildPaymentSessionFromInvoice(
           event.data.object as Stripe.Response<Stripe.Invoice>
@@ -455,6 +459,8 @@ export class StripeProvider implements PaymentProvider {
   private mapStripeEventType(eventType: string): PaymentEventType {
     switch (eventType) {
       case 'checkout.session.completed':
+      case 'checkout.session.async_payment_succeeded':
+      case 'checkout.session.async_payment_failed':
         return PaymentEventType.CHECKOUT_SUCCESS;
       case 'invoice.payment_succeeded':
         return PaymentEventType.PAYMENT_SUCCESS;

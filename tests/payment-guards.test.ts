@@ -29,13 +29,28 @@ execFileSync(
 );
 const { closeDb, db } = await import('../src/core/db');
 const schema = await import('../src/config/db/schema');
-const { settleCheckoutOrder } = await import('../src/modules/payment/service');
+const { createCheckout, settleCheckoutOrder } =
+  await import('../src/modules/payment/service');
 const { assertEndpointSecretsResupplied } =
   await import('../src/modules/config/service');
 const { enforceMinIntervalRateLimit } = await import('../src/lib/rate-limit');
 const { PATCH: patchOrder } =
   await import('../src/server/admin/handlers/orders');
 const { isValidEmbedSetting } = await import('../src/lib/embed-ids');
+
+test('retired Dodo checkouts are refused on concurrent attempts', async () => {
+  const attempt = () =>
+    createCheckout({
+      userId: 'u1',
+      provider: 'dodo',
+      paymentOrder: { price: { amount: 699, currency: 'usd' } },
+    });
+  await Promise.all(
+    [1, 2].map(() =>
+      assert.rejects(attempt, /Dodo checkout is no longer available/)
+    )
+  );
+});
 
 before(async () => {
   await db()

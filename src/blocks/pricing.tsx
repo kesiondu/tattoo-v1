@@ -36,7 +36,6 @@ import {
 const ALL_PROVIDERS: PaymentProvider[] = [
   'stripe',
   'creem',
-  'dodo',
   'paypal',
   'alipay',
   'wechat',

@@ -30,7 +30,6 @@ import { SeoRelatedTools } from '@/components/seo-related-tools';
 const ALL_PROVIDERS: PaymentProvider[] = [
   'stripe',
   'creem',
-  'dodo',
   'paypal',
   'alipay',
   'wechat',

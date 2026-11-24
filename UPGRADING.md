@@ -1,5 +1,7 @@
 # Upgrading an existing project
 
+Tattoo Generator now uses Stripe for new purchases. Set the default payment provider to Stripe, enable Stripe, and disable Dodo checkout. Keep the historical Dodo credentials and webhook for existing orders and refunds.
+
 Read this when a project built from this template pulls newer template code.
 Entries are newest first. Apply **every entry dated after the template version
 the project last pulled**, oldest of those first.

@@ -85,6 +85,7 @@ export interface PaymentOrder {
   orderNo?: string; // order no
   productId?: string; // create product first
   requestId?: string; // request id
+  productTaxCode?: string;
   price?: PaymentPrice; // required if productId is not provided
   discount?: PaymentDiscount; // discount code
   quantity?: number; // quantity
