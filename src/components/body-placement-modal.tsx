@@ -288,7 +288,7 @@ export function BodyPlacementModal({
       <DialogContent className="flex max-h-[92vh] w-[calc(100%-1.5rem)] max-w-3xl flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl">
         {/* Header */}
         <DialogHeader className="border-border border-b px-5 py-4 text-left sm:px-6">
-          <DialogTitle className="font-display text-foreground text-lg font-semibold tracking-tight">
+          <DialogTitle className="font-display text-foreground text-lg font-semibold tracking-normal">
             {m['home.placement.modal_title']()}
           </DialogTitle>
           <DialogDescription className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">

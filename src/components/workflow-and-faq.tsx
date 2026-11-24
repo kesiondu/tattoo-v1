@@ -79,7 +79,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
             <p className="text-muted-foreground mb-3 text-sm font-medium">
               {m['home.workflow.eyebrow']()}
             </p>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-balance md:text-4xl">
+            <h2 className="font-display text-3xl font-semibold tracking-normal text-balance md:text-4xl">
               {m['home.workflow.title']()}
             </h2>
           </div>
@@ -180,7 +180,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                 />
               </div>
 
-              <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-tight">
+              <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-normal">
                 {m['home.workflow.s1_title']()}
               </h3>
               <p className="text-muted-foreground mt-2 text-sm leading-6">
@@ -215,7 +215,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   aria-hidden="true"
                 />
               </div>
-              <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-tight">
+              <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-normal">
                 {m['home.workflow.s2_title']()}
               </h3>
               <p className="text-muted-foreground mt-2 text-sm leading-6">
@@ -250,7 +250,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   aria-hidden="true"
                 />
               </div>
-              <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-tight">
+              <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-normal">
                 {m['home.workflow.s3_title']()}
               </h3>
               <p className="text-muted-foreground mt-2 text-sm leading-6">
@@ -286,7 +286,7 @@ export function WorkflowAndFaq({ onOpenAuth }: WorkflowAndFaqProps) {
                   aria-hidden="true"
                 />
               </div>
-              <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-tight">
+              <h3 className="font-display mt-4 text-lg leading-snug font-semibold tracking-normal">
                 <Link
                   href="/tattoo-try-on"
                   className="rounded-sm underline underline-offset-4 hover:decoration-2 focus-visible:decoration-2 focus-visible:outline-2 focus-visible:outline-offset-4"

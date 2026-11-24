@@ -142,7 +142,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
         className="scroll-mt-20 overflow-hidden pt-10 pb-12 md:pt-12 md:pb-16"
       >
         <div className="mx-auto mb-8 max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-balance md:text-4xl">
+          <h2 className="font-display text-3xl font-semibold tracking-normal text-balance md:text-4xl">
             {m['home.gallery.title']()}
           </h2>
           <p className="text-muted-foreground mx-auto mt-3 max-w-2xl text-sm leading-7">
@@ -249,7 +249,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
           <div className="mx-auto mb-10 max-w-3xl text-center md:mb-12">
             <h2
               id="home-values-title"
-              className="font-display text-3xl font-bold tracking-tight text-balance md:text-4xl"
+              className="font-display text-3xl font-semibold tracking-normal text-balance md:text-4xl"
             >
               {m['home.values.title']()}
             </h2>
@@ -258,7 +258,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
           <div className="grid gap-x-4 gap-y-12 md:grid-cols-3 md:gap-y-0 lg:gap-x-5">
             {/* Column 1: Your tattoo, your way */}
             <article className="flex min-w-0 flex-col md:row-span-4 md:grid md:grid-rows-subgrid">
-              <h3 className="font-display mb-3 text-xl font-semibold tracking-tight text-balance md:leading-7 lg:text-2xl lg:leading-8">
+              <h3 className="font-display mb-3 text-xl font-semibold tracking-normal text-balance md:leading-7 lg:text-2xl lg:leading-8">
                 {m['home.values.c1_title']()}
               </h3>
               <p className="text-muted-foreground mb-4 text-sm leading-7 lg:text-base">
@@ -342,7 +342,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
 
             {/* Column 2: Powerful AI. Tuned for tattoos. */}
             <article className="flex min-w-0 flex-col md:row-span-4 md:grid md:grid-rows-subgrid">
-              <h3 className="font-display mb-3 text-xl font-semibold tracking-tight text-balance md:leading-7 lg:text-2xl lg:leading-8">
+              <h3 className="font-display mb-3 text-xl font-semibold tracking-normal text-balance md:leading-7 lg:text-2xl lg:leading-8">
                 {m['home.values.c2_title']()}
               </h3>
               <p className="text-muted-foreground mb-4 text-sm leading-7 lg:text-base">
@@ -526,7 +526,7 @@ export function ShowcaseValues(_props: ShowcaseValuesProps) {
 
             {/* Column 3: Connect better. Ink confidently. */}
             <article className="flex min-w-0 flex-col md:row-span-4 md:grid md:grid-rows-subgrid">
-              <h3 className="font-display mb-3 text-xl font-semibold tracking-tight text-balance md:leading-7 lg:text-2xl lg:leading-8">
+              <h3 className="font-display mb-3 text-xl font-semibold tracking-normal text-balance md:leading-7 lg:text-2xl lg:leading-8">
                 {m['home.values.c3_title']()}
               </h3>
               <p className="text-muted-foreground mb-4 text-sm leading-7 lg:text-base">

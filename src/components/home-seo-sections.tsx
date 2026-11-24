@@ -11,7 +11,7 @@ export function StyleOverview() {
         <p className="text-muted-foreground mb-3 text-center text-sm font-medium">
           {m['home.styles.eyebrow']()}
         </p>
-        <h2 className="font-display text-center text-2xl font-bold tracking-tight text-balance sm:text-3xl">
+        <h2 className="font-display text-center text-2xl font-semibold tracking-normal text-balance sm:text-3xl">
           {m['home.styles.title']()}
         </h2>
         <div className="text-muted-foreground mt-5 space-y-4 text-sm leading-7 sm:text-base">
@@ -77,7 +77,7 @@ export function SizePlacementTable() {
         <p className="text-muted-foreground mb-3 text-center text-sm font-medium">
           {m['home.sizes.eyebrow']()}
         </p>
-        <h2 className="font-display text-center text-2xl font-bold tracking-tight text-balance sm:text-3xl">
+        <h2 className="text-center font-sans text-2xl font-semibold tracking-normal text-balance sm:text-3xl">
           {m['home.sizes.title']()}
         </h2>
         <div className="text-muted-foreground mx-auto mt-4 max-w-3xl space-y-4 text-sm leading-7">
@@ -144,7 +144,7 @@ export function ArtistBoundary() {
         <p className="text-muted-foreground mb-3 text-center text-sm font-medium">
           {m['home.artist.eyebrow']()}
         </p>
-        <h2 className="font-display text-center text-2xl font-bold tracking-tight text-balance sm:text-3xl">
+        <h2 className="font-display text-center text-2xl font-semibold tracking-normal text-balance sm:text-3xl">
           {m['home.artist.title']()}
         </h2>
         <div className="text-muted-foreground mt-5 space-y-4 text-sm leading-7 sm:text-base">
