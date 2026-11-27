@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="ufind-logo-title">
+  <title id="ufind-logo-title">ufind.best</title>
+  <rect width="64" height="64" rx="14" fill="#111111"/>
+  <path fill="#ffffff" fill-rule="evenodd" transform="matrix(.107 0 0 .107 -22.62 -13.21)" d="M370 364V491C370 566 430 619 510 619C588 619 650 565 650 495L651 434 591 461V487C591 525 558 555 512 555C466 555 432 526 432 486V330ZM650 226 478 312V486L541 526V458L572 442 650 406V337L542 391 541 390 542 346 650 295Z"/>
+</svg>

@@ -1,5 +1,6 @@
 import { Link } from '@/core/i18n/navigation';
 import { m } from '@/paraglide/messages.js';
+import { DirectoryBadges } from '@/components/directory-badges';
 
 export function MarketingFooter() {
   return (
@@ -203,6 +204,8 @@ export function MarketingFooter() {
             </ul>
           </div>
         </div>
+
+        <DirectoryBadges />
 
         {/* Bottom Copyright Bar */}
         <div className="border-border text-muted-foreground mt-10 border-t pt-6 text-[13px]">
