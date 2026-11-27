@@ -11,7 +11,7 @@ const directories = [
   },
   {
     name: 'Findly.tools',
-    href: 'https://findly.tools',
+    href: 'https://findly.tools/tattoo-generator?utm_source=tattoo-generator',
     src: 'https://findly.tools/badges/findly-tools-badge-light.svg',
   },
   {
