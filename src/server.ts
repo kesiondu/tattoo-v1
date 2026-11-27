@@ -2,6 +2,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import handler from '@tanstack/react-start/server-entry';
 
 import { envConfigs } from './config';
+import { isIndexablePage } from './config/indexable-pages';
 import { runWithDbScope } from './core/db/request-scope';
 import {
   getCookieFromHeader,
@@ -125,9 +126,16 @@ async function handleRequest(req: Request): Promise<Response> {
   const response = withPoweredBy(
     await paraglideMiddleware(req, () => handler.fetch(req))
   );
+  const url = new URL(req.url);
+  if (
+    response.headers.get('content-type')?.includes('text/html') &&
+    !isIndexablePage(url.pathname, url.search)
+  ) {
+    response.headers.set('X-Robots-Tag', 'noindex, follow');
+  }
   // First-touch attribution: remember UTM params for 30 days so sign-up can
   // stamp them onto the user row. Never overwrite an existing cookie.
-  const params = new URL(req.url).searchParams;
+  const params = url.searchParams;
   const cookieHeader = req.headers.get('cookie');
   for (const key of UTM_COOKIE_KEYS) {
     const value = params.get(key);

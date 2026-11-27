@@ -26,9 +26,10 @@ import {
   pickAppearance,
   THEME_COOKIE,
 } from '@/config/appearance';
+import { isIndexablePage } from '@/config/indexable-pages';
 import { parseCookieConsent } from '@/lib/cookie-consent';
 import { getQueryClient } from '@/lib/query-client';
-import { getLocale, locales, localizeUrl } from '@/paraglide/runtime.js';
+import { getLocale, localizeUrl } from '@/paraglide/runtime.js';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useCookieConsent } from '@/hooks/use-cookie-consent';
 import { CookieConsent } from '@/blocks/cookie-consent';
@@ -129,7 +130,7 @@ export const Route = createRootRoute({
     // head() runs on the SSR server AND again on the client during hydration.
     // On the client, app_url falls back to the localhost dev default when
     // VITE_APP_URL wasn't inlined into the client bundle at build — which would
-    // emit a second, localhost set of hreflang links. Prefer the live origin
+    // emit a localhost canonical URL. Prefer the live origin
     // on the client so it always matches; the server uses the configured URL.
     const appUrl = (
       (typeof window !== 'undefined' && window.location?.origin) ||
@@ -147,6 +148,9 @@ export const Route = createRootRoute({
     return {
       meta: [
         { charSet: 'utf-8' },
+        ...(locale === 'en' && isIndexablePage(rawPath)
+          ? []
+          : [{ name: 'robots', content: 'noindex, follow' }]),
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { title: envConfigs.app_name },
         { name: 'description', content: envConfigs.app_description },
@@ -189,17 +193,6 @@ export const Route = createRootRoute({
           href: 'https://assets.tattoogenerator.online/v1/brand/tattoo-generator-apple-touch-icon-180.png',
         },
         { rel: 'canonical', href: canonicalHref },
-        ...locales.map((loc) => ({
-          rel: 'alternate',
-          hrefLang: loc,
-          href: localizeUrl(`${appUrl}${normalizedPath}`, { locale: loc }).href,
-        })),
-        {
-          rel: 'alternate',
-          hrefLang: 'x-default',
-          href: localizeUrl(`${appUrl}${normalizedPath}`, { locale: 'en' })
-            .href,
-        },
       ],
     };
   },
