@@ -401,7 +401,7 @@ export const Route = createFileRoute('/tattoo-styles/$style')({
       locale,
     }).href;
     const homeUrl = localizeUrl(`${baseUrl}/`, { locale }).href;
-    const ogImage = `${baseUrl}${style.image}`;
+    const ogImage = new URL(style.image, baseUrl).href;
 
     const jsonLd = [
       {
@@ -461,7 +461,6 @@ export const Route = createFileRoute('/tattoo-styles/$style')({
       meta: [
         { title: t.seoTitle },
         { name: 'description', content: t.seoDescription },
-        { name: 'robots', content: 'noindex, follow' },
         { property: 'og:title', content: t.seoTitle },
         { property: 'og:description', content: t.seoDescription },
         { property: 'og:image', content: ogImage },

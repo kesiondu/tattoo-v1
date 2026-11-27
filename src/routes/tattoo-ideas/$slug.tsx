@@ -514,7 +514,7 @@ export const Route = createFileRoute('/tattoo-ideas/$slug')({
       locale,
     }).href;
     const homeUrl = localizeUrl(`${baseUrl}/`, { locale }).href;
-    const imageUrl = `${baseUrl}${idea.bodyUrl}`;
+    const imageUrl = new URL(idea.bodyUrl, baseUrl).href;
 
     const seoTitle = m['idea_detail.seo.title']({ title: t.title }, { locale });
     const seoDescription = m['idea_detail.seo.description'](
@@ -569,7 +569,6 @@ export const Route = createFileRoute('/tattoo-ideas/$slug')({
       meta: [
         { title: seoTitle },
         { name: 'description', content: seoDescription },
-        { name: 'robots', content: 'noindex, follow' },
         { property: 'og:title', content: seoTitle },
         { property: 'og:description', content: seoDescription },
         { property: 'og:image', content: imageUrl },

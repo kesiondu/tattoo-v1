@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import handler from '@tanstack/react-start/server-entry';
 
 import { envConfigs } from './config';
@@ -9,7 +10,11 @@ import {
   sanitizeUtm,
 } from './lib/cookie';
 import { resolveLegacyRedirect } from './lib/legacy-redirect';
+import { overwriteServerAsyncLocalStorage } from './paraglide/runtime.js';
 import { paraglideMiddleware } from './paraglide/server.js';
+
+// Share one store from the first request, including concurrent cold starts.
+overwriteServerAsyncLocalStorage(new AsyncLocalStorage());
 
 // On Cloudflare Workers, stash the binding env (D1, ASSETS, …) on globalThis
 // so synchronous code paths (e.g. the db() singleton with DATABASE_PROVIDER=d1)

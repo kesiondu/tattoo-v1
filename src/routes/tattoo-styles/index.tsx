@@ -859,7 +859,6 @@ export const Route = createFileRoute('/tattoo-styles/')({
       description,
       path: '/tattoo-styles',
       locale,
-      robots: 'noindex, follow',
       jsonLd: [
         breadcrumbJsonLd(
           [
