@@ -12,7 +12,7 @@ const directories = [
   {
     name: 'Findly.tools',
     href: 'https://findly.tools',
-    src: '/badges/findly.svg',
+    src: 'https://findly.tools/badges/findly-tools-badge-light.svg',
   },
   {
     name: 'Startup Fame',
