@@ -6,8 +6,8 @@ const directories = [
   },
   {
     name: 'Neeed Directory',
-    href: 'https://neeed.directory',
-    src: '/badges/neeed.svg',
+    href: 'https://neeed.directory/products/tattoo-generator?utm_source=tattoo-generator',
+    src: 'https://neeed.directory/badges/neeed-badge-light.svg',
   },
   {
     name: 'Findly.tools',
