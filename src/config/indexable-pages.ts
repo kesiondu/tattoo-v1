@@ -6,6 +6,7 @@ export const indexablePaths = [
   '/tattoo-price-calculator',
   '/tattoo-stencil-generator',
   '/pricing',
+  '/about',
 ];
 
 export function isIndexablePage(pathname: string, search = '') {

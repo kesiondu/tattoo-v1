@@ -53,6 +53,12 @@ const STATIC_PAGES: { path: string; title: string; description: string }[] = [
     description: 'Review available credit bundles and product pricing.',
   },
   {
+    path: '/about',
+    title: 'About Tattoo Generator',
+    description:
+      'Learn who builds TattooGenerator.online, how our AI tattoo previews and planning guides work, and how we protect uploaded photos.',
+  },
+  {
     path: '/blog',
     title: 'Tattoo Design Blog',
     description: 'Editorial tattoo design and planning articles.',

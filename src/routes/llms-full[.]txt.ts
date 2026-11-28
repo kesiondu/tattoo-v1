@@ -7,6 +7,12 @@ import { getLocalPosts, mergePosts } from '@/content/posts';
 const STATIC_PAGES: { path: string; title: string; description: string }[] = [
   { path: '', title: 'Home', description: 'Landing page' },
   { path: '/pricing', title: 'Pricing', description: 'Pricing plans' },
+  {
+    path: '/about',
+    title: 'About Tattoo Generator',
+    description:
+      'Who builds TattooGenerator.online, how our AI tools and guides work, and how we protect uploaded photos.',
+  },
   { path: '/blog', title: 'Blog', description: 'Blog posts and articles' },
 ];
 
