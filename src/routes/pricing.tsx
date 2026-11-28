@@ -416,6 +416,44 @@ function PricingPage() {
                   </div>
                 </div>
               </div>
+              {/* Transparency: Free vs. Paid & Refund Policy */}
+              <div className="mt-12">
+                <div className="text-center">
+                  <div className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                    {m['pages.pricing.transparency_eyebrow']()}
+                  </div>
+                  <h2 className="text-foreground mt-2 font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
+                    {m['pages.pricing.transparency_h2']()}
+                  </h2>
+                </div>
+
+                <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">
+                  <article className="border-border bg-card rounded-2xl border p-6">
+                    <h3 className="text-foreground text-base font-bold">
+                      {m['pages.pricing.transparency_c1_h3']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2.5 text-sm leading-relaxed">
+                      {m['pages.pricing.transparency_c1_p']()}
+                    </p>
+                  </article>
+                  <article className="border-border bg-card rounded-2xl border p-6">
+                    <h3 className="text-foreground text-base font-bold">
+                      {m['pages.pricing.transparency_c2_h3']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2.5 text-sm leading-relaxed">
+                      {m['pages.pricing.transparency_c2_p']()}
+                    </p>
+                  </article>
+                  <article className="border-border bg-card rounded-2xl border p-6">
+                    <h3 className="text-foreground text-base font-bold">
+                      {m['pages.pricing.transparency_c3_h3']()}
+                    </h3>
+                    <p className="text-muted-foreground mt-2.5 text-sm leading-relaxed">
+                      {m['pages.pricing.transparency_c3_p']()}
+                    </p>
+                  </article>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -431,7 +469,7 @@ function PricingPage() {
             ]}
           />
 
-          {/* Pricing FAQ (4 verbatim items) */}
+          {/* Pricing FAQ (Always rendered in SSR HTML to match FAQPage JSON-LD) */}
           <section className="border-border bg-muted/20 border-t py-14 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 sm:px-6">
               <h2 className="text-foreground mb-8 text-center font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -445,6 +483,7 @@ function PricingPage() {
                       <h3 className="flex">
                         <button
                           type="button"
+                          aria-expanded={isOpen}
                           onClick={() => setOpenFaq(isOpen ? null : idx)}
                           className="text-foreground hover:bg-muted/40 flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium transition-colors"
                         >
@@ -459,11 +498,14 @@ function PricingPage() {
                           />
                         </button>
                       </h3>
-                      {isOpen && (
-                        <div className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
-                          {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
-                        </div>
-                      )}
+                      <div
+                        className={cn(
+                          'text-muted-foreground px-5 pb-4 text-sm leading-relaxed',
+                          !isOpen && 'hidden'
+                        )}
+                      >
+                        {isZh ? tDynamic(item.aZh) : tDynamic(item.aEn)}
+                      </div>
                     </div>
                   );
                 })}

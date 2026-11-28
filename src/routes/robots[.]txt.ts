@@ -12,10 +12,13 @@ export const Route = createFileRoute('/robots.txt')({
         const body = [
           'User-Agent: *',
           'Allow: /',
-          // Keep these crawlable so search engines can read their noindex meta.
-          'Allow: /admin',
-          'Allow: /settings',
+          'Disallow: /admin',
+          'Disallow: /settings',
           'Disallow: /api/',
+          'Disallow: /*?utm_*',
+          'Disallow: /*&utm_*',
+          'Disallow: /*?ref=*',
+          'Disallow: /*&ref=*',
           '',
           `Sitemap: ${baseUrl}/sitemap.xml`,
           '',

@@ -1040,6 +1040,56 @@ function TattooTryOnPage() {
             </div>
           </section>
 
+          {/* 3.5 Practical Try-On Guide (People-first utility content) */}
+          <section className="bg-background py-14 sm:py-20">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="max-w-3xl">
+                <div className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                  {m['tryon.guide.eyebrow']()}
+                </div>
+                <h2 className="text-foreground mt-2 font-sans text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {m['tryon.guide.h2']()}
+                </h2>
+                <p className="text-muted-foreground mt-3 text-sm leading-relaxed sm:text-base">
+                  {m['tryon.guide.subtitle']()}
+                </p>
+              </div>
+
+              <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                {[
+                  {
+                    h: m['tryon.guide.c1_h3'](),
+                    p: m['tryon.guide.c1_p'](),
+                  },
+                  {
+                    h: m['tryon.guide.c2_h3'](),
+                    p: m['tryon.guide.c2_p'](),
+                  },
+                  {
+                    h: m['tryon.guide.c3_h3'](),
+                    p: m['tryon.guide.c3_p'](),
+                  },
+                  {
+                    h: m['tryon.guide.c4_h3'](),
+                    p: m['tryon.guide.c4_p'](),
+                  },
+                ].map((card) => (
+                  <article
+                    key={card.h}
+                    className="border-border bg-card rounded-2xl border p-6"
+                  >
+                    <h3 className="text-foreground font-sans text-base font-semibold">
+                      {card.h}
+                    </h3>
+                    <p className="text-muted-foreground mt-2.5 text-sm leading-relaxed">
+                      {card.p}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
           <SeoRelatedTools
             items={[
               { href: '/tattoo-ideas', label: m['pages.ideas.m001']() },
@@ -1055,7 +1105,7 @@ function TattooTryOnPage() {
             ]}
           />
 
-          {/* 4. FAQ */}
+          {/* 4. FAQ (Always rendered in SSR HTML to match FAQPage JSON-LD) */}
           <section className="py-14 sm:py-20">
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-16 lg:px-8">
               <div>
@@ -1075,6 +1125,7 @@ function TattooTryOnPage() {
                       <h3 className="flex">
                         <button
                           type="button"
+                          aria-expanded={isOpen}
                           onClick={() => setOpenFaq(isOpen ? null : idx)}
                           className="text-foreground hover:bg-muted/40 flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium transition-colors"
                         >
@@ -1087,11 +1138,14 @@ function TattooTryOnPage() {
                           />
                         </button>
                       </h3>
-                      {isOpen && (
-                        <div className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
-                          {item.a}
-                        </div>
-                      )}
+                      <div
+                        className={cn(
+                          'text-muted-foreground px-5 pb-4 text-sm leading-relaxed',
+                          !isOpen && 'hidden'
+                        )}
+                      >
+                        {item.a}
+                      </div>
                     </div>
                   );
                 })}

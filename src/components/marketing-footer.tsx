@@ -145,6 +145,14 @@ export function MarketingFooter() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/about"
+                  className="hover:text-foreground transition-colors hover:underline"
+                >
+                  {m['home.footer.about']()}
+                </Link>
+              </li>
+              <li>
                 <a
                   href="mailto:support@tattoogenerator.online"
                   className="hover:text-foreground transition-colors hover:underline"

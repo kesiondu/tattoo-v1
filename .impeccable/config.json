@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-11-23T08:22:11.717Z",
+        "reason": "Codex decision: Arial is intentionally limited to the generated browser print/PDF consultation sheet for reliable cross-device printing; it is not used as the product UI font."
+      }
+    ]
+  }
+}
